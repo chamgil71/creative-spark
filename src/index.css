@@ -8,8 +8,18 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 30% 98%;
+    --foreground: 230 25% 12%;
+
+    --hero-from: 245 70% 60%;
+    --hero-to: 280 70% 55%;
+    --gradient-hero: linear-gradient(135deg, hsl(var(--hero-from)), hsl(var(--hero-to)));
+
+    --cat-chat: 210 90% 55%;
+    --cat-dev: 150 65% 42%;
+    --cat-knowledge: 280 70% 58%;
+    --cat-prod: 25 90% 55%;
+    --cat-creative: 340 80% 60%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
