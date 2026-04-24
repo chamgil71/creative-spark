@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NotebookLM Importer 가이드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand:      #1A73E8;
+      --brand-dark: #1557B0;
+      --brand-light:#E8F0FE;
+      --teal:      #00BFA5;
+      --text:      #1A1A2E;
+      --text-2:    #4B5575;
+      --text-3:    #8892B0;
+      --bg:        #F8FAFF;
+      --white:     #FFFFFF;
+      --border:    #D2E3FC;
+      --shadow:    0 4px 24px rgba(26,115,232,0.10);
+      --shadow-lg: 0 8px 40px rgba(26,115,232,0.16);
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--brand); text-decoration: none; }
+    .nav-logo .logo-icon { width: 34px; height: 34px; background: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-links { display: flex; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all .2s; }
+    .nav-links a:hover { background: var(--brand-light); color: var(--brand); }
+
+    .hero { background: linear-gradient(135deg, #0D1B4F 0%, #1A3A8F 50%, #1A73E8 100%); color: white; padding: 72px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(0,191,165,0.25) 0%, transparent 55%); }
+    .hero-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+    .free-badge { background: rgba(0,191,165,0.3); }
+    .hero-emoji { font-size: 64px; display: block; margin-bottom: 16px; }
+    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; margin-bottom: 14px; }
+    .hero p { font-size: 1.05rem; opacity: .85; margin-bottom: 36px; }
+    .hero-stats { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat strong { display: block; font-size: 1.5rem; font-weight: 700; }
+    .hero-stat span { font-size: .78rem; opacity: .7; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 56px 24px; }
+    .section { margin-bottom: 64px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .section-num { width: 38px; height: 38px; background: var(--brand); color: white; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; flex-shrink: 0; }
+    .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700; }
+    .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 26px; box-shadow: var(--shadow); margin-bottom: 14px; }
+
+    .flow-demo { display: flex; align-items: center; gap: 0; background: white; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow); }
+    .flow-step { flex: 1; padding: 24px 20px; text-align: center; position: relative; }
+    .flow-step:not(:last-child) { border-right: 1px solid var(--border); }
+    .flow-arrow { position: absolute; right: -16px; top: 50%; transform: translateY(-50%); background: var(--brand); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; z-index: 1; box-shadow: var(--shadow); }
+    .fs-icon { font-size: 2.2rem; margin-bottom: 10px; }
+    .fs-title { font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+    .fs-desc { font-size: .8rem; color: var(--text-3); }
+
+    .step-list { display: flex; flex-direction: column; gap: 14px; }
+    .step-item { display: flex; gap: 16px; align-items: flex-start; padding: 16px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+    .step-num { width: 30px; height: 30px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .88rem; flex-shrink: 0; }
+    .step-content strong { display: block; font-size: .93rem; margin-bottom: 3px; }
+    .step-content span { font-size: .84rem; color: var(--text-2); }
+
+    .use-case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .uc-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; transition: all .2s; }
+    .uc-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .uc-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .uc-title { font-weight: 700; font-size: .9rem; margin-bottom: 5px; }
+    .uc-desc { font-size: .82rem; color: var(--text-2); }
+
+    .tip-box { background: linear-gradient(135deg, var(--brand-light), #fff); border-left: 4px solid var(--brand); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 18px; font-size: .88rem; }
+    .tip-box strong { color: var(--brand-dark); }
+
+    .back-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+    footer { background: #0D1B4F; color: rgba(255,255,255,0.6); text-align: center; padding: 28px 24px; font-size: .86rem; }
+    footer strong { color: #64B5F6; }
+  </style>
+</head>
+<body>
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><div class="logo-icon">📥</div>NLM Importer</a>
+    <ul class="nav-links">
+      <li><a href="#what">소개</a></li>
+      <li><a href="#how">사용법</a></li>
+      <li><a href="#cases">활용</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge free-badge">✅ 크롬 익스텐션 · 완전 무료</div>
+    <span class="hero-emoji">📥</span>
+    <h1>NotebookLM Importer</h1>
+    <p>웹 서핑 중 발견한 아티클을 클릭 한 번으로<br>NotebookLM 지식베이스에 바로 저장</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>1클릭</strong><span>즉시 저장</span></div>
+      <div class="hero-stat"><strong>무료</strong><span>완전 무료</span></div>
+      <div class="hero-stat"><strong>Chrome</strong><span>익스텐션</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="section" id="what">
+    <div class="section-header"><div class="section-num">1</div><h2>무엇을 해결하는가?</h2></div>
+    <div class="flow-demo">
+      <div class="flow-step">
+        <div class="fs-icon">🌐</div>
+        <div class="fs-title">웹 서핑 중</div>
+        <div class="fs-desc">유용한 아티클 발견</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-icon">📋</div>
+        <div class="fs-title">기존 방식</div>
+        <div class="fs-desc">URL 복사 → NotebookLM 열기 → 소스 추가 → 붙여넣기</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-icon">⚡</div>
+        <div class="fs-title">Importer 사용</div>
+        <div class="fs-desc">익스텐션 아이콘 클릭 → 완료!</div>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:16px;">
+      <strong>💡 핵심 가치:</strong> 좋은 콘텐츠를 발견했을 때 "나중에 봐야지"가 아니라 즉시 지식베이스로. 컨텍스트 전환 없이 웹 서핑 흐름 유지.
+    </div>
+  </div>
+
+  <div class="section" id="how">
+    <div class="section-header"><div class="section-num">2</div><h2>설치 & 사용법</h2></div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Chrome 웹스토어에서 "NotebookLM Importer" 검색 후 설치</strong><span>또는 GitHub에서 직접 설치 (오픈소스). 완전 무료.</span></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Google 계정으로 로그인 (NotebookLM과 동일 계정)</strong><span>권한: NotebookLM 접근 허용. 다른 데이터에는 접근하지 않음.</span></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><strong>저장할 NotebookLM 노트북 선택 (드롭다운)</strong><span>여러 노트북 중 원하는 곳으로 바로 지정 가능.</span></div></div>
+      <div class="step-item"><div class="step-num">4</div><div class="step-content"><strong>웹페이지에서 아이콘 클릭 → 자동으로 소스 추가 완료</strong><span>URL이 자동으로 NotebookLM 소스 목록에 추가됨. 나중에 NotebookLM에서 AI 분석 가능.</span></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="cases">
+    <div class="section-header"><div class="section-num">3</div><h2>활용 시나리오</h2></div>
+    <div class="use-case-grid">
+      <div class="uc-card"><div class="uc-icon">🔬</div><div class="uc-title">리서치 수집</div><div class="uc-desc">논문·기사·보고서를 발견할 때마다 즉시 주제별 노트북에 저장.</div></div>
+      <div class="uc-card"><div class="uc-icon">📰</div><div class="uc-title">뉴스 큐레이션</div><div class="uc-desc">매일 읽는 AI·정책 뉴스를 자동 누적. 월말에 NotebookLM으로 동향 분석.</div></div>
+      <div class="uc-card"><div class="uc-icon">📚</div><div class="uc-title">학습 자료 구성</div><div class="uc-desc">강의·튜토리얼 링크를 모아 NotebookLM에서 AI 요약·퀴즈 생성.</div></div>
+      <div class="uc-card"><div class="uc-icon">🏢</div><div class="uc-title">경쟁사 모니터링</div><div class="uc-desc">경쟁사 블로그·보도자료 발견 즉시 저장 → 통합 분석.</div></div>
+    </div>
+  </div>
+</main>
+
+<a class="back-top" href="#top">↑</a>
+<footer><strong>NotebookLM Importer 가이드</strong> · Chrome Extension · 무료 · 2025</footer>
+</body>
+</html>
