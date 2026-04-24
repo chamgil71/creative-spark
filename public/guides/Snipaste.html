@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snipaste 가이드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand: #00897B; --brand-dark: #00695C; --brand-light: #E0F2F1;
+      --text: #1A1A2E; --text-2: #4B5575; --text-3: #8892B0;
+      --bg: #F5FFFE; --white: #FFFFFF; --border: #B2DFDB;
+      --shadow: 0 4px 24px rgba(0,137,123,0.10); --shadow-lg: 0 8px 40px rgba(0,137,123,0.16);
+      --radius: 16px; --radius-sm: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .nav-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--brand); text-decoration: none; }
+    .nav-logo .logo-icon { width: 34px; height: 34px; background: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-links { display: flex; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all .2s; }
+    .nav-links a:hover { background: var(--brand-light); color: var(--brand); }
+
+    .hero { background: linear-gradient(135deg, #002924 0%, #00574B 45%, #00897B 80%, #4DB6AC 100%); color: white; padding: 72px 24px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(0,137,123,0.4) 0%, transparent 55%); }
+    .hero-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+    .hero-emoji { font-size: 64px; display: block; margin-bottom: 16px; }
+    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; margin-bottom: 14px; }
+    .hero p { font-size: 1.05rem; opacity: .85; margin-bottom: 36px; }
+    .hero-stats { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat strong { display: block; font-size: 1.5rem; font-weight: 700; }
+    .hero-stat span { font-size: .78rem; opacity: .7; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 56px 24px; }
+    .section { margin-bottom: 64px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .section-num { width: 38px; height: 38px; background: var(--brand); color: white; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; flex-shrink: 0; }
+    .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700; }
+    .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 26px; box-shadow: var(--shadow); margin-bottom: 14px; }
+
+    .shortcut-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .shortcut-item { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; }
+    .sc-key { display: inline-flex; align-items: center; gap: 6px; background: #1A1A2E; color: white; border-radius: 8px; padding: 5px 12px; font-family: monospace; font-size: .9rem; font-weight: 700; margin-bottom: 10px; }
+    .sc-desc { font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+    .sc-detail { font-size: .82rem; color: var(--text-2); }
+
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .feat-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+    .feat-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .feat-title { font-weight: 700; font-size: .9rem; margin-bottom: 4px; }
+    .feat-desc { font-size: .82rem; color: var(--text-2); }
+
+    .pin-demo { background: linear-gradient(135deg, #002924, #00574B); border-radius: var(--radius); padding: 28px; color: white; position: relative; }
+    .pin-demo-title { font-weight: 700; font-size: 1rem; margin-bottom: 20px; }
+    .pin-items { display: flex; flex-wrap: wrap; gap: 14px; }
+    .pin-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-sm); padding: 14px; font-size: .85rem; backdrop-filter: blur(4px); }
+    .pin-item strong { display: block; font-size: .78rem; color: #80CBC4; margin-bottom: 4px; }
+
+    .step-list { display: flex; flex-direction: column; gap: 12px; }
+    .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+    .step-num { width: 28px; height: 28px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .84rem; flex-shrink: 0; }
+    .step-content strong { display: block; font-size: .92rem; margin-bottom: 3px; }
+    .step-content span { font-size: .83rem; color: var(--text-2); }
+
+    .tip-box { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 18px; font-size: .88rem; }
+    .tip-box strong { color: var(--brand-dark); }
+
+    .back-top { position: fixed; bottom: 32px; right: 32px; width: 44px; height: 44px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; }
+    footer { background: #002924; color: rgba(255,255,255,0.6); text-align: center; padding: 28px 24px; font-size: .86rem; }
+    footer strong { color: #80CBC4; }
+  </style>
+</head>
+<body>
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><div class="logo-icon">📌</div>Snipaste 가이드</a>
+    <ul class="nav-links">
+      <li><a href="#what">핵심 기능</a></li>
+      <li><a href="#pin">Pin 활용</a></li>
+      <li><a href="#shortcuts">단축키</a></li>
+      <li><a href="#cases">활용법</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">📌 로컬 설치 · 무료 / Pro</div>
+    <span class="hero-emoji">📌</span>
+    <h1>Snipaste</h1>
+    <p>캡처한 화면을 화면 위에 고정(Pin)시키는<br>생산성을 바꾸는 스크린샷 도구</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>F1</strong><span>캡처 단축키</span></div>
+      <div class="hero-stat"><strong>F3</strong><span>화면에 Pin</span></div>
+      <div class="hero-stat"><strong>무료</strong><span>기본 기능 모두</span></div>
+      <div class="hero-stat"><strong>로컬</strong><span>인터넷 불필요</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="section" id="what">
+    <div class="section-header"><div class="section-num">1</div><h2>Snipaste란?</h2></div>
+    <div class="card">
+      <p style="color:var(--text-2);margin-bottom:16px;">일반 캡처 도구와의 결정적 차이 — <strong>캡처한 이미지를 화면 위에 떠 있게(항상 위에 표시)</strong> 고정할 수 있습니다. 다른 창을 열어도 사라지지 않아 참조·비교 작업이 혁신적으로 편해집니다.</p>
+      <div class="feat-grid">
+        <div class="feat-item">
+          <div class="feat-icon">✂️</div>
+          <div class="feat-title">정밀 영역 캡처</div>
+          <div class="feat-desc">픽셀 단위 정밀 선택. 색상 피커로 특정 픽셀 색상값(HEX) 즉시 복사.</div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon">📌</div>
+          <div class="feat-title">화면 위 고정 (Pin)</div>
+          <div class="feat-desc">캡처 이미지를 화면 최상단에 고정. 다른 프로그램 사용 중에도 참조 가능.</div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon">🎨</div>
+          <div class="feat-title">즉시 편집·마킹</div>
+          <div class="feat-desc">캡처 후 바로 화살표·텍스트·형광펜·모자이크 추가. 저장 없이 클립보드 복사.</div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon">📋</div>
+          <div class="feat-title">클립보드 이미지 Pin</div>
+          <div class="feat-desc">클립보드에 복사된 이미지도 F3으로 화면에 바로 고정. 웹 이미지 참조에 최적.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="pin">
+    <div class="section-header"><div class="section-num">2</div><h2>Pin 기능 — 멀티태스킹의 혁신</h2></div>
+    <div class="pin-demo">
+      <div class="pin-demo-title">📌 화면에 고정된 참조 창들 (예시)</div>
+      <div class="pin-items">
+        <div class="pin-item"><strong>디자인 시안</strong>Figma 화면 캡처<br>투명도 조절 가능</div>
+        <div class="pin-item"><strong>API 문서</strong>파라미터 목록<br>코딩하며 참조</div>
+        <div class="pin-item"><strong>회의 내용</strong>슬라이드 캡처<br>메모하며 확인</div>
+        <div class="pin-item"><strong>계산 결과</strong>스프레드시트 값<br>보고서 작성 중 참조</div>
+      </div>
+    </div>
+    <div class="tip-box" style="margin-top:14px;">
+      <strong>💡 Pin 조작법:</strong> Pin된 이미지는 마우스 휠로 투명도 조절, Ctrl+휠로 크기 조절, 드래그로 이동 가능. 우클릭으로 닫기.
+    </div>
+  </div>
+
+  <div class="section" id="shortcuts">
+    <div class="section-header"><div class="section-num">3</div><h2>핵심 단축키</h2></div>
+    <div class="shortcut-grid">
+      <div class="shortcut-item">
+        <div class="sc-key">F1</div>
+        <div class="sc-desc">화면 캡처 시작</div>
+        <div class="sc-detail">드래그로 영역 선택. ESC로 취소.</div>
+      </div>
+      <div class="shortcut-item">
+        <div class="sc-key">F3</div>
+        <div class="sc-desc">클립보드 → Pin</div>
+        <div class="sc-detail">복사된 이미지를 화면에 즉시 고정.</div>
+      </div>
+      <div class="shortcut-item">
+        <div class="sc-key">Ctrl+C</div>
+        <div class="sc-desc">캡처 후 클립보드</div>
+        <div class="sc-detail">캡처 영역 선택 후 Enter 대신 사용.</div>
+      </div>
+      <div class="shortcut-item">
+        <div class="sc-key">Alt+C</div>
+        <div class="sc-desc">색상 피커</div>
+        <div class="sc-detail">픽셀 색상 HEX 값 즉시 복사.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="cases">
+    <div class="section-header"><div class="section-num">4</div><h2>실전 활용 시나리오</h2></div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">💻</div><div class="step-content"><strong>코딩 중 문서 참조</strong><span>API 문서나 에러 메시지를 캡처 → Pin → 코드 에디터 위에 고정. 탭 전환 없이 개발 가능.</span></div></div>
+      <div class="step-item"><div class="step-num">🎨</div><div class="step-content"><strong>디자인 비교 작업</strong><span>원본 디자인 캡처 → Pin → 새 디자인 작업 화면 옆에 고정. 색상·비율 실시간 비교.</span></div></div>
+      <div class="step-item"><div class="step-num">📝</div><div class="step-content"><strong>회의 중 슬라이드 참조</strong><span>발표 화면 캡처 → Pin → 자신의 메모 앱에서 내용 정리. 화면 전환 없이 회의록 작성.</span></div></div>
+      <div class="step-item"><div class="step-num">🎨</div><div class="step-content"><strong>색상 코드 추출 (Alt+C)</strong><span>웹사이트나 이미지에서 마음에 드는 색상의 HEX 코드를 즉시 복사. 디자이너 필수.</span></div></div>
+    </div>
+  </div>
+</main>
+
+<a class="back-top" href="#top">↑</a>
+<footer><strong>Snipaste 가이드</strong> · 로컬 캡처 & Pin 도구 · 무료/Pro · 2025</footer>
+</body>
+</html>

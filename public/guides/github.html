@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>깃허브(GitHub) 완전 정복 가이드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gh-dark:    #0D1117;
+      --gh-dark2:   #161B22;
+      --gh-border:  #30363D;
+      --gh-text:    #E6EDF3;
+      --gh-text2:   #8B949E;
+      --green:      #3FB950;
+      --blue:       #58A6FF;
+      --purple:     #BC8CFF;
+      --orange:     #F0883E;
+      --red:        #F85149;
+      --text:       #1A1A2E;
+      --text-2:     #4B5575;
+      --bg:         #F6F8FA;
+      --white:      #FFFFFF;
+      --border:     #D0D7DE;
+      --shadow:     0 4px 24px rgba(0,0,0,0.08);
+      --radius:     12px;
+      --radius-sm:  8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(13,17,23,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gh-border); padding: 0 24px; }
+    .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: white; text-decoration: none; }
+    .nav-logo .logo-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; }
+    .nav-links { display: flex; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gh-text2); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all .2s; }
+    .nav-links a:hover { background: rgba(255,255,255,0.1); color: white; }
+
+    .hero { background: linear-gradient(160deg, #0D1117 0%, #161B22 60%, #0D1117 100%); padding: 80px 24px 100px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% -20%, rgba(63,185,80,0.12) 0%, transparent 60%); }
+    .github-logo-wrap { margin: 0 auto 24px; }
+    .hero-badge { display: inline-block; background: rgba(63,185,80,0.15); color: #3FB950; font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 100px; border: 1px solid rgba(63,185,80,0.3); margin-bottom: 24px; position: relative; }
+    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(28px,5vw,50px); font-weight: 700; color: var(--gh-text); line-height: 1.3; margin-bottom: 20px; position: relative; }
+    .hero h1 span { color: #3FB950; }
+    .hero p { font-size: clamp(15px,2.5vw,18px); color: var(--gh-text2); max-width: 560px; margin: 0 auto 36px; position: relative; }
+    .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: #3FB950; color: #0D1117; font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 8px; text-decoration: none; box-shadow: 0 8px 32px rgba(63,185,80,0.25); transition: transform .2s; position: relative; }
+    .hero-cta:hover { transform: translateY(-2px); }
+    .hero-stats { display: flex; justify-content: center; gap: 48px; margin-top: 56px; position: relative; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat strong { display: block; font-size: 26px; font-weight: 900; color: var(--gh-text); }
+    .hero-stat span { font-size: 13px; color: var(--gh-text2); }
+
+    .section { padding: 72px 24px; }
+    .section-inner { max-width: 960px; margin: 0 auto; }
+    .section-title { font-family: 'Noto Serif KR', serif; font-size: clamp(22px,3.5vw,30px); font-weight: 700; margin-bottom: 8px; }
+    .section-sub { color: var(--text-2); font-size: 15px; margin-bottom: 40px; }
+    .section-num { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .section-num .num { width: 36px; height: 36px; background: var(--gh-dark); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0; border: 1px solid var(--gh-border); }
+    .section-num .label { font-size: 13px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: .06em; }
+
+    /* Git 플로우 다이어그램 */
+    .flow-container { background: var(--gh-dark); border-radius: var(--radius); padding: 32px; border: 1px solid var(--gh-border); overflow-x: auto; }
+    .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+    .branch-row { display: flex; align-items: center; gap: 0; }
+    .branch-label { width: 80px; font-size: 12px; font-weight: 700; color: var(--gh-text2); flex-shrink: 0; }
+    .branch-line { flex: 1; display: flex; align-items: center; }
+    .commit { width: 20px; height: 20px; border-radius: 50%; border: 3px solid; flex-shrink: 0; position: relative; }
+    .commit-line { flex: 1; height: 3px; }
+    .main-color { border-color: #3FB950; } .main-line { background: #3FB950; }
+    .dev-color { border-color: #58A6FF; } .dev-line { background: #58A6FF; }
+    .feat-color { border-color: #BC8CFF; } .feat-line { background: #BC8CFF; }
+    .commit-label { font-size: 10px; color: var(--gh-text2); position: absolute; top: 22px; left: -20px; white-space: nowrap; }
+
+    /* 기능 카드 */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .feature-card { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: transform .2s; }
+    .feature-card:hover { transform: translateY(-4px); }
+    .feature-card .fi { font-size: 32px; margin-bottom: 14px; }
+    .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+    .feature-tag { display: inline-block; margin-top: 10px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: #DCFCE7; color: #16A34A; }
+    .feature-tag.blue { background: #EFF6FF; color: #2563EB; }
+    .feature-tag.purple { background: #F5F3FF; color: #7C3AED; }
+
+    /* 터미널 블록 */
+    .terminal { background: var(--gh-dark); border-radius: var(--radius-sm); border: 1px solid var(--gh-border); overflow: hidden; margin: 16px 0; }
+    .terminal-header { background: var(--gh-dark2); padding: 10px 16px; display: flex; align-items: center; gap: 8px; }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .terminal-title { font-size: 12px; color: var(--gh-text2); margin-left: 8px; font-family: monospace; }
+    .terminal-body { padding: 16px 20px; font-family: 'Courier New', monospace; font-size: 13px; color: var(--gh-text); line-height: 1.8; }
+    .terminal-body .cmd { color: #3FB950; }
+    .terminal-body .comment { color: var(--gh-text2); }
+    .terminal-body .output { color: #58A6FF; }
+
+    /* GitHub Actions */
+    .actions-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; }
+    .action-step { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; text-align: center; min-width: 130px; box-shadow: var(--shadow); }
+    .action-step .as-icon { font-size: 24px; margin-bottom: 6px; }
+    .action-step h4 { font-size: 13px; font-weight: 700; }
+    .action-step p { font-size: 11px; color: var(--text-2); margin-top: 2px; }
+    .action-arrow { font-size: 20px; color: var(--border); padding: 0 8px; }
+
+    /* 단축키 */
+    .shortcut-table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+    .shortcut-table th { background: var(--gh-dark); color: var(--gh-text); padding: 12px 20px; text-align: left; font-size: 13px; font-weight: 600; }
+    .shortcut-table td { padding: 11px 20px; font-size: 14px; border-bottom: 1px solid var(--border); }
+    .shortcut-table tr:last-child td { border-bottom: none; }
+    .shortcut-table tr:hover td { background: var(--bg); }
+    .key { display: inline-block; background: #F6F8FA; border: 1px solid #D0D7DE; border-radius: 4px; padding: 1px 7px; font-family: monospace; font-size: 12px; }
+
+    .done-section { background: var(--gh-dark); padding: 72px 24px; text-align: center; border-top: 1px solid var(--gh-border); }
+    .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(22px,4vw,32px); color: var(--gh-text); margin-bottom: 16px; }
+    .done-section p { font-size: 16px; color: var(--gh-text2); margin-bottom: 32px; }
+    .done-link { display: inline-flex; align-items: center; gap: 8px; background: #3FB950; color: #0D1117; font-weight: 700; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-size: 16px; transition: transform .2s; }
+    .done-link:hover { transform: translateY(-2px); }
+
+    footer { background: var(--gh-dark2); color: var(--gh-text2); text-align: center; padding: 28px 24px; font-size: 14px; border-top: 1px solid var(--gh-border); }
+    footer a { color: var(--blue); text-decoration: none; }
+    .back-top { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; background: var(--gh-dark); color: var(--gh-text); border: 1px solid var(--gh-border); border-radius: 8px; font-size: 18px; cursor: pointer; opacity: 0; transition: opacity .3s; z-index: 200; }
+    .back-top.visible { opacity: 1; }
+
+    @media (max-width: 640px) { .nav-links { display: none; } .hero-stats { gap: 24px; } .actions-flow { flex-direction: column; } .action-arrow { transform: rotate(90deg); } }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      </div>
+      깃허브 가이드
+    </a>
+    <ul class="nav-links">
+      <li><a href="#git-basics">Git 기초</a></li>
+      <li><a href="#features">핵심 기능</a></li>
+      <li><a href="#actions">Actions</a></li>
+      <li><a href="#shortcuts">단축키</a></li>
+      <li><a href="#tips">팁</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="github-logo-wrap">
+    <svg viewBox="0 0 24 24" width="80" height="80" fill="white" style="filter:drop-shadow(0 8px 24px rgba(63,185,80,0.4))">
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+    </svg>
+  </div>
+  <div class="hero-badge">🐙 세계 최대 코드 협업 플랫폼</div>
+  <h1>코드를 <span>함께 만들고,</span><br/>함께 관리하는 GitHub</h1>
+  <p>버전 관리(Git)와 협업을 위한 플랫폼. 코드 저장소, Pull Request, Actions, Copilot까지 — 개발의 모든 과정이 여기에 있습니다.</p>
+  <a class="hero-cta" href="https://github.com" target="_blank">🐙 GitHub 시작하기 (무료)</a>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>무료</strong><span>Public 저장소</span></div>
+    <div class="hero-stat"><strong>1억+</strong><span>개발자 사용</span></div>
+    <div class="hero-stat"><strong>Copilot</strong><span>AI 코딩 어시스턴트</span></div>
+    <div class="hero-stat"><strong>Actions</strong><span>CI/CD 자동화</span></div>
+  </div>
+</section>
+
+<!-- Git 기초 -->
+<section class="section" id="git-basics" style="background: white;">
+  <div class="section-inner">
+    <div class="section-num"><div class="num">1</div><span class="label">Git Basics</span></div>
+    <h2 class="section-title">Git 핵심 개념과 기본 명령어</h2>
+    <p class="section-sub">Git은 코드 변경 이력을 관리하는 분산 버전 관리 시스템입니다.</p>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="terminal-dot" style="background:#FF5F56"></div>
+        <div class="terminal-dot" style="background:#FFBD2E"></div>
+        <div class="terminal-dot" style="background:#27C93F"></div>
+        <span class="terminal-title">bash — Git 기본 워크플로우</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="comment"># 저장소 초기화 또는 클론</span></div>
+        <div><span class="cmd">git init</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 새 저장소 만들기</span></div>
+        <div><span class="cmd">git clone</span> [URL] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 원격 저장소 복제</span></div>
+        <br/>
+        <div><span class="comment"># 변경 사항 기록</span></div>
+        <div><span class="cmd">git status</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 현재 상태 확인</span></div>
+        <div><span class="cmd">git add .</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 모든 변경 파일 스테이징</span></div>
+        <div><span class="cmd">git commit -m</span> "메시지" &nbsp;<span class="comment"># 커밋 생성</span></div>
+        <br/>
+        <div><span class="comment"># 원격 저장소 동기화</span></div>
+        <div><span class="cmd">git push origin main</span> &nbsp;<span class="comment"># 원격에 업로드</span></div>
+        <div><span class="cmd">git pull</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># 원격 변경 사항 가져오기</span></div>
+        <br/>
+        <div><span class="comment"># 브랜치 관리</span></div>
+        <div><span class="cmd">git branch feature/login</span> <span class="comment"># 브랜치 생성</span></div>
+        <div><span class="cmd">git checkout -b</span> feature/login <span class="comment"># 생성+이동</span></div>
+        <div><span class="cmd">git merge feature/login</span> &nbsp;<span class="comment"># 브랜치 합치기</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">브랜치 전략 (Git Flow)</h3>
+      <div class="flow-container">
+        <div class="flow-branches">
+          <div class="branch-row">
+            <div class="branch-label" style="color:#3FB950">main</div>
+            <div class="branch-line">
+              <div class="commit main-color"><span class="commit-label">v1.0</span></div>
+              <div class="commit-line main-line"></div>
+              <div class="commit main-color"><span class="commit-label">v1.1</span></div>
+              <div class="commit-line main-line"></div>
+              <div class="commit main-color" style="background:#3FB950"><span class="commit-label">v2.0</span></div>
+              <div class="commit-line main-line"></div>
+              <div class="commit main-color"></div>
+            </div>
+          </div>
+          <div class="branch-row">
+            <div class="branch-label" style="color:#58A6FF">develop</div>
+            <div class="branch-line">
+              <div class="commit dev-color"></div>
+              <div class="commit-line dev-line"></div>
+              <div class="commit dev-color"></div>
+              <div class="commit-line dev-line"></div>
+              <div class="commit dev-color"></div>
+              <div class="commit-line dev-line"></div>
+              <div class="commit dev-color"></div>
+            </div>
+          </div>
+          <div class="branch-row">
+            <div class="branch-label" style="color:#BC8CFF">feature</div>
+            <div class="branch-line">
+              <div style="flex:0.5;height:3px"></div>
+              <div class="commit feat-color"></div>
+              <div class="commit-line feat-line"></div>
+              <div class="commit feat-color"></div>
+              <div class="commit-line feat-line"></div>
+              <div class="commit feat-color"></div>
+              <div style="flex:1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 핵심 기능 -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="section-num"><div class="num">2</div><span class="label">Key Features</span></div>
+    <h2 class="section-title">GitHub 핵심 기능</h2>
+    <p class="section-sub">코드 협업과 개발 자동화를 위한 강력한 도구들입니다.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fi">🔀</div>
+        <h3>Pull Request (PR)</h3>
+        <p>변경 사항을 코드 리뷰를 거쳐 병합하는 협업 워크플로우. 코드 품질 유지의 핵심입니다.</p>
+        <span class="feature-tag">협업 필수</span>
+      </div>
+      <div class="feature-card">
+        <div class="fi">🐛</div>
+        <h3>Issues</h3>
+        <p>버그 리포트, 기능 요청, 할 일 관리를 위한 이슈 트래커. 라벨, 마일스톤, 담당자 지정 가능.</p>
+        <span class="feature-tag blue">프로젝트 관리</span>
+      </div>
+      <div class="feature-card">
+        <div class="fi">⚡</div>
+        <h3>GitHub Actions</h3>
+        <p>코드 푸시, PR 등의 이벤트에 자동으로 빌드·테스트·배포를 실행하는 CI/CD 자동화 도구.</p>
+        <span class="feature-tag">자동화</span>
+      </div>
+      <div class="feature-card">
+        <div class="fi">🤖</div>
+        <h3>GitHub Copilot</h3>
+        <p>AI 기반 코드 자동완성 도구. 주석을 작성하면 코드를 제안하고, 전체 함수도 생성합니다.</p>
+        <span class="feature-tag purple">AI 코딩</span>
+      </div>
+      <div class="feature-card">
+        <div class="fi">📦</div>
+        <h3>Packages</h3>
+        <p>npm, Docker, Maven 등의 패키지를 GitHub 내에서 바로 배포하고 관리합니다.</p>
+        <span class="feature-tag blue">패키지 관리</span>
+      </div>
+      <div class="feature-card">
+        <div class="fi">🌐</div>
+        <h3>GitHub Pages</h3>
+        <p>저장소에서 직접 정적 웹사이트를 무료로 호스팅합니다. 포트폴리오, 문서 사이트에 최적.</p>
+        <span class="feature-tag">무료 호스팅</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Actions -->
+<section class="section" id="actions" style="background: white;">
+  <div class="section-inner">
+    <div class="section-num"><div class="num">3</div><span class="label">GitHub Actions</span></div>
+    <h2 class="section-title">GitHub Actions — CI/CD 자동화</h2>
+    <p class="section-sub">코드를 푸시하면 자동으로 테스트하고 배포하는 파이프라인을 구성합니다.</p>
+    <div class="actions-flow">
+      <div class="action-step"><div class="as-icon">💾</div><h4>코드 Push</h4><p>개발자가 GitHub에 코드 업로드</p></div>
+      <div class="action-arrow">→</div>
+      <div class="action-step"><div class="as-icon">🔧</div><h4>Build</h4><p>빌드 환경 설정 및 의존성 설치</p></div>
+      <div class="action-arrow">→</div>
+      <div class="action-step"><div class="as-icon">🧪</div><h4>Test</h4><p>자동 테스트 실행 및 결과 확인</p></div>
+      <div class="action-arrow">→</div>
+      <div class="action-step"><div class="as-icon">🚀</div><h4>Deploy</h4><p>서버 또는 클라우드에 자동 배포</p></div>
+    </div>
+
+    <div class="terminal" style="margin-top:28px;">
+      <div class="terminal-header">
+        <div class="terminal-dot" style="background:#FF5F56"></div>
+        <div class="terminal-dot" style="background:#FFBD2E"></div>
+        <div class="terminal-dot" style="background:#27C93F"></div>
+        <span class="terminal-title">.github/workflows/ci.yml</span>
+      </div>
+      <div class="terminal-body">
+        <div style="color:#BC8CFF">name: <span style="color:#E6EDF3">CI Pipeline</span></div>
+        <div style="color:#BC8CFF">on: <span style="color:#E6EDF3">[push, pull_request]</span></div>
+        <div style="color:#BC8CFF">jobs:</div>
+        <div>&nbsp;&nbsp;<span style="color:#58A6FF">test:</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#BC8CFF">runs-on: <span style="color:#E6EDF3">ubuntu-latest</span></span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#BC8CFF">steps:</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#E6EDF3">- uses: actions/checkout@v4</span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#E6EDF3">- name: <span style="color:#3FB950">Run Tests</span></span></div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#BC8CFF">run: <span style="color:#E6EDF3">npm test</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 단축키 -->
+<section class="section" id="shortcuts">
+  <div class="section-inner">
+    <div class="section-num"><div class="num">4</div><span class="label">Shortcuts</span></div>
+    <h2 class="section-title">GitHub 웹 단축키</h2>
+    <p class="section-sub"><kbd>?</kbd> 키를 누르면 현재 페이지의 모든 단축키를 볼 수 있습니다.</p>
+    <table class="shortcut-table">
+      <thead><tr><th>기능</th><th>단축키</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td>파일 검색</td><td><span class="key">T</span></td><td>저장소 내 파일 검색</td></tr>
+        <tr><td>전체 검색</td><td><span class="key">/</span></td><td>검색창 포커스</td></tr>
+        <tr><td>커맨드 팔레트</td><td><span class="key">Ctrl</span>+<span class="key">K</span></td><td>빠른 명령 실행</td></tr>
+        <tr><td>새 이슈</td><td><span class="key">C</span></td><td>이슈 목록에서 새 이슈 생성</td></tr>
+        <tr><td>이슈 할당</td><td><span class="key">A</span></td><td>이슈/PR에서 담당자 지정</td></tr>
+        <tr><td>라벨 지정</td><td><span class="key">L</span></td><td>이슈/PR에서 라벨 지정</td></tr>
+        <tr><td>코드 블록 하이라이트</td><td>줄 번호 클릭 후 <span class="key">Shift</span>+클릭</td><td>여러 줄 선택 후 공유</td></tr>
+        <tr><td>PR 수정 없이 merge</td><td><span class="key">Ctrl</span>+<span class="key">Enter</span></td><td>PR 코멘트 제출</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 팁 -->
+<section class="section" id="tips" style="background: white;">
+  <div class="section-inner">
+    <div class="section-num"><div class="num">5</div><span class="label">Pro Tips</span></div>
+    <h2 class="section-title">실전 GitHub 활용 팁</h2>
+    <p class="section-sub">개발 효율을 높이는 GitHub 노하우입니다.</p>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="background:white;border-left:4px solid #3FB950;border-radius:0 8px 8px 0;padding:20px 24px;box-shadow:var(--shadow);">
+        <strong style="display:block;margin-bottom:6px;font-size:15px;">🤖 GitHub Copilot + Claude Code 조합</strong>
+        <p style="font-size:14px;color:var(--text-2);">VS Code에서 GitHub Copilot으로 인라인 코드 완성, 터미널에서 Claude Code로 복잡한 리팩토링. 두 AI를 역할에 맞게 사용하면 생산성이 극대화됩니다.</p>
+      </div>
+      <div style="background:white;border-left:4px solid #58A6FF;border-radius:0 8px 8px 0;padding:20px 24px;box-shadow:var(--shadow);">
+        <strong style="display:block;margin-bottom:6px;font-size:15px;">📝 커밋 메시지 컨벤션</strong>
+        <p style="font-size:14px;color:var(--text-2);">feat: 새 기능 | fix: 버그 수정 | docs: 문서 | style: 포맷 | refactor: 리팩토링 | test: 테스트. 이 규칙으로 커밋 히스토리가 깔끔해집니다.</p>
+      </div>
+      <div style="background:white;border-left:4px solid #BC8CFF;border-radius:0 8px 8px 0;padding:20px 24px;box-shadow:var(--shadow);">
+        <strong style="display:block;margin-bottom:6px;font-size:15px;">🔒 .gitignore 꼭 설정하기</strong>
+        <p style="font-size:14px;color:var(--text-2);">API 키, 환경변수(.env), node_modules, __pycache__ 등은 절대 커밋하면 안 됩니다. gitignore.io에서 자신의 스택에 맞는 .gitignore를 자동 생성하세요.</p>
+      </div>
+      <div style="background:white;border-left:4px solid #F0883E;border-radius:0 8px 8px 0;padding:20px 24px;box-shadow:var(--shadow);">
+        <strong style="display:block;margin-bottom:6px;font-size:15px;">⭐ GitHub Stars & Trending</strong>
+        <p style="font-size:14px;color:var(--text-2);">github.com/trending에서 매일 인기 오픈소스 프로젝트를 확인하세요. 좋은 코드를 읽는 것이 최고의 학습입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="done-section">
+  <h2>🐙 코드를 세상과 공유하세요</h2>
+  <p>첫 저장소를 만들고, 첫 커밋을 남겨보세요.</p>
+  <a class="done-link" href="https://github.com" target="_blank">🐙 GitHub 시작하기</a>
+</section>
+
+<footer>
+  <p>GitHub은 Microsoft가 운영하는 세계 최대 코드 호스팅 플랫폼입니다.</p>
+  <p style="margin-top:8px;">공식 사이트: <a href="https://github.com" target="_blank">github.com</a> &nbsp;|&nbsp; 문서: <a href="https://docs.github.com" target="_blank">docs.github.com</a></p>
+</footer>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+  window.addEventListener('scroll', () => { document.getElementById('backTop').classList.toggle('visible', window.scrollY > 300); });
+</script>
+</body>
+</html>
