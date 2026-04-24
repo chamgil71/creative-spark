@@ -1,13 +1,17 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ExternalLink, Home } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, FileDown, Home, Loader2, Presentation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { allGuides, categories, findCategoryByGuide, findGuide } from "@/data/guides";
+import { exportToPdf, exportToPptx, parseGuideHtml } from "@/lib/exportGuide";
+import { useToast } from "@/hooks/use-toast";
 
 const GuideViewer = () => {
   const { slug = "" } = useParams();
   const guide = useMemo(() => findGuide(slug), [slug]);
   const category = useMemo(() => findCategoryByGuide(slug), [slug]);
+  const { toast } = useToast();
+  const [busy, setBusy] = useState<null | "pptx" | "pdf">(null);
 
   const idx = allGuides.findIndex((g) => g.slug === slug);
   const prev = idx > 0 ? allGuides[idx - 1] : null;
@@ -41,6 +45,38 @@ const GuideViewer = () => {
 
   const fileUrl = `/guides/${encodeURIComponent(guide.file)}`;
 
+  const handleExport = async (kind: "pptx" | "pdf") => {
+    if (busy) return;
+    setBusy(kind);
+    try {
+      const res = await fetch(fileUrl);
+      if (!res.ok) throw new Error("HTML을 불러올 수 없습니다");
+      const html = await res.text();
+      const parsed = parseGuideHtml(html);
+      if (parsed.sections.length === 0) {
+        throw new Error("섹션을 찾을 수 없습니다");
+      }
+      const base = `${guide.title}-가이드`;
+      if (kind === "pptx") {
+        await exportToPptx(parsed, `${base}.pptx`);
+      } else {
+        exportToPdf(parsed, `${base}.pdf`);
+      }
+      toast({
+        title: kind === "pptx" ? "PPT 다운로드 완료" : "PDF 다운로드 완료",
+        description: `${parsed.sections.length}개 섹션을 슬라이드로 변환했습니다.`,
+      });
+    } catch (e) {
+      toast({
+        title: "내보내기 실패",
+        description: e instanceof Error ? e.message : "알 수 없는 오류",
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(null);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-xl">
@@ -60,11 +96,41 @@ const GuideViewer = () => {
             <span className="text-muted-foreground">/</span>
             <span className="font-semibold truncate">{guide.title}</span>
           </div>
-          <Button variant="outline" size="sm" asChild>
-            <a href={fileUrl} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="h-4 w-4 mr-1" /> 새 탭
-            </a>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleExport("pptx")}
+              disabled={!!busy}
+              title="섹션 단위로 슬라이드를 만들어 PPT로 저장"
+            >
+              {busy === "pptx" ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <Presentation className="h-4 w-4 mr-1" />
+              )}
+              PPT
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleExport("pdf")}
+              disabled={!!busy}
+              title="섹션 단위로 PDF 저장"
+            >
+              {busy === "pdf" ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <FileDown className="h-4 w-4 mr-1" />
+              )}
+              PDF
+            </Button>
+            <Button variant="ghost" size="sm" asChild>
+              <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="h-4 w-4 mr-1" /> 새 탭
+              </a>
+            </Button>
+          </div>
         </div>
       </header>
 
