@@ -20,6 +20,24 @@
   </head>
 
   <body>
+    <style>
+      .top-right-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        padding: 10px 20px;
+        background-color: #000; /* 검정색 버튼 */
+        color: #fff;            /* 흰색 글자 */
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-family: sans-serif;
+      }
+    </style>
+
+    <a href="standalone.html" class="top-right-button">스탠드어론</a>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
