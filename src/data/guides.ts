@@ -58,7 +58,7 @@ export const categories: GuideCategory[] = [
     description: "PC 사용을 빠르게 만드는 필수 도구",
     colorVar: "--cat-prod",
     guides: [
-      { slug: "everything", title: "Everything (에브리띵)", subtitle: "초고속 파일 검색", file: "Everything(에브리띵).html" },
+      { slug: "everything", title: "Everything (에브리띵)", subtitle: "초고속 파일 검색", file: "Everything.html" },
       { slug: "grabit", title: "Grabit (그랩잇)", subtitle: "스크린 캡처 & 텍스트 추출", file: "Grabit.html" },
       { slug: "snipaste", title: "Snipaste", subtitle: "캡처와 화면 부착 도구", file: "Snipaste.html" },
     ],
