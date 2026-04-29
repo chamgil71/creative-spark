@@ -38,6 +38,7 @@ export const categories: GuideCategory[] = [
       { slug: "antigravity", title: "Antigravity", subtitle: "AI 개발 생산성 플랫폼", file: "Antigravity.html" },
       { slug: "vscode", title: "VS Code", subtitle: "코드 에디터 완전 정복", file: "Vscode.html" },
       { slug: "github", title: "GitHub", subtitle: "버전 관리와 협업", file: "github.html" },
+      { slug: "claude-code", title: "Claude Code", subtitle: "클로드 코드 설치 가이드", file: "ClaudeCode.html" },
     ],
   },
   {
