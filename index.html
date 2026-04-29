@@ -21,24 +21,33 @@
 
   <body>
     <style>
-      .top-right-button {
+      .standalone-fab {
         position: fixed;
-        top: 20px;
-        right: 20px;
+        bottom: 24px;
+        right: 24px;
         z-index: 9999;
-        padding: 10px 20px;
-        background-color: #000; /* 검정색 버튼 */
-        color: #fff;            /* 흰색 글자 */
+        padding: 12px 20px;
+        background-color: #000;
+        color: #fff;
         text-decoration: none;
-        border-radius: 6px;
-        font-weight: bold;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 14px;
         font-family: sans-serif;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: transform .15s ease, box-shadow .15s ease;
+      }
+      .standalone-fab:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.3);
       }
     </style>
 
-    <a href="standalone.html" class="top-right-button">스탠드어론</a>
-
     <div id="root"></div>
+    <a href="/standalone.html" target="_blank" rel="noopener" class="standalone-fab">📦 스탠드얼론 버전</a>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
