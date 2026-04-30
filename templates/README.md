@@ -66,3 +66,16 @@ node templates/build-guide.mjs templates/MyGuide.md --style creative
 | ``` ```코드``` ``` | 다크 코드 블록 |
 | `\| 표 \|` | 브랜드 색 헤더 표 |
 | `---` | 섹션 구분 (새 섹션 시작) |
+---
+
+## 🔄 기존 HTML을 MD로 역변환 (보조 도구)
+
+이미 만들어진 `public/guides/*.html` 을 MD로 옮기고 싶을 때:
+
+```bash
+node templates/html-to-md.mjs public/guides/github.html templates/Github.md
+```
+
+- frontmatter (title, subtitle, badge, stats, heroCta, done, footer) 와 색상 기반 `style` 키를 자동 추출합니다.
+- 본문은 100% 완벽하지 않으므로 **반드시 사람이 검토/정리**한 뒤 `build-guide.mjs` 로 다시 빌드하세요.
+- 잘 변환된 깔끔한 예시는 `templates/Github.md` 를 참고하세요.
