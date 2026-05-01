@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ExternalLink, FileDown, Home, Loader2, Presentation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { allGuides, categories, findCategoryByGuide, findGuide } from "@/data/guides";
-import { exportToPdf, exportToPptx, parseGuideHtml } from "@/lib/exportGuide";
+import { exportIframeToPptx, printGuideIframe } from "@/lib/exportGuide";
 import { useToast } from "@/hooks/use-toast";
 
 const GuideViewer = () => {
@@ -12,6 +12,7 @@ const GuideViewer = () => {
   const category = useMemo(() => findCategoryByGuide(slug), [slug]);
   const { toast } = useToast();
   const [busy, setBusy] = useState<null | "pptx" | "pdf">(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const idx = allGuides.findIndex((g) => g.slug === slug);
   const prev = idx > 0 ? allGuides[idx - 1] : null;
@@ -47,25 +48,23 @@ const GuideViewer = () => {
 
   const handleExport = async (kind: "pptx" | "pdf") => {
     if (busy) return;
+    const iframe = iframeRef.current;
+    if (!iframe) return;
     setBusy(kind);
     try {
-      const res = await fetch(fileUrl);
-      if (!res.ok) throw new Error("HTML을 불러올 수 없습니다");
-      const html = await res.text();
-      const parsed = parseGuideHtml(html);
-      if (parsed.sections.length === 0) {
-        throw new Error("섹션을 찾을 수 없습니다");
-      }
-      const base = `${guide.title}-가이드`;
       if (kind === "pptx") {
-        await exportToPptx(parsed, `${base}.pptx`);
+        await exportIframeToPptx(iframe, guide.title, `${guide.title}-가이드.pptx`);
+        toast({
+          title: "PPT 다운로드 완료",
+          description: "가이드 디자인 그대로 슬라이드로 변환했습니다.",
+        });
       } else {
-        exportToPdf(parsed, `${base}.pdf`);
+        printGuideIframe(iframe, guide.title);
+        toast({
+          title: "인쇄 창 열림",
+          description: "대상에서 'PDF로 저장'을 선택하세요.",
+        });
       }
-      toast({
-        title: kind === "pptx" ? "PPT 다운로드 완료" : "PDF 다운로드 완료",
-        description: `${parsed.sections.length}개 섹션을 슬라이드로 변환했습니다.`,
-      });
     } catch (e) {
       toast({
         title: "내보내기 실패",
@@ -174,6 +173,7 @@ const GuideViewer = () => {
         <main className="flex-1 flex flex-col min-w-0">
           <iframe
             key={slug}
+            ref={iframeRef}
             src={fileUrl}
             title={`${guide.title} 가이드`}
             className="flex-1 w-full border-0 bg-white"
