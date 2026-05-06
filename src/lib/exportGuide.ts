@@ -57,59 +57,32 @@ const DPI = 96;
 const SLIDE_PX_W = Math.round(SLIDE_W_IN * DPI); // 1280
 const SLIDE_PX_H = Math.round(SLIDE_H_IN * DPI); // 720
 
-type Block = { top: number; height: number };
+/** 섹션 한 개를 16:9 슬라이드 한 장에 맞춰 그린다(가로 폭 채움, 세로는 비율 유지). */
+function fitToSlide(srcCanvas: HTMLCanvasElement): string {
+  const out = document.createElement("canvas");
+  out.width = SLIDE_PX_W;
+  out.height = SLIDE_PX_H;
+  const ctx = out.getContext("2d")!;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, out.width, out.height);
 
-/** 섹션을 자식 블록 단위로 그리디 패킹하여 슬라이드 높이(720px) 안에 들어가도록 묶음 */
-function packSection(section: HTMLElement, maxH: number): Block[] {
-  const sectionTop = section.offsetTop;
-  const sectionH = section.offsetHeight;
+  // 가로 폭에 맞춰 비례 스케일
+  const ratio = out.width / srcCanvas.width;
+  const drawH = srcCanvas.height * ratio;
 
-  if (sectionH <= maxH) {
-    return [{ top: sectionTop, height: sectionH }];
+  if (drawH <= out.height) {
+    // 세로가 슬라이드보다 짧음 → 상단 정렬, 아래 흰 여백
+    ctx.drawImage(srcCanvas, 0, 0, srcCanvas.width, srcCanvas.height,
+                  0, 0, out.width, drawH);
+  } else {
+    // 세로가 더 김 → 슬라이드 높이에 맞춰 추가 축소(비례 유지, 가운데 정렬)
+    const ratio2 = out.height / srcCanvas.height;
+    const drawW2 = srcCanvas.width * ratio2;
+    const dx = (out.width - drawW2) / 2;
+    ctx.drawImage(srcCanvas, 0, 0, srcCanvas.width, srcCanvas.height,
+                  dx, 0, drawW2, out.height);
   }
-
-  // 분할 단위: .section-inner 의 직계 자식, 없으면 섹션의 직계 자식
-  const inner = section.querySelector(".section-inner") as HTMLElement | null;
-  const host = inner ?? section;
-  const children = Array.from(host.children) as HTMLElement[];
-  if (children.length === 0) {
-    return [{ top: sectionTop, height: sectionH }];
-  }
-
-  // 각 자식의 절대 top/height (offsetParent 체인 무시하고 section 기준으로 계산)
-  const items = children
-    .filter((c) => c.offsetHeight > 0)
-    .map((c) => {
-      const top = c.getBoundingClientRect().top
-        - section.getBoundingClientRect().top
-        + sectionTop;
-      return { el: c, top, height: c.offsetHeight };
-    });
-
-  if (items.length === 0) {
-    return [{ top: sectionTop, height: sectionH }];
-  }
-
-  const slides: Block[] = [];
-  let groupStart = items[0].top;
-  let groupEnd = items[0].top + items[0].height;
-
-  // 섹션 헤더 영역(첫 자식 위쪽 여백 포함)도 첫 슬라이드에 포함
-  groupStart = sectionTop;
-
-  for (let i = 1; i < items.length; i++) {
-    const it = items[i];
-    const candidateEnd = it.top + it.height;
-    if (candidateEnd - groupStart <= maxH) {
-      groupEnd = candidateEnd;
-    } else {
-      slides.push({ top: groupStart, height: groupEnd - groupStart });
-      groupStart = it.top;
-      groupEnd = candidateEnd;
-    }
-  }
-  slides.push({ top: groupStart, height: groupEnd - groupStart });
-  return slides;
+  return out.toDataURL("image/jpeg", 0.9);
 }
 
 export async function exportIframeToPptx(
@@ -118,52 +91,23 @@ export async function exportIframeToPptx(
   fileName: string,
 ) {
   const doc = iframe.contentDocument;
-  if (!doc) throw new Error("가이드 문서를 불러오지 못했습니다.");
+  const win = iframe.contentWindow;
+  if (!doc || !win) throw new Error("가이드 문서를 불러오지 못했습니다.");
 
-  const target = (doc.body || doc.documentElement) as HTMLElement;
-  const captureWidth = SLIDE_PX_W;
-  const slicePxH = SLIDE_PX_H;
+  // 가이드 본문 폭을 1280px로 강제 (캡처 동안만)
+  const body = doc.body as HTMLElement;
+  const prevWidth = body.style.width;
+  const prevMaxWidth = body.style.maxWidth;
+  body.style.width = `${SLIDE_PX_W}px`;
+  body.style.maxWidth = `${SLIDE_PX_W}px`;
 
-  const prevWidth = target.style.width;
-  const prevMaxWidth = target.style.maxWidth;
-  target.style.width = `${captureWidth}px`;
-  target.style.maxWidth = `${captureWidth}px`;
-
-  let canvas: HTMLCanvasElement;
-  let blocks: Block[];
-  try {
-    canvas = await html2canvas(target, {
-      backgroundColor: "#ffffff",
-      windowWidth: captureWidth,
-      width: captureWidth,
-      scale: 1.5,
-      useCORS: true,
-      logging: false,
-    });
-
-    // 섹션 단위 분할 계산 (캡처 직후, 폭 강제 상태에서 측정)
-    const sectionEls = Array.from(
-      doc.querySelectorAll<HTMLElement>(
-        "section.hero, section.section, section.done-section",
-      ),
-    );
-
-    if (sectionEls.length === 0) {
-      // 폴백: 기존 방식대로 720px씩 균등 분할
-      blocks = [];
-      const total = Math.max(1, Math.ceil(target.offsetHeight / slicePxH));
-      for (let i = 0; i < total; i++) {
-        blocks.push({ top: i * slicePxH, height: slicePxH });
-      }
-    } else {
-      blocks = sectionEls.flatMap((s) => packSection(s, slicePxH));
-    }
-  } finally {
-    target.style.width = prevWidth;
-    target.style.maxWidth = prevMaxWidth;
-  }
-
-  const scale = canvas.width / captureWidth;
+  // 분할 단위: hero / section / done-section. 없으면 body 전체.
+  let sections = Array.from(
+    doc.querySelectorAll<HTMLElement>(
+      "section.hero, section.section, section.done-section",
+    ),
+  );
+  if (sections.length === 0) sections = [body];
 
   const pres = new pptxgen();
   pres.layout = "LAYOUT_WIDE";
@@ -184,55 +128,35 @@ export async function exportIframeToPptx(
     fontSize: 16, color: "94A3B8", fontFace: "Arial",
   });
 
-  const totalSlides = blocks.length;
+  try {
+    const total = sections.length;
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      // 섹션을 1280px 폭으로 캡처
+      const canvas = await html2canvas(section, {
+        backgroundColor: "#ffffff",
+        windowWidth: SLIDE_PX_W,
+        width: SLIDE_PX_W,
+        scale: 1.5,
+        useCORS: true,
+        logging: false,
+      });
 
-  for (let i = 0; i < blocks.length; i++) {
-    const block = blocks[i];
-    const sy = Math.max(0, Math.round(block.top * scale));
-    const sh = Math.min(
-      Math.round(block.height * scale),
-      canvas.height - sy,
-    );
-    if (sh <= 0) continue;
-
-    // 슬라이드 캔버스: 항상 1280×720 비율, 흰 배경
-    const sliceCanvas = document.createElement("canvas");
-    sliceCanvas.width = canvas.width;
-    sliceCanvas.height = Math.round(slicePxH * scale);
-    const ctx = sliceCanvas.getContext("2d")!;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, sliceCanvas.width, sliceCanvas.height);
-
-    // 블록이 슬라이드보다 큰 단일 요소인 경우 → 비례 축소
-    if (sh > sliceCanvas.height) {
-      const ratio = sliceCanvas.height / sh;
-      const drawW = canvas.width * ratio;
-      const dx = (sliceCanvas.width - drawW) / 2;
-      ctx.drawImage(
-        canvas,
-        0, sy, canvas.width, sh,
-        dx, 0, drawW, sliceCanvas.height,
-      );
-    } else {
-      // 정상: 상단 정렬, 아래 흰 여백
-      ctx.drawImage(
-        canvas,
-        0, sy, canvas.width, sh,
-        0, 0, canvas.width, sh,
-      );
+      const dataUrl = fitToSlide(canvas);
+      const slide = pres.addSlide();
+      slide.background = { color: "FFFFFF" };
+      slide.addImage({
+        data: dataUrl,
+        x: 0, y: 0, w: SLIDE_W_IN, h: SLIDE_H_IN,
+      });
+      slide.addText(`${i + 1} / ${total}`, {
+        x: SLIDE_W_IN - 1.2, y: SLIDE_H_IN - 0.35, w: 1.0, h: 0.25,
+        fontSize: 9, color: "94A3B8", align: "right", fontFace: "Arial",
+      });
     }
-
-    const dataUrl = sliceCanvas.toDataURL("image/jpeg", 0.9);
-    const slide = pres.addSlide();
-    slide.background = { color: "FFFFFF" };
-    slide.addImage({
-      data: dataUrl,
-      x: 0, y: 0, w: SLIDE_W_IN, h: SLIDE_H_IN,
-    });
-    slide.addText(`${i + 1} / ${totalSlides}`, {
-      x: SLIDE_W_IN - 1.2, y: SLIDE_H_IN - 0.35, w: 1.0, h: 0.25,
-      fontSize: 9, color: "94A3B8", align: "right", fontFace: "Arial",
-    });
+  } finally {
+    body.style.width = prevWidth;
+    body.style.maxWidth = prevMaxWidth;
   }
 
   await pres.writeFile({ fileName });
