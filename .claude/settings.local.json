@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/html-to-pptx.mjs public/guides/Claude.html --verbose)",
+      "Bash(node -e \"import\\('cheerio'\\).then\\(m => console.log\\('cheerio OK'\\)\\)\")",
+      "Bash(bun add *)",
+      "Bash(node scripts/html-to-pptx.mjs public/guides/notion.html --verbose)",
+      "Bash(node scripts/html-to-pptx.mjs public/guides/obsidian.html --verbose)",
+      "Bash(node scripts/html-to-pptx.mjs public/guides/Claude.html --style knowledge --verbose)",
+      "Bash(node scripts/html-to-pptx.mjs --all \"public/guides/*.html\")"
+    ]
+  }
+}
