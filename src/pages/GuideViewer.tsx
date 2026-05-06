@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ExternalLink, FileDown, Home, Loader2, Presentation } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, FileDown, FileEdit, Home, Loader2, Presentation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { allGuides, categories, findCategoryByGuide, findGuide } from "@/data/guides";
-import { exportIframeToPptx, printGuideIframe } from "@/lib/exportGuide";
+import { exportIframeToEditablePptx, exportIframeToPptx, printGuideIframe } from "@/lib/exportGuide";
 import { useToast } from "@/hooks/use-toast";
 
 const GuideViewer = () => {
@@ -11,7 +11,7 @@ const GuideViewer = () => {
   const guide = useMemo(() => findGuide(slug), [slug]);
   const category = useMemo(() => findCategoryByGuide(slug), [slug]);
   const { toast } = useToast();
-  const [busy, setBusy] = useState<null | "pptx" | "pdf">(null);
+  const [busy, setBusy] = useState<null | "pptx" | "pptx-edit" | "pdf">(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const idx = allGuides.findIndex((g) => g.slug === slug);
@@ -46,7 +46,7 @@ const GuideViewer = () => {
 
   const fileUrl = `/guides/${encodeURIComponent(guide.file)}`;
 
-  const handleExport = async (kind: "pptx" | "pdf") => {
+  const handleExport = async (kind: "pptx" | "pptx-edit" | "pdf") => {
     if (busy) return;
     const iframe = iframeRef.current;
     if (!iframe) return;
@@ -57,6 +57,16 @@ const GuideViewer = () => {
         toast({
           title: "PPT 다운로드 완료",
           description: "가이드 디자인 그대로 슬라이드로 변환했습니다.",
+        });
+      } else if (kind === "pptx-edit") {
+        await exportIframeToEditablePptx(
+          iframe,
+          guide.title,
+          `${guide.title}-가이드(편집).pptx`,
+        );
+        toast({
+          title: "편집 가능 PPT 다운로드 완료",
+          description: "PowerPoint에서 텍스트·표·카드를 직접 수정할 수 있습니다.",
         });
       } else {
         printGuideIframe(iframe, guide.title);
@@ -101,14 +111,28 @@ const GuideViewer = () => {
               size="sm"
               onClick={() => handleExport("pptx")}
               disabled={!!busy}
-              title="섹션 단위로 슬라이드를 만들어 PPT로 저장"
+              title="HTML 디자인 그대로 이미지로 캡처해 PPT로 저장 (편집 불가)"
             >
               {busy === "pptx" ? (
                 <Loader2 className="h-4 w-4 mr-1 animate-spin" />
               ) : (
                 <Presentation className="h-4 w-4 mr-1" />
               )}
-              PPT
+              PPT (이미지)
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleExport("pptx-edit")}
+              disabled={!!busy}
+              title="HTML을 파싱해 PowerPoint에서 편집 가능한 텍스트·표·도형으로 변환"
+            >
+              {busy === "pptx-edit" ? (
+                <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+              ) : (
+                <FileEdit className="h-4 w-4 mr-1" />
+              )}
+              PPT (편집)
             </Button>
             <Button
               variant="outline"
