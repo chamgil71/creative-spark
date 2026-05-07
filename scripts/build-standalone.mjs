@@ -101,6 +101,14 @@ for (const col of data.collections || []) {
   collectionContents[col.id] = contents;
   collectionsOut.push({ ...col, parts: allParts });
   console.log(`   📚 collection ${col.id}: ${allParts.length} parts`);
+  // Emit a manifest.json next to the collection so the React runtime
+  // can list parts without having to parse the index page.
+  const manifestPath = path.join(PUBLIC, col.folder, "manifest.json");
+  fs.writeFileSync(
+    manifestPath,
+    JSON.stringify({ id: col.id, label: col.label, parts: allParts }, null, 2),
+    "utf8",
+  );
 }
 
 const APP_DATA = {
