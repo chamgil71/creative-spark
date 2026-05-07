@@ -13,11 +13,24 @@ const CollectionViewer = () => {
   const [parts, setParts] = useState<Part[]>([]);
   const [loaded, setLoaded] = useState(false);
 
-  // Discover parts from the folder by parsing the index file
+  // Discover parts: fetch a manifest if present, otherwise probe sequential filenames.
   useEffect(() => {
     if (!collection) return;
     let cancelled = false;
     (async () => {
+      // 1. try manifest.json (optional)
+      try {
+        const m = await fetch(`/${collection.folder}/manifest.json`);
+        if (m.ok) {
+          const j = await m.json();
+          if (Array.isArray(j.parts) && !cancelled) {
+            setParts(j.parts);
+            setLoaded(true);
+            return;
+          }
+        }
+      } catch {/* ignore */}
+      // 2. fallback: probe sibling .html files referenced from the index
       try {
         const res = await fetch(`/${collection.folder}/${collection.indexFile}`);
         const html = await res.text();
@@ -30,21 +43,18 @@ const CollectionViewer = () => {
           const file = href.split("/").pop() || "";
           if (!file || file === collection.indexFile || seen.has(file)) continue;
           seen.add(file);
-          const title = (a.textContent || file.replace(/\.html$/, "")).trim();
-          const slug = file.replace(/\.html$/, "");
-          list.push({ slug, title, file });
+          list.push({
+            slug: file.replace(/\.html$/, ""),
+            title: (a.textContent || file.replace(/\.html$/, "")).trim(),
+            file,
+          });
         }
-        if (!cancelled) {
-          setParts(list);
-          setLoaded(true);
-        }
+        if (!cancelled) { setParts(list); setLoaded(true); }
       } catch {
         if (!cancelled) setLoaded(true);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [collection]);
 
   if (!collection) {

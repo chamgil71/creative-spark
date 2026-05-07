@@ -41,23 +41,19 @@ function readGuideHtml(file) {
 }
 
 function readCollectionParts(folder, indexFile) {
-  const fp = path.join(PUBLIC, folder, indexFile);
-  if (!fs.existsSync(fp)) return [];
-  const $ = load(fs.readFileSync(fp, "utf8"));
-  const seen = new Set();
-  const parts = [];
-  $("a[href$='.html']").each((_, a) => {
-    const href = $(a).attr("href") || "";
-    const file = href.split("/").pop();
-    if (!file || file === indexFile || seen.has(file)) return;
-    seen.add(file);
-    parts.push({
-      slug: file.replace(/\.html$/, ""),
-      title: ($(a).text() || file).trim(),
-      file,
-    });
+  // Auto-discover all *.html in the folder (excluding the index file).
+  // Title is taken from <title>...</title>, sorted by filename.
+  const dir = path.join(PUBLIC, folder);
+  if (!fs.existsSync(dir)) return [];
+  const files = fs.readdirSync(dir)
+    .filter((f) => f.toLowerCase().endsWith(".html") && f !== indexFile)
+    .sort();
+  return files.map((file) => {
+    const raw = fs.readFileSync(path.join(dir, file), "utf8");
+    const m = raw.match(/<title>([^<]+)<\/title>/i);
+    const title = (m ? m[1].split(/[—\-|]/)[0] : file.replace(/\.html$/, "")).trim();
+    return { slug: file.replace(/\.html$/, ""), title, file };
   });
-  return parts;
 }
 
 function readCollectionHtml(folder, file) {
