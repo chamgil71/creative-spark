@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>깃허브(GitHub) 완전 정복 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #D97757;
+  --brand-dark: #B85F3F;
+  --brand-deep: #8B4530;
+  --brand-light: #FDF0EB;
+  --brand-mid: #F4C5AE;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #FBF7F5;
+  --white: #FFFFFF;
+  --border: #F0D4C4;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🐙 세계 최대 코드 협업 플랫폼</div>
+    <div class="hero-logo">🐙</div>
+    <h1>깃허브(GitHub) 완전 정복 가이드</h1>
+    <p>버전 관리(Git)와 협업을 위한 플랫폼. 코드 저장소, Pull Request, Actions, Copilot까지 — 개발의 모든 과정이 여기에 있습니다.</p>
+    <div class="hero-stats"><div class="hero-stat"><strong>무료</strong><span>Public 저장소</span></div><div class="hero-stat"><strong>1억+</strong><span>개발자 사용</span></div><div class="hero-stat"><strong>Copilot</strong><span>AI 코딩 어시스턴트</span></div><div class="hero-stat"><strong>Actions</strong><span>CI/CD 자동화</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>Git 핵심 개념과 기본 명령어</h2></div><div class="card"><p>Git은 코드 변경 이력을 관리하는 분산 버전 관리 시스템입니다.</p>
+</div><div class="card"><h3 class="card-title">기본 워크플로우</h3><pre><code class="language-bash"># 저장소 초기화 또는 클론
+git init                  # 새 저장소 만들기
+git clone [URL]           # 원격 저장소 복제
+
+# 변경 사항 기록
+git status                # 현재 상태 확인
+git add .                 # 모든 변경 파일 스테이징
+git commit -m &quot;메시지&quot;     # 커밋 생성
+
+# 원격 저장소 동기화
+git push origin main      # 원격에 업로드
+git pull                  # 원격 변경 사항 가져오기
+
+# 브랜치 관리
+git branch feature/login          # 브랜치 생성
+git checkout -b feature/login     # 생성+이동
+git merge feature/login           # 브랜치 합치기
+</code></pre>
+</div><div class="card"><h3 class="card-title">브랜치 전략 (Git Flow)</h3><ul>
+<li><strong>main</strong>: 배포 가능한 안정 버전 (v1.0 → v1.1 → v2.0)</li>
+<li><strong>develop</strong>: 다음 릴리즈 준비 브랜치</li>
+<li><strong>feature</strong>: 기능 단위 작업 브랜치 (develop에서 분기 → develop으로 병합)</li>
+</ul>
+</div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>GitHub 핵심 기능</h2></div><div class="card"><p>코드 협업과 개발 자동화를 위한 강력한 도구들입니다.</p>
+</div><div class="card"><h3 class="card-title">Pull Request (PR)</h3><p>🔀 변경 사항을 코드 리뷰를 거쳐 병합하는 협업 워크플로우. 코드 품질 유지의 핵심입니다. <strong>(협업 필수)</strong></p>
+</div><div class="card"><h3 class="card-title">Issues</h3><p>🐛 버그 리포트, 기능 요청, 할 일 관리를 위한 이슈 트래커. 라벨, 마일스톤, 담당자 지정 가능. <strong>(프로젝트 관리)</strong></p>
+</div><div class="card"><h3 class="card-title">GitHub Actions</h3><p>⚡ 코드 푸시, PR 등의 이벤트에 자동으로 빌드·테스트·배포를 실행하는 CI/CD 자동화 도구. <strong>(자동화)</strong></p>
+</div><div class="card"><h3 class="card-title">GitHub Copilot</h3><p>🤖 AI 기반 코드 자동완성 도구. 주석을 작성하면 코드를 제안하고, 전체 함수도 생성합니다. <strong>(AI 코딩)</strong></p>
+</div><div class="card"><h3 class="card-title">Packages</h3><p>📦 npm, Docker, Maven 등의 패키지를 GitHub 내에서 바로 배포하고 관리합니다. <strong>(패키지 관리)</strong></p>
+</div><div class="card"><h3 class="card-title">GitHub Pages</h3><p>🌐 저장소에서 직접 정적 웹사이트를 무료로 호스팅합니다. 포트폴리오, 문서 사이트에 최적. <strong>(무료 호스팅)</strong></p>
+</div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>GitHub Actions — CI/CD 자동화</h2></div><div class="card"><p>코드를 푸시하면 자동으로 테스트하고 배포하는 파이프라인을 구성합니다.</p>
+</div><div class="card"><h3 class="card-title">파이프라인 흐름</h3><ol>
+<li>💾 <strong>코드 Push</strong> — 개발자가 GitHub에 코드 업로드</li>
+<li>🔧 <strong>Build</strong> — 빌드 환경 설정 및 의존성 설치</li>
+<li>🧪 <strong>Test</strong> — 자동 테스트 실행 및 결과 확인</li>
+<li>🚀 <strong>Deploy</strong> — 서버 또는 클라우드에 자동 배포</li>
+</ol>
+</div><div class="card"><h3 class="card-title">워크플로우 예시</h3><pre><code class="language-yaml"># .github/workflows/ci.yml
+name: CI Pipeline
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Tests
+        run: npm test
+</code></pre>
+</div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>GitHub 웹 단축키</h2></div><div class="card"><p><code>?</code> 키를 누르면 현재 페이지의 모든 단축키를 볼 수 있습니다.</p>
+</div><div class="card"><h3 class="card-title">자주 쓰는 단축키</h3><table>
+<thead>
+<tr>
+<th>기능</th>
+<th>단축키</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>파일 검색</td>
+<td><code>T</code></td>
+<td>저장소 내 파일 검색</td>
+</tr>
+<tr>
+<td>전체 검색</td>
+<td><code>/</code></td>
+<td>검색창 포커스</td>
+</tr>
+<tr>
+<td>커맨드 팔레트</td>
+<td><code>Ctrl</code> + <code>K</code></td>
+<td>빠른 명령 실행</td>
+</tr>
+<tr>
+<td>새 이슈</td>
+<td><code>C</code></td>
+<td>이슈 목록에서 새 이슈 생성</td>
+</tr>
+<tr>
+<td>이슈 할당</td>
+<td><code>A</code></td>
+<td>이슈/PR에서 담당자 지정</td>
+</tr>
+<tr>
+<td>라벨 지정</td>
+<td><code>L</code></td>
+<td>이슈/PR에서 라벨 지정</td>
+</tr>
+<tr>
+<td>코드 블록 하이라이트</td>
+<td>줄 번호 클릭 후 <code>Shift</code>+클릭</td>
+<td>여러 줄 선택 후 공유</td>
+</tr>
+<tr>
+<td>PR 코멘트 제출</td>
+<td><code>Ctrl</code> + <code>Enter</code></td>
+<td>수정 없이 제출</td>
+</tr>
+</tbody></table>
+</div></section><section class="section"><div class="section-header"><div class="section-num">5</div><h2>실전 GitHub 활용 팁</h2></div><div class="card"><p>개발 효율을 높이는 GitHub 노하우입니다.</p>
+<blockquote>
+<p>🤖 <strong>GitHub Copilot + Claude Code 조합</strong>
+VS Code에서 GitHub Copilot으로 인라인 코드 완성, 터미널에서 Claude Code로 복잡한 리팩토링. 두 AI를 역할에 맞게 사용하면 생산성이 극대화됩니다.</p>
+</blockquote>
+<blockquote>
+<p>📝 <strong>커밋 메시지 컨벤션</strong>
+feat: 새 기능 | fix: 버그 수정 | docs: 문서 | style: 포맷 | refactor: 리팩토링 | test: 테스트. 이 규칙으로 커밋 히스토리가 깔끔해집니다.</p>
+</blockquote>
+<blockquote>
+<p>🔒 <strong>.gitignore 꼭 설정하기</strong>
+API 키, 환경변수(.env), node_modules, <strong>pycache</strong> 등은 절대 커밋하면 안 됩니다. gitignore.io에서 자신의 스택에 맞는 .gitignore를 자동 생성하세요.</p>
+</blockquote>
+<blockquote>
+<p>⭐ <strong>GitHub Stars &amp; Trending</strong>
+github.com/trending에서 매일 인기 오픈소스 프로젝트를 확인하세요. 좋은 코드를 읽는 것이 최고의 학습입니다.</p>
+</blockquote>
+</div></section>
+</main>
+<footer>GitHub은 Microsoft가 운영하는 세계 최대 코드 호스팅 플랫폼입니다.,공식 사이트: [github.com](https://github.com) | 문서: [docs.github.com](https://docs.github.com)</footer>
+</body>
+</html>
