@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "prebuild": "node scripts/build-standalone.mjs",
+    "build": "vite build && node scripts/build-standalone.mjs dist/standalone.html",
+    "build:dev": "vite build --mode development && node scripts/build-standalone.mjs dist/standalone.html",
+    "build:standalone": "node scripts/build-standalone.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
