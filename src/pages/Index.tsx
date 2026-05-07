@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search, Sparkles } from "lucide-react";
-import { categories } from "@/data/guides";
+import { categories, collections } from "@/data/guides";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -175,6 +175,41 @@ const Index = () => {
             </div>
           </section>
         ))}
+
+        {collections.length > 0 && !query && (
+          <section className="scroll-mt-24">
+            <div className="flex items-end justify-between gap-4 mb-8 border-b border-border pb-4">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: collections[0].color }} />
+                  <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                    series
+                  </span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">시리즈 가이드</h2>
+                <p className="text-muted-foreground mt-2">여러 부로 구성된 장편 가이드 모음</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {collections.map((col) => (
+                <Link
+                  key={col.id}
+                  to={`/collection/${col.id}`}
+                  className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: col.color }} />
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-lg truncate">{col.label}</h3>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{col.description}</p>
+                    </div>
+                    <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground shrink-0" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {filtered.length === 0 && (
           <div className="text-center py-20 text-muted-foreground">
