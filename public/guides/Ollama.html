@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ollama 완전 활용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #10A37F;
+  --brand-dark: #0D8065;
+  --brand-deep: #085C4A;
+  --brand-light: #E6F4F0;
+  --brand-mid: #A8DDD0;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #F7FBF9;
+  --white: #FFFFFF;
+  --border: #C8E6DF;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 18px 0; }
+.icon-card { background: linear-gradient(180deg, white, var(--brand-light)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.icon-card-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 12px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 26px; }
+.icon-card-title { font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.icon-card p { margin: 0; font-size: .88rem; color: var(--text-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.feature-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.feature-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.feature-tag { display: inline-flex; margin-bottom: 12px; background: var(--brand-light); color: var(--brand-dark); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; font-size: .76rem; font-weight: 800; }
+.feature-card-title { font-weight: 800; color: var(--text); font-size: 1.03rem; margin-bottom: 8px; }
+.feature-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.step-list { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+.step-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow); }
+.step-num { width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.step-title { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.step-item p { margin: 0; color: var(--text-2); }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 18px 0; }
+.compare-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.compare-card-title { font-weight: 800; color: var(--brand-dark); margin-bottom: 8px; }
+.compare-card p { margin: 0 0 10px; color: var(--text-2); }
+.compare-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 10px; font-size: .84rem; font-weight: 700; }
+.done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+.done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+.done-section p { opacity: .86; margin-bottom: 24px; }
+.done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+footer a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🦙 로컬 AI · LLM</div>
+    <div class="hero-logo">💡</div>
+    <h1>Ollama 완전 활용 가이드</h1>
+    <p>내 컴퓨터의 자원을 활용해 오픈소스 대규모 언어 모델(LLM)을 오프라인으로 실행하는 도구</p>
+    <a class="hero-cta" href="https://ollama.com" target="_blank" rel="noopener">Ollama 다운로드</a>
+    <div class="hero-stats"><div class="hero-stat"><strong>오프라인</strong><span>완벽한 보안</span></div><div class="hero-stat"><strong>무료</strong><span>API 과금 없음</span></div><div class="hero-stat"><strong>Llama 3</strong><span>최신 모델 지원</span></div><div class="hero-stat"><strong>CLI</strong><span>가벼운 터미널</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>Ollama는 어떤 도구인가</h2></div><div class="card"><p>Ollama는 Meta의 Llama 3, 구글의 Gemma 등 성능이 뛰어난 오픈소스 AI 모델을 로컬 환경(내 PC)에서 클릭 몇 번 또는 명령어 한 줄로 쉽게 다운로드하고 구동할 수 있게 해주는 런타임 플랫폼입니다. </p>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon-card-icon">🔒</div>
+        <div class="icon-card-title">완벽한 프라이버시</div>
+        <p>모든 연산이 내 컴퓨터 내부에서 이루어지므로 회사 기밀이나 개인 일기를 입력해도 외부로 유출되지 않습니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🔌</div>
+        <div class="icon-card-title">OpenAI 호환 API</div>
+        <p>Ollama를 실행하면 로컬에 `localhost:11434` API 서버가 열리며, 기존 OpenAI용으로 짠 코드를 URL만 바꿔 그대로 씁니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🐳</div>
+        <div class="icon-card-title">Docker 환경 지원</div>
+        <p>호스트 PC가 지저분해지는 것을 막기 위해 도커 컨테이너 내부에서도 완벽하게 구동 가능합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🧩</div>
+        <div class="icon-card-title">다양한 Vibe 도구 연동</div>
+        <p>Roo Code, Cline(Claude Dev) 등 에디터 확장에 로컬 모델을 연결하여 무료 코딩 비서로 활용합니다.</p>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-tag">보안</span>
+        <div class="feature-card-title">🛡️ 보안에 민감한 개발자</div>
+        <p>외부 API로 코드를 보내는 것이 규정상 금지되어 있어 혼자만의 로컬 AI 보조가 필요한 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">절약</span>
+        <div class="feature-card-title">💳 Vibe Coding 헤비 유저</div>
+        <p>수천 줄의 코드를 AI에게 읽히다 보니 API 비용(토큰 값)이 감당 안 되어 로컬로 전환하려는 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">연구</span>
+        <div class="feature-card-title">🧪 프롬프트 실험가</div>
+        <p>RAG(검색 증강 생성) 기술이나 파이썬 랭체인(LangChain) 튜토리얼을 돈 걱정 없이 무제한으로 테스트하고 싶은 분.</p>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 터미널에서 AI와 대화하기</h2></div><div class="card"><p>윈도우 사용자의 경우 WSL2 환경이나 Docker Desktop을 통해 실행하는 것이 좋습니다.</p>
+</div><div class="card"><h3 class="card-title">기본 실행 흐름</h3><div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">프로그램 설치</div>
+          <p>공식 홈페이지에서 운영체제에 맞는 설치 파일을 받아 설치합니다. (윈도우/맥/리눅스 지원)</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">모델 다운로드 및 실행</div>
+          <p>터미널을 열고 `ollama run llama3` (또는 원하는 모델명)을 입력하면 모델을 다운받은 뒤 대화창이 열립니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">프롬프트 대화</div>
+          <p>프롬프트 창에 질문을 던지면 내 컴퓨터의 CPU/GPU 자원을 이용해 AI가 즉각 답변을 생성합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">REST API 활용</div>
+          <p>백그라운드에 켜둔 상태로, 파이썬이나 웹 서비스에서 `http://localhost:11434/api/generate` 로 요청을 보냅니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">모델 커스텀(Modelfile)</div>
+          <p>`FROM llama3`, `SYSTEM &quot;너는 한국어 번역가야&quot;` 형태의 파일로 나만의 맞춤형 에이전트를 빌드합니다.</p>
+        </div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>모델 선택 가이드 및 활용 팁</h2></div><div class="card"><p>Ollama 생태계에는 수많은 모델이 있습니다. PC 스펙(RAM)에 맞게 고르는 것이 핵심입니다.</p>
+<div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">코딩 전용 (DeepSeek Coder 등)</div>
+        <p>`ollama run deepseek-coder`. 코딩 지식에 특화된 모델로, 일반 모델보다 훨씬 정교한 코드 제안을 해줍니다.</p>
+        <div class="compare-note">Vibe 코딩 파트너</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">가볍고 빠른 모델 (Gemma 등)</div>
+        <p>메모리가 8~16GB인 미니 PC나 일반 랩톱에서도 쾌적하게 돌아가는 경량 모델입니다.</p>
+        <div class="compare-note">단순 요약/분류용</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">Web UI 연결 (Open-WebUI)</div>
+        <p>터미널이 불편하다면 도커로 `Open-WebUI`를 띄워 로컬에 챗GPT와 똑같이 생긴 깔끔한 웹 화면을 구축하세요.</p>
+        <div class="compare-note">완벽한 개인용 ChatGPT</div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">원활한 구동을 위한 확인</h3><ul>
+<li><input disabled="" type="checkbox"> 모델 크기에 비해 내 컴퓨터의 여유 메모리(RAM, VRAM)가 충분한가? (보통 7B 모델은 8GB RAM 권장)</li>
+<li><input disabled="" type="checkbox"> 윈도우 WSL2 환경이라면 Docker 및 WSL이 리소스를 충분히 할당받을 수 있도록 설정되었는가?</li>
+<li><input disabled="" type="checkbox"> 다른 컴퓨터나 로컬 네트워크 앱(웹서버 등)에서 접근하려면 환경 변수(<code>OLLAMA_HOST</code>)를 <code>0.0.0.0</code>으로 개방했는가?</li>
+</ul>
+<blockquote>
+<p>💡 <strong>TIP</strong>: Ollama의 가장 강력한 무기는 <code>Modelfile</code>입니다. Dockerfile을 짜듯 내가 자주 쓰는 프롬프트, 창의성(Temperature) 수치, 기본 지침을 파일에 저장해 두고 <code>ollama create</code>로 구워내면 매번 긴 설정을 입력할 필요가 없습니다.</p>
+</blockquote>
+</div></section>
+</main>
+<section class="done-section"><h2>내 PC를 AI 서버로 만들어보세요</h2><p>터미널 명령어 한 줄로 전 세계의 강력한 오픈소스 AI 모델들을 내 컴퓨터에 다운받고 실행하세요.</p><a class="done-link" href="https://ollama.com/library" target="_blank" rel="noopener">모델 라이브러리 보기</a></section>
+<footer><div>Ollama는 무거운 AI 모델을 가볍게 패키징하여 맥, 윈도우(WSL), 리눅스에서 쉽게 돌리게 해줍니다.</div><div>공식 사이트: <a href="https://ollama.com">ollama.com</a></div></footer>
+</body>
+</html>

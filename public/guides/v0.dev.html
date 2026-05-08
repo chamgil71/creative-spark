@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>v0.dev 완전 활용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #D97757;
+  --brand-dark: #B85F3F;
+  --brand-deep: #8B4530;
+  --brand-light: #FDF0EB;
+  --brand-mid: #F4C5AE;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #FBF7F5;
+  --white: #FFFFFF;
+  --border: #F0D4C4;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 18px 0; }
+.icon-card { background: linear-gradient(180deg, white, var(--brand-light)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.icon-card-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 12px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 26px; }
+.icon-card-title { font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.icon-card p { margin: 0; font-size: .88rem; color: var(--text-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.feature-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.feature-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.feature-tag { display: inline-flex; margin-bottom: 12px; background: var(--brand-light); color: var(--brand-dark); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; font-size: .76rem; font-weight: 800; }
+.feature-card-title { font-weight: 800; color: var(--text); font-size: 1.03rem; margin-bottom: 8px; }
+.feature-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.step-list { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+.step-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow); }
+.step-num { width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.step-title { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.step-item p { margin: 0; color: var(--text-2); }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 18px 0; }
+.compare-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.compare-card-title { font-weight: 800; color: var(--brand-dark); margin-bottom: 8px; }
+.compare-card p { margin: 0 0 10px; color: var(--text-2); }
+.compare-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 10px; font-size: .84rem; font-weight: 700; }
+.done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+.done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+.done-section p { opacity: .86; margin-bottom: 24px; }
+.done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+footer a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🎨 AI 프론트엔드 · UI/UX</div>
+    <div class="hero-logo">⬛</div>
+    <h1>v0.dev 완전 활용 가이드</h1>
+    <p>프롬프트 한 줄로 아름다운 React 기반 UI 컴포넌트를 즉시 구워내는 생성형 UI 도구</p>
+    <a class="hero-cta" href="https://v0.dev" target="_blank" rel="noopener">v0 시작하기</a>
+    <div class="hero-stats"><div class="hero-stat"><strong>React</strong><span>기본 출력</span></div><div class="hero-stat"><strong>Tailwind</strong><span>자동 스타일링</span></div><div class="hero-stat"><strong>shadcn/ui</strong><span>고품질 컴포넌트</span></div><div class="hero-stat"><strong>Vercel</strong><span>공식 제작사</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>v0.dev는 어떤 도구인가</h2></div><div class="card"><p>v0(브이제로)는 &quot;구글 애널리틱스 느낌의 깔끔한 재무 대시보드 화면 짜줘&quot;라고 입력하면, 텍스트가 아닌 실제 작동하는 웹 화면(React + Tailwind CSS 기반)을 렌더링해서 보여주는 도구입니다. 디자인 감각이나 번거로운 마크업 작업 없이도 프로 수준의 UI 컴포넌트를 단 몇 초 만에 얻을 수 있습니다.</p>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon-card-icon">🗣️</div>
+        <div class="icon-card-title">텍스트 to UI</div>
+        <p>머릿속에 있는 화면 레이아웃을 한글/영어로 설명하면 즉각적으로 세련된 웹 화면으로 만들어줍니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🖼️</div>
+        <div class="icon-card-title">이미지 to UI (스케치 인식)</div>
+        <p>다른 사이트의 캡처 화면이나 손으로 그린 와이어프레임을 업로드하면 똑같이 코드로 구현해냅니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">✂️</div>
+        <div class="icon-card-title">부분 수정 (Pick &amp; Edit)</div>
+        <p>완성된 화면에서 버튼이나 특정 영역만 클릭하여 &quot;색상을 보라색으로 바꿔&quot;라고 디테일하게 수정합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">📋</div>
+        <div class="icon-card-title">터미널 원클릭 복사</div>
+        <p>마음에 드는 디자인이 나오면 제공되는 명령어 한 줄(`npx v0 add...`)로 내 프로젝트 폴더에 쏙 넣습니다.</p>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-tag">디자인</span>
+        <div class="feature-card-title">🧑‍🎨 디자인이 막막한 백엔드 개발자</div>
+        <p>기능은 만들 줄 알지만 CSS 맞추기가 너무 귀찮고 예쁘게 만들 자신이 없는 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">속도</span>
+        <div class="feature-card-title">⚡ 기획자 및 프로토타이퍼</div>
+        <p>피그마(Figma)로 목업을 그릴 시간에, 실제 코드로 작동하는 프로토타입을 바로 띄워보고 싶은 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">프론트엔드</span>
+        <div class="feature-card-title">⚛️ React 생태계 작업자</div>
+        <p>`shadcn/ui` 기반의 트렌디하고 유지보수가 쉬운 컴포넌트 코드가 필요한 분.</p>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 3단계로 끝내는 UI 생성</h2></div><div class="card"><p>복잡한 설치 없이 웹 브라우저에서 모든 것이 끝납니다.</p>
+</div><div class="card"><h3 class="card-title">기본 사용 흐름</h3><div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">프롬프트 입력</div>
+          <p>검색창에 &quot;로그인과 비밀번호 찾기 기능이 있는 깔끔한 모달 창을 만들어줘&quot;라고 입력합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">렌더링 결과 확인</div>
+          <p>v0가 실시간으로 3개의 각기 다른 디자인 버전을 생성합니다. 마음에 드는 것을 고릅니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">대화형 수정</div>
+          <p>버튼을 좀 더 크게 하고, 우측에 설명 이미지를 넣는 2단 구조로 바꿔줘&quot;라고 추가 지시를 내립니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">코드 내보내기</div>
+          <p>화면 우측 상단의 &#39;&lt;&gt; Code&#39; 버튼을 눌러 React 코드를 확인합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">내 프로젝트 적용</div>
+          <p>복사한 코드를 내 로컬 React/Next.js 프로젝트의 `components` 폴더에 그대로 붙여넣습니다.</p>
+        </div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>AI 도구별 역할 비교 가이드</h2></div><div class="card"><p>유사한 AI 도구들과의 명확한 용도 차이입니다.</p>
+<div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">v0.dev (부분 집중)</div>
+        <p>앱 전체가 아니라 &#39;결제 폼&#39;, &#39;차트 화면&#39;, &#39;네비게이션 바&#39; 같은 특정 UI 조각(컴포넌트)을 찍어낼 때 최강입니다.</p>
+        <div class="compare-note">고품질 부품 생산</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">Lovable (전체 집중)</div>
+        <p>UI 조각이 아니라 데이터베이스와 로그인 로직까지 연결된 &#39;전체 앱&#39;을 한 번에 만들 때 사용합니다.</p>
+        <div class="compare-note">공장 전체 건설</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">Cursor (직접 수정)</div>
+        <p>v0나 Lovable이 짜준 코드를 가져와 내 입맛에 맞게 세밀하게 수정하고 디버깅할 때 사용합니다.</p>
+        <div class="compare-note">마감 및 디테일 장인</div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">내 프로젝트에 붙여넣기 전 점검</h3><ul>
+<li><input disabled="" type="checkbox"> 로컬 프로젝트에 Tailwind CSS 설정이 완벽하게 되어 있는가? (v0의 코드는 Tailwind 기반입니다)</li>
+<li><input disabled="" type="checkbox"> <code>lucide-react</code> 같은 기본 아이콘 라이브러리가 프로젝트에 설치되어 있는가?</li>
+<li><input disabled="" type="checkbox"> 복사한 코드에 포함된 상태(State) 관리 로직이 내 앱의 데이터 흐름과 잘 맞는지 검토했는가?</li>
+</ul>
+<blockquote>
+<p>💡 TIP: 처음부터 완벽하고 긴 프롬프트를 작성하려고 애쓰지 마세요. &quot;대시보드 레이아웃 짜줘&quot;처럼 뼈대만 먼저 요청한 뒤, 생성된 화면을 보면서 특정 영역을 클릭해 &quot;이 버튼 색상을 바꿔줘&quot;, &quot;여기에 데이터 표를 추가해줘&quot;처럼 대화하듯 살을 붙여나가는 방식이 훨씬 빠르고 정확한 결과물을 만들어냅니다.</p>
+</blockquote>
+</div></section>
+</main>
+<section class="done-section"><h2>프론트엔드 퍼블리싱 시간을 0으로 만드세요</h2><p>머릿속에 있는 대시보드나 랜딩 페이지를 자연어로 설명하고 결과물 코드를 바로 복사해가세요.</p><a class="done-link" href="https://v0.dev" target="_blank" rel="noopener">v0 열기</a></section>
+<footer><div>v0.dev는 배포 플랫폼 Vercel에서 직접 개발하여 Next.js 및 React 생태계에 완벽히 최적화되어 있습니다.</div><div>공식 사이트: <a href="https://v0.dev">v0.dev</a></div></footer>
+</body>
+</html>

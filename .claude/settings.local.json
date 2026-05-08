@@ -7,7 +7,14 @@
       "Bash(node scripts/html-to-pptx.mjs public/guides/notion.html --verbose)",
       "Bash(node scripts/html-to-pptx.mjs public/guides/obsidian.html --verbose)",
       "Bash(node scripts/html-to-pptx.mjs public/guides/Claude.html --style knowledge --verbose)",
-      "Bash(node scripts/html-to-pptx.mjs --all \"public/guides/*.html\")"
+      "Bash(node scripts/html-to-pptx.mjs --all \"public/guides/*.html\")",
+      "Bash(node *)",
+      "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\design.md\")",
+      "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\lovable_plan.md\")",
+      "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\worklog.md\")",
+      "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\style-system-migration-plan.md\")",
+      "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\md-html-pptx-conversion-plan.md\")",
+      "Bash(npm run *)"
     ]
   }
 }

@@ -54,5 +54,60 @@
     "border": "#E0CCEA",
     "bg": "#FBF7FC",
     "heroGradient": "linear-gradient(135deg, #0A0F1E 0%, #2A1A3E 40%, #5B2C6F 70%, #9B59B6 100%)"
+  },
+  "security": {
+    "label": "보안 & 인프라 (사이언)",
+    "brand": "#06B6D4",
+    "brandDark": "#0891B2",
+    "brandDeep": "#0E7490",
+    "brandLight": "#ECFEFF",
+    "brandMid": "#A5F3FC",
+    "border": "#BCEFF5",
+    "bg": "#F4FCFD",
+    "heroGradient": "linear-gradient(135deg, #07131A 0%, #0B2230 40%, #0E7490 70%, #06B6D4 100%)"
+  },
+  "finance": {
+    "label": "재테크 & 금융 (골드)",
+    "brand": "#D4A017",
+    "brandDark": "#B8860B",
+    "brandDeep": "#7A5A00",
+    "brandLight": "#FFF8E6",
+    "brandMid": "#F3D98B",
+    "border": "#EBD9A5",
+    "bg": "#FFFCF5",
+    "heroGradient": "linear-gradient(135deg, #17120A 0%, #2E2412 40%, #7A5A00 70%, #D4A017 100%)"
+  },
+  "future": {
+    "label": "퓨처 AI (네온 라임)",
+    "brand": "#84CC16",
+    "brandDark": "#65A30D",
+    "brandDeep": "#3F6212",
+    "brandLight": "#F7FEE7",
+    "brandMid": "#D9F99D",
+    "border": "#DCF0B8",
+    "bg": "#FBFFF5",
+    "heroGradient": "linear-gradient(135deg, #0B1207 0%, #1B2A12 40%, #3F6212 70%, #84CC16 100%)"
+  },
+  "enterprise": {
+    "label": "엔터프라이즈 (슬레이트)",
+    "brand": "#475569",
+    "brandDark": "#334155",
+    "brandDeep": "#1E293B",
+    "brandLight": "#F1F5F9",
+    "brandMid": "#CBD5E1",
+    "border": "#D7E0EA",
+    "bg": "#F8FAFC",
+    "heroGradient": "linear-gradient(135deg, #020617 0%, #0F172A 40%, #1E293B 70%, #475569 100%)"
+  },
+  "media": {
+    "label": "미디어 & 콘텐츠 (로즈)",
+    "brand": "#E11D48",
+    "brandDark": "#BE123C",
+    "brandDeep": "#881337",
+    "brandLight": "#FFF1F2",
+    "brandMid": "#FDA4AF",
+    "border": "#FBC0C7",
+    "bg": "#FFF8F8",
+    "heroGradient": "linear-gradient(135deg, #14070B 0%, #2E111B 40%, #881337 70%, #E11D48 100%)"
   }
 }
