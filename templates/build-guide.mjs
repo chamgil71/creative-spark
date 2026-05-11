@@ -123,6 +123,66 @@ function renderShortcode(type, body) {
     return `<div class="workflow-strip">${steps}</div>`;
   }
 
+  if (type === "plan-grid") {
+    return `<div class="plan-grid">${items.map((item) => {
+      const features = (item.features || "").split("|").map(f => f.trim()).filter(Boolean);
+      const isFeatured = item.featured === "true";
+      return `<div class="plan-card${isFeatured ? " featured" : ""}">
+        ${item.badge ? `<span class="plan-badge">${escapeHtml(item.badge)}</span>` : ""}
+        <div class="plan-name">${escapeHtml(item.title || "")}</div>
+        <ul class="plan-feat">${features.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>
+        ${item.note ? `<div class="plan-note">${escapeHtml(item.note)}</div>` : ""}
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  if (type === "skill-list") {
+    return `<div class="skill-list">${items.map((item) => `
+      <div class="skill-item">
+        <div class="skill-icon">${escapeHtml(item.icon || "•")}</div>
+        <div class="skill-info"><strong>${escapeHtml(item.title || "")}</strong>${item.desc ? `<span>${escapeHtml(item.desc)}</span>` : ""}</div>
+      </div>`).join("")}</div>`;
+  }
+
+  if (type === "badge-grid") {
+    return `<div class="badge-grid">${items.map((item) => `
+      <div class="badge-item">
+        <div class="badge-icon">${escapeHtml(item.icon || "")}</div>
+        <div class="badge-name">${escapeHtml(item.name || "")}</div>
+        ${item.type ? `<div class="badge-type">${escapeHtml(item.type)}</div>` : ""}
+      </div>`).join("")}</div>`;
+  }
+
+  if (type === "columns") {
+    return `<div class="columns-grid">${items.map((item) => `
+      <div class="column-card">
+        ${item.title ? `<div class="column-title">${escapeHtml(item.title)}</div>` : ""}
+        ${item.desc ? `<p>${escapeHtml(item.desc)}</p>` : ""}
+      </div>`).join("")}</div>`;
+  }
+
+  if (type === "bottom-list") {
+    const it = items[0];
+    if (!it) return "";
+    const points = (it.points || "").split("|").map(p => p.trim()).filter(Boolean);
+    return `<div class="bottom-list-card">
+      ${it.title ? `<div class="bl-title">${escapeHtml(it.title)}</div>` : ""}
+      ${it.body ? `<p class="bl-body">${escapeHtml(it.body)}</p>` : ""}
+      ${points.length ? `<div class="bl-points">${points.map(p => `<span class="bl-point">${escapeHtml(p)}</span>`).join("")}</div>` : ""}
+    </div>`;
+  }
+
+  if (type === "compare-2col") {
+    return `<div class="compare-2col">${items.slice(0, 2).map((item, idx) => {
+      const its = (item.items || "").split("|").map(s => s.trim()).filter(Boolean);
+      return `<div class="c2col-card${idx === 0 ? " c2col-left" : ""}">
+        <div class="c2col-title">${escapeHtml(item.col || item.title || "")}</div>
+        <ul>${its.map(s => `<li>${escapeHtml(s)}</li>`).join("")}</ul>
+        ${item.note ? `<div class="c2col-note">${escapeHtml(item.note)}</div>` : ""}
+      </div>`;
+    }).join("")}</div>`;
+  }
+
   return "";
 }
 
@@ -317,6 +377,55 @@ main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
 .tc-name { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: white; }
 .tc-sub { font-size: .85rem; color: rgba(255,255,255,0.8); margin-top: 2px; }
 .tc-badge { margin-left: auto; background: rgba(255,255,255,0.25); padding: 5px 14px; border-radius: 100px; font-size: .82rem; font-weight: 700; color: white; white-space: nowrap; }
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 18px 0; }
+.plan-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; position: relative; overflow: hidden; }
+.plan-card.featured { border-color: var(--brand); background: var(--brand-light); }
+.plan-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--border); }
+.plan-card.featured::before { background: var(--brand); }
+.plan-badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: .76rem; font-weight: 800; margin-bottom: 10px; background: var(--brand-light); color: var(--brand-dark); }
+.plan-card.featured .plan-badge { background: var(--brand); color: white; }
+.plan-name { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; color: var(--text); }
+.plan-feat { list-style: none; margin: 8px 0 12px; color: var(--text-2); font-size: .88rem; }
+.plan-feat li { padding: 4px 0; }
+.plan-feat li::before { content: "• "; color: var(--brand); font-weight: 700; }
+.plan-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 6px 10px; font-size: .8rem; font-weight: 700; text-align: center; }
+.plan-card.featured .plan-note { background: var(--brand); color: white; }
+.skill-list { display: flex; flex-direction: column; gap: 10px; margin: 18px 0; }
+.skill-item { display: flex; align-items: center; gap: 14px; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; box-shadow: var(--shadow); transition: all .2s; }
+.skill-item:hover { border-color: var(--brand); background: var(--brand-light); }
+.skill-icon { width: 40px; height: 40px; background: var(--brand-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.skill-info { display: flex; align-items: baseline; gap: 14px; flex: 1; }
+.skill-info strong { font-size: .92rem; font-weight: 800; color: var(--text); white-space: nowrap; min-width: 100px; }
+.skill-info span { font-size: .84rem; color: var(--text-2); }
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin: 18px 0; }
+.badge-item { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 8px; text-align: center; transition: all .2s; }
+.badge-item:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--brand-mid); }
+.badge-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.badge-name { font-size: .85rem; font-weight: 700; color: var(--text); }
+.badge-type { font-size: .75rem; color: var(--text-3); margin-top: 3px; }
+.columns-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 18px 0; }
+.column-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.column-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.column-title { font-weight: 800; color: var(--brand-dark); font-size: 1rem; margin-bottom: 8px; padding-top: 2px; }
+.column-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.bottom-list-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin: 18px 0; }
+.bl-title { font-weight: 800; color: var(--brand-dark); font-size: 1.05rem; margin-bottom: 10px; }
+.bl-body { color: var(--text-2); margin-bottom: 18px; }
+.bl-points { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.bl-point { background: var(--brand-light); color: var(--brand-deep); border: 1px solid var(--border); border-radius: 100px; padding: 6px 16px; font-size: .84rem; font-weight: 700; }
+.compare-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+.c2col-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; position: relative; overflow: hidden; }
+.c2col-left { background: var(--brand-light); border-color: var(--brand); border-width: 2px; }
+.c2col-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--text-3); }
+.c2col-left::before { background: var(--brand); }
+.c2col-title { font-weight: 800; font-size: 1.05rem; color: var(--text); margin-bottom: 12px; }
+.c2col-left .c2col-title { color: var(--brand-deep); }
+.c2col-card ul { list-style: none; margin: 0 0 12px; color: var(--text-2); font-size: .9rem; }
+.c2col-card li { padding: 4px 0; }
+.c2col-card li::before { content: "• "; color: var(--brand); font-weight: 700; }
+.c2col-left li { color: var(--brand-deep); }
+.c2col-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 12px; font-size: .82rem; font-weight: 700; text-align: center; }
+.c2col-left .c2col-note { background: var(--brand); color: white; }
 footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
 footer a { color: var(--brand); text-decoration: none; }
 </style>

@@ -14,7 +14,10 @@
       "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\worklog.md\")",
       "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\style-system-migration-plan.md\")",
       "Bash(Remove-Item \"C:\\\\ai\\\\creative-spark\\\\docs\\\\md-html-pptx-conversion-plan.md\")",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(Get-ChildItem *)",
+      "Bash(xargs -I {} basename {})",
+      "PowerShell(New-Item *)"
     ]
   }
 }
