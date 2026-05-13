@@ -1,497 +1,563 @@
 #!/usr/bin/env node
 /**
- * HTML → Markdown 역변환 스크립트
- *
- * 용도: public/guides/*.html 파일을 build-guide.mjs가 다시 처리할 수 있는
- *       템플릿 형태의 .md 로 변환합니다. 100% 완벽한 복원이 아니라
- *       "수작업 편집의 출발점"을 만들어주는 도구입니다.
+ * html-to-md.mjs
+ * HTML → Markdown 변환 (config/shortcode-map.json 기반 generic 변환 + 역변환 겸용)
  *
  * 사용법:
  *   node templates/html-to-md.mjs <input.html> [output.md]
- * 예:
- *   node templates/html-to-md.mjs public/guides/Supabase.html templates/Supabase.md
  *
- * 변환 규칙:
- *   .hero                → frontmatter (title, subtitle, badge, logo, stats, heroCta)
- *   .done-section        → frontmatter done 블록
- *   footer > div         → frontmatter footer 배열
- *   CSS --brand 변수      → styles.json 키로 스타일 자동 감지
- *   section.section      → # N. 제목  (section-header > h2 기반)
- *   .card                → ## 카드제목 + 내부 요소 재귀 순회
- *   .icon-grid           → ::: icon-grid shortcode 복원
- *   .feature-grid        → ::: feature-grid shortcode 복원
- *   .step-list           → ::: steps shortcode 복원
- *   .compare-grid        → ::: compare-grid shortcode 복원
- *   <p>                  → 문단
- *   <ul>/<ol>            → 목록 (체크박스 포함)
- *   <blockquote>         → > 인용
- *   <pre><code>          → ``` 코드 블록
- *   <table>              → 마크다운 표
- *   .terminal            → ```bash 코드 블록
- *
- * 변환 후 반드시 사람이 검토/정리해야 합니다 (일부 필드 누락 가능).
+ * Export:
+ *   htmlToMdString(htmlPath) → string  (html-to-pptx.mjs 파이프라인에서 사용)
  */
-
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { load } from "cheerio";
-import { glob } from "node:fs/promises";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const STYLES = JSON.parse(fs.readFileSync(path.join(__dirname, "styles.json"), "utf8"));
+const CONFIG_DIR = path.join(__dirname, "../config");
+const STYLES = JSON.parse(fs.readFileSync(path.join(CONFIG_DIR, "styles.json"), "utf8"));
 
-// ---------- 유틸 ----------
+// shortcode-map.json 로드 & 역방향 lookup 빌드
+const SHORTCODE_MAP = JSON.parse(
+  fs.readFileSync(path.join(CONFIG_DIR, "shortcode-map.json"), "utf8")
+);
+const CLASS_TO_SHORTCODE = {};
+for (const [type, rule] of Object.entries(SHORTCODE_MAP)) {
+  if (type.startsWith("$")) continue;
+  for (const cls of (rule.htmlClasses || [])) {
+    if (!CLASS_TO_SHORTCODE[cls]) CLASS_TO_SHORTCODE[cls] = { type, rule };
+  }
+}
+
+// icon 기본값을 "•"로 채울 shortcode 타입
+const ICON_DEFAULT_TYPES = new Set(["icon-grid", "feature-grid", "tool-card"]);
+
+// ════════════════════════════════════════════════════════════════
+//  유틸
+// ════════════════════════════════════════════════════════════════
+
 const norm = (s) => (s || "").replace(/\s+/g, " ").trim();
 
 function inlineToMd($, el) {
   let out = "";
   $(el).contents().each((_, n) => {
     if (n.type === "text") {
-      out += n.data.replace(/\s+/g, " ");
+      out += n.data;
     } else if (n.type === "tag") {
       const tag = n.name.toLowerCase();
       const $n = $(n);
       const inner = inlineToMd($, n);
       switch (tag) {
-        case "br": out += "\n"; break;
         case "strong":
-        case "b":   out += `**${inner.trim()}**`; break;
-        case "em":
-        case "i":   out += `*${inner.trim()}*`; break;
-        case "code":
-        case "kbd": out += `\`${$n.text()}\``; break;
-        case "a": {
-          const href = $n.attr("href") || "";
-          out += href ? `[${inner.trim()}](${href})` : inner;
-          break;
-        }
-        case "span": out += inner; break;
-        case "img": {
-          const alt = $n.attr("alt") || "";
-          const src = $n.attr("src") || "";
-          out += `![${alt}](${src})`;
-          break;
-        }
-        default: out += inner;
+        case "b":    out += `**${inner.trim()}**`; break;
+        case "code": out += `\`${$n.text()}\``; break;
+        case "a":    out += `[${inner.trim()}](${$n.attr("href") || ""})`; break;
+        default:     out += inner;
       }
     }
   });
-  return out;
+  return out.trim();
 }
 
-function tableToMd($, table) {
-  const rows = [];
-  $(table).find("tr").each((_, tr) => {
-    const cells = [];
-    $(tr).find("th,td").each((__, td) => cells.push(norm(inlineToMd($, td))));
-    if (cells.length) rows.push(cells);
+function extractColor($el) {
+  const HEX_RE = /#(?:[0-9a-fA-F]{3}){1,2}\b/;
+  // 1. 본인 style 속성
+  const own = ($el.attr("style") || "").match(HEX_RE);
+  if (own) return own[0];
+  // 2. data-color / data-bg 속성
+  for (const attr of ["data-color", "data-bg", "data-accent"]) {
+    const val = ($el.attr(attr) || "").trim();
+    if (/^#?[0-9a-fA-F]{3,6}$/.test(val)) return val.startsWith("#") ? val : "#" + val;
+  }
+  // 3. 직접 자식 요소의 style 속성 (icon, badge 등에 색상이 설정된 경우)
+  let found = null;
+  $el.children().each((_, child) => {
+    if (!found) {
+      const m = ($(child).attr("style") || "").match(HEX_RE);
+      if (m) found = m[0];
+    }
   });
-  if (!rows.length) return "";
-  const header = rows[0];
-  const sep = header.map(() => "---");
-  const fmt = (r) => `| ${r.join(" | ")} |`;
-  return [fmt(header), fmt(sep), ...rows.slice(1).map(fmt)].join("\n");
+  return found;
 }
 
-function codeBlockFromTerminal($, term) {
-  const title = $(term).find(".terminal-title").first().text().trim();
-  const lang = /\.ya?ml/.test(title) ? "yaml"
-             : /\.json/.test(title) ? "json"
-             : /\.(js|ts)/.test(title) ? "js"
-             : "bash";
-  const body = $(term).find(".terminal-body").first();
-  const text = body.text().replace(/ /g, " ").replace(/[ \t]+\n/g, "\n").trim();
-  return `\`\`\`${lang}\n${title ? `# ${title}\n` : ""}${text}\n\`\`\``;
+// 쉼표 구분 선택자를 순서대로 시도해 첫 번째 매칭 텍스트 반환
+function pickText($, $ctx, selectors) {
+  if (!selectors) return "";
+  for (const sel of selectors.split(",").map(s => s.trim())) {
+    if (!sel) continue;
+    const found = $ctx.find(sel).first();
+    if (found.length) return norm(found.text());
+  }
+  return "";
 }
 
-// ---------- 숏코드 역변환 ----------
-function iconGridToMd($, el) {
-  const lines = ["::: icon-grid"];
-  $(el).find(".icon-card").each((_, card) => {
-    const $c = $(card);
-    const icon  = norm($c.find(".icon-card-icon").text());
-    const title = norm($c.find(".icon-card-title").text());
-    const desc  = norm($c.find("p").text());
-    lines.push(`- icon: ${icon}`, `  title: ${title}`, `  desc: ${desc}`);
-  });
-  lines.push(":::");
-  return lines.join("\n");
+// meta 필드: li 아이템 수집 → pipe-separated / 단일 텍스트 반환
+function pickMeta($, $ctx, selectors) {
+  if (!selectors) return "";
+  for (const sel of selectors.split(",").map(s => s.trim())) {
+    if (!sel) continue;
+    const found = $ctx.find(sel);
+    if (!found.length) continue;
+    const texts = found.map((_, n) => norm($(n).text())).get().filter(Boolean);
+    if (texts.length > 1)  return texts.join("|");
+    if (texts.length === 1) return texts[0];
+  }
+  return "";
 }
 
-function featureGridToMd($, el) {
-  const lines = ["::: feature-grid"];
-  // standard: .feature-card  |  legacy: .feat-item (디자인/영상), .feature-item (이미지생성ai)
-  $(el).find(".feature-card, .feat-item, .feature-item").each((_, card) => {
-    const $c = $(card);
-    const tagVal   = norm($c.find(".feature-tag").text());
-    const titleFull = norm($c.find(".feature-card-title, .feat-title, .fi-title").first().text());
-    const desc     = norm($c.find("p, .feat-desc, .fi-desc").first().text());
-    // legacy files may have a separate icon element
-    const legacyIcon = norm($c.find(".feat-icon, .fi-icon").first().text());
+// ════════════════════════════════════════════════════════════════
+//  Generic shortcode 변환 (shortcode-map.json 기반)
+// ════════════════════════════════════════════════════════════════
 
-    // feature-card-title = "icon title" — 비 ASCII 문자로 시작하면 icon/title 분리
-    const firstCode = titleFull.codePointAt(0) ?? 0;
-    let icon = "", title = titleFull;
-    if (firstCode > 127) {
-      const spaceIdx = titleFull.indexOf(" ");
-      if (spaceIdx > -1) {
-        icon  = titleFull.slice(0, spaceIdx).trim();
-        title = titleFull.slice(spaceIdx + 1).trim();
+// 타이틀 앞 이모지 감지 정규식 (standardizeItem과 동일 범위)
+const EMOJI_TITLE_RE = /^([✀-➿-‑-⛿]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD10-\uDDFF])\s+(.*)/s;
+
+function genericItemsToMd($, el, type, rule) {
+  const lines = [`::: ${type}`];
+  const { itemSelector, fields = {} } = rule;
+  const fieldKeys = Object.keys(fields);
+  const useIconDefault = ICON_DEFAULT_TYPES.has(type);
+
+  // 아이템 찾기: 컨테이너 내부 → 없으면 el 자체 (단일 아이템)
+  let $items = itemSelector ? $(el).find(itemSelector) : $(el).children();
+  if ($items.length === 0) $items = $(el);
+
+  $items.each((_, item) => {
+    const $item = $(item);
+    const color = extractColor($item);
+
+    // 1단계: 모든 필드 값 수집
+    const col = {};
+    for (const key of fieldKeys) {
+      if (key === "featured") continue;
+      const sel = fields[key];
+      if (key === "meta") {
+        col[key] = pickMeta($, $item, sel);
+      } else {
+        col[key] = pickText($, $item, sel);
+        if (key === "icon" && !col[key] && useIconDefault) col[key] = "•";
       }
     }
 
-    // use legacyIcon if title-split didn't yield one
-    if (!icon && legacyIcon) icon = legacyIcon;
+    // leaf-text fallback (자식 없는 요소, 예: wf-node)
+    if (!Object.values(col).some(Boolean) && $item.children().length === 0) {
+      const t = norm($item.text());
+      if (t) col.title = t;
+    }
 
+    // 이모지-타이틀 분리: title이 이모지로 시작하고 icon이 미설정/"•"인 경우
+    if (col.title && (!col.icon || col.icon === "•")) {
+      const m = col.title.match(EMOJI_TITLE_RE);
+      if (m && m[2]) { col.icon = m[1]; col.title = m[2]; }
+    }
+
+    // 2단계: lines 출력
     let started = false;
-    if (tagVal) { lines.push(`- tag: ${tagVal}`); started = true; }
-    if (icon)   { lines.push(started ? `  icon: ${icon}` : `- icon: ${icon}`); started = true; }
-    lines.push(started ? `  title: ${title}` : `- title: ${title}`);
-    lines.push(`  desc: ${desc}`);
+    for (const key of fieldKeys) {
+      if (key === "featured") continue;
+      const value = col[key];
+      if (!value) continue;
+      if (!started) { lines.push(`- ${key}: ${value}`); started = true; }
+      else          { lines.push(`  ${key}: ${value}`); }
+    }
+
+    // featured 감지
+    if (fields.featured) {
+      const cls = $item.attr("class") || "";
+      if (cls.includes("featured") || cls.includes("recommend") || $item.hasClass("plan-featured")) {
+        lines.push(`  featured: "true"`);
+      }
+    }
+    if (color) lines.push(`  color: "${color}"`);
   });
+
   lines.push(":::");
   return lines.join("\n");
 }
 
-function stepListToMd($, el) {
-  const lines = ["::: steps"];
-  $(el).find(".step-item").each((_, item) => {
-    const $i  = $(item);
-    // standard: .step-title  |  legacy: .step-content strong
-    const title = norm($i.find(".step-title, .step-content strong").first().text());
-    // standard: p  |  legacy: .step-content span
-    const desc  = norm($i.find("p, .step-content span").first().text());
-    lines.push(`- title: ${title}`, `  desc: ${desc}`);
+// ════════════════════════════════════════════════════════════════
+//  특수 핸들러
+// ════════════════════════════════════════════════════════════════
+
+// alert-box: typeMap으로 타입 결정, 요소 자체가 알림 박스
+function alertBoxToMd($, el, rule) {
+  const $el = $(el);
+  const typeMap = rule.typeMap || {};
+  const classes = ($el.attr("class") || "").split(/\s+/);
+  let alertType = "tip";
+  for (const cls of classes) {
+    if (typeMap[cls]) { alertType = typeMap[cls]; break; }
+  }
+
+  const { fields = {} } = rule;
+
+  // title: strong 태그 텍스트 (icon 포함) 분리 처리
+  let icon = "", title = "", desc = "";
+
+  // icon/title을 strong에서 같이 읽는 경우 처리
+  const strongEl = $el.find("strong").first();
+  if (strongEl.length) {
+    const fullText = norm(strongEl.text());
+    // 이모지 앞부분이 아이콘일 수 있음 (선택적)
+    icon = "";
+    title = fullText;
+  } else {
+    icon  = pickText($, $el, fields.icon || "");
+    title = pickText($, $el, fields.title || "");
+  }
+
+  // desc: p 요소들 수집
+  const descParts = [];
+  $el.find("p").each((_, p) => {
+    const t = norm($(p).text());
+    if (t) descParts.push(t);
   });
+  // p가 없으면 strong 이후 텍스트
+  if (!descParts.length) {
+    const cloned = $el.clone();
+    cloned.find("strong").remove();
+    const t = norm(cloned.text());
+    if (t) descParts.push(t);
+  }
+  desc = descParts.join(" ");
+
+  const lines = ["::: alert-box"];
+  lines.push(`- type: ${alertType}`);
+  if (icon)  lines.push(`  icon: ${icon}`);
+  if (title) lines.push(`  title: ${title}`);
+  if (desc)  lines.push(`  desc: ${desc}`);
   lines.push(":::");
   return lines.join("\n");
 }
 
-function toolCardToMd($, el) {
-  // supports .tool-card (new), .tool-block, .service-block (legacy)
-  const $h = $(el).find(".tc-header, .tool-header, .service-header").first();
-  if (!$h.length) return "::: tool-card\n:::";
-  const icon    = norm($h.find(".tc-icon, .tool-logo, .service-logo").first().text());
-  const name    = norm($h.find(".tc-name, .tool-name, .service-title").first().text());
-  const tagline = norm($h.find(".tc-sub, .tool-tagline, .service-subtitle").first().text());
-  const badge   = norm($h.find(".tc-badge, .tool-badge").first().text());
-  const style   = $h.attr("style") || "";
-  const colorMatch = style.match(/#([0-9a-fA-F]{6})/);
-  const color   = colorMatch ? `"#${colorMatch[1]}"` : "";
-  const lines   = ["::: tool-card"];
-  lines.push(`- icon: ${icon}`, `  name: ${name}`);
-  if (tagline) lines.push(`  tagline: ${tagline}`);
-  if (badge)   lines.push(`  badge: ${badge}`);
-  if (color)   lines.push(`  color: ${color}`);
+// tabs: .os-tab 버튼 + .os-content 패널 쌍
+function tabsToMd($, el) {
+  const $el = $(el);
+  const labels = [];
+  const contents = [];
+  $el.find(".os-tab").each((_, t) => labels.push(norm($(t).text())));
+  $el.find(".os-content").each((_, c) => contents.push(norm($(c).text())));
+  const lines = ["::: tabs"];
+  const max = Math.max(labels.length, contents.length);
+  for (let i = 0; i < max; i++) {
+    if (labels[i]) lines.push(`- label: ${labels[i]}`);
+    if (contents[i]) lines.push(`  desc: ${contents[i]}`);
+  }
   lines.push(":::");
   return lines.join("\n");
 }
 
-function workflowToMd($, el) {
-  const lines = ["::: workflow"];
-  $(el).find(".wf-step").each((_, step) => {
-    const $s  = $(step);
-    const icon = norm($s.find(".wf-icon").text());
-    const name = norm($s.find(".wf-name").text());
-    const tool = norm($s.find(".wf-tool").text());
-    lines.push(`- icon: ${icon}`, `  name: ${name}`);
-    if (tool) lines.push(`  tool: ${tool}`);
-  });
-  lines.push(":::");
-  return lines.join("\n");
+// ════════════════════════════════════════════════════════════════
+//  shortcode 디스패처
+// ════════════════════════════════════════════════════════════════
+
+function dispatchShortcode($, el, lines) {
+  const $el = $(el);
+  const classes = ($el.attr("class") || "").split(/\s+/).filter(Boolean);
+
+  for (const cls of classes) {
+    const match = CLASS_TO_SHORTCODE[cls];
+    if (!match) continue;
+    const { type, rule } = match;
+
+    switch (type) {
+      case "alert-box":
+        lines.push(alertBoxToMd($, el, rule), ""); return true;
+      case "tabs":
+        lines.push(tabsToMd($, el), ""); return true;
+      default:
+        lines.push(genericItemsToMd($, el, type, rule), ""); return true;
+    }
+  }
+  return false;
 }
 
-function compareGridToMd($, el) {
-  const lines = ["::: compare-grid"];
-  $(el).find(".compare-card").each((_, card) => {
-    const $c   = $(card);
-    const title = norm($c.find(".compare-card-title").text());
-    const desc  = norm($c.find("p").first().text());
-    const note  = norm($c.find(".compare-note").text());
-    lines.push(`- title: ${title}`, `  desc: ${desc}`);
-    if (note) lines.push(`  note: ${note}`);
-  });
-  lines.push(":::");
-  return lines.join("\n");
+// 래퍼 div 패턴 (자식만 재귀 처리)
+const WRAPPER_PATTERN = /\b(grid-\d|tool-matrix|card-row|two-col|layout-\w+)\b/;
+
+// 자식 클래스 기반 shortcode 자동 감지 (예: grid-3 > model-card → feature-grid)
+function detectShortcodeByChildren($, el) {
+  const $children = $(el).children();
+  if ($children.length < 2) return null;
+  const firstClass = ($(el).children().first().attr("class") || "").split(/\s+/).filter(Boolean);
+  for (const [type, rule] of Object.entries(SHORTCODE_MAP)) {
+    if (type.startsWith("$") || !rule.itemSelector) continue;
+    for (const sel of rule.itemSelector.split(",").map(s => s.trim())) {
+      if (!sel.startsWith(".")) continue;
+      const cls = sel.slice(1);
+      if (firstClass.includes(cls)) {
+        const matchCount = $children.filter((_, c) => $(c).hasClass(cls)).length;
+        if (matchCount >= 2) return { type, rule };
+      }
+    }
+  }
+  return null;
 }
 
-// ---------- 요소 → MD 변환 (재귀) ----------
+// ════════════════════════════════════════════════════════════════
+//  일반 HTML 요소 처리
+// ════════════════════════════════════════════════════════════════
+
 function processElement($, el, lines) {
   const $el = $(el);
-  const tag = (el.tagName || "").toLowerCase();
+  const tag  = (el.tagName || el.name || "").toLowerCase();
 
-  // section-header / 섹션 번호 박스는 이미 # 제목으로 출력했으므로 스킵
-  if ($el.hasClass("section-header") || $el.hasClass("section-num")) return;
-  // 카드 제목(h3.card-title)은 .card 핸들러에서 ## 로 출력하므로 스킵
-  if ($el.hasClass("card-title")) return;
+  // 네비게이션/헤더/장식 요소 무시
+  if ($el.hasClass("section-header") || $el.hasClass("nav") || $el.hasClass("nav-inner")) return;
+  if ($el.hasClass("section-num")) return;  // 섹션 번호 뱃지 (장식용)
+  if ($el.hasClass("what-visual") || $el.hasClass("typing-cursor")) return;
+  if (tag === "h2" && $el.hasClass("section-title")) return;  // section-inner 내 중복 h2
+  if (tag === "nav" || tag === "footer" || tag === "a" && $el.hasClass("back-top")) return;
 
-  // ── shortcode 역변환 ──────────────────────────────────────
-  if ($el.hasClass("icon-grid"))    { lines.push(iconGridToMd($, el),    ""); return; }
-  if ($el.hasClass("feature-grid") || $el.hasClass("feature-cards") || $el.hasClass("feat-grid"))
-                                    { lines.push(featureGridToMd($, el), ""); return; }
-  if ($el.hasClass("step-list"))    { lines.push(stepListToMd($, el),    ""); return; }
-  if ($el.hasClass("compare-grid")) { lines.push(compareGridToMd($, el), ""); return; }
-  if ($el.hasClass("tool-card") || $el.hasClass("tool-block") || $el.hasClass("service-block"))
-                                    { lines.push(toolCardToMd($, el),    ""); return; }
-  if ($el.hasClass("workflow-strip"))  { lines.push(workflowToMd($, el),   ""); return; }
+  // 1. shortcode-map 기반 dispatch (최우선)
+  if (tag === "div" || tag === "section" || tag === "ul" || tag === "ol") {
+    if (dispatchShortcode($, el, lines)) return;
+  }
 
-  // ── .card → ## 제목 + 내부 재귀 ──────────────────────────
+  // 2. build-guide 역변환용 카드 박스
   if ($el.hasClass("card")) {
-    const cardTitle = norm($el.find("h3.card-title").first().text());
-    if (cardTitle) lines.push(`## ${cardTitle}`, "");
-    $el.children().each((_, child) => processElement($, child, lines));
+    const rawTitle = norm($el.find(".card-title").first().text());
+    if (rawTitle) lines.push(`## ${rawTitle}`, "");
+    $el.children().not(".card-title").each((_, child) => processElement($, child, lines));
     return;
   }
 
-  // ── .terminal → 코드 블록 ────────────────────────────────
-  if ($el.hasClass("terminal")) { lines.push(codeBlockFromTerminal($, el), ""); return; }
-
-  // ── 표준 태그 ────────────────────────────────────────────
-  if (tag === "table") { lines.push(tableToMd($, el), ""); return; }
-  if (tag === "h2")    { lines.push(`## ${norm($el.text())}`, ""); return; }
-  if (tag === "h3")    { lines.push(`### ${norm($el.text())}`, ""); return; }
-  if (tag === "h4")    { lines.push(`#### ${norm($el.text())}`, ""); return; }
-
-  if (tag === "p") {
-    const txt = norm(inlineToMd($, el));
-    if (txt) lines.push(txt, "");
+  // 3. 래퍼 div → 자식 shortcode 감지 or 재귀
+  if (tag === "div" && WRAPPER_PATTERN.test($el.attr("class") || "")) {
+    const detected = detectShortcodeByChildren($, el);
+    if (detected) {
+      lines.push(genericItemsToMd($, el, detected.type, detected.rule), "");
+    } else {
+      $el.children().each((_, child) => processElement($, child, lines));
+    }
     return;
   }
 
-  if (tag === "ul") {
-    $el.find("> li").each((_, li) => {
-      const $li = $(li);
-      const checkbox = $li.find('input[type="checkbox"]');
-      if (checkbox.length) {
-        const checked = checkbox.attr("checked") !== undefined;
-        const liText  = norm(inlineToMd($, li)).replace(/^\[.]\s*/, "");
-        lines.push(`- [${checked ? "x" : " "}] ${liText}`);
-      } else {
-        lines.push(`- ${norm(inlineToMd($, li))}`);
+  // 4. 표준 마크다운 요소
+  switch (tag) {
+    case "p": {
+      const text = inlineToMd($, el);
+      if (text) lines.push(text, "");
+      return;
+    }
+    case "h2": {
+      const t = norm($el.text());
+      if (t) lines.push(`## ${t}`, "");
+      return;
+    }
+    case "label": {
+      const t = norm($el.text());
+      if (t) lines.push(`**${t}**`, "");
+      return;
+    }
+    case "strong":
+    case "b": {
+      const t = norm($el.text());
+      if (t) lines.push(`**${t}**`, "");
+      return;
+    }
+    case "span": {
+      const t = norm($el.text());
+      if (t) lines.push(t, "");
+      return;
+    }
+    case "h3": lines.push(`### ${norm($el.text())}`, ""); return;
+    case "h4": lines.push(`#### ${norm($el.text())}`, ""); return;
+    case "ul":
+      $el.find("> li").each((_, li) => lines.push(`- ${inlineToMd($, li)}`));
+      lines.push("");
+      return;
+    case "ol":
+      $el.find("> li").each((i, li) => lines.push(`${i + 1}. ${inlineToMd($, li)}`));
+      lines.push("");
+      return;
+    case "blockquote":
+      lines.push(`> ${norm($el.text())}`, "");
+      return;
+    case "pre": {
+      const code = $el.find("code");
+      const lang = (code.attr("class") || "").replace(/language-/, "");
+      lines.push(`\`\`\`${lang}`, code.text() || $el.text(), "```", "");
+      return;
+    }
+    case "table": {
+      const headers = $el.find("tr").first().find("th, td")
+        .map((_, td) => norm($(td).text())).get();
+      if (headers.length) {
+        lines.push(`| ${headers.join(" | ")} |`);
+        lines.push(`| ${headers.map(() => "---").join(" | ")} |`);
+        $el.find("tr").slice(1).each((_, tr) => {
+          const cells = $(tr).find("td").map((_, td) => norm($(td).text())).get();
+          lines.push(`| ${cells.join(" | ")} |`);
+        });
+        lines.push("");
       }
-    });
-    lines.push("");
-    return;
+      return;
+    }
+    case "div":
+    case "section": {
+      // 리프 div (직접 텍스트만 있는 경우) → 단락
+      const hasChildElements = $el.children().length > 0;
+      if (!hasChildElements) {
+        const text = norm($el.text());
+        if (text) lines.push(text, "");
+      } else {
+        $el.children().each((_, child) => processElement($, child, lines));
+      }
+      return;
+    }
   }
-
-  if (tag === "ol") {
-    $el.find("> li").each((i, li) => lines.push(`${i + 1}. ${norm(inlineToMd($, li))}`));
-    lines.push("");
-    return;
-  }
-
-  if (tag === "blockquote") {
-    $el.find("p").each((_, p) => lines.push(`> ${norm(inlineToMd($, p))}`));
-    lines.push("");
-    return;
-  }
-
-  if (tag === "pre") {
-    const codeEl  = $el.find("code").first();
-    const langMatch = (codeEl.attr("class") || "").match(/language-(\w+)/);
-    const lang    = langMatch?.[1] ?? "";
-    lines.push(`\`\`\`${lang}`, codeEl.text().trimEnd(), "```", "");
-    return;
-  }
-
-  if (tag === "hr") { lines.push("---", ""); return; }
-
-  // border-left inline style → blockquote tip
-  if (/border-left/.test($el.attr("style") || "")) {
-    const t  = norm($el.find("strong").first().text());
-    const pEl = $el.find("p").first();
-    const p  = pEl.length ? norm(inlineToMd($, pEl[0])) : norm(inlineToMd($, el));
-    lines.push(`> ${t ? `**${t}** ` : ""}${p}`, "");
-    return;
-  }
-
-  // 일반 div: 자식 재귀
-  if (tag === "div") {
-    $el.children().each((_, child) => processElement($, child, lines));
-    return;
-  }
-
-  const txt = norm(inlineToMd($, el));
-  if (txt) lines.push(txt, "");
 }
 
-// ---------- 변환 함수 ----------
-function convertHtmlToMd(inFile, outFileArg) {
+// ════════════════════════════════════════════════════════════════
+//  메인 변환 함수 (export)
+// ════════════════════════════════════════════════════════════════
+
+export function htmlToMdString(inFile) {
   const html = fs.readFileSync(inFile, "utf8");
   const $ = load(html);
 
-// ── 메타데이터 추출 ──────────────────────────────────────────
-const title    = norm($("title").text()) || norm($(".hero h1").text());
-const subtitle = norm($(".hero p").first().text());
-const badge    = norm($(".hero-badge").first().text());
-const logo     = norm($(".hero-logo").first().text()) || "🤖";
+  // frontmatter 추출
+  const title    = norm($("title").text());
+  const subtitle = norm($(".hero p, .hero-desc").first().text());
 
-const stats = [];
-$(".hero-stat").each((_, el) => {
-  const value = norm($(el).find("strong").text());
-  const label = norm($(el).find("span").text());
-  if (value || label) stats.push({ value, label });
-});
+  // logo: .hero-logo 우선(.hero-logo는 단순 이모지), 없으면 .nav-logo 첫 토큰
+  const heroLogoEl = $(".hero-logo").first();
+  const navLogoEl  = $(".nav-logo").first();
+  const logoRaw    = heroLogoEl.length ? norm(heroLogoEl.text()) : norm(navLogoEl.text());
+  const logo       = logoRaw ? logoRaw.split(/\s+/)[0] : "";
 
-const heroCta = (() => {
-  const a = $(".hero-cta").first();
-  return a.length ? { label: norm(a.text()), url: a.attr("href") || "" } : null;
-})();
+  // badge: .hero-badge에서 빈 <span> 제거 후 텍스트
+  const badgeEl = $(".hero-badge").first();
+  const badge   = badgeEl.length
+    ? norm(badgeEl.clone().find("span").remove().end().text())
+    : "";
 
-const done = (() => {
-  const sec = $(".done-section").first();
-  if (!sec.length) return null;
-  const a = sec.find("a").first();
-  return {
-    title:    norm(sec.find("h2").text()),
-    subtitle: norm(sec.find("p").first().text()),
-    ctaLabel: norm(a.text()),
-    ctaUrl:   a.attr("href") || "",
-  };
-})();
+  // heroCta: a.hero-cta
+  const ctaEl  = $("a.hero-cta").first();
+  const heroCta = ctaEl.length
+    ? { label: norm(ctaEl.text()), url: ctaEl.attr("href") || "" }
+    : null;
 
-// footer: build-guide.mjs는 배열이면 각 줄을 <div>로 렌더링
-const footerLines = [];
-$("footer > div").each((_, div) => footerLines.push(norm(inlineToMd($, div))));
-if (!footerLines.length) {
-  // 이전 HTML 형식 (footer p) 폴백
-  $("footer p").each((_, p) => footerLines.push(norm(inlineToMd($, p))));
-}
+  // CSS :root --brand 색상으로 styles.json 키 자동 감지
+  const css = $("style").text();
+  const brandMatch = css.match(/--brand:\s*(#[0-9A-Fa-f]{6})/);
+  const brandColor = brandMatch ? brandMatch[1].toLowerCase() : "";
+  const style = Object.keys(STYLES).find(
+    k => k !== "$comment" && STYLES[k].brand?.toLowerCase() === brandColor
+  ) || "ai-chat";
 
-// ── 스타일 감지: CSS --brand 변수 → styles.json 키 ───────────
-const css = $("style").text();
-const brandMatch = css.match(/--brand:\s*(#[0-9A-Fa-f]{6})/);
-const brandColor = brandMatch?.[1]?.toLowerCase();
-const brandToStyleKey = Object.fromEntries(
-  Object.entries(STYLES)
-    .filter(([k]) => !k.startsWith("$"))
-    .map(([k, v]) => [v.brand.toLowerCase(), k])
-);
-const style = brandToStyleKey[brandColor] ?? "ai-chat";
-
-// ── frontmatter YAML 직렬화 ──────────────────────────────────
-const toYaml = (obj, indent = 0) => {
-  const pad = "  ".repeat(indent);
-  return Object.entries(obj)
-    .map(([k, v]) => {
-      if (v == null || v === "" || (Array.isArray(v) && !v.length)) return null;
-      if (Array.isArray(v)) {
-        const items = v.map((item) => {
-          if (typeof item === "object") {
-            const sub = Object.entries(item)
-              .map(([kk, vv]) => `${pad}    ${kk}: ${JSON.stringify(vv)}`)
-              .join("\n");
-            return `${pad}  -\n${sub}`;
-          }
-          return `${pad}  - ${JSON.stringify(item)}`;
-        }).join("\n");
-        return `${pad}${k}:\n${items}`;
-      }
-      if (typeof v === "object") {
-        const sub = Object.entries(v)
-          .map(([kk, vv]) => `${pad}  ${kk}: ${JSON.stringify(vv)}`)
-          .join("\n");
-        return `${pad}${k}:\n${sub}`;
-      }
-      return `${pad}${k}: ${JSON.stringify(v)}`;
-    })
-    .filter(Boolean)
-    .join("\n");
-};
-
-const frontmatter = toYaml({
-  title, subtitle, style, badge, logo, heroCta, stats,
-  done,
-  footer: footerLines.length ? footerLines : null,
-});
-
-// ── 본문 변환 ────────────────────────────────────────────────
-const bodyLines = [];
-let sectionNum = 0;
-
-$("section.section, div.section").each((_, sec) => {
-  const $sec    = $(sec);
-  const $header = $sec.find(".section-header").first();
-
-  // section-header > h2 우선; 없으면 직접 자식 h2
-  const h2 = $header.length
-    ? $header.find("h2").first()
-    : $sec.children("h2").first();
-  if (!h2.length) return;
-
-  sectionNum++;
-  const titleText = norm(h2.text());
-  // 혹시 h2에 "N. 제목" 형식이 이미 포함된 경우 번호 제거
-  const m = titleText.match(/^\d+\.\s*(.+)$/);
-  bodyLines.push(`# ${sectionNum}. ${m ? m[1] : titleText}`, "");
-
-  $sec.children().each((__, child) => {
-    const $c = $(child);
-    // section-header 와 bare h2는 이미 # 제목으로 출력했으므로 스킵
-    if ($c.is($header) || $c.is(h2)) return;
-    processElement($, child, bodyLines);
+  // hero stats 추출
+  const stats = [];
+  $(".hero-stat").each((_, s) => {
+    const value = norm($(s).find("strong").text());
+    const label = norm($(s).find("span").text());
+    if (value) stats.push({ value, label });
   });
-});
 
-// 연속 빈 줄 3개 이상 → 2개로 정리
-const body = bodyLines.join("\n").replace(/\n{3,}/g, "\n\n").trimEnd();
+  // done 섹션 추출
+  const doneEl = $(".done-section").first();
+  let done = null;
+  if (doneEl.length) {
+    const doneTitle    = norm(doneEl.find("h2").first().text());
+    const doneSub      = norm(doneEl.find("p").first().text());
+    const doneLinkEl   = doneEl.find("a.done-link, a").first();
+    const doneCtaLabel = norm(doneLinkEl.text());
+    const doneCtaUrl   = doneLinkEl.attr("href") || "";
+    if (doneTitle) done = { title: doneTitle, subtitle: doneSub, ctaLabel: doneCtaLabel, ctaUrl: doneCtaUrl };
+  }
 
-  const out = `---\n${frontmatter}\n---\n\n${body}\n`;
+  // footer 추출 (a → markdown link 변환)
+  const footerItems = [];
+  $("footer").first().find("div, p").each((_, node) => {
+    let text = "";
+    $(node).contents().each((_, n) => {
+      if (n.type === "text") text += n.data;
+      else if (n.type === "tag" && n.name === "a") {
+        const $a = $(n);
+        text += `[${$a.text()}](${$a.attr("href") || ""})`;
+      }
+    });
+    const t = norm(text);
+    if (t) footerItems.push(t);
+  });
 
-  const outFile = outFileArg
-    || path.join("templates", path.basename(inFile).replace(/\.html?$/i, ".md"));
-  fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  fs.writeFileSync(outFile, out, "utf8");
-  console.log(`✅ ${inFile}\n   → ${outFile}`);
-  console.log(`   섹션 ${sectionNum}개, 통계 ${stats.length}개, 스타일: ${style} (${STYLES[style]?.label ?? "unknown"})`);
+  const esc = (s) => (s || "").replace(/"/g, '\\"');
+  // 특수문자 포함 시 따옴표 필요
+  const ystr = (s) => /[:#\[\]{}&*!]/.test(s) ? `"${esc(s)}"` : s;
+
+  const lines = [
+    "---",
+    `title: ${ystr(title)}`,
+    `subtitle: ${ystr(subtitle)}`,
+    ...(logo  ? [`logo: ${ystr(logo)}`]   : []),
+    ...(badge ? [`badge: ${ystr(badge)}`] : []),
+    `style: ${style}`,
+  ];
+  if (heroCta) {
+    lines.push("heroCta:");
+    lines.push(`  label: ${ystr(heroCta.label)}`);
+    lines.push(`  url: ${heroCta.url}`);
+  }
+  if (stats.length) {
+    lines.push("stats:");
+    stats.forEach(s => {
+      lines.push(`  - value: "${esc(s.value)}"`);
+      lines.push(`    label: "${esc(s.label)}"`);
+    });
+  }
+  if (done) {
+    lines.push("done:");
+    lines.push(`  title: ${ystr(done.title)}`);
+    if (done.subtitle)  lines.push(`  subtitle: ${ystr(done.subtitle)}`);
+    if (done.ctaLabel)  lines.push(`  ctaLabel: ${ystr(done.ctaLabel)}`);
+    if (done.ctaUrl)    lines.push(`  ctaUrl: ${done.ctaUrl}`);
+  }
+  if (footerItems.length) {
+    lines.push("footer:");
+    footerItems.forEach(fi => lines.push(`  - ${ystr(fi)}`));
+  }
+  lines.push("---", "");
+
+  // section 처리
+  $(".section").each((i, sec) => {
+    const $sec    = $(sec);
+    const secTitle = norm($sec.find(".section-header h2").first().text())
+                   || norm($sec.find("h2.section-title").first().text());
+    const secNumEl = $sec.find(".section-num").first();
+    const secNum   = norm(secNumEl.find(".num").text())
+                   || norm(secNumEl.text()).split(/\s+/)[0]
+                   || String(i + 1);
+    if (secTitle) lines.push(`# ${secNum}. ${secTitle}`, "");
+
+    $sec.children().not(".section-header").each((_, child) => {
+      processElement($, child, lines);
+    });
+  });
+
+  return lines.join("\n");
 }
 
-// ---------- CLI ----------
-const argv = process.argv.slice(2);
-const flags = { all: false };
-const positional = [];
-for (let i = 0; i < argv.length; i++) {
-  const a = argv[i];
-  if (a === "--all")      { flags.all = true; continue; }
-  if (a.startsWith("--")) {
-    const key = a.slice(2);
-    flags[key] = (!argv[i + 1] || argv[i + 1].startsWith("--")) ? true : argv[++i];
-  } else {
-    positional.push(a);
-  }
-}
+// ════════════════════════════════════════════════════════════════
+//  CLI
+// ════════════════════════════════════════════════════════════════
 
-if (!positional.length) {
-  console.error([
-    "사용법:",
-    "  node templates/html-to-md.mjs <input.html> [output.md]",
-    "  node templates/html-to-md.mjs --all \"public/guides/*.html\"",
-    "  node templates/html-to-md.mjs --all \"public/guides/*.html\" --out-dir mddata",
-  ].join("\n"));
-  process.exit(1);
-}
+const isMain = process.argv[1] &&
+  path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
 
-if (flags.all) {
-  const outDir = flags["out-dir"] || "mddata";
-  const files = [];
-  for (const pattern of positional) {
-    for await (const f of glob(pattern)) files.push(f);
+if (isMain) {
+  const inFile  = process.argv[2];
+  const outFile = process.argv[3];
+  if (!inFile) {
+    console.error("사용법: node templates/html-to-md.mjs <파일.html> [출력.md]");
+    process.exit(1);
   }
-  if (!files.length) {
-    console.warn("매칭 파일 없음:", positional.join(", "));
-    process.exit(0);
-  }
-  for (const f of files) {
-    const outFile = path.join(outDir, path.basename(f).replace(/\.html?$/i, ".md"));
-    try {
-      convertHtmlToMd(f, outFile);
-    } catch (e) {
-      console.error(`❌ ${f}: ${e.message}`);
-    }
-  }
-  console.log(`\n⚠️  변환된 .md 는 그대로 쓰지 말고 검토/정리한 뒤 build-guide.mjs 로 다시 빌드하세요.`);
-} else {
-  convertHtmlToMd(positional[0], positional[1] || null);
-  console.log(`\n⚠️  변환된 .md 는 그대로 쓰지 말고 한 번 검토/정리한 뒤 build-guide.mjs 로 다시 빌드하세요.`);
+  const md = htmlToMdString(path.resolve(inFile));
+  const dest = outFile
+    ? path.resolve(outFile)
+    : path.resolve(inFile).replace(/\.html$/, ".md");
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, md, "utf8");
+  console.log(`✅ 변환 완료: ${dest}`);
 }

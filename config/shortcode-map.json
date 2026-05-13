@@ -1,0 +1,170 @@
+{
+  "$comment": "CSS class → shortcode 매핑 규칙. html-to-md.mjs가 이 파일을 읽어 generic하게 변환합니다.",
+
+  "icon-grid": {
+    "htmlClasses": ["icon-grid", "use-case-grid", "source-grid", "block-grid", "view-grid",
+                    "concept-grid", "plugin-grid", "ext-grid", "feat-grid", "skill-grid",
+                    "workspace-grid", "feature-list"],
+    "itemSelector": ".icon-card,.feat-item,.uc-card,.source-card,.block-card,.view-card,.concept-card,.plugin-card,.ext-card,.skill-item,.workspace-item,li",
+    "fields": {
+      "icon":  ".icon,.feat-icon,.uc-icon,.concept-icon,.plugin-icon,.ext-icon,.skill-icon,.gf-icon,.feature-icon,.icon-card-icon",
+      "title": ".title,.feat-title,.uc-title,.block-text,.skill-info strong,.gf-title,.feature-text strong,.icon-card-title,h3",
+      "desc":  ".desc,.feat-desc,.uc-desc,.gf-desc,.skill-info span,.feature-text span,p",
+      "tag":   ".tag,.plugin-badge,.ext-tag"
+    }
+  },
+
+  "feature-grid": {
+    "htmlClasses": ["feature-grid", "model-grid", "integration-grid", "adv-grid",
+                    "ai-features", "xai-grid", "toc-grid", "prereq-grid", "gem-feature-grid"],
+    "itemSelector": ".feature-card,.model-card,.integration-item,.adv-item,.ai-card,.xai-item,.toc-card,.prereq-card,.gem-feature",
+    "fields": {
+      "icon":  ".icon,.feature-icon,.int-icon,.toc-icon,.card-icon,.gf-icon",
+      "tag":   ".tag,.model-badge,.feature-tag,.int-type,.model-tag",
+      "title": ".title,.model-name,.int-name,.card-title,.feature-card-title,.gf-title,h3",
+      "desc":  ".desc,.model-desc,.gf-desc,p",
+      "meta":  ".model-tags .model-tag"
+    }
+  },
+
+  "tool-card": {
+    "htmlClasses": ["tool-card", "service-block", "tool-block"],
+    "itemSelector": ".tool-card,.service-block,.tool-block,.project-card",
+    "fields": {
+      "icon":  ".tc-icon,.tool-icon,.service-logo,.project-icon",
+      "title": ".tc-name,.tool-name,.service-title,.project-title,h3",
+      "desc":  ".tc-sub,.tool-tagline,.service-subtitle,.project-subtitle,> p,p",
+      "tag":   ".tc-badge,.tool-badge,.service-tag",
+      "meta":  ".tc-list li,.tool-card ul li,.project-feature"
+    }
+  },
+
+  "workflow": {
+    "htmlClasses": ["workflow-strip", "agent-flow", "actions-flow", "flow-demo",
+                    "flow-container", "workflow", "workflow-diagram"],
+    "itemSelector": ".wf-step,.af-step,.flow-step,.action-step,.wf-node,.branch-row",
+    "fields": {
+      "icon":  ".wf-icon,.af-step-icon",
+      "title": ".wf-name,.af-step-title,.action-step span:first-child",
+      "meta":  ".wf-tool,.af-step-desc,.as-icon"
+    }
+  },
+
+  "steps": {
+    "htmlClasses": ["step-list", "step-card", "auth-flow"],
+    "itemSelector": ".step-item,.step-card,.auth-step",
+    "fields": {
+      "title": ".step-title,.step-header h3,.auth-step h3",
+      "desc":  ".step-desc,.step-body p,p",
+      "meta":  ".step-badge,.step-tag"
+    }
+  },
+
+  "plan-grid": {
+    "htmlClasses": ["plan-grid", "tier-badges"],
+    "itemSelector": ".plan-card,.tier-nano,.tier-flash,.tier-pro,.tier-ultra,.pb-free,.pb-pro,.pb-super,.pb-ent",
+    "fields": {
+      "title":    ".plan-title,.plan-name,.model-name",
+      "tag":      ".plan-badge,.model-tier",
+      "desc":     ".plan-price,.model-ctx",
+      "meta":     ".plan-features li,.plan-feat li",
+      "note":     ".plan-note,.plan-cta",
+      "featured": "[class*='featured'],[class*='recommended']"
+    }
+  },
+
+  "compare-2col": {
+    "htmlClasses": ["compare-2col", "ba-box", "vs-box", "vs-grid", "before-after"],
+    "itemSelector": ".c2-card,.col-item,.ba-before,.ba-after,.vs-item",
+    "fields": {
+      "title": ".c2-title,.col-title,.ba-label,.vs-label",
+      "meta":  ".c2-list li,.col-items li,.ba-list li",
+      "note":  ".c2-note,.col-note,.ba-note"
+    }
+  },
+
+  "compare-grid": {
+    "htmlClasses": ["compare-grid"],
+    "itemSelector": ".compare-card",
+    "fields": {
+      "title": ".compare-card-title",
+      "desc":  ".compare-card-desc,p",
+      "note":  ".compare-note"
+    }
+  },
+
+  "bottom-list": {
+    "htmlClasses": ["bottom-list-card"],
+    "itemSelector": ".bottom-list-card",
+    "fields": {
+      "title": ".bl-title",
+      "desc":  ".bl-desc,.bl-body",
+      "meta":  ".bl-chip"
+    }
+  },
+
+  "alert-box": {
+    "htmlClasses": ["tip-box", "info-box", "info-tip", "info-warn", "info-success", "info-danger"],
+    "typeMap": {
+      "info-tip":     "tip",
+      "tip-box":      "tip",
+      "info-box":     "tip",
+      "info-warn":    "warn",
+      "info-success": "success",
+      "info-danger":  "danger"
+    },
+    "fields": {
+      "icon":  ".box-icon,.tip-icon",
+      "title": "strong,.box-title,.tip-title",
+      "desc":  "p,.box-text p"
+    }
+  },
+
+  "command-block": {
+    "htmlClasses": ["cmd-block"],
+    "itemSelector": ".cmd-block",
+    "fields": {
+      "label": ".cmd-label,.term-title",
+      "meta":  ".cmd-lang",
+      "desc":  "code,.cmd"
+    }
+  },
+
+  "tabs": {
+    "htmlClasses": ["os-tabs"],
+    "itemSelector": ".os-tab",
+    "contentSelector": ".os-content",
+    "fields": {
+      "label": "",
+      "desc":  ""
+    }
+  },
+
+  "faq-accordion": {
+    "htmlClasses": ["trouble-list", "faq-accordion", "faq-grid"],
+    "itemSelector": ".trouble-item,.faq-item,.faq-card",
+    "fields": {
+      "title": ".trouble-q .q-text,.faq-q,.q",
+      "desc":  ".trouble-a p,.faq-a,.a"
+    }
+  },
+
+  "prompt-example": {
+    "htmlClasses": ["prompt-box"],
+    "itemSelector": ".prompt-box",
+    "fields": {
+      "title": ".prompt-label",
+      "desc":  ".prompt-content"
+    }
+  },
+
+  "stat-highlight": {
+    "htmlClasses": ["stat-box", "stat-grid"],
+    "itemSelector": ".stat-box,.stat-item",
+    "fields": {
+      "icon":  ".stat-value",
+      "title": ".stat-label",
+      "desc":  ".stat-sub"
+    }
+  }
+}

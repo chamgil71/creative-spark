@@ -32,7 +32,7 @@ node scripts/html-to-pptx.mjs public/guides/Claude.html --verbose
 | 옵션 | 설명 |
 |------|------|
 | `--out <path>` | 출력 .pptx 파일 경로 |
-| `--style <key>` | `templates/styles.json` 색상 프리셋 사용 |
+| `--style <key>` | `config/styles.json` 색상 프리셋 사용 |
 | `--config <path>` | 커스텀 설정 파일 경로 |
 | `--all` | 위치 인수를 glob 패턴으로 처리 |
 | `--no-cover` | 표지 슬라이드 생성 안 함 |

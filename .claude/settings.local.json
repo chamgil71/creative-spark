@@ -17,7 +17,25 @@
       "Bash(npm run *)",
       "Bash(Get-ChildItem *)",
       "Bash(xargs -I {} basename {})",
-      "PowerShell(New-Item *)"
+      "PowerShell(New-Item *)",
+      "Bash(Select-Object Name)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(Sort-Object)",
+      "Bash(grep -v '^$')",
+      "Bash(LC_ALL=C uniq -c)",
+      "Bash(grep -v \"//.*readFile\\\\|console\\\\|pptx\\\\|\\\\.html\")",
+      "Bash(grep -n \"parseShortcode\\\\|parseItems\\\\|split.*\\\\\\\\\\\\\\\\n\\\\|match.*key\\\\|first.*match\\\\|next.*match\" C:/ai/creative-spark/scripts/md-to-pptx.mjs)",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(sort -k2)",
+      "Bash(LC_ALL=C sort -k2)",
+      "Bash(grep \"hasClass\\\\|find\\(\\\\\"\\\\\\\\.\" C:/ai/creative-spark/templates/html-to-md.mjs)",
+      "Bash('.what-grid')",
+      "Bash(el)",
+      "Bash(c)",
+      "Bash('.prereq-grid')",
+      "Bash('.faq-grid')",
+      "Bash(head -30 scripts/md-to-pptx_v2.mjs)",
+      "Bash(head -30 scripts/md-to-pptx.mjs)"
     ]
   }
 }

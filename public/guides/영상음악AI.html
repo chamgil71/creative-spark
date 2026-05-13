@@ -1,206 +1,346 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI 영상 & 음악 생성 가이드</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root{--brand:#7C3AED;--brand-dark:#5B21B6;--brand-light:#F5F3FF;--orange:#FF6B35;--pink:#EC4899;--teal:#10A37F;--blue:#4285F4;--text:#1A1A2E;--text-2:#4B5575;--text-3:#8892B0;--bg:#FAF8FF;--white:#FFFFFF;--border:#DDD6FE;--shadow:0 4px 24px rgba(124,58,237,0.10);--shadow-lg:0 8px 40px rgba(124,58,237,0.16);--radius:16px;--radius-sm:10px;}
-    *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
-    body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
-    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;}
-    .nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
-    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--brand);text-decoration:none;}
-    .nav-logo .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--brand),var(--pink));border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:14px;}
-    .nav-links{display:flex;gap:6px;list-style:none;}
-    .nav-links a{text-decoration:none;color:var(--text-2);font-size:14px;font-weight:500;padding:6px 12px;border-radius:8px;transition:all .2s;}
-    .nav-links a:hover{background:var(--brand-light);color:var(--brand);}
-    .hero{background:linear-gradient(135deg,#1A0A3E 0%,#3D1A78 35%,#7C3AED 65%,#EC4899 100%);color:white;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;}
-    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(124,58,237,0.4) 0%,transparent 55%),radial-gradient(ellipse at 75% 25%,rgba(236,72,153,0.25) 0%,transparent 50%);}
-    .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:500;margin-bottom:28px;}
-    .hero-badge span{width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;animation:pulse 2s infinite;}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
-    .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-bottom:16px;}
-    .hero p{font-size:1.1rem;opacity:.85;margin-bottom:40px;}
-    .hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
-    .hero-stat strong{display:block;font-size:1.6rem;font-weight:700;}
-    .hero-stat span{font-size:.8rem;opacity:.7;}
-    main{max-width:960px;margin:0 auto;padding:60px 24px;}
-    .section{margin-bottom:72px;}
-    .section-header{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
-    .section-num{width:40px;height:40px;color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex-shrink:0;}
-    .section-header h2{font-family:'Noto Serif KR',serif;font-size:1.6rem;font-weight:700;}
-    .card{background:white;border-radius:var(--radius);border:1px solid var(--border);padding:28px;box-shadow:var(--shadow);margin-bottom:16px;}
-    .tool-card{background:white;border-radius:var(--radius);border:2px solid var(--border);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow);}
-    .tc-header{padding:22px 26px;display:flex;align-items:center;gap:16px;}
-    .tc-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:white;flex-shrink:0;}
-    .tc-name{font-family:'Noto Serif KR',serif;font-size:1.3rem;font-weight:700;}
-    .tc-sub{font-size:.88rem;margin-top:2px;}
-    .tc-badge{margin-left:auto;border-radius:100px;padding:5px 14px;font-size:.82rem;font-weight:700;white-space:nowrap;color:white;}
-    .tc-body{padding:0 26px 22px;}
-    .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px;}
-    .feat-item{background:#F8F9FC;border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border);}
-    .fi-title{font-weight:700;font-size:.9rem;margin-bottom:4px;}
-    .fi-desc{font-size:.82rem;color:var(--text-2);line-height:1.6;}
-    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
-    .compare-table{width:100%;border-collapse:collapse;}
-    .compare-table th{background:var(--brand);color:white;padding:11px 14px;text-align:left;font-size:.88rem;}
-    .compare-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:.87rem;}
-    .compare-table tr:last-child td{border-bottom:none;}
-    .compare-table tr:nth-child(even) td{background:#F8F7FF;}
-    .check{color:#22C55E;font-weight:700;}
-    .tip-box{background:var(--brand-light);border-left:4px solid var(--brand);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:14px 18px;font-size:.9rem;}
-    .tip-box strong{color:var(--brand-dark);}
-    .back-top{position:fixed;bottom:32px;right:32px;width:46px;height:46px;background:linear-gradient(135deg,var(--brand),var(--pink));color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:var(--shadow-lg);font-size:20px;}
-    footer{background:#1A0A3E;color:rgba(255,255,255,0.6);text-align:center;padding:32px 24px;font-size:.88rem;}
-    footer strong{color:#C4B5FD;}
-  </style>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 영상 & 음악 생성 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
+    --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
+    --shadow:    0 4px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  
+  /* Navigation & Hero */
+  .nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); height: 60px; }
+  .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 24px; }
+  .nav-logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.1rem; }
+  .nav-links { display: flex; gap: 18px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
+  .nav-links a:hover { color: var(--brand); }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+  .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+  .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+  .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+  .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+  .hero-stat span { font-size: .8rem; opacity: .7; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.2); } }
+
+  /* Layout */
+  main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+  .section { margin-bottom: 80px; scroll-margin-top: 80px; }
+  .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+  .section-num { width: 40px; height: 40px; background: var(--brand); color: #fff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; }
+  .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.9rem; font-weight: 700; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 35px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .card-title { font-size: 1.4rem; color: var(--brand-dark); margin-bottom: 20px; border-bottom: 2px solid var(--brand-light); display: inline-block; padding-bottom: 5px; font-weight: 800;}
+  
+  /* 공통 카드 스타일 */
+  .card-top-bar { height: 4px; background: var(--brand); position: absolute; top: 0; left: 0; right: 0; }
+  .feature-card { padding: 18px; }
+  
+  /* Grid Systems */
+  .icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid { display: grid; gap: 20px; margin: 25px 0; }
+  .icon-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .plan-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .compare-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .columns-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin: 25px 0;}
+
+  /* Cards */
+  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .bottom-list-card, .badge-item { 
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; 
+    position: relative; overflow: hidden; transition: 0.2s; box-shadow: var(--shadow);
+  }
+  .icon-card:hover, .feature-card:hover, .plan-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  
+  
+  .icon-card-icon { font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
+  .icon-card-title, .feature-card-title, .compare-card-title, .col-title, .plan-title, .bl-title { 
+    font-weight: 800; font-size: 1.15rem; margin-bottom: 10px; color: var(--text); 
+  }
+  .icon-card-title { text-align: center; }
+  .fc-icon { margin-right: 8px; font-size: 1.2rem; }
+  .feature-tag { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 100px; background: var(--brand-light); color: var(--brand-dark); }
+  p { color: var(--text-2); font-size: 0.95rem; margin-bottom: 1rem; }
+  .icon-card p { text-align: center; }
+
+  /* Tool Card */
+  .tool-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); margin: 25px 0; }
+  .tc-header { padding: 25px; display: flex; align-items: center; gap: 20px; }
+  .tc-icon { width: 55px; height: 55px; border-radius: calc(var(--radius) / 2); background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+  .tc-name { font-size: 1.3rem; font-weight: 800; }
+  .tc-sub { font-size: 0.9rem; opacity: 0.9; }
+  .tc-badge { margin-left: auto; font-size: 0.8rem; font-weight: 800; padding: 5px 15px; border-radius: 100px; background: rgba(255,255,255,0.25); }
+  .tc-list { padding: 12px 25px 14px 40px; font-size: 0.88rem; background: var(--bg); border-top: 1px solid var(--border); color: var(--text-2); margin: 0; line-height: 1.9; }
+
+  /* Workflow */
+  .workflow-strip { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; }
+  .wf-step { flex: 1; min-width: 140px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; }
+  .wf-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .wf-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .wf-tool { font-size: 0.8rem; color: var(--text-2); }
+  .wf-arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #cbd5e1; z-index: 1; font-size: 1.2rem; }
+
+  /* Steps */
+  .step-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .step-item { display: flex; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .step-num { width: 35px; height: 35px; background: var(--brand); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+  .step-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
+
+  /* Plan Grid */
+  .plan-card { text-align: center; padding-top: 35px; }
+  .plan-featured { border-color: var(--brand); box-shadow: 0 8px 30px rgba(99,102,241,0.15); transform: translateY(-5px); }
+  .plan-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: 0.75rem; font-weight: 900; padding: 4px 15px; border-radius: 100px; }
+  .plan-title { font-size: 1.3rem; margin-bottom: 20px; }
+  .plan-features { list-style: none; margin: 0 0 20px 0; padding: 0; text-align: left; }
+  .plan-features li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-2); }
+  .plan-features li:before { content: '✓'; color: var(--brand); margin-right: 8px; font-weight: bold; }
+  .plan-note { margin-top: auto; padding: 8px; background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+
+  /* Skill List */
+  .skill-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .skill-item { display: flex; align-items: center; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 25px; }
+  .skill-icon { width: 40px; height: 40px; background: var(--brand-light); color: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .skill-title { font-weight: 800; font-size: 1.05rem; width: 30%; }
+  .skill-desc { font-size: 0.95rem; color: var(--text-2); flex: 1; margin: 0; }
+
+  /* Badge Grid */
+  .badge-item { text-align: center; padding: 20px 15px; }
+  .badge-icon { font-size: 2rem; margin-bottom: 10px; }
+  .badge-title { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .badge-tag { font-size: 0.8rem; color: var(--text-2); }
+
+  /* Bottom List */
+  .bl-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .bl-chip { background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: 800; padding: 6px 15px; border-radius: 100px; }
+
+  /* Compare 2Col */
+  .compare-2col { display: flex; gap: 20px; margin: 25px 0; }
+  .c2-card { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .c2-left { background: var(--brand-light); border-color: var(--brand); border-width: 2px; }
+  .c2-left .card-top-bar { background: var(--brand); }
+  .c2-right .card-top-bar { background: var(--text-2); }
+  .c2-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color: var(--brand-dark); }
+  .c2-right .c2-title { color: var(--text); }
+  .c2-list { list-style: none; margin: 0; padding: 0; }
+  .c2-list li { padding: 8px 0; font-size: 1rem; color: var(--text-2); display: flex; gap: 10px; }
+  .c2-left .c2-list li { color: var(--brand-dark); }
+  .c2-list li:before { content: '•'; font-weight: bold; }
+  .c2-note { margin-top: 20px; padding: 10px; background: var(--brand); color: #fff; font-size: 0.85rem; font-weight: bold; text-align: center; border-radius: 8px; }
+  .c2-right .c2-note { background: var(--border); color: var(--text); }
+  @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
+
+  /* Done section */
+  .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+  .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+
+  /* Back to top */
+  .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+  .back-top:hover { background: var(--brand-dark); transform: translateY(-2px); }
+
+  /* Footer */
+  footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+  footer a { color: var(--brand); text-decoration: none; }
+
+  /* Alert Box */
+  .alert-box { display: flex; gap: 14px; padding: 16px 20px; border-radius: var(--radius); border-left: 4px solid var(--alert-color, var(--brand)); background: color-mix(in srgb, var(--alert-color, var(--brand)) 8%, white); margin: 20px 0; }
+  .alert-tip  { --alert-color: var(--brand); }
+  .alert-warn { --alert-color: #F59E0B; }
+  .alert-success { --alert-color: #22C55E; }
+  .alert-danger { --alert-color: #EF4444; }
+  .alert-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.5; }
+  .alert-body strong { display: block; font-size: 0.95rem; font-weight: 800; color: var(--alert-color, var(--brand)); margin-bottom: 4px; }
+  .alert-body p { margin: 0; font-size: 0.92rem; color: var(--text-2); }
+
+  /* Command Block */
+  .cmd-block { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .cmd-header { display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .cmd-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; flex: 1; }
+  .cmd-lang { font-size: 0.75rem; color: var(--brand); font-family: 'JetBrains Mono', monospace; }
+  .cmd-copy { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 3px 10px; font-size: 0.75rem; cursor: pointer; transition: 0.15s; font-family: inherit; }
+  .cmd-copy:hover { background: rgba(255,255,255,0.16); color: white; }
+  .cmd-pre { margin: 0; padding: 18px 20px; background: transparent; color: #CBD5E1; font-size: 0.92rem; overflow-x: auto; border-radius: 0; white-space: pre-wrap; word-break: break-all; }
+  .cmd-pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* Tabs */
+  .tabs-wrap { margin: 25px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .tabs-nav { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab-btn { padding: 11px 20px; background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--text-2); white-space: nowrap; transition: 0.15s; font-family: inherit; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); background: white; }
+  .tab-btn:hover:not(.active) { color: var(--text); background: rgba(0,0,0,0.03); }
+  .tab-panel { display: none; padding: 24px; background: white; }
+  .tab-panel.active { display: block; }
+  .tab-panel p { margin-bottom: 0.8rem; }
+
+  /* FAQ Accordion */
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin: 25px 0; }
+  .faq-item { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s; }
+  .faq-item.open { border-color: var(--brand); }
+  .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: transparent; border: none; cursor: pointer; font-size: 0.97rem; font-weight: 700; color: var(--text); text-align: left; gap: 12px; font-family: inherit; transition: background 0.15s; }
+  .faq-q:hover { background: var(--brand-light); }
+  .faq-item.open .faq-q { color: var(--brand-dark); background: var(--brand-light); }
+  .faq-arrow { transition: transform 0.2s; font-size: 0.7rem; opacity: 0.5; flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); opacity: 1; }
+  .faq-a { display: none; padding: 0 20px 16px; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a p { margin: 0; font-size: 0.93rem; color: var(--text-2); }
+
+  /* Prompt Example */
+  .prompt-box { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .prompt-label { padding: 9px 16px; background: var(--brand); color: white; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.03em; }
+  .prompt-content { display: block; margin: 0; padding: 18px 20px; color: #CBD5E1; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.9; background: transparent; border-radius: 0; }
+
+  /* Stat Highlight */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 25px 0; }
+  .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 16px; text-align: center; box-shadow: var(--shadow); transition: 0.2s; }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .stat-val { font-size: 1.9rem; font-weight: 900; color: var(--brand); font-family: 'Noto Serif KR', serif; margin-bottom: 6px; line-height: 1.1; }
+  .stat-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .stat-note { font-size: 0.8rem; color: var(--text-3); }
+
+  /* Misc */
+  .compare-note { margin-top: 15px; padding: 8px; background: var(--brand-light); color: var(--brand-dark); text-align: center; font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+  blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius); padding: 14px 18px; margin: 14px 0; color: var(--brand-dark); }
+  blockquote p { margin: 0; color: var(--brand-dark); }
+  pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  
+  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
+  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
+  tr:nth-child(even) { background: #fafafa; }
+
+  /* ✓ 기호가 들어간 셀 자동 강조 */
+  td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+</style>
 </head>
 <body>
-<nav class="nav" id="top">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#top"><div class="logo-icon">AV</div>영상 & 음악 AI</a>
-    <ul class="nav-links">
-      <li><a href="#video">영상 생성</a></li>
-      <li><a href="#music">음악 생성</a></li>
-      <li><a href="#compare">비교</a></li>
-    </ul>
-  </div>
-</nav>
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge"><span></span> AI Creative Media · 2025</div>
-    <h1>AI 영상 & 음악<br>생성 완전 가이드</h1>
-    <p>Sora · Google Flow · Veo 3 · Runway — 텍스트 한 줄로 영상을<br>Suno · Udio · Lyria 2 — 프롬프트로 완성된 음악을</p>
-    <div class="hero-stats">
-      <div class="hero-stat"><strong>Sora</strong><span>OpenAI 영상</span></div>
-      <div class="hero-stat"><strong>Google Flow</strong><span>Veo 3 영상 플랫폼</span></div>
-      <div class="hero-stat"><strong>Suno</strong><span>AI 음악 생성</span></div>
-      <div class="hero-stat"><strong>Udio</strong><span>고품질 음악</span></div>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">AV영상 AI 영상 & 음악 생성 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. AI 영상 생성</a></li><li><a href="#sec-2">2. AI 음악 생성</a></li><li><a href="#sec-3">3. 도구 선택 가이드</a></li></ul></div></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge"><span></span>AI Creative Media · 2025</div>
+      <div class="hero-logo">AV영상</div>
+      <h1>AI 영상 &amp; 음악 생성 가이드</h1>
+      <p>Sora · Google Flow · Veo 3 · Runway — 텍스트 한 줄로 영상을Suno · Udio · Lyria 2 — 프롬프트로 완성된 음악을</p>
+      
+      <div class="hero-stats"><div class="hero-stat"><strong>Sora</strong><span>OpenAI 영상</span></div><div class="hero-stat"><strong>Google Flow</strong><span>Veo 3 영상 플랫폼</span></div><div class="hero-stat"><strong>Suno</strong><span>AI 음악 생성</span></div><div class="hero-stat"><strong>Udio</strong><span>고품질 음악</span></div></div>
     </div>
-  </div>
-</section>
-<main>
-  <!-- 영상 생성 -->
-  <div class="section" id="video">
-    <div class="section-header"><div class="section-num" style="background:var(--brand);">1</div><h2>AI 영상 생성</h2></div>
-
-    <!-- Google Flow -->
-    <div class="tool-card">
-      <div class="tc-header" style="background:linear-gradient(135deg,#0D47A1,#1565C0);">
-        <div class="tc-icon" style="background:rgba(255,255,255,0.2);">Flow</div>
-        <div><div class="tc-name" style="color:white;">Google Flow</div><div class="tc-sub" style="color:rgba(255,255,255,0.8);">labs.google/flow · Veo 3 기반 AI 영화 제작 플랫폼</div></div>
-        <div class="tc-badge" style="background:rgba(255,255,255,0.25);">AI Pro/Ultra</div>
-      </div>
-      <div class="tc-body">
-        <div class="feat-grid" style="margin-top:16px;">
-          <div class="feat-item"><div class="fi-title">Veo 3 영상 생성</div><div class="fi-desc">텍스트·이미지·영상 프레임으로 고품질 영상 생성. 오디오·대사 포함 가능.</div></div>
-          <div class="feat-item"><div class="fi-title">Ingredients 시스템</div><div class="fi-desc">캐릭터·장소·오브젝트를 재료로 등록 후 일관된 장면 연속 생성.</div></div>
-          <div class="feat-item"><div class="fi-title">카메라 제어</div><div class="fi-desc">팬·줌·달리·트래킹 등 정밀한 카메라 무브먼트 텍스트로 지정.</div></div>
-          <div class="feat-item"><div class="fi-title">Imagen 4 이미지 통합</div><div class="fi-desc">Whisk·ImageFX 기능 통합. 이미지 생성 후 즉시 영상화. 무료 이미지 생성.</div></div>
-        </div>
-        <div class="tip-box"><strong>💡 Flow 핵심 팁:</strong> "Veo 3.1 Fast" 모델로 초안 생성 → 마음에 드는 장면 선택 → 더 긴 버전 생성. "@" 입력으로 기존 에셋 바로 참조. 프롬프트에 카메라 용어(wide shot, close-up, tracking)를 포함하면 품질 급상승.</div>
-      </div>
-    </div>
-
-    <!-- Sora -->
-    <div class="tool-card">
-      <div class="tc-header" style="background:linear-gradient(135deg,#085040,#10A37F);">
-        <div class="tc-icon" style="background:rgba(255,255,255,0.2);">Sora</div>
-        <div><div class="tc-name" style="color:white;">Sora</div><div class="tc-sub" style="color:rgba(255,255,255,0.8);">sora.com · OpenAI · 물리 시뮬레이션 기반 영상 생성</div></div>
-        <div class="tc-badge" style="background:rgba(255,255,255,0.25);">Plus 이상</div>
-      </div>
-      <div class="tc-body">
-        <div class="feat-grid" style="margin-top:16px;">
-          <div class="feat-item"><div class="fi-title">최대 20초 HD 영상</div><div class="fi-desc">텍스트 프롬프트로 1080p 고화질 영상 생성. 물리 법칙 이해한 현실적 움직임.</div></div>
-          <div class="feat-item"><div class="fi-title">Storyboard 기능</div><div class="fi-desc">여러 장면을 순서대로 배치하여 단편 영상 제작. 장면 간 연속성 유지.</div></div>
-          <div class="feat-item"><div class="fi-title">Re-cut & Remix</div><div class="fi-desc">기존 영상의 특정 부분 수정·재생성. 스타일 변환 및 영상 확장 가능.</div></div>
-          <div class="feat-item"><div class="fi-title">Loop 생성</div><div class="fi-desc">끊김 없이 반복되는 루프 영상 생성. SNS·배경 영상 제작에 최적.</div></div>
-        </div>
-        <div class="tip-box"><strong>💡 Sora 활용법:</strong> ChatGPT Plus·Pro·Team 구독 포함. sora.com 직접 접속. 프롬프트에 "cinematic", "realistic", "8K" 등 품질 키워드 추가. 짧은 클립 여러 개 생성 후 편집 도구로 연결.</div>
-      </div>
-    </div>
-
-    <!-- Runway -->
-    <div class="tool-card">
-      <div class="tc-header" style="background:linear-gradient(135deg,#1A1A2E,#2D2D5E);">
-        <div class="tc-icon" style="background:#5B5BD6;">RW</div>
-        <div><div class="tc-name" style="color:white;">Runway Gen-4</div><div class="tc-sub" style="color:rgba(255,255,255,0.8);">runwayml.com · 영상 편집 특화 AI 플랫폼</div></div>
-        <div class="tc-badge" style="background:#5B5BD6;">무료/Pro</div>
-      </div>
-      <div class="tc-body">
-        <div class="feat-grid" style="margin-top:16px;">
-          <div class="feat-item"><div class="fi-title">이미지→영상 변환</div><div class="fi-desc">정적 이미지를 자연스럽게 움직이는 영상으로. 제품 사진 애니메이션에 최적.</div></div>
-          <div class="feat-item"><div class="fi-title">인페인팅·아웃페인팅</div><div class="fi-desc">영상 내 특정 영역 제거·추가·교체. 배경 교체 및 객체 삭제 자동화.</div></div>
-          <div class="feat-item"><div class="fi-title">모션 브러시</div><div class="fi-desc">원하는 영역에 직접 그려서 움직임 방향 지정. 세밀한 애니메이션 제어.</div></div>
-          <div class="feat-item"><div class="fi-title">Act-One 액팅 캡처</div><div class="fi-desc">웹캠으로 표정·동작 캡처 → AI 캐릭터에 적용. 1인 영상 제작에 혁신적.</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 음악 생성 -->
-  <div class="section" id="music">
-    <div class="section-header"><div class="section-num" style="background:var(--pink);">2</div><h2>AI 음악 생성</h2></div>
-    <div class="grid-2">
-      <div class="tool-card" style="margin-bottom:0;">
-        <div class="tc-header" style="background:linear-gradient(135deg,#3B0764,#7C3AED);">
-          <div class="tc-icon" style="background:rgba(255,255,255,0.2);">Su</div>
-          <div><div class="tc-name" style="color:white;">Suno</div><div class="tc-sub" style="color:rgba(255,255,255,0.8);">suno.com · 가사+음악 동시 생성</div></div>
-          <div class="tc-badge" style="background:rgba(255,255,255,0.25);">무료/Pro</div>
-        </div>
-        <div class="tc-body">
-          <div style="margin-top:14px;font-size:.88rem;color:var(--text-2);line-height:1.9;">
-            <div style="margin-bottom:8px;">장르·분위기·가사 입력 → 2분 내외 완성 노래 즉시 생성</div>
-            <div style="margin-bottom:8px;">한국어 가사 포함 K-pop 스타일 생성 가능</div>
-            <div style="margin-bottom:8px;">무료: 1일 5곡 | Pro $8/월: 무제한 상업적 이용</div>
-            <div>Custom 모드: 가사·스타일·제목 직접 지정</div>
-          </div>
-          <div class="tip-box" style="margin-top:12px;"><strong>프롬프트 예:</strong> "K-pop, upbeat, female vocal, 2025 summer vibes" 또는 한국어로 "신나는 여름 팝송, 여성 보컬, 기타 중심"</div>
-        </div>
-      </div>
-      <div class="tool-card" style="margin-bottom:0;">
-        <div class="tc-header" style="background:linear-gradient(135deg,#831843,#EC4899);">
-          <div class="tc-icon" style="background:rgba(255,255,255,0.2);">Ud</div>
-          <div><div class="tc-name" style="color:white;">Udio</div><div class="tc-sub" style="color:rgba(255,255,255,0.8);">udio.com · 전문가급 음악 품질</div></div>
-          <div class="tc-badge" style="background:rgba(255,255,255,0.25);">무료/Pro</div>
-        </div>
-        <div class="tc-body">
-          <div style="margin-top:14px;font-size:.88rem;color:var(--text-2);line-height:1.9;">
-            <div style="margin-bottom:8px;">Suno 대비 더 높은 음악 품질·믹싱 수준</div>
-            <div style="margin-bottom:8px;">스템 분리: 보컬·드럼·베이스 개별 추출 가능</div>
-            <div style="margin-bottom:8px;">Inpainting: 곡의 특정 구간만 수정·재생성</div>
-            <div>상업적 사용 가능 (Pro 이상)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:16px;">
-      <div style="font-weight:700;margin-bottom:12px;">Google Lyria 2 — Google Flow 통합 음악 AI</div>
-      <p style="font-size:.9rem;color:var(--text-2);line-height:1.8;">Google DeepMind의 Lyria 2 음악 생성 모델이 Google Flow에 통합됩니다. 영상 생성 시 배경음악 자동 생성, 분위기에 맞는 사운드트랙 제작. 뮤지션들과 협업하여 개발된 모델로 음악적 완성도가 높음. YouTube MusicFX에서도 사용 가능.</p>
-    </div>
-  </div>
-
-  <!-- 비교 -->
-  <div class="section" id="compare">
-    <div class="section-header"><div class="section-num" style="background:linear-gradient(135deg,var(--brand),var(--pink));">3</div><h2>도구 선택 가이드</h2></div>
-    <div class="card">
-      <table class="compare-table">
-        <thead><tr><th>목적</th><th>추천 도구</th><th>이유</th></tr></thead>
-        <tbody>
-          <tr><td>영화적 단편 영상</td><td>Google Flow</td><td>Ingredients 시스템으로 캐릭터 일관성 유지</td></tr>
-          <tr><td>현실적 물리 영상</td><td>Sora</td><td>물리 시뮬레이션 이해, 가장 자연스러운 움직임</td></tr>
-          <tr><td>이미지 → 영상 변환</td><td>Runway</td><td>정적 이미지 애니메이션, 세밀한 모션 제어</td></tr>
-          <tr><td>완성된 노래 빠르게</td><td>Suno</td><td>가사+음악 동시 생성, 무료 플랜 충분</td></tr>
-          <tr><td>고품질 음악·상업용</td><td>Udio</td><td>스템 분리, 높은 믹싱 품질</td></tr>
-          <tr><td>영상+음악 통합 제작</td><td>Google Flow</td><td>Veo 3 + Lyria 2 + Imagen 4 올인원</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</main>
-<a class="back-top" href="#top">↑</a>
-<footer><strong>AI 영상 & 음악 생성 완전 가이드</strong> · Google Flow · Sora · Suno · Udio · 2025</footer>
+  </header>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. AI 영상 생성</h2></div><div class="card"><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">Flow</div>
+<div class="tc-content">
+<div class="tc-name">Google Flow</div>
+<div class="tc-sub">labs.google/flow · Veo 3 기반 AI 영화 제작 플랫폼</div>
+</div>
+<div class="tc-badge">AI Pro/Ultra</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">Sora</div>
+<div class="tc-content">
+<div class="tc-name">Sora</div>
+<div class="tc-sub">sora.com · OpenAI · 물리 시뮬레이션 기반 영상 생성</div>
+</div>
+<div class="tc-badge">Plus 이상</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">RW</div>
+<div class="tc-content">
+<div class="tc-name">Runway Gen-4</div>
+<div class="tc-sub">runwayml.com · 영상 편집 특화 AI 플랫폼</div>
+</div>
+<div class="tc-badge">무료/Pro</div>
+</div>
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. AI 음악 생성</h2></div><div class="card"><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">Su</div>
+<div class="tc-content">
+<div class="tc-name">Suno</div>
+<div class="tc-sub">suno.com · 가사+음악 동시 생성</div>
+</div>
+<div class="tc-badge">무료/Pro</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">Ud</div>
+<div class="tc-content">
+<div class="tc-name">Udio</div>
+<div class="tc-sub">udio.com · 전문가급 음악 품질</div>
+</div>
+<div class="tc-badge">무료/Pro</div>
+</div>
+</div><p>Google Lyria 2 — Google Flow 통합 음악 AI</p>
+<p>Google DeepMind의 Lyria 2 음악 생성 모델이 Google Flow에 통합됩니다. 영상 생성 시 배경음악 자동 생성, 분위기에 맞는 사운드트랙 제작. 뮤지션들과 협업하여 개발된 모델로 음악적 완성도가 높음. YouTube MusicFX에서도 사용 가능.</p>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 도구 선택 가이드</h2></div><div class="card"><table>
+<thead>
+<tr>
+<th>목적</th>
+<th>추천 도구</th>
+<th>이유</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>영화적 단편 영상</td>
+<td>Google Flow</td>
+<td>Ingredients 시스템으로 캐릭터 일관성 유지</td>
+</tr>
+<tr>
+<td>현실적 물리 영상</td>
+<td>Sora</td>
+<td>물리 시뮬레이션 이해, 가장 자연스러운 움직임</td>
+</tr>
+<tr>
+<td>이미지 → 영상 변환</td>
+<td>Runway</td>
+<td>정적 이미지 애니메이션, 세밀한 모션 제어</td>
+</tr>
+<tr>
+<td>완성된 노래 빠르게</td>
+<td>Suno</td>
+<td>가사+음악 동시 생성, 무료 플랜 충분</td>
+</tr>
+<tr>
+<td>고품질 음악·상업용</td>
+<td>Udio</td>
+<td>스템 분리, 높은 믹싱 품질</td>
+</tr>
+<tr>
+<td>영상+음악 통합 제작</td>
+<td>Google Flow</td>
+<td>Veo 3 + Lyria 2 + Imagen 4 올인원</td>
+</tr>
+</tbody></table>
+</div></section></main>
+  
+  
+  <a class="back-top" href="#top" title="맨 위로">↑</a>
+<script>
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+</script>
 </body>
 </html>

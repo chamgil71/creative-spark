@@ -1,312 +1,328 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NotebookLM 완전 정복 가이드</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --blue:       #1A73E8;
-      --blue-dark:  #1557B0;
-      --blue-light: #E8F0FE;
-      --teal:       #00BCD4;
-      --teal-light: #E0F7FA;
-      --green:      #34A853;
-      --text:       #202124;
-      --text-2:     #5F6368;
-      --text-3:     #9AA0A6;
-      --bg:         #F8F9FA;
-      --white:      #FFFFFF;
-      --border:     #DADCE0;
-      --shadow:     0 4px 24px rgba(26,115,232,0.10);
-      --shadow-lg:  0 8px 40px rgba(26,115,232,0.16);
-      --radius:     16px;
-      --radius-sm:  10px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NotebookLM 완전 정복 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
+    --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
+    --shadow:    0 4px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  
+  /* Navigation & Hero */
+  .nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); height: 60px; }
+  .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 24px; }
+  .nav-logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.1rem; }
+  .nav-links { display: flex; gap: 18px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
+  .nav-links a:hover { color: var(--brand); }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+  .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+  .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+  .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+  .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+  .hero-stat span { font-size: .8rem; opacity: .7; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.2); } }
 
-    .nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
-    .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--blue); text-decoration: none; }
-    .nav-logo .logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--blue), var(--teal)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .nav-links { display: flex; gap: 6px; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all .2s; }
-    .nav-links a:hover { background: var(--blue-light); color: var(--blue); }
+  /* Layout */
+  main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+  .section { margin-bottom: 80px; scroll-margin-top: 80px; }
+  .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+  .section-num { width: 40px; height: 40px; background: var(--brand); color: #fff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; }
+  .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.9rem; font-weight: 700; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 35px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .card-title { font-size: 1.4rem; color: var(--brand-dark); margin-bottom: 20px; border-bottom: 2px solid var(--brand-light); display: inline-block; padding-bottom: 5px; font-weight: 800;}
+  
+  /* 공통 카드 스타일 */
+  .card-top-bar { height: 4px; background: var(--brand); position: absolute; top: 0; left: 0; right: 0; }
+  .feature-card { padding: 18px; }
+  
+  /* Grid Systems */
+  .icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid { display: grid; gap: 20px; margin: 25px 0; }
+  .icon-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .plan-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .compare-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .columns-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin: 25px 0;}
 
-    .hero { background: linear-gradient(135deg, #0D47A1 0%, #1A73E8 50%, #00BCD4 100%); padding: 80px 24px 100px; text-align: center; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(255,255,255,0.07)'/%3E%3C/svg%3E") repeat; }
-    .hero-logo { width: 72px; height: 72px; margin: 0 auto 24px; background: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(0,0,0,0.2); font-size: 36px; position: relative; }
-    .hero-badge { display: inline-block; background: rgba(255,255,255,0.18); color: white; font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.3); margin-bottom: 24px; position: relative; }
-    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(28px,5vw,50px); font-weight: 700; color: white; line-height: 1.3; margin-bottom: 20px; position: relative; }
-    .hero h1 span { color: #A8D8FF; }
-    .hero p { font-size: clamp(15px,2.5vw,18px); color: rgba(255,255,255,0.88); max-width: 580px; margin: 0 auto 36px; position: relative; }
-    .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--blue); font-weight: 700; font-size: 16px; padding: 14px 28px; border-radius: 100px; text-decoration: none; box-shadow: 0 8px 32px rgba(0,0,0,0.2); transition: transform .2s; position: relative; }
-    .hero-cta:hover { transform: translateY(-2px); }
-    .hero-stats { display: flex; justify-content: center; gap: 48px; margin-top: 56px; position: relative; flex-wrap: wrap; }
-    .hero-stat { text-align: center; }
-    .hero-stat strong { display: block; font-size: 26px; font-weight: 900; color: white; }
-    .hero-stat span { font-size: 13px; color: rgba(255,255,255,0.7); }
+  /* Cards */
+  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .bottom-list-card, .badge-item { 
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; 
+    position: relative; overflow: hidden; transition: 0.2s; box-shadow: var(--shadow);
+  }
+  .icon-card:hover, .feature-card:hover, .plan-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  
+  
+  .icon-card-icon { font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
+  .icon-card-title, .feature-card-title, .compare-card-title, .col-title, .plan-title, .bl-title { 
+    font-weight: 800; font-size: 1.15rem; margin-bottom: 10px; color: var(--text); 
+  }
+  .icon-card-title { text-align: center; }
+  .fc-icon { margin-right: 8px; font-size: 1.2rem; }
+  .feature-tag { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 100px; background: var(--brand-light); color: var(--brand-dark); }
+  p { color: var(--text-2); font-size: 0.95rem; margin-bottom: 1rem; }
+  .icon-card p { text-align: center; }
 
-    .section { padding: 72px 24px; }
-    .section-inner { max-width: 960px; margin: 0 auto; }
-    .section-title { font-family: 'Noto Serif KR', serif; font-size: clamp(22px,3.5vw,30px); font-weight: 700; margin-bottom: 8px; }
-    .section-sub { color: var(--text-2); font-size: 15px; margin-bottom: 40px; }
-    .section-num { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .section-num .num { width: 36px; height: 36px; background: var(--blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; flex-shrink: 0; }
-    .section-num .label { font-size: 13px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: .06em; }
+  /* Tool Card */
+  .tool-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); margin: 25px 0; }
+  .tc-header { padding: 25px; display: flex; align-items: center; gap: 20px; }
+  .tc-icon { width: 55px; height: 55px; border-radius: calc(var(--radius) / 2); background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+  .tc-name { font-size: 1.3rem; font-weight: 800; }
+  .tc-sub { font-size: 0.9rem; opacity: 0.9; }
+  .tc-badge { margin-left: auto; font-size: 0.8rem; font-weight: 800; padding: 5px 15px; border-radius: 100px; background: rgba(255,255,255,0.25); }
+  .tc-list { padding: 12px 25px 14px 40px; font-size: 0.88rem; background: var(--bg); border-top: 1px solid var(--border); color: var(--text-2); margin: 0; line-height: 1.9; }
 
-    /* 소스 타입 카드 */
-    .source-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
-    .source-card { background: white; border-radius: var(--radius-sm); padding: 20px; border: 1px solid var(--border); text-align: center; transition: all .2s; box-shadow: var(--shadow); }
-    .source-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--blue); }
-    .source-card .sc-icon { font-size: 32px; margin-bottom: 10px; }
-    .source-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .source-card p { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+  /* Workflow */
+  .workflow-strip { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; }
+  .wf-step { flex: 1; min-width: 140px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; }
+  .wf-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .wf-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .wf-tool { font-size: 0.8rem; color: var(--text-2); }
+  .wf-arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #cbd5e1; z-index: 1; font-size: 1.2rem; }
 
-    /* 워크플로우 */
-    .workflow { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
-    .wf-step { flex: 1; min-width: 180px; background: white; border-radius: var(--radius-sm); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; }
-    .wf-step::after { content: '→'; position: absolute; right: -16px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--border); z-index: 1; }
-    .wf-step:last-child::after { display: none; }
-    .wf-num { width: 32px; height: 32px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 12px; }
-    .wf-step h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-    .wf-step p { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+  /* Steps */
+  .step-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .step-item { display: flex; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .step-num { width: 35px; height: 35px; background: var(--brand); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+  .step-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
 
-    /* 오디오 오버뷰 */
-    .audio-card { background: linear-gradient(135deg, #0D47A1, #1A73E8, #00BCD4); border-radius: var(--radius); padding: 32px; color: white; }
-    .audio-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
-    .audio-card p { font-size: 15px; color: rgba(255,255,255,0.85); margin-bottom: 24px; }
-    .audio-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-    .audio-feat { background: rgba(255,255,255,0.12); border-radius: 10px; padding: 16px; }
-    .audio-feat h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .audio-feat p { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+  /* Plan Grid */
+  .plan-card { text-align: center; padding-top: 35px; }
+  .plan-featured { border-color: var(--brand); box-shadow: 0 8px 30px rgba(99,102,241,0.15); transform: translateY(-5px); }
+  .plan-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: 0.75rem; font-weight: 900; padding: 4px 15px; border-radius: 100px; }
+  .plan-title { font-size: 1.3rem; margin-bottom: 20px; }
+  .plan-features { list-style: none; margin: 0 0 20px 0; padding: 0; text-align: left; }
+  .plan-features li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-2); }
+  .plan-features li:before { content: '✓'; color: var(--brand); margin-right: 8px; font-weight: bold; }
+  .plan-note { margin-top: auto; padding: 8px; background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
 
-    /* 활용 사례 */
-    .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-    .usecase-card { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); box-shadow: var(--shadow); }
-    .usecase-card .uc-icon { font-size: 32px; margin-bottom: 14px; }
-    .usecase-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-    .usecase-card ul { padding-left: 18px; font-size: 14px; color: var(--text-2); line-height: 1.9; }
+  /* Skill List */
+  .skill-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .skill-item { display: flex; align-items: center; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 25px; }
+  .skill-icon { width: 40px; height: 40px; background: var(--brand-light); color: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .skill-title { font-weight: 800; font-size: 1.05rem; width: 30%; }
+  .skill-desc { font-size: 0.95rem; color: var(--text-2); flex: 1; margin: 0; }
 
-    /* 팁 */
-    .tip-box { background: white; border-left: 4px solid var(--blue); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 20px 24px; margin: 16px 0; box-shadow: var(--shadow); }
-    .tip-box strong { display: block; margin-bottom: 8px; font-size: 15px; color: var(--blue); }
-    .tip-box p, .tip-box ul { font-size: 14px; color: var(--text-2); line-height: 1.7; }
-    .tip-box ul { padding-left: 20px; }
+  /* Badge Grid */
+  .badge-item { text-align: center; padding: 20px 15px; }
+  .badge-icon { font-size: 2rem; margin-bottom: 10px; }
+  .badge-title { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .badge-tag { font-size: 0.8rem; color: var(--text-2); }
 
-    .done-section { background: linear-gradient(135deg, #0D47A1, #1A73E8); padding: 72px 24px; text-align: center; color: white; }
-    .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(22px,4vw,34px); margin-bottom: 16px; }
-    .done-section p { font-size: 16px; color: rgba(255,255,255,0.8); margin-bottom: 32px; }
-    .done-link { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--blue); font-weight: 700; padding: 14px 28px; border-radius: 100px; text-decoration: none; font-size: 16px; transition: transform .2s; }
-    .done-link:hover { transform: translateY(-2px); }
+  /* Bottom List */
+  .bl-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .bl-chip { background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: 800; padding: 6px 15px; border-radius: 100px; }
 
-    footer { background: #0D47A1; color: rgba(255,255,255,0.6); text-align: center; padding: 28px 24px; font-size: 14px; }
-    footer a { color: #A8D8FF; text-decoration: none; }
-    .back-top { position: fixed; bottom: 28px; right: 28px; width: 44px; height: 44px; background: var(--blue); color: white; border: none; border-radius: 50%; font-size: 18px; cursor: pointer; opacity: 0; transition: opacity .3s; box-shadow: var(--shadow); z-index: 200; }
-    .back-top.visible { opacity: 1; }
+  /* Compare 2Col */
+  .compare-2col { display: flex; gap: 20px; margin: 25px 0; }
+  .c2-card { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .c2-left { background: var(--brand-light); border-color: var(--brand); border-width: 2px; }
+  .c2-left .card-top-bar { background: var(--brand); }
+  .c2-right .card-top-bar { background: var(--text-2); }
+  .c2-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color: var(--brand-dark); }
+  .c2-right .c2-title { color: var(--text); }
+  .c2-list { list-style: none; margin: 0; padding: 0; }
+  .c2-list li { padding: 8px 0; font-size: 1rem; color: var(--text-2); display: flex; gap: 10px; }
+  .c2-left .c2-list li { color: var(--brand-dark); }
+  .c2-list li:before { content: '•'; font-weight: bold; }
+  .c2-note { margin-top: 20px; padding: 10px; background: var(--brand); color: #fff; font-size: 0.85rem; font-weight: bold; text-align: center; border-radius: 8px; }
+  .c2-right .c2-note { background: var(--border); color: var(--text); }
+  @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
-    @media (max-width: 640px) { .nav-links { display: none; } .wf-step::after { display: none; } .workflow { flex-direction: column; } }
-  </style>
+  /* Done section */
+  .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+  .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+
+  /* Back to top */
+  .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+  .back-top:hover { background: var(--brand-dark); transform: translateY(-2px); }
+
+  /* Footer */
+  footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+  footer a { color: var(--brand); text-decoration: none; }
+
+  /* Alert Box */
+  .alert-box { display: flex; gap: 14px; padding: 16px 20px; border-radius: var(--radius); border-left: 4px solid var(--alert-color, var(--brand)); background: color-mix(in srgb, var(--alert-color, var(--brand)) 8%, white); margin: 20px 0; }
+  .alert-tip  { --alert-color: var(--brand); }
+  .alert-warn { --alert-color: #F59E0B; }
+  .alert-success { --alert-color: #22C55E; }
+  .alert-danger { --alert-color: #EF4444; }
+  .alert-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.5; }
+  .alert-body strong { display: block; font-size: 0.95rem; font-weight: 800; color: var(--alert-color, var(--brand)); margin-bottom: 4px; }
+  .alert-body p { margin: 0; font-size: 0.92rem; color: var(--text-2); }
+
+  /* Command Block */
+  .cmd-block { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .cmd-header { display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .cmd-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; flex: 1; }
+  .cmd-lang { font-size: 0.75rem; color: var(--brand); font-family: 'JetBrains Mono', monospace; }
+  .cmd-copy { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 3px 10px; font-size: 0.75rem; cursor: pointer; transition: 0.15s; font-family: inherit; }
+  .cmd-copy:hover { background: rgba(255,255,255,0.16); color: white; }
+  .cmd-pre { margin: 0; padding: 18px 20px; background: transparent; color: #CBD5E1; font-size: 0.92rem; overflow-x: auto; border-radius: 0; white-space: pre-wrap; word-break: break-all; }
+  .cmd-pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* Tabs */
+  .tabs-wrap { margin: 25px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .tabs-nav { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab-btn { padding: 11px 20px; background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--text-2); white-space: nowrap; transition: 0.15s; font-family: inherit; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); background: white; }
+  .tab-btn:hover:not(.active) { color: var(--text); background: rgba(0,0,0,0.03); }
+  .tab-panel { display: none; padding: 24px; background: white; }
+  .tab-panel.active { display: block; }
+  .tab-panel p { margin-bottom: 0.8rem; }
+
+  /* FAQ Accordion */
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin: 25px 0; }
+  .faq-item { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s; }
+  .faq-item.open { border-color: var(--brand); }
+  .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: transparent; border: none; cursor: pointer; font-size: 0.97rem; font-weight: 700; color: var(--text); text-align: left; gap: 12px; font-family: inherit; transition: background 0.15s; }
+  .faq-q:hover { background: var(--brand-light); }
+  .faq-item.open .faq-q { color: var(--brand-dark); background: var(--brand-light); }
+  .faq-arrow { transition: transform 0.2s; font-size: 0.7rem; opacity: 0.5; flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); opacity: 1; }
+  .faq-a { display: none; padding: 0 20px 16px; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a p { margin: 0; font-size: 0.93rem; color: var(--text-2); }
+
+  /* Prompt Example */
+  .prompt-box { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .prompt-label { padding: 9px 16px; background: var(--brand); color: white; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.03em; }
+  .prompt-content { display: block; margin: 0; padding: 18px 20px; color: #CBD5E1; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.9; background: transparent; border-radius: 0; }
+
+  /* Stat Highlight */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 25px 0; }
+  .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 16px; text-align: center; box-shadow: var(--shadow); transition: 0.2s; }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .stat-val { font-size: 1.9rem; font-weight: 900; color: var(--brand); font-family: 'Noto Serif KR', serif; margin-bottom: 6px; line-height: 1.1; }
+  .stat-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .stat-note { font-size: 0.8rem; color: var(--text-3); }
+
+  /* Misc */
+  .compare-note { margin-top: 15px; padding: 8px; background: var(--brand-light); color: var(--brand-dark); text-align: center; font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+  blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius); padding: 14px 18px; margin: 14px 0; color: var(--brand-dark); }
+  blockquote p { margin: 0; color: var(--brand-dark); }
+  pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  
+  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
+  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
+  tr:nth-child(even) { background: #fafafa; }
+
+  /* ✓ 기호가 들어간 셀 자동 강조 */
+  td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+</style>
 </head>
 <body>
-
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#">
-      <div class="logo-icon">📒</div>
-      NotebookLM 가이드
-    </a>
-    <ul class="nav-links">
-      <li><a href="#sources">소스 연결</a></li>
-      <li><a href="#workflow">사용법</a></li>
-      <li><a href="#audio">오디오 개요</a></li>
-      <li><a href="#usecases">활용 사례</a></li>
-      <li><a href="#tips">팁</a></li>
-    </ul>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-logo">📒</div>
-  <div class="hero-badge">🔵 Google이 만든 AI 지식 어시스턴트</div>
-  <h1>내 문서로 만드는<br/><span>나만의 AI 전문가</span></h1>
-  <p>PDF, 문서, 유튜브, 웹페이지를 업로드하면 — 내 자료 기반으로만 정확하게 답하는 AI 연구 도구. 환각(Hallucination)이 없습니다.</p>
-  <a class="hero-cta" href="https://notebooklm.google.com" target="_blank">📒 NotebookLM 시작하기 (무료)</a>
-  <div class="hero-stats">
-    <div class="hero-stat"><strong>완전 무료</strong><span>Google 계정만 있으면</span></div>
-    <div class="hero-stat"><strong>50개</strong><span>소스 per 노트북</span></div>
-    <div class="hero-stat"><strong>오디오 개요</strong><span>AI 팟캐스트 생성</span></div>
-    <div class="hero-stat"><strong>출처 인용</strong><span>모든 답변에 소스 표시</span></div>
-  </div>
-</section>
-
-<!-- 소스 연결 -->
-<section class="section" id="sources" style="background: white;">
-  <div class="section-inner">
-    <div class="section-num"><div class="num">1</div><span class="label">Sources</span></div>
-    <h2 class="section-title">지원하는 소스 종류</h2>
-    <p class="section-sub">다양한 형식의 문서를 하나의 노트북에 연결하여 통합 분석합니다.</p>
-    <div class="source-grid">
-      <div class="source-card"><div class="sc-icon">📄</div><h4>PDF</h4><p>논문, 보고서, 계약서 등 PDF 파일</p></div>
-      <div class="source-card"><div class="sc-icon">📝</div><h4>Google Docs</h4><p>구글 문서 직접 연결</p></div>
-      <div class="source-card"><div class="sc-icon">📊</div><h4>Google Slides</h4><p>프레젠테이션 자료</p></div>
-      <div class="source-card"><div class="sc-icon">🌐</div><h4>웹페이지</h4><p>URL 붙여넣기로 웹 콘텐츠 추가</p></div>
-      <div class="source-card"><div class="sc-icon">▶️</div><h4>YouTube</h4><p>자막이 있는 영상 내용 분석</p></div>
-      <div class="source-card"><div class="sc-icon">🎵</div><h4>오디오</h4><p>팟캐스트, 강의 녹음 파일</p></div>
-      <div class="source-card"><div class="sc-icon">📄</div><h4>텍스트 파일</h4><p>.txt, .md 파일</p></div>
-      <div class="source-card"><div class="sc-icon">💬</div><h4>직접 입력</h4><p>노트나 텍스트 직접 붙여넣기</p></div>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">📒 NotebookLM 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 지원하는 소스 종류</a></li><li><a href="#sec-2">2. NotebookLM 사용 방법</a></li></ul></div></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge"><span></span>🔵 Google이 만든 AI 지식 어시스턴트</div>
+      <div class="hero-logo">📒</div>
+      <h1>NotebookLM 완전 정복 가이드</h1>
+      <p>PDF, 문서, 유튜브, 웹페이지를 업로드하면 — 내 자료 기반으로만 정확하게 답하는 AI 연구 도구. 환각(Hallucination)이 없습니다.</p>
+      <a class="hero-cta" href="https://notebooklm.google.com" target="_blank" rel="noopener">📒 NotebookLM 시작하기 (무료)</a>
+      <div class="hero-stats"><div class="hero-stat"><strong>완전 무료</strong><span>Google 계정만 있으면</span></div><div class="hero-stat"><strong>50개</strong><span>소스 per 노트북</span></div><div class="hero-stat"><strong>오디오 개요</strong><span>AI 팟캐스트 생성</span></div><div class="hero-stat"><strong>출처 인용</strong><span>모든 답변에 소스 표시</span></div></div>
     </div>
-    <div class="tip-box" style="margin-top:24px;">
-      <strong>💡 소스 용량 제한</strong>
-      <p>소스당 최대 500,000 단어 (PDF 기준 약 200-500페이지). 노트북 하나에 최대 50개 소스까지 추가 가능합니다.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 워크플로우 -->
-<section class="section" id="workflow">
-  <div class="section-inner">
-    <div class="section-num"><div class="num">2</div><span class="label">Workflow</span></div>
-    <h2 class="section-title">NotebookLM 사용 방법</h2>
-    <p class="section-sub">4단계로 나만의 AI 지식 베이스를 만들어보세요.</p>
-    <div class="workflow">
-      <div class="wf-step">
-        <div class="wf-num">1</div>
-        <h4>🆕 노트북 생성</h4>
-        <p>notebooklm.google.com에서 "새 노트북" 클릭</p>
-      </div>
-      <div class="wf-step">
-        <div class="wf-num">2</div>
-        <h4>📥 소스 추가</h4>
-        <p>PDF, URL, Google Docs, 유튜브 링크를 업로드</p>
-      </div>
-      <div class="wf-step">
-        <div class="wf-num">3</div>
-        <h4>💬 AI와 대화</h4>
-        <p>내 문서 기반으로 질문하고 분석 요청</p>
-      </div>
-      <div class="wf-step">
-        <div class="wf-num">4</div>
-        <h4>📝 노트 저장</h4>
-        <p>AI 답변을 노트로 저장하고 정리</p>
-      </div>
-    </div>
-
-    <div style="margin-top:32px;">
-      <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;">AI에게 이렇게 물어보세요</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;">
-        <div style="background:white;border-radius:var(--radius-sm);padding:16px 20px;border:1px solid var(--border);box-shadow:var(--shadow);">
-          <div style="font-weight:700;font-size:14px;margin-bottom:6px;color:var(--blue);">📋 요약 요청</div>
-          <p style="font-size:13px;color:var(--text-2);">"이 보고서의 핵심 주장을 3가지로 요약해줘"<br/>"목차를 만들어줘"</p>
-        </div>
-        <div style="background:white;border-radius:var(--radius-sm);padding:16px 20px;border:1px solid var(--border);box-shadow:var(--shadow);">
-          <div style="font-weight:700;font-size:14px;margin-bottom:6px;color:var(--blue);">🔍 특정 정보 검색</div>
-          <p style="font-size:13px;color:var(--text-2);">"3장에서 언급된 방법론은 무엇인가?"<br/>"참고문헌 목록을 모아줘"</p>
-        </div>
-        <div style="background:white;border-radius:var(--radius-sm);padding:16px 20px;border:1px solid var(--border);box-shadow:var(--shadow);">
-          <div style="font-weight:700;font-size:14px;margin-bottom:6px;color:var(--blue);">⚖️ 비교 분석</div>
-          <p style="font-size:13px;color:var(--text-2);">"소스 A와 B의 주장 차이점은?"<br/>"두 논문의 연구 방법을 비교해줘"</p>
-        </div>
-        <div style="background:white;border-radius:var(--radius-sm);padding:16px 20px;border:1px solid var(--border);box-shadow:var(--shadow);">
-          <div style="font-weight:700;font-size:14px;margin-bottom:6px;color:var(--blue);">❓ 심층 질문</div>
-          <p style="font-size:13px;color:var(--text-2);">"이 데이터의 한계점은 무엇인가?"<br/>"FAQ를 만들어줘"</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 오디오 개요 -->
-<section class="section" id="audio" style="background: white;">
-  <div class="section-inner">
-    <div class="section-num"><div class="num">3</div><span class="label">Audio Overview</span></div>
-    <h2 class="section-title">오디오 개요 — AI 팟캐스트</h2>
-    <p class="section-sub">문서를 두 AI 진행자가 나누는 자연스러운 팟캐스트로 변환합니다.</p>
-    <div class="audio-card">
-      <h3>🎙️ 클릭 한 번으로 팟캐스트 생성</h3>
-      <p>업로드한 문서를 AI가 두 화자의 대화 형식으로 요약합니다. 운전 중, 산책 중에도 자료를 "들을" 수 있습니다.</p>
-      <div class="audio-features">
-        <div class="audio-feat"><h4>🔊 자연스러운 대화체</h4><p>딱딱한 문서 읽기가 아닌 두 사람의 토론 형식</p></div>
-        <div class="audio-feat"><h4>🌍 다국어 지원</h4><p>한국어 포함 다국어로 생성 가능</p></div>
-        <div class="audio-feat"><h4>💾 MP3 다운로드</h4><p>생성된 오디오 파일을 저장 가능</p></div>
-        <div class="audio-feat"><h4>⚙️ 커스텀 가이드</h4><p>특정 청중, 강조 내용 지정 가능</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 활용 사례 -->
-<section class="section" id="usecases">
-  <div class="section-inner">
-    <div class="section-num"><div class="num">4</div><span class="label">Use Cases</span></div>
-    <h2 class="section-title">실전 활용 사례</h2>
-    <p class="section-sub">이런 용도로 활용하면 생산성이 크게 향상됩니다.</p>
-    <div class="usecase-grid">
-      <div class="usecase-card">
-        <div class="uc-icon">🎓</div>
-        <h3>학업 & 연구</h3>
-        <ul>
-          <li>논문 여러 편을 한 노트북에 모아 비교분석</li>
-          <li>강의 자료 업로드 후 시험 대비 Q&A</li>
-          <li>참고문헌 자동 정리</li>
-          <li>리뷰 논문 초안 작성 지원</li>
-        </ul>
-      </div>
-      <div class="usecase-card">
-        <div class="uc-icon">💼</div>
-        <h3>업무 & 보고서</h3>
-        <ul>
-          <li>긴 보고서 신속 요약 및 핵심 추출</li>
-          <li>회의록 여러 개 통합 분석</li>
-          <li>산업 리포트 비교 인사이트</li>
-          <li>발표 자료 스크립트 생성</li>
-        </ul>
-      </div>
-      <div class="usecase-card">
-        <div class="uc-icon">📰</div>
-        <h3>콘텐츠 제작</h3>
-        <ul>
-          <li>유튜브 영상 내용 텍스트로 정리</li>
-          <li>웹 아티클 수집 후 뉴스레터 작성</li>
-          <li>책 요약 및 독서 노트</li>
-          <li>팟캐스트 원고 자동 생성</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 팁 -->
-<section class="section" id="tips" style="background: white;">
-  <div class="section-inner">
-    <div class="section-num"><div class="num">5</div><span class="label">Pro Tips</span></div>
-    <h2 class="section-title">NotebookLM 활용 팁</h2>
-    <p class="section-sub">더 정확하고 유용한 결과를 얻기 위한 노하우입니다.</p>
-    <div class="tip-box"><strong>🔗 NotebookLM Importer 확장 활용</strong><p>크롬 확장 'NotebookLM Importer'를 설치하면 브라우저에서 읽는 페이지를 버튼 하나로 노트북에 추가할 수 있습니다. 웹서핑 중 발견한 자료를 즉시 저장하세요.</p></div>
-    <div class="tip-box"><strong>🎯 노트북을 주제별로 분리하세요</strong><p>하나의 노트북에 모든 자료를 넣기보다, "AI 동향 리서치", "Q3 프로젝트", "독서 노트"처럼 주제별로 분리하면 AI 답변의 정확도가 높아집니다.</p></div>
-    <div class="tip-box"><strong>📌 인용 출처를 항상 확인하세요</strong><p>NotebookLM의 모든 답변에는 출처 인용이 포함됩니다. 인용 번호를 클릭하면 해당 소스의 정확한 위치로 이동합니다. 중요한 정보는 항상 원문을 확인하세요.</p></div>
-    <div class="tip-box"><strong>💡 노트 기능 적극 활용</strong><p>AI 답변 중 유용한 내용은 "노트에 추가" 버튼으로 저장합니다. 저장된 노트들은 다시 AI 분석의 소스로 활용할 수 있습니다.</p></div>
-  </div>
-</section>
-
-<section class="done-section">
-  <h2>📒 내 문서를 AI 전문가로 만들어보세요</h2>
-  <p>무료로 시작하고, 즉시 생산성을 높여보세요.</p>
-  <a class="done-link" href="https://notebooklm.google.com" target="_blank">📒 NotebookLM 무료 시작</a>
-</section>
-
-<footer>
-  <p>NotebookLM은 Google DeepMind의 Gemini를 기반으로 합니다.</p>
-  <p style="margin-top:8px;">공식 사이트: <a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com</a></p>
-</footer>
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  </header>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 지원하는 소스 종류</h2></div><div class="card"><p>다양한 형식의 문서를 하나의 노트북에 연결하여 통합 분석합니다.</p>
+<div class="icon-grid"><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>논문, 보고서, 계약서 등 PDF 파일</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>구글 문서 직접 연결</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>프레젠테이션 자료</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>URL 붙여넣기로 웹 콘텐츠 추가</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>자막이 있는 영상 내용 분석</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>팟캐스트, 강의 녹음 파일</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>.txt, .md 파일</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" >•</div>
+<div class="icon-card-title" ></div>
+<p>노트나 텍스트 직접 붙여넣기</p>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 소스 용량 제한</strong>
+<p>소스당 최대 500,000 단어 (PDF 기준 약 200-500페이지). 노트북 하나에 최대 50개 소스까지 추가 가능합니다.</p>
+</div>
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. NotebookLM 사용 방법</h2></div><div class="card"><p>4단계로 나만의 AI 지식 베이스를 만들어보세요.</p>
+<div class="workflow-strip">
+<div class="wf-step" >
+<div class="wf-icon" >🔗</div>
+<div class="wf-name" >🔗 NotebookLM Importer 확장 활용</div>
+<div class="wf-tool"></div>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">🎯</div>
+<div class="alert-body">
+<strong>🎯 노트북을 주제별로 분리하세요</strong>
+<p>하나의 노트북에 모든 자료를 넣기보다, &quot;AI 동향 리서치&quot;, &quot;Q3 프로젝트&quot;, &quot;독서 노트&quot;처럼 주제별로 분리하면 AI 답변의 정확도가 높아집니다.</p>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">📌</div>
+<div class="alert-body">
+<strong>📌 인용 출처를 항상 확인하세요</strong>
+<p>NotebookLM의 모든 답변에는 출처 인용이 포함됩니다. 인용 번호를 클릭하면 해당 소스의 정확한 위치로 이동합니다. 중요한 정보는 항상 원문을 확인하세요.</p>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 노트 기능 적극 활용</strong>
+<p>AI 답변 중 유용한 내용은 &quot;노트에 추가&quot; 버튼으로 저장합니다. 저장된 노트들은 다시 AI 분석의 소스로 활용할 수 있습니다.</p>
+</div>
+</div>
+</div></section></main>
+  <section class="done-section">
+    <h2>📒 내 문서를 AI 전문가로 만들어보세요</h2>
+    <p>무료로 시작하고, 즉시 생산성을 높여보세요.</p>
+    <a class="done-link" href="https://notebooklm.google.com" target="_blank" rel="noopener">📒 NotebookLM 무료 시작</a>
+  </section>
+  <footer><div>NotebookLM은 Google DeepMind의 Gemini를 기반으로 합니다.</div><div>공식 사이트: <a href="https://notebooklm.google.com">notebooklm.google.com</a></div></footer>
+  <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-  window.addEventListener('scroll', () => { document.getElementById('backTop').classList.toggle('visible', window.scrollY > 300); });
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
 </script>
 </body>
 </html>

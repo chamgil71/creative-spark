@@ -27,7 +27,7 @@ templates/
 
 ### 1-1. 템플릿 복사
 ```bash
-cp templates/template.md templates/MyGuide.md
+cp data/templates/template.md templates/MyGuide.md
 ```
 
 ### 1-2. Frontmatter 채우기
@@ -182,7 +182,7 @@ node templates/build-guide.mjs templates/MyGuide.md --style creative
 ## 4. 색상/디자인 커스터마이징
 
 ### 4-1. 기존 스타일의 색만 바꾸기
-`templates/styles.json` 에서 해당 키의 값을 수정 → 영향받는 모든 가이드를 재변환.
+`config/styles.json` 에서 해당 키의 값을 수정 → 영향받는 모든 가이드를 재변환.
 
 ```json
 "ai-chat": {

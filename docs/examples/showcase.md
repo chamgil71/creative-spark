@@ -1,34 +1,89 @@
 ---
-title: AI Creative Suite 완전 활용 가이드
-subtitle: 12개 shortcode 전체를 보여주는 예시 파일입니다
+title: Creative Spark 숏코드 완전 가이드
+subtitle: HTML→MD→PPTX 파이프라인이 지원하는 전체 숏코드 예시
 style: creative
-badge: DEMO · 2026
-logo: 🤖
+badge: 2026 · DEMO
+logo: ✨
 heroCta:
-  label: 공식 사이트 열기
+  label: 파이프라인 문서 보기
   url: https://example.com
 stats:
-  - value: "무료"
-    label: "시작 가능"
-  - value: "12종"
+  - value: "15종"
     label: "숏코드"
-  - value: "한국어"
-    label: "지원"
+  - value: "3단계"
+    label: "파이프라인"
+  - value: "자동"
+    label: "HTML 역변환"
 done:
-  title: 지금 바로 시작해보세요
-  subtitle: 각 숏코드를 직접 사용해보며 나만의 가이드를 만들어보세요.
-  ctaLabel: template.md 열기
+  title: 나만의 가이드를 만들어보세요
+  subtitle: templates/template.md를 복사해서 내용을 채우면 됩니다.
+  ctaLabel: 시작하기
   ctaUrl: https://example.com
 footer:
-  - 이 파일은 12개 shortcode를 모두 보여주는 데모 예시입니다.
-  - "style 키를 바꾸면 전체 색상이 바뀝니다 — templates/styles.json 참고"
+  - 이 파일은 지원하는 전체 숏코드를 보여주는 데모입니다.
+  - "shortcode-map.json에서 HTML→MD 변환 규칙을 확인할 수 있습니다."
 ---
 
-# 1. 핵심 기능 소개
+# 0. 스타일 선택
 
-AI Creative Suite는 아이디어 생성부터 배포까지 전 과정을 지원하는 통합 플랫폼입니다.
+MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
-## icon-grid 예시: 이 도구가 잘하는 일
+::: tool-card
+- icon: 🤖
+  title: ai-chat
+  desc: AI 챗봇 (그린) — ChatGPT·Claude 등 대화형 AI 가이드
+  tag: style: ai-chat
+  color: "#10A37F"
+- icon: 💻
+  title: ai-dev
+  desc: AI 개발 도구 (오렌지) — Cursor·GitHub Copilot 등 개발 도구
+  tag: style: ai-dev
+  color: "#D97757"
+- icon: 📚
+  title: knowledge
+  desc: 노트 & 지식관리 (퍼플) — Notion·Obsidian 등 지식 관리 도구
+  tag: style: knowledge
+  color: "#6366F1"
+- icon: ⚡
+  title: productivity
+  desc: 생산성 유틸 (블루) — 일정·할일·자동화 도구
+  tag: style: productivity
+  color: "#1565C0"
+- icon: 🎨
+  title: creative
+  desc: 크리에이티브 AI (마젠타) — 이미지·영상·디자인 생성 도구
+  tag: style: creative
+  color: "#9B59B6"
+- icon: 🔒
+  title: security
+  desc: 보안 & 인프라 (사이언) — 보안·DevOps·클라우드 인프라
+  tag: style: security
+  color: "#06B6D4"
+- icon: 💰
+  title: finance
+  desc: 재테크 & 금융 (골드) — 투자·회계·금융 분석 도구
+  tag: style: finance
+  color: "#D4A017"
+- icon: 🚀
+  title: future
+  desc: 퓨처 AI (네온 라임) — 미래 기술·리서치·트렌드
+  tag: style: future
+  color: "#84CC16"
+- icon: 🏢
+  title: enterprise
+  desc: 엔터프라이즈 (슬레이트) — 팀·조직·비즈니스 솔루션
+  tag: style: enterprise
+  color: "#475569"
+- icon: 🎬
+  title: media
+  desc: 미디어 & 콘텐츠 (로즈) — SNS·영상·콘텐츠 제작 도구
+  tag: style: media
+  color: "#E11D48"
+:::
+
+# 1. 아이콘 그리드
+
+## icon-grid — 이모지 카드 격자
 
 ::: icon-grid
 - icon: ⚡
@@ -36,7 +91,7 @@ AI Creative Suite는 아이디어 생성부터 배포까지 전 과정을 지원
   desc: 반복 작업을 줄이고 결과물을 빠르게 만듭니다.
 - icon: 🎨
   title: 쉬운 디자인
-  desc: 템플릿과 프리셋으로 초보자도 보기 좋은 결과를 만들 수 있습니다.
+  desc: 템플릿과 프리셋으로 초보자도 보기 좋은 결과를 만듭니다.
 - icon: 📱
   title: 모바일 친화
   desc: 스마트폰에서도 주요 기능을 바로 사용할 수 있습니다.
@@ -45,11 +100,22 @@ AI Creative Suite는 아이디어 생성부터 배포까지 전 과정을 지원
   desc: 링크 공유와 댓글로 팀 작업을 이어갈 수 있습니다.
 :::
 
-# 2. 주요 모듈
+# 2. 기능 카드 feature-grid
 
-각 모듈은 독립적으로 사용하거나 함께 연결해 강력한 워크플로우를 구성할 수 있습니다.
+## feature-grid — 태그 + 아이콘 + 설명
 
-## feature-grid 예시: 핵심 기능 카드
+- tag: 핵심
+  icon: 🧠
+  title: AI 자동화
+  desc: 사용자의 입력을 바탕으로 초안, 편집, 요약, 추천을 자동 생성합니다.
+- tag: 실전
+  icon: 🧰
+  title: 템플릿 활용
+  desc: 자주 쓰는 형식을 저장해 같은 품질의 결과물을 반복해서 만들 수 있습니다.
+- tag: 공유
+  icon: 🔗
+  title: 링크 배포
+  desc: 완성된 결과를 링크나 파일로 공유하고 팀원 피드백을 받을 수 있습니다.
 
 ::: feature-grid
 - tag: 핵심
@@ -66,11 +132,18 @@ AI Creative Suite는 아이디어 생성부터 배포까지 전 과정을 지원
   desc: 완성된 결과를 링크나 파일로 공유하고 팀원 피드백을 받을 수 있습니다.
 :::
 
-# 3. 시작하기
+# 3. 단계 흐름 steps
 
-처음 사용하는 사람이 따라 할 수 있는 순서로 정리했습니다.
+## steps — 순서형 단계 목록
 
-## steps 예시: 기본 사용 흐름
+- title: 계정 만들기
+  desc: 공식 사이트에 접속해 이메일 또는 소셜 계정으로 로그인합니다.
+- title: 새 프로젝트 만들기
+  desc: 템플릿을 고르거나 빈 프로젝트에서 시작합니다.
+- title: 콘텐츠 넣기
+  desc: 텍스트, 이미지, 파일, 링크 등 필요한 자료를 추가합니다.
+- title: 결과 내보내기
+  desc: PDF, 이미지, 영상, 링크 등 목적에 맞는 형식으로 저장합니다.
 
 ::: steps
 - title: 계정 만들기
@@ -83,177 +156,228 @@ AI Creative Suite는 아이디어 생성부터 배포까지 전 과정을 지원
   desc: PDF, 이미지, 영상, 링크 등 목적에 맞는 형식으로 저장합니다.
 :::
 
-# 4. 상황별 추천
+# 4. 비교 카드 compare-grid
 
-사용 목적에 따라 시작점이 달라집니다.
+## compare-grid — 사용자 유형별 비교
 
-## compare-grid 예시: 사용자 유형별 가이드
+- title: 처음 배우는 사용자
+  desc: 무료 플랜과 기본 템플릿으로 시작합니다.
+  note: 추천 — 기본 워크플로우
+- title: 반복 제작자
+  desc: 자주 쓰는 형식을 저장하고 자동화 기능을 활용합니다.
+  note: 추천 — Pro 기능 검토
+- title: 팀 작업
+  desc: 공유 링크, 댓글, 권한 관리가 가능한 플랜을 선택합니다.
+  note: 추천 — 팀 플랜
 
 ::: compare-grid
 - title: 처음 배우는 사용자
   desc: 무료 플랜과 기본 템플릿으로 시작합니다.
-  note: 추천: 기본 워크플로우
+  note: 추천 — 기본 워크플로우
 - title: 반복 제작자
-  desc: 자주 쓰는 형식을 템플릿으로 저장하고 자동화 기능을 활용합니다.
-  note: 추천: Pro 기능 검토
+  desc: 자주 쓰는 형식을 저장하고 자동화 기능을 활용합니다.
+  note: 추천 — Pro 기능 검토
 - title: 팀 작업
   desc: 공유 링크, 댓글, 권한 관리가 가능한 플랜을 선택합니다.
-  note: 추천: 팀 플랜
+  note: 추천 — 팀 플랜
 :::
 
-# 5. 연동 도구
+# 5. 도구 카드 tool-card
 
-AI Creative Suite와 함께 사용하면 더욱 강력한 도구들입니다.
+## tool-card — 브랜드 배너 카드
 
-## tool-card 예시: 추천 도구
+- icon: 🎬
+  title: Runway Gen-4
+  desc: 영상 편집 특화 AI 플랫폼
+  tag: 무료/Pro
+  meta: 영상 생성|배경 제거|모션 브러시
+  color: "#7C3AED"
+- icon: 🖼️
+  title: Midjourney
+  desc: 텍스트로 고품질 이미지를 생성하는 AI
+  tag: Pro
+  meta: 이미지 생성|스타일 변환|업스케일링
+  color: "#E11D48"
 
 ::: tool-card
 - icon: 🎬
-  name: Runway Gen-4
-  tagline: runwayml.com · 영상 편집 특화 AI 플랫폼
-  badge: 무료/Pro
+  title: Runway Gen-4
+  desc: 영상 편집 특화 AI 플랫폼
+  tag: 무료/Pro
+  meta: 영상 생성|배경 제거|모션 브러시
   color: "#7C3AED"
 - icon: 🖼️
-  name: Midjourney
-  tagline: midjourney.com · 이미지 생성 AI
-  badge: Pro
+  title: Midjourney
+  desc: 텍스트로 고품질 이미지를 생성하는 AI
+  tag: Pro
+  meta: 이미지 생성|스타일 변환|업스케일링
   color: "#E11D48"
 :::
 
-# 6. 제작 흐름
+# 6. 워크플로우 workflow
 
-아이디어에서 배포까지 전체 과정을 한눈에 파악하세요.
+- icon: 💡
+  title: 아이디어
+  meta: Claude AI
+- icon: ⚡
+  title: 초안 생성
+  meta: Gamma
+- icon: 🎨
+  title: 디자인 보정
+  meta: Canva
+- icon: ✅
+  title: 검토·수정
+  meta: 팀 협업
+- icon: 📤
+  title: 공유·배포
+  meta: 링크/PDF
+- icon: 💡
+  title: 추가하면?
+  meta: 어디로?
 
-## workflow 예시: 5단계 제작 순서도
+## workflow — 프로세스 흐름도
 
 ::: workflow
 - icon: 💡
-  name: 아이디어
-  tool: Claude AI
+  title: 아이디어
+  meta: Claude AI
 - icon: ⚡
-  name: 초안 생성
-  tool: Gamma
+  title: 초안 생성
+  meta: Gamma
 - icon: 🎨
-  name: 디자인 보정
-  tool: Canva
+  title: 디자인 보정
+  meta: Canva
 - icon: ✅
-  name: 검토·수정
-  tool: 팀 협업
+  title: 검토·수정
+  meta: 팀 협업
 - icon: 📤
-  name: 공유·배포
-  tool: 링크/PDF
+  title: 공유·배포
+  meta: 링크/PDF
+- icon: 💡
+  title: 추가하면?
+  meta: 어디로?
 :::
 
-# 7. 요금제
+# 7. 요금제 plan-grid
 
-세 가지 플랜 중 목적에 맞는 플랜을 선택하세요.
+## plan-grid — Free / Pro / Enterprise
 
-## plan-grid 예시: Free / Pro / Enterprise
+- title: Free
+  tag: 무료
+  meta: 기본 기능 모두 사용|하루 10회 사용|커뮤니티 지원|5GB 저장공간
+  note: 지금 바로 시작
+- title: Pro
+  tag: 추천
+  featured: "true"
+  meta: 무제한 사용|우선 지원|고급 기능 전체|API 접근|50GB 저장공간
+  note: 월 $20
+- title: Enterprise
+  tag: 팀
+  meta: 팀 계정 관리|전용 지원 담당|SLA 보장|SSO 연동|무제한 저장
+  note: 문의 필요
 
 ::: plan-grid
 - title: Free
-  badge: 무료
-  features: 기본 기능 모두 사용 | 하루 10회 사용 | 커뮤니티 지원 | 5GB 저장공간
+  tag: 무료
+  meta: 기본 기능 모두 사용|하루 10회 사용|커뮤니티 지원|5GB 저장공간
   note: 지금 바로 시작
 - title: Pro
-  badge: 추천
+  tag: 추천
   featured: "true"
-  features: 무제한 사용 | 우선 지원 | 고급 기능 전체 | API 접근 | 50GB 저장공간
+  meta: 무제한 사용|우선 지원|고급 기능 전체|API 접근|50GB 저장공간
   note: 월 $20
 - title: Enterprise
-  badge: 팀
-  features: 팀 계정 관리 | 전용 지원 담당 | SLA 보장 | SSO 연동 | 무제한 저장
+  tag: 팀
+  meta: 팀 계정 관리|전용 지원 담당|SLA 보장|SSO 연동|무제한 저장
   note: 문의 필요
 :::
 
-# 8. 지원 기능
+# 8. 좌우 2단 비교
 
-플랫폼이 제공하는 주요 기능 목록입니다.
+## compare-2col — 클라우드 vs 자체 호스팅
 
-## skill-list 예시: 기능 가로 행 목록
-
-::: skill-list
-- icon: 📄
-  title: 문서 자동화
-  desc: 보고서·제안서를 한 번에 생성합니다
-- icon: 🔗
-  title: API 연동
-  desc: REST API로 기존 시스템과 바로 연결됩니다
-- icon: 🤖
-  title: AI 처리
-  desc: LLM 기반으로 내용을 분류·요약·추출합니다
-- icon: 📊
-  title: 분석 대시보드
-  desc: 실시간 데이터를 시각화하여 인사이트를 제공합니다
-:::
-
-# 9. 연동 서비스
-
-주요 서비스와 즉시 연동됩니다.
-
-## badge-grid 예시: 연동 서비스 그리드
-
-::: badge-grid
-- icon: 🗃️
-  name: PostgreSQL
-  type: 데이터베이스
-- icon: 🔐
-  name: Auth0
-  type: 인증
-- icon: 📁
-  name: S3
-  type: 스토리지
-- icon: 📬
-  name: SendGrid
-  type: 이메일
-- icon: 💬
-  name: Slack
-  type: 메시지
-- icon: 📈
-  name: Grafana
-  type: 모니터링
-- icon: 🐙
-  name: GitHub
-  type: 버전관리
-- icon: 🧩
-  name: Zapier
-  type: 자동화
-:::
-
-# 10. 사용 시나리오
-
-누가 어떻게 사용하는지 확인하세요.
-
-## columns 예시: 사용자 유형별 3단 배치
-
-::: columns
-- title: 개인 사용자
-  desc: 직관적인 UI와 기본 템플릿으로 별도 설정 없이 바로 시작할 수 있습니다.
-- title: 팀·조직
-  desc: 권한 관리와 공유 설정으로 여러 명이 함께 작업 환경을 구성합니다.
-- title: 개발자
-  desc: API와 웹훅으로 기존 시스템에 통합하거나 자체 워크플로우를 자동화합니다.
-:::
-
-# 11. 핵심 요약
-
-## bottom-list 예시: 본문 + 하단 칩 배치
-
-::: bottom-list
-- title: AI Creative Suite를 선택해야 하는 이유
-  body: 기존 도구와의 가장 큰 차이는 설정 없이도 강력한 기본값이 제공된다는 점입니다. 복잡한 구성 없이 5분 안에 첫 번째 결과를 만들 수 있으며, 필요할 때만 세부 설정을 조정하면 됩니다.
-  points: 즉시 시작 | 무설정 기본값 | 5분 온보딩 | 단계별 심화 | 무료 플랜 제공
-:::
-
-# 12. 배포 옵션 비교
-
-## compare-2col 예시: 클라우드 vs 자체 호스팅
+- title: 자체 호스팅
+  meta: 완전한 데이터 통제|비용 최적화 가능|커스터마이징 자유|초기 설정 필요|DevOps 역량 필요
+  note: 기술팀 보유 시 추천
+- title: 클라우드 SaaS
+  meta: 즉시 사용 가능|자동 업데이트|전용 지원 서비스|사용량 기반 과금|99.9% SLA 보장
+  note: 빠른 시작에 추천
 
 ::: compare-2col
-- col: 자체 호스팅
-  items: 완전한 데이터 통제 | 비용 최적화 가능 | 커스터마이징 자유 | 초기 설정 필요 | DevOps 역량 필요
+- title: 자체 호스팅
+  meta: 완전한 데이터 통제|비용 최적화 가능|커스터마이징 자유|초기 설정 필요|DevOps 역량 필요
   note: 기술팀 보유 시 추천
-- col: 클라우드 SaaS
-  items: 즉시 사용 가능 | 자동 업데이트 | 전용 지원 서비스 | 사용량 기반 과금 | 99.9% SLA 보장
+- title: 클라우드 SaaS
+  meta: 즉시 사용 가능|자동 업데이트|전용 지원 서비스|사용량 기반 과금|99.9% SLA 보장
   note: 빠른 시작에 추천
+:::
+
+# 9. 요점 정리
+
+## bottom-list — 본문 + 하단 칩 배치
+
+- title: 이 도구를 선택해야 하는 이유
+  desc: 기존 도구와의 가장 큰 차이는 설정 없이도 강력한 기본값이 제공된다는 점입니다. 복잡한 구성 없이 5분 안에 첫 번째 결과를 만들 수 있으며, 필요할 때만 세부 설정을 조정하면 됩니다.
+  meta: 즉시 시작|무설정 기본값|5분 온보딩|단계별 심화|무료 플랜 제공
+
+::: bottom-list
+- title: 이 도구를 선택해야 하는 이유
+  desc: 기존 도구와의 가장 큰 차이는 설정 없이도 강력한 기본값이 제공된다는 점입니다. 복잡한 구성 없이 5분 안에 첫 번째 결과를 만들 수 있으며, 필요할 때만 세부 설정을 조정하면 됩니다.
+  meta: 즉시 시작|무설정 기본값|5분 온보딩|단계별 심화|무료 플랜 제공
+:::
+
+# 10. 알림 박스 alert-box
+
+- type: tip
+  title: 💡 핵심 팁
+  desc: shortcode-map.json을 수정하면 HTML→MD 변환 규칙을 추가하거나 변경할 수 있습니다.
+
+  - type: warn
+  title: ⚠️ 주의사항
+  desc: 잘못된 YAML frontmatter는 build-guide.mjs 오류를 유발합니다. 들여쓰기를 확인하세요.
+
+## alert-box — TIP / WARN / SUCCESS / DANGER
+
+::: alert-box
+- type: tip
+  title: 💡 핵심 팁
+  desc: shortcode-map.json을 수정하면 HTML→MD 변환 규칙을 추가하거나 변경할 수 있습니다.
+:::
+
+::: alert-box
+- type: warn
+  title: ⚠️ 주의사항
+  desc: 잘못된 YAML frontmatter는 build-guide.mjs 오류를 유발합니다. 들여쓰기를 확인하세요.
+:::
+
+# 11. FAQ 아코디언 faq-accordion
+
+- title: 무료로 사용할 수 있나요?
+  desc: 네, 기본 기능은 무료 플랜으로 사용할 수 있습니다. 고급 기능은 Pro 플랜에서 제공됩니다.
+- title: 어떤 파일 형식을 지원하나요?
+  desc: HTML, Markdown, PPTX 형식을 지원합니다. shortcode-map.json으로 HTML 역변환 규칙을 관리합니다.
+- title: 커스텀 스타일을 적용할 수 있나요?
+  desc: config/styles.json에서 색상 프리셋을 정의하고, frontmatter의 style 키로 선택할 수 있습니다.
+
+## faq-accordion — 자주 묻는 질문
+
+::: faq-accordion
+- title: 무료로 사용할 수 있나요?
+  desc: 네, 기본 기능은 무료 플랜으로 사용할 수 있습니다. 고급 기능은 Pro 플랜에서 제공됩니다.
+- title: 어떤 파일 형식을 지원하나요?
+  desc: HTML, Markdown, PPTX 형식을 지원합니다. shortcode-map.json으로 HTML 역변환 규칙을 관리합니다.
+- title: 커스텀 스타일을 적용할 수 있나요?
+  desc: config/styles.json에서 색상 프리셋을 정의하고, frontmatter의 style 키로 선택할 수 있습니다.
+:::
+
+# 12. 프롬프트 예시 prompt-example
+
+## prompt-example — 실전 프롬프트 박스
+
+- title: 가이드 문서 생성 프롬프트
+  desc: 다음 도구에 대한 활용 가이드를 작성해 주세요. icon-grid로 핵심 기능 4가지, feature-grid로 사용 사례 3가지, steps로 시작 방법 4단계를 포함해 주세요.
+
+::: prompt-example
+- title: 가이드 문서 생성 프롬프트
+  desc: 다음 도구에 대한 활용 가이드를 작성해 주세요. icon-grid로 핵심 기능 4가지, feature-grid로 사용 사례 3가지, steps로 시작 방법 4단계를 포함해 주세요.
 :::
