@@ -51,17 +51,50 @@ function standardizeItem(item) {
 function parseShortcodeItems(src) {
   const items = [];
   let current = null;
+  let currentKey = null;
+
   for (const line of src.split(/\r?\n/)) {
-    if (!line.trim()) continue;
-    const first = line.match(/^\s*-\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
-    const next  = line.match(/^\s+([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
-    if (first) {
-      current = { [first[1]]: first[2].trim() };
+    if (!line.trim()) continue;  // 빈 줄 무시
+
+    // 1. 새 아이템 시작: - key: value
+    const firstMatch = line.match(/^\s*-\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+    if (firstMatch) {
+      currentKey = firstMatch[1];
+      current = { [currentKey]: firstMatch[2].trim() };
       items.push(current);
-    } else if (next && current) {
-      current[next[1]] = next[2].trim();
+      continue;
+    }
+
+    // 2. 기존 아이템 내 새 키 (들여쓰기 + key: value)
+    const nextMatch = line.match(/^\s+([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+    if (nextMatch && current) {
+      currentKey = nextMatch[1];
+      current[currentKey] = nextMatch[2].trim();
+      continue;
+    }
+
+    // 3. 들여쓰기된 하이픈 리스트 항목 (들여쓰기 + - value)
+    //    meta → | 구분, desc/note → \n 구분
+    const listMatch = line.match(/^\s+-\s+(.+)$/);
+    if (listMatch && current && currentKey) {
+      const val = listMatch[1].trim();
+      const existing = current[currentKey];
+      const sep = currentKey === 'meta' ? ' | ' : '\n';
+      current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
+      continue;
+    }
+
+    // 4. 들여쓰기된 연속 텍스트 (desc/note 멀티라인, YAML | 블록 스칼라 지원)
+    //    반드시 인덴트가 있어야 캡처됨 → 새 아이템 오인 방지
+    if (line.match(/^\s+\S/) && current && currentKey) {
+      const val = line.trim();
+      if (val === '|') continue;  // YAML 블록 스칼라 표시자 무시
+      const existing = current[currentKey];
+      const sep = currentKey === 'meta' ? ' | ' : '\n';
+      current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
     }
   }
+
   return items.map(standardizeItem);
 }
 
@@ -290,8 +323,24 @@ function itemH(item, w) {
   if (item.type === "bottom-list")  return 1.2 + c.gap + D.bottomList.chipH + c.gap;
   if (item.type === "compare-2col") {
     if (item.items.length < 2) return 1.5 + c.gap;
-    const maxFeat = Math.max(0, ...item.items.slice(0, 2).map(it => (it.meta || "").split("|").filter(Boolean).length));
-    return c.padY + (c.titleSize / 72) * 1.7 + c.gap + maxFeat * ((c.bodySize / 72) * 1.7 + 0.05) + 0.28 + 0.12 + c.padY + c.gap;
+    const cc = D.compare2col;
+    const colW = (w - cc.colGap) / 2;
+    const lh = (c.bodySize / 72) * 1.7;
+    const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
+      // desc: \n 구분 각 세그먼트의 줄바꿈 포함 높이 합산
+      const descSegs = (it.desc || "").split("\n").filter(Boolean);
+      const descH = descSegs.reduce((sum, seg) =>
+        sum + lh * Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize)) + 0.05, 0);
+      // meta: | 구분 불릿 수
+      const metaLines = (it.meta || "").split("|").filter(Boolean).length;
+      return c.padY
+        + (c.titleSize / 72) * 1.7 + c.gap
+        + (descSegs.length > 0 ? descH + c.gap : 0)
+        + metaLines * (lh + 0.05)
+        + (it.note ? 0.28 + 0.12 : 0)
+        + c.padY;
+    }));
+    return maxH + c.gap;
   }
   if (item.type === "alert-box") {
     return item.items.reduce((sum, it) => {
@@ -614,30 +663,53 @@ function renderBottomList(slide, item, x, y, w, pal) {
 function renderCompare2Col(slide, item, x, y, w, pal) {
   const c = D.card; const cc = D.compare2col; const font = D.slide.font; const r = D.slide.globalRadius;
   if (item.items.length < 2) return renderCompareGrid(slide, item, x, y, w, pal);
-  const colW = (w - cc.colGap) / 2; const lh = (c.bodySize / 72) * 1.7; const noteH = 0.28;
-  const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
-    const its = (it.meta || "").split("|").map(s => s.trim()).filter(Boolean);
-    return c.padY + (c.titleSize / 72) * 1.7 + c.gap + its.length * (lh + 0.05) + (it.note ? noteH + 0.12 : 0) + c.padY;
-  }));
+  const colW = (w - cc.colGap) / 2;
+  const lh = (c.bodySize / 72) * 1.7;
+  const noteH = 0.28;
+  // itemH()와 동일한 로직으로 maxH 계산 (c.gap 제거)
+  const maxH = itemH(item, w) - c.gap;
+
   item.items.slice(0, 2).forEach((it, idx) => {
     const cx = x + idx * (colW + cc.colGap); const isLeft = idx === 0;
     const ac = hexClean(it.color) || (isLeft ? pal.brand : pal.text2);
     const cardFill = it.color ? (hexClean(it.color) + "0D") : (isLeft ? pal.brandLight : D.palette.white);
+
     slide.addShape("roundRect", { x: cx, y, w: colW, h: maxH, rectRadius: r, fill: { color: cardFill }, line: { color: ac, width: (it.color || isLeft) ? 1.5 : 0.75 } });
     slide.addShape("rect", { x: cx, y, w: colW, h: 0.05, fill: { color: ac }, line: { color: ac } });
+
     let ty = y + c.padY;
+
+    // 타이틀
     slide.addText(it.title, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: (c.titleSize / 72) * 1.7 + 0.05, fontSize: c.titleSize + 1, bold: true, color: it.color ? ac : (isLeft ? (pal.brandDeep || pal.brandDark) : pal.text), fontFace: font, valign: "top" });
     ty += (c.titleSize / 72) * 1.7 + c.gap;
+
+    // desc: \n 구분 단락 텍스트 — 세그먼트별 wrap 높이 계산 후 순차 렌더링
+    if (it.desc) {
+      const descSegs = it.desc.split("\n").filter(Boolean);
+      for (const seg of descSegs) {
+        const segLines = Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize));
+        const segH = lh * segLines + 0.05;
+        slide.addText(seg, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: segH, fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
+        ty += segH;
+      }
+      ty += c.gap;  // desc 블록 아래 여백
+    }
+
+    // meta: | 구분 불릿 (ty 누적으로 겹침 방지)
     for (const bullet of (it.meta || "").split("|").map(s => s.trim()).filter(Boolean)) {
       slide.addText("• " + bullet, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: lh + 0.05, fontSize: c.bodySize, color: it.color ? ac : (isLeft ? (pal.brandDeep || pal.brandDark) : pal.text2), fontFace: font });
       ty += lh + 0.05;
     }
+
+    // note: 카드 하단 고정 배지 (다중 줄이면 · 로 연결)
     if (it.note) {
+      const noteText = it.note.split("\n").filter(Boolean).join(" · ");
       const noteY = y + maxH - c.padY - noteH;
       slide.addShape("roundRect", { x: cx + c.padX, y: noteY, w: colW - c.padX * 2, h: noteH, rectRadius: 0.06, fill: { color: (it.color || isLeft) ? ac : pal.brandLight }, line: { color: ac } });
-      slide.addText(it.note, { x: cx + c.padX, y: noteY, w: colW - c.padX * 2, h: noteH, fontSize: 8, bold: true, color: (it.color || isLeft) ? D.palette.white : pal.brandDark, fontFace: font, align: "center", valign: "middle" });
+      slide.addText(noteText, { x: cx + c.padX, y: noteY, w: colW - c.padX * 2, h: noteH, fontSize: 8, bold: true, color: (it.color || isLeft) ? D.palette.white : pal.brandDark, fontFace: font, align: "center", valign: "middle" });
     }
   });
+
   return maxH + c.gap;
 }
 
