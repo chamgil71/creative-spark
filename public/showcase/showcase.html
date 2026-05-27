@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Creative Spark 숏코드 완전 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand:      #9B59B6;
+    --brand-dark: #7D3C98;
+    --brand-deep: #5B2C6F;
+    --brand-light:#F4ECF7;
+    --brand-mid:  #D7BDE2;
+    --border:     #E0CCEA;
+    --bg:         #FBF7FC;
+    --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
+    --shadow:    0 4px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  
+  /* Navigation & Hero */
+  .nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); height: 60px; }
+  .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 24px; }
+  .nav-logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.1rem; }
+  .nav-links { display: flex; gap: 18px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
+  .nav-links a:hover { color: var(--brand); }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #2A1A3E 40%, #5B2C6F 70%, #9B59B6 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #9B59B655 0%, transparent 60%); pointer-events: none; }
+  .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+  .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+  .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+  .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+  .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+  .hero-stat span { font-size: .8rem; opacity: .7; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.2); } }
+
+  /* Layout */
+  main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+  .section { margin-bottom: 80px; scroll-margin-top: 80px; }
+  .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+  .section-num { width: 40px; height: 40px; background: var(--brand); color: #fff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; }
+  .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.9rem; font-weight: 700; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 35px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .card-title { font-size: 1.4rem; color: var(--brand-dark); margin-bottom: 20px; border-bottom: 2px solid var(--brand-light); display: inline-block; padding-bottom: 5px; font-weight: 800;}
+  
+  /* 공통 카드 스타일 */
+  .card-top-bar { height: 4px; background: var(--brand); position: absolute; top: 0; left: 0; right: 0; }
+  .feature-card { padding: 18px; }
+  
+  /* Grid Systems */
+  .icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid { display: grid; gap: 20px; margin: 25px 0; }
+  .icon-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .plan-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .compare-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .columns-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin: 25px 0;}
+
+  /* Cards */
+  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .bottom-list-card, .badge-item { 
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; 
+    position: relative; overflow: hidden; transition: 0.2s; box-shadow: var(--shadow);
+  }
+  .icon-card:hover, .feature-card:hover, .plan-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  
+  
+  .icon-card-icon { font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
+  .icon-card-title, .feature-card-title, .compare-card-title, .col-title, .plan-title, .bl-title { 
+    font-weight: 800; font-size: 1.15rem; margin-bottom: 10px; color: var(--text); 
+  }
+  .icon-card-title { text-align: center; }
+  .fc-icon { margin-right: 8px; font-size: 1.2rem; }
+  .feature-tag { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 100px; background: var(--brand-light); color: var(--brand-dark); }
+  p { color: var(--text-2); font-size: 0.95rem; margin-bottom: 1rem; }
+  .icon-card p { text-align: center; }
+
+  /* Tool Card */
+  .tool-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); margin: 25px 0; }
+  .tc-header { padding: 25px; display: flex; align-items: center; gap: 20px; }
+  .tc-icon { width: 55px; height: 55px; border-radius: calc(var(--radius) / 2); background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+  .tc-name { font-size: 1.3rem; font-weight: 800; }
+  .tc-sub { font-size: 0.9rem; opacity: 0.9; }
+  .tc-badge { margin-left: auto; font-size: 0.8rem; font-weight: 800; padding: 5px 15px; border-radius: 100px; background: rgba(255,255,255,0.25); }
+  .tc-list { padding: 12px 25px 14px 40px; font-size: 0.88rem; background: var(--bg); border-top: 1px solid var(--border); color: var(--text-2); margin: 0; line-height: 1.9; }
+
+  /* Workflow */
+  .workflow-strip { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; }
+  .wf-step { flex: 1; min-width: 140px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; }
+  .wf-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .wf-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .wf-tool { font-size: 0.8rem; color: var(--text-2); }
+  .wf-arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #cbd5e1; z-index: 1; font-size: 1.2rem; }
+
+  /* Steps */
+  .step-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .step-item { display: flex; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .step-num { width: 35px; height: 35px; background: var(--brand); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+  .step-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
+
+  /* Plan Grid */
+  .plan-card { text-align: center; padding-top: 35px; }
+  .plan-featured { border-color: var(--brand); box-shadow: 0 8px 30px rgba(99,102,241,0.15); transform: translateY(-5px); }
+  .plan-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: 0.75rem; font-weight: 900; padding: 4px 15px; border-radius: 100px; }
+  .plan-title { font-size: 1.3rem; margin-bottom: 20px; }
+  .plan-features { list-style: none; margin: 0 0 20px 0; padding: 0; text-align: left; }
+  .plan-features li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-2); }
+  .plan-features li:before { content: '✓'; color: var(--brand); margin-right: 8px; font-weight: bold; }
+  .plan-note { margin-top: auto; padding: 8px; background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+
+  /* Skill List */
+  .skill-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .skill-item { display: flex; align-items: center; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 25px; }
+  .skill-icon { width: 40px; height: 40px; background: var(--brand-light); color: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .skill-title { font-weight: 800; font-size: 1.05rem; width: 30%; }
+  .skill-desc { font-size: 0.95rem; color: var(--text-2); flex: 1; margin: 0; }
+
+  /* Badge Grid */
+  .badge-item { text-align: center; padding: 20px 15px; }
+  .badge-icon { font-size: 2rem; margin-bottom: 10px; }
+  .badge-title { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .badge-tag { font-size: 0.8rem; color: var(--text-2); }
+
+  /* Bottom List */
+  .bl-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .bl-chip { background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: 800; padding: 6px 15px; border-radius: 100px; }
+
+  /* Compare 2Col */
+  .compare-2col { display: flex; gap: 20px; margin: 25px 0; }
+  .c2-card { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .c2-left { background: var(--brand-light); border-color: var(--brand); border-width: 2px; }
+  .c2-left .card-top-bar { background: var(--brand); }
+  .c2-right .card-top-bar { background: var(--text-2); }
+  .c2-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color: var(--brand-dark); }
+  .c2-right .c2-title { color: var(--text); }
+  .c2-list { list-style: none; margin: 0; padding: 0; }
+  .c2-list li { padding: 8px 0; font-size: 1rem; color: var(--text-2); display: flex; gap: 10px; }
+  .c2-left .c2-list li { color: var(--brand-dark); }
+  .c2-list li:before { content: '•'; font-weight: bold; }
+  .c2-note { margin-top: 20px; padding: 10px; background: var(--brand); color: #fff; font-size: 0.85rem; font-weight: bold; text-align: center; border-radius: 8px; }
+  .c2-right .c2-note { background: var(--border); color: var(--text); }
+  @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
+
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
+  /* Done section */
+  .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+  .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
+  .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+
+  /* Back to top */
+  .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+  .back-top:hover { background: var(--brand-dark); transform: translateY(-2px); }
+
+  /* Footer */
+  footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+  footer a { color: var(--brand); text-decoration: none; }
+
+  /* Alert Box */
+  .alert-box { display: flex; gap: 14px; padding: 16px 20px; border-radius: var(--radius); border-left: 4px solid var(--alert-color, var(--brand)); background: color-mix(in srgb, var(--alert-color, var(--brand)) 8%, white); margin: 20px 0; }
+  .alert-tip  { --alert-color: var(--brand); }
+  .alert-warn { --alert-color: #F59E0B; }
+  .alert-success { --alert-color: #22C55E; }
+  .alert-danger { --alert-color: #EF4444; }
+  .alert-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.5; }
+  .alert-body strong { display: block; font-size: 0.95rem; font-weight: 800; color: var(--alert-color, var(--brand)); margin-bottom: 4px; }
+  .alert-body p { margin: 0; font-size: 0.92rem; color: var(--text-2); }
+
+  /* Command Block */
+  .cmd-block { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .cmd-header { display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .cmd-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; flex: 1; }
+  .cmd-lang { font-size: 0.75rem; color: var(--brand); font-family: 'JetBrains Mono', monospace; }
+  .cmd-copy { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 3px 10px; font-size: 0.75rem; cursor: pointer; transition: 0.15s; font-family: inherit; }
+  .cmd-copy:hover { background: rgba(255,255,255,0.16); color: white; }
+  .cmd-pre { margin: 0; padding: 18px 20px; background: transparent; color: #CBD5E1; font-size: 0.92rem; overflow-x: auto; border-radius: 0; white-space: pre-wrap; word-break: break-all; }
+  .cmd-pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* Tabs */
+  .tabs-wrap { margin: 25px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .tabs-nav { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab-btn { padding: 11px 20px; background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--text-2); white-space: nowrap; transition: 0.15s; font-family: inherit; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); background: white; }
+  .tab-btn:hover:not(.active) { color: var(--text); background: rgba(0,0,0,0.03); }
+  .tab-panel { display: none; padding: 24px; background: white; }
+  .tab-panel.active { display: block; }
+  .tab-panel p { margin-bottom: 0.8rem; }
+
+  /* FAQ Accordion */
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin: 25px 0; }
+  .faq-item { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s; }
+  .faq-item.open { border-color: var(--brand); }
+  .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: transparent; border: none; cursor: pointer; font-size: 0.97rem; font-weight: 700; color: var(--text); text-align: left; gap: 12px; font-family: inherit; transition: background 0.15s; }
+  .faq-q:hover { background: var(--brand-light); }
+  .faq-item.open .faq-q { color: var(--brand-dark); background: var(--brand-light); }
+  .faq-arrow { transition: transform 0.2s; font-size: 0.7rem; opacity: 0.5; flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); opacity: 1; }
+  .faq-a { display: none; padding: 0 20px 16px; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a p { margin: 0; font-size: 0.93rem; color: var(--text-2); }
+
+  /* Prompt Example */
+  .prompt-box { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .prompt-label { padding: 9px 16px; background: var(--brand); color: white; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.03em; }
+  .prompt-content { display: block; margin: 0; padding: 18px 20px; color: #CBD5E1; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.9; background: transparent; border-radius: 0; }
+
+  /* Stat Highlight */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 25px 0; }
+  .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 16px; text-align: center; box-shadow: var(--shadow); transition: 0.2s; }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .stat-val { font-size: 1.9rem; font-weight: 900; color: var(--brand); font-family: 'Noto Serif KR', serif; margin-bottom: 6px; line-height: 1.1; }
+  .stat-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .stat-note { font-size: 0.8rem; color: var(--text-3); }
+
+  /* Misc */
+  .compare-note { margin-top: 15px; padding: 8px; background: var(--brand-light); color: var(--brand-dark); text-align: center; font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+  blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius); padding: 14px 18px; margin: 14px 0; color: var(--brand-dark); }
+  blockquote p { margin: 0; color: var(--brand-dark); }
+  pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  
+  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
+  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
+  tr:nth-child(even) { background: #fafafa; }
+
+  /* ✓ 기호가 들어간 셀 자동 강조 */
+  td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+</style>
+</head>
+<body>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">✨ Creative Spark 숏코드 완전 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 신규 3대 동적 시각화 특화 숏코드</a></li><li><a href="#sec-2">2. cols=N 가변 다단 격자 제어 데모</a></li><li><a href="#sec-3">3. 스타일 프리셋 (<code>style</code> 키 선택)</a></li><li><a href="#sec-4">4. 표준 컴포넌트 숏코드 라이브러리</a></li></ul></div></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge"><span></span>2026 · DEMO HUB (v1.1)</div>
+      <div class="hero-logo">✨</div>
+      <h1>Creative Spark 숏코드 완전 가이드</h1>
+      <p>HTML ➡️ MD ➡️ PPTX 파이프라인이 지원하는 전체 표준 숏코드 및 프리미엄 시각화 스펙 시연</p>
+      <a class="hero-cta" href="#" target="_blank" rel="noopener">쇼케이스 시작하기</a>
+      <div class="hero-stats"><div class="hero-stat"><strong>18종</strong><span>전체 표준 숏코드</span></div><div class="hero-stat"><strong>3단계</strong><span>자동 컴파일 파이프라인</span></div><div class="hero-stat"><strong>cols=N</strong><span>가변 격자 제어</span></div></div>
+    </div>
+  </header>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 신규 3대 동적 시각화 특화 숏코드</h2></div><div class="card"><p>오리지널의 아름답고 독창적인 3대 비주얼 요소를 온전히 마크다운으로 포용하여 CSS drift, pulse, popover 애니메이션을 통해 입체적으로 재현합니다.</p>
+</div><div class="card"><h3 class="card-title">Obsidian 둥둥 지식 그래프 (network-box)</h3><p>Obsidian의 노드 성단 뷰어를 모방하여 넘실넘실 유영하는 3D형 은하수 그래프 펄스 비주얼입니다.</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;graph-visual&quot;&gt;
+&lt;div class=&quot;graph-nodes&quot;&gt;
+&lt;div class=&quot;node node-main&quot; style=&quot;background: #EC4899; box-shadow: 0 0 24px #EC489988;&quot;&gt;
+크리에이티브 스파크 코어
+&lt;/div&gt;
+&lt;div class=&quot;node node-1&quot; style=&quot;border: 2px solid #10B981; color: #10B981;&quot;&gt;
+깃 플로우 스트립
+&lt;span style=&quot;font-size:0.7rem; opacity:0.6; display:block;&quot;&gt;git-flow-strip&lt;/span&gt;
+&lt;/div&gt;&lt;div class=&quot;node node-2&quot; style=&quot;border: 2px solid #3B82F6; color: #3B82F6;&quot;&gt;
+가상 에디터 박스
+&lt;span style=&quot;font-size:0.7rem; opacity:0.6; display:block;&quot;&gt;editor-box&lt;/span&gt;
+&lt;/div&gt;&lt;div class=&quot;node node-3&quot; style=&quot;border: 2px solid #F59E0B; color: #F59E0B;&quot;&gt;
+가변 그리드 파서
+&lt;span style=&quot;font-size:0.7rem; opacity:0.6; display:block;&quot;&gt;cols=N&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="graph-visual">
+<div class="graph-nodes">
+<div class="node node-main" style="background: #EC4899; box-shadow: 0 0 24px #EC489988;">
+크리에이티브 스파크 코어
+</div>
+<div class="node node-1" style="border: 2px solid #10B981; color: #10B981;">
+깃 플로우 스트립
+<span style="font-size:0.7rem; opacity:0.6; display:block;">git-flow-strip</span>
+</div><div class="node node-2" style="border: 2px solid #3B82F6; color: #3B82F6;">
+가상 에디터 박스
+<span style="font-size:0.7rem; opacity:0.6; display:block;">editor-box</span>
+</div><div class="node node-3" style="border: 2px solid #F59E0B; color: #F59E0B;">
+가변 그리드 파서
+<span style="font-size:0.7rem; opacity:0.6; display:block;">cols=N</span>
+</div>
+</div>
+</div><hr>
+</div><div class="card"><h3 class="card-title">VS Code 가상 에디터 창 (editor-box)</h3><p>VS Code 모양의 어두운 테마 디자인, 파일 탭 UI, 좌측 행 번호 자동 배열 기능이 가미된 가상 코드 편집기 화면입니다.</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;editor-sim&quot;&gt;
+&lt;div class=&quot;editor-titlebar&quot;&gt;
+&lt;div class=&quot;editor-dot red&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;editor-dot yellow&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;editor-dot green&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;editor-tab active&quot;&gt;shortcode-map.json &lt;span style=&quot;font-size:0.75rem;opacity:0.5;&quot;&gt;(json)&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;editor-body&quot;&gt;
+&lt;div class=&quot;line-nums&quot;&gt;
+&lt;span&gt;1&lt;/span&gt;&lt;span&gt;2&lt;/span&gt;&lt;span&gt;3&lt;/span&gt;&lt;span&gt;4&lt;/span&gt;&lt;span&gt;5&lt;/span&gt;&lt;span&gt;6&lt;/span&gt;&lt;span&gt;7&lt;/span&gt;&lt;span&gt;8&lt;/span&gt;&lt;span&gt;9&lt;/span&gt;&lt;span&gt;10&lt;/span&gt;
+&lt;/div&gt;
+&lt;div class=&quot;code-area&quot;&gt;&lt;pre&gt;&lt;code&gt;{
+&amp;quot;git-flow-strip&amp;quot;: {
+&amp;quot;htmlClasses&amp;quot;: [&amp;quot;flow-branches&amp;quot;, &amp;quot;branch-row&amp;quot;],
+&amp;quot;itemSelector&amp;quot;: &amp;quot;.branch-row&amp;quot;
+},
+&amp;quot;editor-box&amp;quot;: {
+&amp;quot;htmlClasses&amp;quot;: [&amp;quot;editor-sim&amp;quot;],
+&amp;quot;itemSelector&amp;quot;: &amp;quot;.editor-sim&amp;quot;
+}
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="editor-sim">
+<div class="editor-titlebar">
+<div class="editor-dot red"></div>
+<div class="editor-dot yellow"></div>
+<div class="editor-dot green"></div>
+<div class="editor-tab active">shortcode-map.json <span style="font-size:0.75rem;opacity:0.5;">(json)</span></div>
+</div>
+<div class="editor-body">
+<div class="line-nums">
+<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+</div>
+<div class="code-area"><pre><code>{
+&quot;git-flow-strip&quot;: {
+&quot;htmlClasses&quot;: [&quot;flow-branches&quot;, &quot;branch-row&quot;],
+&quot;itemSelector&quot;: &quot;.branch-row&quot;
+},
+&quot;editor-box&quot;: {
+&quot;htmlClasses&quot;: [&quot;editor-sim&quot;],
+&quot;itemSelector&quot;: &quot;.editor-sim&quot;
+}
+}</code></pre></div>
+</div>
+</div><hr>
+</div><div class="card"><h3 class="card-title">GitHub 브랜치 커밋 로그 흐름도 (git-flow-strip)</h3><p>깃허브 브랜치와 커밋 트리를 어두운 터미널 다이어그램 형식으로 표현하며, 커밋 노드에 마우스를 올릴 시 디테일한 커밋 상세 목록 팝오버가 사르르 노출됩니다.</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;git-flow-container&quot;&gt;&lt;div class=&quot;flow-branches&quot;&gt;&lt;div class=&quot;branch-row&quot;&gt;
+&lt;div class=&quot;branch-label&quot; style=&quot;background: #10B98112; border-left: 4px solid #10B981; color: #10B981; font-weight: 800;&quot;&gt;
+main
+&lt;/div&gt;
+&lt;div class=&quot;branch-line&quot; style=&quot;background: linear-gradient(90deg, #10B981 30%, rgba(203, 213, 225, 0.4) 100%);&quot;&gt;
+&lt;div class=&quot;commit&quot; style=&quot;border-color: #10B981;&quot;&gt;
+&lt;span class=&quot;commit-label&quot; style=&quot;background: #10B981;&quot;&gt;v1.1.0&lt;/span&gt;
+&lt;div class=&quot;commit-line&quot; style=&quot;border-color: #10B981;&quot;&gt;
+&lt;li&gt;신규 컴포넌트 숏코드 규격 탑재 완료&lt;/li&gt;&lt;li&gt;PPTX 슬라이드 렌더러 안전 동기화 완수&lt;/li&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&quot;branch-row&quot;&gt;
+&lt;div class=&quot;branch-label&quot; style=&quot;background: #3B82F612; border-left: 4px solid #3B82F6; color: #3B82F6; font-weight: 800;&quot;&gt;
+feature/visuals
+&lt;/div&gt;
+&lt;div class=&quot;branch-line&quot; style=&quot;background: linear-gradient(90deg, #3B82F6 30%, rgba(203, 213, 225, 0.4) 100%);&quot;&gt;
+&lt;div class=&quot;commit&quot; style=&quot;border-color: #3B82F6;&quot;&gt;
+&lt;span class=&quot;commit-label&quot; style=&quot;background: #3B82F6;&quot;&gt;Commit 701&lt;/span&gt;
+&lt;div class=&quot;commit-line&quot; style=&quot;border-color: #3B82F6;&quot;&gt;
+&lt;li&gt;Obsidian 3D 지식 그래프 drift 애니메이션 완비&lt;/li&gt;&lt;li&gt;VS Code 에디터 창 라인 넘버러 구현 완료&lt;/li&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="git-flow-container"><div class="flow-branches"><div class="branch-row">
+<div class="branch-label" style="background: #10B98112; border-left: 4px solid #10B981; color: #10B981; font-weight: 800;">
+main
+</div>
+<div class="branch-line" style="background: linear-gradient(90deg, #10B981 30%, rgba(203, 213, 225, 0.4) 100%);">
+<div class="commit" style="border-color: #10B981;">
+<span class="commit-label" style="background: #10B981;">v1.1.0</span>
+<div class="commit-line" style="border-color: #10B981;">
+<li>신규 컴포넌트 숏코드 규격 탑재 완료</li><li>PPTX 슬라이드 렌더러 안전 동기화 완수</li>
+</div>
+</div>
+</div>
+</div><div class="branch-row">
+<div class="branch-label" style="background: #3B82F612; border-left: 4px solid #3B82F6; color: #3B82F6; font-weight: 800;">
+feature/visuals
+</div>
+<div class="branch-line" style="background: linear-gradient(90deg, #3B82F6 30%, rgba(203, 213, 225, 0.4) 100%);">
+<div class="commit" style="border-color: #3B82F6;">
+<span class="commit-label" style="background: #3B82F6;">Commit 701</span>
+<div class="commit-line" style="border-color: #3B82F6;">
+<li>Obsidian 3D 지식 그래프 drift 애니메이션 완비</li><li>VS Code 에디터 창 라인 넘버러 구현 완료</li>
+</div>
+</div>
+</div>
+</div></div></div><hr>
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. cols=N 가변 다단 격자 제어 데모</h2></div><div class="card"><p>작성자가 숏코드 선언 시 <code>cols=N</code> 인수를 지정하여 격자형 카드들의 단수를 직접 통제하고 화면이 찌그러지는 현상을 원천 방어합니다.</p>
+</div><div class="card"><h3 class="card-title">cols=3 컬럼 그리드 카드</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;feature-grid&quot; style=&quot;grid-template-columns: repeat(3, 1fr);&quot;&gt;&lt;div class=&quot;feature-card&quot; style=&quot;border-color: #FFF7ED; background-color: #FFF7ED08;&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot; style=&quot;background-color:#FFF7ED&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;feature-card-title&quot; style=&quot;color: var(--brand-dark);&quot;&gt;
+&lt;span class=&quot;fc-icon&quot;&gt;🔮&lt;/span&gt;기획 &amp;amp; 디자인
+&lt;/div&gt;
+&lt;p&gt; harmony 색상 테마 및 HSL 컬러 자동 생성&lt;/p&gt;
+&lt;/div&gt;&lt;div class=&quot;feature-card&quot; style=&quot;border-color: #F0FDF4; background-color: #F0FDF408;&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot; style=&quot;background-color:#F0FDF4&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;feature-card-title&quot; style=&quot;color: var(--brand-dark);&quot;&gt;
+&lt;span class=&quot;fc-icon&quot;&gt;⚡&lt;/span&gt;초고속 렌더링
+&lt;/div&gt;
+&lt;p&gt;Vite &amp;amp; React 번들링 파이프라인 가동&lt;/p&gt;
+&lt;/div&gt;&lt;div class=&quot;feature-card&quot; style=&quot;border-color: #EBF2FF; background-color: #EBF2FF08;&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot; style=&quot;background-color:#EBF2FF&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;feature-card-title&quot; style=&quot;color: var(--brand-dark);&quot;&gt;
+&lt;span class=&quot;fc-icon&quot;&gt;📦&lt;/span&gt;스탠드얼론
+&lt;/div&gt;
+&lt;p&gt;1.3MB 크기의 전천후 단일 HTML 번들 파일&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" style="border-color: #FFF7ED; background-color: #FFF7ED08;">
+<div class="card-top-bar" style="background-color:#FFF7ED"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🔮</span>기획 &amp; 디자인
+</div>
+<p> harmony 색상 테마 및 HSL 컬러 자동 생성</p>
+</div><div class="feature-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+<div class="card-top-bar" style="background-color:#F0FDF4"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚡</span>초고속 렌더링
+</div>
+<p>Vite &amp; React 번들링 파이프라인 가동</p>
+</div><div class="feature-card" style="border-color: #EBF2FF; background-color: #EBF2FF08;">
+<div class="card-top-bar" style="background-color:#EBF2FF"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">📦</span>스탠드얼론
+</div>
+<p>1.3MB 크기의 전천후 단일 HTML 번들 파일</p>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">cols=4 요금/플랜 격자 카드</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;plan-grid&quot; style=&quot;grid-template-columns: repeat(4, 1fr);&quot;&gt;&lt;div class=&quot;plan-card &quot; &gt;
+&lt;div class=&quot;card-top-bar&quot; &gt;&lt;/div&gt;
+&lt;div class=&quot;plan-badge&quot; &gt;체험용&lt;/div&gt;
+&lt;div class=&quot;plan-title&quot; &gt;Free 체험판&lt;/div&gt;
+&lt;ul class=&quot;plan-features&quot;&gt;
+&lt;li&gt;기본 숏코드 10종 지원&lt;/li&gt;&lt;li&gt;로컬 빌드 및 PPTX 변환&lt;/li&gt;&lt;li&gt;기본 가이드라인 포함&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;plan-note&quot; &gt;비용 없음&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&quot;plan-card plan-featured&quot; style=&quot;border-color:#6366F1; box-shadow: 0 8px 24px #6366F133;&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot; style=&quot;background:#6366F1;&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;plan-badge&quot; style=&quot;background:#6366F1;&quot;&gt;추천&lt;/div&gt;
+&lt;div class=&quot;plan-title&quot; style=&quot;color: #6366F1;&quot;&gt;Spark Pro&lt;/div&gt;
+&lt;ul class=&quot;plan-features&quot;&gt;
+&lt;li&gt;3대 특화 숏코드 100% 지원&lt;/li&gt;&lt;li&gt;cols=N 컬럼 통제 기능&lt;/li&gt;&lt;li&gt;프리미엄 HSL 테마 무제한&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;plan-note&quot; style=&quot;background:#6366F1;&quot;&gt;$9.99 / 월&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&quot;plan-card plan-featured&quot; style=&quot;border-color:#1E293B; box-shadow: 0 8px 24px #1E293B33;&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot; style=&quot;background:#1E293B;&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;plan-badge&quot; style=&quot;background:#1E293B;&quot;&gt;기업용&lt;/div&gt;
+&lt;div class=&quot;plan-title&quot; style=&quot;color: #1E293B;&quot;&gt;Spark Enterprise&lt;/div&gt;
+&lt;ul class=&quot;plan-features&quot;&gt;
+&lt;li&gt;독점 비주얼 커스텀 지원&lt;/li&gt;&lt;li&gt;전용 빌더 서브에이전트 배치&lt;/li&gt;&lt;li&gt;SLA 성능 및 업타임 보증&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;plan-note&quot; style=&quot;background:#1E293B;&quot;&gt;별도 문의&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&quot;plan-card plan-featured&quot; style=&quot;border-color:#64748B; box-shadow: 0 8px 24px #64748B33;&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot; style=&quot;background:#64748B;&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;plan-badge&quot; style=&quot;background:#64748B;&quot;&gt;맞춤형&lt;/div&gt;
+&lt;div class=&quot;plan-title&quot; style=&quot;color: #64748B;&quot;&gt;Custom DIY&lt;/div&gt;
+&lt;ul class=&quot;plan-features&quot;&gt;
+&lt;li&gt;필요한 기능만 조립&lt;/li&gt;&lt;li&gt;자율 파트너십 구축&lt;/li&gt;&lt;li&gt;일대일 빌딩 밀착 서포트&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;plan-note&quot; style=&quot;background:#64748B;&quot;&gt;견적 기반&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="plan-grid" style="grid-template-columns: repeat(4, 1fr);"><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >체험용</div>
+<div class="plan-title" >Free 체험판</div>
+<ul class="plan-features">
+<li>기본 숏코드 10종 지원</li><li>로컬 빌드 및 PPTX 변환</li><li>기본 가이드라인 포함</li>
+</ul>
+<div class="plan-note" >비용 없음</div>
+</div><div class="plan-card plan-featured" style="border-color:#6366F1; box-shadow: 0 8px 24px #6366F133;">
+<div class="card-top-bar" style="background:#6366F1;"></div>
+<div class="plan-badge" style="background:#6366F1;">추천</div>
+<div class="plan-title" style="color: #6366F1;">Spark Pro</div>
+<ul class="plan-features">
+<li>3대 특화 숏코드 100% 지원</li><li>cols=N 컬럼 통제 기능</li><li>프리미엄 HSL 테마 무제한</li>
+</ul>
+<div class="plan-note" style="background:#6366F1;">$9.99 / 월</div>
+</div><div class="plan-card plan-featured" style="border-color:#1E293B; box-shadow: 0 8px 24px #1E293B33;">
+<div class="card-top-bar" style="background:#1E293B;"></div>
+<div class="plan-badge" style="background:#1E293B;">기업용</div>
+<div class="plan-title" style="color: #1E293B;">Spark Enterprise</div>
+<ul class="plan-features">
+<li>독점 비주얼 커스텀 지원</li><li>전용 빌더 서브에이전트 배치</li><li>SLA 성능 및 업타임 보증</li>
+</ul>
+<div class="plan-note" style="background:#1E293B;">별도 문의</div>
+</div><div class="plan-card plan-featured" style="border-color:#64748B; box-shadow: 0 8px 24px #64748B33;">
+<div class="card-top-bar" style="background:#64748B;"></div>
+<div class="plan-badge" style="background:#64748B;">맞춤형</div>
+<div class="plan-title" style="color: #64748B;">Custom DIY</div>
+<ul class="plan-features">
+<li>필요한 기능만 조립</li><li>자율 파트너십 구축</li><li>일대일 빌딩 밀착 서포트</li>
+</ul>
+<div class="plan-note" style="background:#64748B;">견적 기반</div>
+</div></div><hr>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 스타일 프리셋 (<code>style</code> 키 선택)</h2></div><div class="card"><p>마크다운 frontmatter에서 <code>style: &lt;키&gt;</code>를 선택하여 고유의 고대비 Harmony 브랜드 칼라셋을 컴파일러가 자동 적용합니다.</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;tool-card&quot;&gt;
+&lt;div class=&quot;tc-header&quot; style=&quot;background: linear-gradient(135deg, #10A37F, #10A37FCC); color: #fff;&quot;&gt;
+&lt;div class=&quot;tc-icon&quot;&gt;🤖&lt;/div&gt;
+&lt;div class=&quot;tc-content&quot;&gt;
+&lt;div class=&quot;tc-name&quot;&gt;ai-chat&lt;/div&gt;
+&lt;div class=&quot;tc-sub&quot;&gt;AI 챗봇 (그린) — ChatGPT·Claude 등 대화형 AI 가이드&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;tc-badge&quot;&gt;style: ai-chat&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&quot;tool-card&quot;&gt;
+&lt;div class=&quot;tc-header&quot; style=&quot;background: linear-gradient(135deg, #D97757, #D97757CC); color: #fff;&quot;&gt;
+&lt;div class=&quot;tc-icon&quot;&gt;💻&lt;/div&gt;
+&lt;div class=&quot;tc-content&quot;&gt;
+&lt;div class=&quot;tc-name&quot;&gt;ai-dev&lt;/div&gt;
+&lt;div class=&quot;tc-sub&quot;&gt;AI 개발 도구 (오렌지) — Cursor·GitHub Copilot 등 개발 도구&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;tc-badge&quot;&gt;style: ai-dev&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="tool-card">
+<div class="tc-header" style="background: linear-gradient(135deg, #10A37F, #10A37FCC); color: #fff;">
+<div class="tc-icon">🤖</div>
+<div class="tc-content">
+<div class="tc-name">ai-chat</div>
+<div class="tc-sub">AI 챗봇 (그린) — ChatGPT·Claude 등 대화형 AI 가이드</div>
+</div>
+<div class="tc-badge">style: ai-chat</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: linear-gradient(135deg, #D97757, #D97757CC); color: #fff;">
+<div class="tc-icon">💻</div>
+<div class="tc-content">
+<div class="tc-name">ai-dev</div>
+<div class="tc-sub">AI 개발 도구 (오렌지) — Cursor·GitHub Copilot 등 개발 도구</div>
+</div>
+<div class="tc-badge">style: ai-dev</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: linear-gradient(135deg, #6366F1, #6366F1CC); color: #fff;">
+<div class="tc-icon">📚</div>
+<div class="tc-content">
+<div class="tc-name">knowledge</div>
+<div class="tc-sub">노트 &amp; 지식관리 (퍼플) — Notion·Obsidian 등 지식 관리 도구</div>
+</div>
+<div class="tc-badge">style: knowledge</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: linear-gradient(135deg, #1565C0, #1565C0CC); color: #fff;">
+<div class="tc-icon">⚡</div>
+<div class="tc-content">
+<div class="tc-name">productivity</div>
+<div class="tc-sub">생산성 유틸 (블루) — 일정·할일·자동화 도구</div>
+</div>
+<div class="tc-badge">style: productivity</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: linear-gradient(135deg, #9B59B6, #9B59B6CC); color: #fff;">
+<div class="tc-icon">🎨</div>
+<div class="tc-content">
+<div class="tc-name">creative</div>
+<div class="tc-sub">크리에이티브 AI (마젠타) — 이미지·영상·디자인 생성 도구</div>
+</div>
+<div class="tc-badge">style: creative</div>
+</div>
+</div><div class="tool-card">
+<div class="tc-header" style="background: linear-gradient(135deg, #06B6D4, #06B6D4CC); color: #fff;">
+<div class="tc-icon">🔒</div>
+<div class="tc-content">
+<div class="tc-name">security</div>
+<div class="tc-sub">보안 &amp; 인프라 (사이언) — 보안·DevOps·클라우드 인프라</div>
+</div>
+<div class="tc-badge">style: security</div>
+</div>
+</div><hr>
+</div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 표준 컴포넌트 숏코드 라이브러리</h2></div><div class="card"><p>기존 및 신형 표준 규격 숏코드들의 HTML 변환 스펙과 PPTX 도식화 레이아웃을 설명하고 시연합니다.</p>
+</div><div class="card"><h3 class="card-title">icon-grid — 이모지 카드 격자</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;icon-grid&quot; &gt;&lt;div class=&quot;icon-card&quot; &gt;
+&lt;div class=&quot;icon-card-icon&quot; style=&quot;color: var(--brand);&quot;&gt;⚡&lt;/div&gt;
+&lt;div class=&quot;icon-card-title&quot; style=&quot;color: var(--text);&quot;&gt;빠른 작업&lt;/div&gt;
+&lt;p&gt;반복 작업을 줄이고 결과물을 빠르게 만듭니다.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">⚡</div>
+<div class="icon-card-title" style="color: var(--text);">빠른 작업</div>
+<p>반복 작업을 줄이고 결과물을 빠르게 만듭니다.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎨</div>
+<div class="icon-card-title" style="color: var(--text);">쉬운 디자인</div>
+<p>템플릿과 프리셋으로 초보자도 보기 좋은 결과를 만듭니다.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📱</div>
+<div class="icon-card-title" style="color: var(--text);">모바일 친화</div>
+<p>스마트폰에서도 주요 기능을 바로 사용할 수 있습니다.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🤝</div>
+<div class="icon-card-title" style="color: var(--text);">팀 협업</div>
+<p>링크 공유와 댓글로 팀 작업을 이어갈 수 있습니다.</p>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">feature-grid — 태그 + 아이콘 + 설명</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;feature-grid&quot; &gt;&lt;div class=&quot;feature-card&quot; &gt;
+&lt;span class=&quot;feature-tag&quot; &gt;핵심&lt;/span&gt;
+&lt;div class=&quot;feature-card-title&quot; style=&quot;color: var(--brand-dark);&quot;&gt;
+&lt;span class=&quot;fc-icon&quot;&gt;🧠&lt;/span&gt;AI 자동화
+&lt;/div&gt;
+&lt;p&gt;사용자의 입력을 바탕으로 초안, 편집, 요약, 추천을 자동 생성합니다.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="feature-grid" ><div class="feature-card" >
+<span class="feature-tag" >핵심</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🧠</span>AI 자동화
+</div>
+<p>사용자의 입력을 바탕으로 초안, 편집, 요약, 추천을 자동 생성합니다.</p>
+</div><div class="feature-card" >
+<span class="feature-tag" >실전</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🧰</span>템플릿 활용
+</div>
+<p>자주 쓰는 형식을 저장해 같은 품질의 결과물을 반복해서 만들 수 있습니다.</p>
+</div><div class="feature-card" >
+<span class="feature-tag" >공유</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🔗</span>링크 배포
+</div>
+<p>완성된 결과를 링크나 파일로 공유하고 팀원 피드백을 받을 수 있습니다.</p>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">step-list — 순서형 단계 목록</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;step-list&quot;&gt;
+&lt;div class=&quot;step-item&quot; &gt;
+&lt;div class=&quot;step-num&quot; &gt;1&lt;/div&gt;
+&lt;div class=&quot;step-content&quot;&gt;
+&lt;div class=&quot;step-title&quot; &gt;계정 만들기&lt;/div&gt;
+&lt;p&gt;공식 사이트에 접속해 이메일 또는 소셜 계정으로 로그인합니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >계정 만들기</div>
+<p>공식 사이트에 접속해 이메일 또는 소셜 계정으로 로그인합니다.</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >새 프로젝트 만들기</div>
+<p>템플릿을 고르거나 빈 프로젝트에서 시작합니다.</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >콘텐츠 넣기</div>
+<p>텍스트, 이미지, 파일, 링크 등 필요한 자료를 추가합니다.</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >4</div>
+<div class="step-content">
+<div class="step-title" >결과 내보내기</div>
+<p>PDF, 이미지, 영상, 링크 등 목적에 맞는 형식으로 저장합니다.</p>
+</div>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">compare-grid — 사용자 유형별 비교 (독립된 note 필드 시연)</h3><p>하단의 연한 보라색 박스는 <code>meta</code>가 아니라 독립된 <strong><code>note</code> 필드</strong>를 통해 여러 줄 텍스트로 안전하게 렌더링된 메모란입니다.</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;compare-grid&quot; style=&quot;grid-template-columns: repeat(3, 1fr);&quot;&gt;
+&lt;div class=&quot;compare-card&quot; &gt;
+&lt;div class=&quot;compare-card-title&quot; &gt;처음 배우는 사용자&lt;/div&gt;
+&lt;p&gt;무료 플랜과 기본 템플릿으로 시작합니다.&lt;/p&gt;
+&lt;div class=&quot;compare-note&quot; &gt;💡 권장 사항: 기본 온보딩 워크플로우 숙지&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;compare-card&quot; &gt;
+&lt;div class=&quot;compare-card-title&quot; &gt;반복 제작자&lt;/div&gt;
+&lt;p&gt;자주 쓰는 형식을 저장하고 자동화 기능을 활용합니다.&lt;/p&gt;
+&lt;div class=&quot;compare-note&quot; &gt;💡 권장 사항: Spark Pro 멤버십 전환&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;compare-card&quot; &gt;
+&lt;div class=&quot;compare-card-title&quot; &gt;팀 작업&lt;/div&gt;
+&lt;p&gt;공유 링크, 댓글, 권한 관리가 가능한 플랜을 선택합니다.&lt;/p&gt;
+&lt;div class=&quot;compare-note&quot; &gt;💡 권장 사항: 팀 전용 라이선스 부여&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
+<div class="compare-card" >
+<div class="compare-card-title" >처음 배우는 사용자</div>
+<p>무료 플랜과 기본 템플릿으로 시작합니다.</p>
+<div class="compare-note" >💡 권장 사항: 기본 온보딩 워크플로우 숙지</div>
+</div>
+<div class="compare-card" >
+<div class="compare-card-title" >반복 제작자</div>
+<p>자주 쓰는 형식을 저장하고 자동화 기능을 활용합니다.</p>
+<div class="compare-note" >💡 권장 사항: Spark Pro 멤버십 전환</div>
+</div>
+<div class="compare-card" >
+<div class="compare-card-title" >팀 작업</div>
+<p>공유 링크, 댓글, 권한 관리가 가능한 플랜을 선택합니다.</p>
+<div class="compare-note" >💡 권장 사항: 팀 전용 라이선스 부여</div>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">workflow-strip — 프로세스 흐름도</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;workflow-strip&quot;&gt;
+&lt;div class=&quot;wf-step&quot; &gt;
+&lt;div class=&quot;wf-icon&quot; &gt;💡&lt;/div&gt;
+&lt;div class=&quot;wf-name&quot; &gt;아이디어&lt;/div&gt;
+&lt;div class=&quot;wf-tool&quot;&gt;Claude AI&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="workflow-strip">
+<div class="wf-step" >
+<div class="wf-icon" >💡</div>
+<div class="wf-name" >아이디어</div>
+<div class="wf-tool">Claude AI</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >⚡</div>
+<div class="wf-name" >초안 생성</div>
+<div class="wf-tool">Gamma</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >🎨</div>
+<div class="wf-name" >디자인 보정</div>
+<div class="wf-tool">Canva</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >✅</div>
+<div class="wf-name" >검토·수정</div>
+<div class="wf-tool">팀 협업</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >📤</div>
+<div class="wf-name" >공유·배포</div>
+<div class="wf-tool">링크/PDF</div>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">compare-split — 클라우드 vs 자체 호스팅 (meta 칩박스 쪼개기 + note 메모 정석 시연)</h3><p><code>meta</code>에 파이프(<code>|</code>) 기호로 나열하면 각각 <strong>개별 단추 칩박스(Badge) 형태로 쪼개져 렌더링</strong>되며, 여러 줄 지원 메모인 <strong><code>note</code> 필드</strong>는 하단의 가이드라인 박스로 독립 안착합니다!</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;compare-2col&quot;&gt;&lt;div class=&quot;c2-card c2-left&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;c2-title&quot;&gt;자체 호스팅 (On-Premise)&lt;/div&gt;
+&lt;ul class=&quot;c2-list&quot;&gt;&lt;li&gt;완전한 데이터 주권&lt;/li&gt;&lt;li&gt;초기 비용 절감&lt;/li&gt;&lt;li&gt;커스터마이징 자유&lt;/li&gt;&lt;/ul&gt;
+&lt;div class=&quot;c2-note&quot;&gt;💡 사내 인프라 관리 조직 및 DevOps 기술팀 보유 시 적극 추천&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&quot;c2-card c2-right&quot;&gt;
+&lt;div class=&quot;card-top-bar&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;c2-title&quot;&gt;클라우드 SaaS 서비스&lt;/div&gt;
+&lt;ul class=&quot;c2-list&quot;&gt;&lt;li&gt;가입 즉시 사용 가능&lt;/li&gt;&lt;li&gt;자동 최신 업데이트&lt;/li&gt;&lt;li&gt;SLA 보장&lt;/li&gt;&lt;/ul&gt;
+&lt;div class=&quot;c2-note&quot;&gt;💡 초기 인프라 투자가 불필요하고 빠른 비즈니스 가동에 추천&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="compare-2col"><div class="c2-card c2-left">
+<div class="card-top-bar"></div>
+<div class="c2-title">자체 호스팅 (On-Premise)</div>
+<ul class="c2-list"><li>완전한 데이터 주권</li><li>초기 비용 절감</li><li>커스터마이징 자유</li></ul>
+<div class="c2-note">💡 사내 인프라 관리 조직 및 DevOps 기술팀 보유 시 적극 추천</div>
+</div><div class="c2-card c2-right">
+<div class="card-top-bar"></div>
+<div class="c2-title">클라우드 SaaS 서비스</div>
+<ul class="c2-list"><li>가입 즉시 사용 가능</li><li>자동 최신 업데이트</li><li>SLA 보장</li></ul>
+<div class="c2-note">💡 초기 인프라 투자가 불필요하고 빠른 비즈니스 가동에 추천</div>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">bottom-list — 본문 + 하단 칩 배치 (meta 칩박스 쪼개기 시연)</h3><p>하단의 앙증맞은 배지 칩들은 <code>meta</code>에 파이프 <code>|</code> 기호로 지정하여 쪼개어 나타낸 결과물입니다.</p>
+<p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;bottom-list-card&quot; &gt;
+&lt;div class=&quot;bl-title&quot; &gt;이 도구를 선택해야 하는 이유&lt;/div&gt;
+&lt;p class=&quot;bl-desc&quot;&gt;기존 도구와의 가장 큰 차이는 설정 없이도 강력한 기본값이 제공된다는 점입니다. 복잡한 구성 없이 5분 안에 첫 번째 결과를 만들 수 있으며, 필요할 때만 세부 설정을 조정하면 됩니다.&lt;/p&gt;
+&lt;div class=&quot;bl-chips&quot;&gt;&lt;span class=&quot;bl-chip&quot; &gt;즉시 시작&lt;/span&gt;&lt;span class=&quot;bl-chip&quot; &gt;무설정 기본값&lt;/span&gt;&lt;span class=&quot;bl-chip&quot; &gt;5분 온보딩&lt;/span&gt;&lt;span class=&quot;bl-chip&quot; &gt;단계별 심화&lt;/span&gt;&lt;span class=&quot;bl-chip&quot; &gt;무료 플랜 제공&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="bottom-list-card" >
+<div class="bl-title" >이 도구를 선택해야 하는 이유</div>
+<p class="bl-desc">기존 도구와의 가장 큰 차이는 설정 없이도 강력한 기본값이 제공된다는 점입니다. 복잡한 구성 없이 5분 안에 첫 번째 결과를 만들 수 있으며, 필요할 때만 세부 설정을 조정하면 됩니다.</p>
+<div class="bl-chips"><span class="bl-chip" >즉시 시작</span><span class="bl-chip" >무설정 기본값</span><span class="bl-chip" >5분 온보딩</span><span class="bl-chip" >단계별 심화</span><span class="bl-chip" >무료 플랜 제공</span></div>
+</div><hr>
+</div><div class="card"><h3 class="card-title">alert-box — 알림 및 팁 박스</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;alert-box alert-tip&quot; style=&quot;--alert-color:var(--brand)&quot;&gt;
+&lt;div class=&quot;alert-icon&quot;&gt;💡&lt;/div&gt;
+&lt;div class=&quot;alert-body&quot;&gt;
+&lt;strong&gt;💡 핵심 팁&lt;/strong&gt;
+&lt;p&gt;shortcode-map.json을 수정하면 HTML→MD 변환 규칙을 추가하거나 변경할 수 있습니다.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 핵심 팁</strong>
+<p>shortcode-map.json을 수정하면 HTML→MD 변환 규칙을 추가하거나 변경할 수 있습니다.</p>
+</div>
+</div><div class="alert-box alert-warn" style="--alert-color:#F59E0B">
+<div class="alert-icon">⚠</div>
+<div class="alert-body">
+<strong>⚠️ 주의사항</strong>
+<p>잘못된 YAML frontmatter는 build-guide.mjs 오류를 유발합니다. 들여쓰기를 확인하세요.</p>
+</div>
+</div><hr>
+</div><div class="card"><h3 class="card-title">faq-list — 자주 묻는 질문 아코디언</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+&lt;div class=&quot;faq-list&quot;&gt;
+&lt;div class=&quot;faq-item&quot;&gt;
+&lt;button class=&quot;faq-q&quot; onclick=&quot;this.closest(&#39;.faq-item&#39;).classList.toggle(&#39;open&#39;)&quot;&gt;
+&lt;span&gt;무료로 사용할 수 있나요?&lt;/span&gt;
+&lt;span class=&quot;faq-arrow&quot;&gt;▼&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class=&quot;faq-a&quot;&gt;&lt;p&gt;네, 기본 기능은 무료 플랜으로 사용할 수 있습니다.&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="faq-list">
+<div class="faq-item">
+<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+<span>무료로 사용할 수 있나요?</span>
+<span class="faq-arrow">▼</span>
+</button>
+<div class="faq-a"><p>네, 기본 기능은 무료 플랜으로 사용할 수 있습니다. 고급 기능은 Pro 플랜에서 제공됩니다.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+<span>어떤 파일 형식을 지원하나요?</span>
+<span class="faq-arrow">▼</span>
+</button>
+<div class="faq-a"><p>HTML, Markdown, PPTX 형식을 지원합니다. shortcode-map.json으로 HTML 역변환 규칙을 관리합니다.</p></div>
+</div>
+<div class="faq-item">
+<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
+<span>커스텀 스타일을 적용할 수 있나요?</span>
+<span class="faq-arrow">▼</span>
+</button>
+<div class="faq-a"><p>config/styles.json에서 색상 프리셋을 정의하고, frontmatter의 style 키로 선택할 수 있습니다.</p></div>
+</div></div><hr>
+</div><div class="card"><h3 class="card-title">console-box — 실전 프롬프트 박스</h3><p><strong>[작성 방법 마크다운 예시]</strong></p>
+<pre><code class="language-md">
+
+&lt;div class=&quot;prompt-box&quot;&gt;
+&lt;div class=&quot;prompt-label&quot;&gt;가이드 문서 생성 프롬프트&lt;/div&gt;
+&lt;pre class=&quot;prompt-content&quot;&gt;다음 도구에 대한 활용 가이드를 작성해 주세요.&lt;/pre&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>[실제 동작 비주얼 결과물]</strong></p>
+<div class="prompt-box">
+<div class="prompt-label">가이드 문서 생성 프롬프트</div>
+<pre class="prompt-content">다음 도구에 대한 활용 가이드를 작성해 주세요. icon-grid로 핵심 기능 4가지, feature-grid로 사용 사례 3가지, steps로 시작 방법 4단계를 포함해 주세요.</pre>
+</div></div></section></main>
+  <section class="done-section">
+    <h2>나만의 가이드를 만들어보세요</h2>
+    <p>templates/template.md를 복사해서 내용을 채우면 정교하게 자동 빌드됩니다.</p>
+    <a class="done-link" href="/docs/guide-creation.md" target="_blank" rel="noopener">공식 제작 지침서 읽기</a>
+  </section>
+  <footer><div>이 파일은 Creative Spark v1.1 스펙 전체를 보여주는 통합 마스터 쇼케이스입니다.</div><div>정석 연동: src/data/guides.json 설정을 통해 자동 React/스탠드얼론 통합 구동 완료.</div></footer>
+  <a class="back-top" href="#top" title="맨 위로">↑</a>
+<script>
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+</script>
+</body>
+</html>

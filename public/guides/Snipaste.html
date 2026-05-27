@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,47 +294,103 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Snipaste란?</h2></div><div class="card"><p>일반 캡처 도구와의 결정적 차이 — <strong>캡처한 이미지를 화면 위에 떠 있게(항상 위에 표시)</strong> 고정할 수 있습니다. 다른 창을 열어도 사라지지 않아 참조·비교 작업이 혁신적으로 편해집니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >✂️</div>
-<div class="icon-card-title" >정밀 영역 캡처</div>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">✂️</div>
+<div class="icon-card-title" style="color: var(--text);">정밀 영역 캡처</div>
 <p>픽셀 단위 정밀 선택. 색상 피커로 특정 픽셀 색상값(HEX) 즉시 복사.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📌</div>
-<div class="icon-card-title" >화면 위 고정 (Pin)</div>
+<div class="icon-card-icon" style="color: var(--brand);">📌</div>
+<div class="icon-card-title" style="color: var(--text);">화면 위 고정 (Pin)</div>
 <p>캡처 이미지를 화면 최상단에 고정. 다른 프로그램 사용 중에도 참조 가능.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🎨</div>
-<div class="icon-card-title" >즉시 편집·마킹</div>
+<div class="icon-card-icon" style="color: var(--brand);">🎨</div>
+<div class="icon-card-title" style="color: var(--text);">즉시 편집·마킹</div>
 <p>캡처 후 바로 화살표·텍스트·형광펜·모자이크 추가. 저장 없이 클립보드 복사.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📋</div>
-<div class="icon-card-title" >클립보드 이미지 Pin</div>
+<div class="icon-card-icon" style="color: var(--brand);">📋</div>
+<div class="icon-card-title" style="color: var(--text);">클립보드 이미지 Pin</div>
 <p>클립보드에 복사된 이미지도 F3으로 화면에 바로 고정. 웹 이미지 참조에 최적.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. Pin 기능 — 멀티태스킹의 혁신</h2></div><div class="card"><p>📌 화면에 고정된 참조 창들 (예시)</p>
-<p><strong>디자인 시안</strong></p>
-<p><strong>API 문서</strong></p>
-<p><strong>회의 내용</strong></p>
-<p><strong>계산 결과</strong></p>
-<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. Pin 기능 — 멀티태스킹의 혁신</h2></div><div class="card"><p>화면에 고정된 참조 창들을 다양한 방식으로 조작할 수 있습니다.</p>
+<div class="compare-grid" >
+<div class="compare-card" >
+<div class="compare-card-title" >디자인 시안</div>
+<p>Figma 화면 캡처 및 즉각 참조. 창 뒤로 숨지 않아 마크업 매칭이 압도적으로 빨라집니다.</p>
+<div class="compare-note" >Figma 화면 캡처 | 투명도 조절 가능</div>
+</div>
+<div class="compare-card" >
+<div class="compare-card-title" >API 문서</div>
+<p>파라미터 목록을 캡처해서 항상 위에 띄워두고 코딩하며 직접 타이핑 참조합니다.</p>
+<div class="compare-note" >파라미터 목록 | 코딩하며 참조</div>
+</div>
+<div class="compare-card" >
+<div class="compare-card-title" >회의 내용</div>
+<p>중요한 슬라이드 캡처 후 항상 위에 띄워두고 요점 메모하며 흐름을 파악합니다.</p>
+<div class="compare-note" >슬라이드 캡처 | 메모하며 확인</div>
+</div>
+<div class="compare-card" >
+<div class="compare-card-title" >계산 결과</div>
+<p>스프레드시트 원본 값을 참조하여 복잡한 보고서 작성 중 즉각 값을 크로스 체크합니다.</p>
+<div class="compare-note" >스프레드시트 값 | 보고서 작성 중 참조</div>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 Pin 조작법:</strong>
 <p>Pin된 이미지는 마우스 휠로 투명도 조절, Ctrl+휠로 크기 조절, 드래그로 이동 가능. 우클릭으로 닫기.</p>
 </div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 핵심 단축키</h2></div><div class="card"><p>F1</p>
-<p>화면 캡처 시작</p>
-<p>드래그로 영역 선택. ESC로 취소.</p>
-<p>F3</p>
-<p>클립보드 → Pin</p>
-<p>복사된 이미지를 화면에 즉시 고정.</p>
-<p>Ctrl+C</p>
-<p>캡처 후 클립보드</p>
-<p>캡처 영역 선택 후 Enter 대신 사용.</p>
-<p>Alt+C</p>
-<p>색상 피커</p>
-<p>픽셀 색상 HEX 값 즉시 복사.</p>
-</div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 실전 활용 시나리오</h2></div><div class="card"><p>::: steps
-:::</p>
+</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 핵심 단축키</h2></div><div class="card"><p>이 유용한 단축키들을 활용하여 작업 효율을 극대화해 보세요.</p>
+<div class="columns-grid" >
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >⌨️ F1</div>
+<p>화면 캡처 시작 (드래그로 영역 선택. ESC로 취소)</p>
+<div class="compare-note" >드래그 영역 선택</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >⌨️ F3</div>
+<p>클립보드 -&gt; Pin (복사된 이미지를 화면에 즉시 고정)</p>
+<div class="compare-note" >화면 최상단 고정</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >⌨️ Ctrl+C</div>
+<p>캡처 후 클립보드 복사 (영역 선택 후 Enter 대신 사용)</p>
+<div class="compare-note" >클립보드 즉시 저장</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >⌨️ Alt+C</div>
+<p>색상 피커 가동 (현재 마우스 픽셀 색상 HEX 값 즉시 복사)</p>
+<div class="compare-note" >HEX 색상값 추출</div>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 실전 활용 시나리오</h2></div><div class="card"><div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >코딩 중 문서 참조</div>
+<p>API 문서나 에러 메시지를 캡처하여 Pin(F3)으로 띄운 뒤 코드 에디터 위에 고정합니다. 탭 전환 없이 빠른 멀티태스킹 개발이 가능합니다.</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >디자인 비교 작업</div>
+<p>원본 디자인 시안을 캡처해서 항상 위에 띄운 뒤, 새로 개발한 새 디자인 작업 화면 옆에 고정하고 색상과 비율을 실시간으로 직관적 대조합니다.</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >회의 중 슬라이드 참조</div>
+<p>발표자의 PPT 슬라이드를 즉시 캡처해 띄워두고 나만의 노션이나 메모 앱에서 내용을 요약 정리합니다. 화면 전환이 전혀 필요 없습니다.</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >4</div>
+<div class="step-content">
+<div class="step-title" >색상 코드 추출 (Alt+C)</div>
+<p>웹사이트나 타인 디자인 시안에서 마음에 드는 특정 픽셀 색상의 HEX 코드값을 마우스 호버 상태에서 즉시 복사해 활용합니다.</p>
+</div>
+</div></div>
 </div></section></main>
   
   

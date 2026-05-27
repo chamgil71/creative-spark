@@ -97,5 +97,12 @@
       "folder": "vibecoding",
       "indexFile": "table-of-contents.html"
     }
-  ]
+  ],
+  "showcase": {
+    "title": "숏코드 쇼케이스",
+    "subtitle": "v1.1 신규 숏코드 시각화 종합 가이드",
+    "file": "showcase/showcase.html",
+    "pptxFile": "showcase/showcase.pptx",
+    "mdFile": "showcase/showcase.md"
+  }
 }

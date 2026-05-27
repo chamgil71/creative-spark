@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #D97757;
+    --brand-dark: #B85F3F;
+    --brand-deep: #8B4530;
+    --brand-light:#FDF0EB;
+    --brand-mid:  #F4C5AE;
+    --border:     #F0D4C4;
+    --bg:         #FBF7F5;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -238,7 +282,7 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">VS VS Code 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. VS Code 에디터 살펴보기</a></li><li><a href="#sec-2">AI 활용 데이터 분석 예시</a></li><li><a href="#sec-3">2. 필수 확장 프로그램</a></li><li><a href="#sec-4">3. VS Code의 AI 코딩 도구</a></li><li><a href="#sec-5">4. 필수 단축키</a></li><li><a href="#sec-6">5. VS Code 실전 팁</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">VS VS Code 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. VS Code 에디터 살펴보기</a></li><li><a href="#sec-2">2. 필수 확장 프로그램</a></li><li><a href="#sec-3">3. VS Code의 AI 코딩 도구</a></li><li><a href="#sec-4">4. 필수 단축키</a></li><li><a href="#sec-5">5. VS Code 실전 팁</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>💻 세계 1위 코드 에디터</div>
@@ -250,80 +294,63 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. VS Code 에디터 살펴보기</h2></div><div class="card"><p>신택스 하이라이팅, IntelliSense, 멀티 커서 편집 등 강력한 편집 기능을 갖추고 있습니다.</p>
-<p>app.py</p>
-</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>AI 활용 데이터 분석 예시</h2></div><div class="card"><p>import</p>
-<p>pandas</p>
-<p>as</p>
-<p>pd</p>
-<p>from</p>
-<p>anthropic</p>
-<p>import</p>
-<p>Anthropic</p>
-<p>client</p>
-<p>Anthropic</p>
-<p>def</p>
-<p>analyze_data</p>
-<p>df</p>
-<p>pd.DataFrame</p>
-<p>str</p>
-<p>&quot;&quot;&quot;데이터프레임을 분석하여 인사이트를 반환합니다&quot;&quot;&quot;</p>
-<p>summary</p>
-<p>df</p>
-<p>describe</p>
-<p>to_string</p>
-<p>response</p>
-<p>client</p>
-<p>messages</p>
-<p>create</p>
-<p>model</p>
-<p>&quot;claude-opus-4-5&quot;</p>
-<p>messages</p>
-<p>&quot;role&quot;</p>
-<p>&quot;user&quot;</p>
-<p>&quot;content&quot;</p>
-<p>summary</p>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>2. 필수 확장 프로그램</h2></div><div class="card"><p>Ctrl+Shift+X (Extensions) 에서 설치할 수 있습니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<span class="feature-tag" >AI 필수</span>
-<div class="icon-card-icon" >🤖</div>
-<div class="icon-card-title" ></div>
+<pre><code class="language-python"># app.py
+# AI 활용 데이터 분석 예시
+import pandas as pd
+from anthropic import Anthropic
+
+client = Anthropic()
+
+def analyze_data(df: pd.DataFrame) -&gt; str:
+    &quot;&quot;&quot;데이터프레임을 분석하여 인사이트를 반환합니다&quot;&quot;&quot;
+    summary = df.describe().to_string()
+    response = client.messages.create(
+        model=&quot;claude-opus-4-5&quot;,
+        messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: summary}]
+    )
+</code></pre>
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 필수 확장 프로그램</h2></div><div class="card"><p>Ctrl+Shift+X (Extensions) 에서 설치할 수 있습니다.</p>
+<div class="icon-grid" ><div class="icon-card" style="border-color: #F3E8FF; background-color: #F3E8FF08;">
+<span class="feature-tag" style="background:#F3E8FF; color:#fff;">AI 필수</span>
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);">GitHub Copilot</div>
 <p>AI 코드 자동완성. 주석 작성 시 코드를 제안합니다. 학생/교사 무료.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >언어</span>
-<div class="icon-card-icon" >🐍</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #E8F4FD; background-color: #E8F4FD08;">
+<span class="feature-tag" style="background:#E8F4FD; color:#fff;">언어</span>
+<div class="icon-card-icon" style="color: var(--brand);">🐍</div>
+<div class="icon-card-title" style="color: var(--text);">Python</div>
 <p>파이썬 개발 필수. 린팅, 디버깅, Jupyter 지원 등 통합 제공.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >Git</span>
-<div class="icon-card-icon" >🦊</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #FFF0E6; background-color: #FFF0E608;">
+<span class="feature-tag" style="background:#FFF0E6; color:#fff;">Git</span>
+<div class="icon-card-icon" style="color: var(--brand);">🦊</div>
+<div class="icon-card-title" style="color: var(--text);">GitLens</div>
 <p>Git 히스토리, blame 정보, 변경 비교를 에디터 내에서 바로 볼 수 있습니다.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >포맷터</span>
-<div class="icon-card-icon" >🎨</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+<span class="feature-tag" style="background:#F0FDF4; color:#fff;">포맷터</span>
+<div class="icon-card-icon" style="color: var(--brand);">🎨</div>
+<div class="icon-card-title" style="color: var(--text);">Prettier</div>
 <p>코드 자동 포맷터. JS/TS/Python/HTML/CSS 등 저장 시 자동 정리.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >테마</span>
-<div class="icon-card-icon" >🌈</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #FEF3C7; background-color: #FEF3C708;">
+<span class="feature-tag" style="background:#FEF3C7; color:#fff;">테마</span>
+<div class="icon-card-icon" style="color: var(--brand);">🌈</div>
+<div class="icon-card-title" style="color: var(--text);">One Dark Pro</div>
 <p>가장 인기 있는 다크 테마. 눈이 편한 색상으로 장시간 코딩에 최적.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >JS/TS</span>
-<div class="icon-card-icon" >🔍</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #E8F4FD; background-color: #E8F4FD08;">
+<span class="feature-tag" style="background:#E8F4FD; color:#fff;">JS/TS</span>
+<div class="icon-card-icon" style="color: var(--brand);">🔍</div>
+<div class="icon-card-title" style="color: var(--text);">ESLint</div>
 <p>자바스크립트/타입스크립트 코드 오류와 스타일 문제를 실시간 감지합니다.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >UI</span>
-<div class="icon-card-icon" >🗂️</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #F5F3FF; background-color: #F5F3FF08;">
+<span class="feature-tag" style="background:#F5F3FF; color:#fff;">UI</span>
+<div class="icon-card-icon" style="color: var(--brand);">🗂️</div>
+<div class="icon-card-title" style="color: var(--text);">Material Icon Theme</div>
 <p>파일 탐색기의 파일 아이콘을 직관적으로 변경합니다. 파일 종류 파악이 쉬워집니다.</p>
-</div><div class="icon-card" >
-<span class="feature-tag" >웹</span>
-<div class="icon-card-icon" >🌐</div>
-<div class="icon-card-title" ></div>
+</div><div class="icon-card" style="border-color: #FFF0F3; background-color: #FFF0F308;">
+<span class="feature-tag" style="background:#FFF0F3; color:#fff;">웹</span>
+<div class="icon-card-icon" style="color: var(--brand);">🌐</div>
+<div class="icon-card-title" style="color: var(--text);">Live Server</div>
 <p>HTML 파일을 저장하면 브라우저가 자동으로 새로고침됩니다. 웹 개발 필수.</p>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>3. VS Code의 AI 코딩 도구</h2></div><div class="card"><p>GitHub Copilot과 Claude Code의 조합으로 최강의 AI 개발 환경을 구성하세요.</p>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. VS Code의 AI 코딩 도구</h2></div><div class="card"><p>GitHub Copilot과 Claude Code의 조합으로 최강의 AI 개발 환경을 구성하세요.</p>
 <h3>🤖 AI 개발 도구 조합</h3>
 <h4>GitHub Copilot</h4>
 <p>인라인 코드 자동완성. 탭 한 번으로 코드 블록 완성. Copilot Chat으로 코드 설명 요청.</p>
@@ -333,80 +360,63 @@
 <p>Claude, GPT-4 등 다양한 AI를 VS Code에서 직접 연결. 무료로 사용 가능한 Copilot 대안.</p>
 <h4>Codeium (확장)</h4>
 <p>완전 무료 AI 코드 완성 도구. Copilot 없이도 AI 자동완성 기능을 사용할 수 있습니다.</p>
-</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>4. 필수 단축키</h2></div><div class="card"><p>이 단축키들만 익혀도 코딩 속도가 2배 이상 빨라집니다.</p>
-<p>⚡ 편집</p>
-<p>커맨드 팔레트</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>P</p>
-<p>빠른 파일 열기</p>
-<p>Ctrl</p>
-<p>P</p>
-<p>멀티커서 (같은 단어)</p>
-<p>Ctrl</p>
-<p>D</p>
-<p>줄 이동</p>
-<p>Alt</p>
-<p>↑↓</p>
-<p>줄 복사</p>
-<p>Shift</p>
-<p>Alt</p>
-<p>↓</p>
-<p>줄 삭제</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>K</p>
-<p>🔍 탐색</p>
-<p>전체 검색</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>F</p>
-<p>파일 내 검색</p>
-<p>Ctrl</p>
-<p>F</p>
-<p>찾아 바꾸기</p>
-<p>Ctrl</p>
-<p>H</p>
-<p>심볼로 이동</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>O</p>
-<p>특정 줄로 이동</p>
-<p>Ctrl</p>
-<p>G</p>
-<p>에디터 분할</p>
-<p>Ctrl</p>
-<p>\</p>
-<p>🖥️ 터미널 &amp; 뷰</p>
-<p>통합 터미널 토글</p>
-<p>Ctrl</p>
-<p>`</p>
-<p>새 터미널</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>`</p>
-<p>사이드바 토글</p>
-<p>Ctrl</p>
-<p>B</p>
-<p>탐색기 열기</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>E</p>
-<p>확장 관리</p>
-<p>Ctrl</p>
-<p>Shift</p>
-<p>X</p>
-<p>전체 화면</p>
-<p>F11</p>
-</div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>5. VS Code 실전 팁</h2></div><div class="card"><p>생산성을 극대화하는 VS Code 노하우입니다.</p>
-<p><strong>⚙️ settings.json 필수 설정</strong></p>
-<p>&quot;editor.formatOnSave&quot;: true (저장 시 자동 포맷), &quot;editor.fontSize&quot;: 14, &quot;editor.minimap.enabled&quot;: false (미니맵 끄기로 더 넓은 화면), &quot;terminal.integrated.defaultProfile.windows&quot;: &quot;Git Bash&quot;</p>
-<p><strong>🔄 멀티 루트 워크스페이스</strong></p>
+</div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 필수 단축키</h2></div><div class="card"><p>이 단축키들만 익혀도 코딩 속도가 2배 이상 빨라집니다.</p>
+<div class="columns-grid" >
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >⚡ 편집 단축키</div>
+<p>* **커맨드 팔레트**: `Ctrl + Shift + P`
+* **빠른 파일 열기**: `Ctrl + P`
+* **멀티커서 (같은 단어)**: `Ctrl + D`
+* **줄 이동**: `Alt + ↑ / ↓`
+* **줄 복사**: `Shift + Alt + ↓`
+* **줄 삭제**: `Ctrl + Shift + K`</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >🔍 탐색 단축키</div>
+<p>* **전체 검색**: `Ctrl + Shift + F`
+* **파일 내 검색**: `Ctrl + F`
+* **찾아 바꾸기**: `Ctrl + H`
+* **심볼로 이동**: `Ctrl + Shift + O`
+* **특정 줄로 이동**: `Ctrl + G`
+* **에디터 분할**: `Ctrl + \`</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >🖥️ 터미널 &amp; 뷰</div>
+<p>* **통합 터미널 토글**: `Ctrl + \``
+* **새 터미널**: `Ctrl + Shift + \``
+* **사이드바 토글**: `Ctrl + B`
+* **탐색기 열기**: `Ctrl + Shift + E`
+* **확장 관리**: `Ctrl + Shift + X`
+* **전체 화면**: `F11`</p>
+</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. VS Code 실전 팁</h2></div><div class="card"><p>생산성을 극대화하는 VS Code 노하우입니다.</p>
+<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">⚙</div>
+<div class="alert-body">
+<strong>⚙️ settings.json 필수 설정</strong>
+<p>\&quot;editor.formatOnSave\&quot;: true (저장 시 자동 포맷), \&quot;editor.fontSize\&quot;: 14, \&quot;editor.minimap.enabled\&quot;: false (미니맵 끄기로 더 넓은 화면), \&quot;terminal.integrated.defaultProfile.windows\&quot;: \&quot;Git Bash\&quot;</p>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">🔄</div>
+<div class="alert-body">
+<strong>🔄 멀티 루트 워크스페이스</strong>
 <p>File → Add Folder to Workspace로 여러 프로젝트 폴더를 하나의 VS Code 창에서 관리합니다. 프론트엔드/백엔드 동시 작업에 유용합니다.</p>
-<p><strong>🤖 Claude Code + VS Code 최강 조합</strong></p>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">🤖</div>
+<div class="alert-body">
+<strong>🤖 Claude Code + VS Code 최강 조합</strong>
 <p>VS Code 통합 터미널에서 claude를 실행하면 현재 열린 프로젝트 폴더 전체를 Claude가 분석하고 수정할 수 있습니다. 복잡한 리팩토링이나 버그 수정에 최적입니다.</p>
-<p><strong>🌐 Dev Containers</strong></p>
-<p>Docker를 사용해 개발 환경을 컨테이너화합니다. 팀원 모두 동일한 환경에서 작업할 수 있어 &quot;내 컴퓨터에서는 잘 되는데…&quot; 문제가 사라집니다.</p>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">🌐</div>
+<div class="alert-body">
+<strong>🌐 Dev Containers</strong>
+<p>Docker를 사용해 개발 환경을 컨테이너화합니다. 팀원 모두 동일한 환경에서 작업할 수 있어 \&quot;내 컴퓨터에서는 잘 되는데…\&quot; 문제가 사라집니다.</p>
+</div>
+</div>
 </div></section></main>
   <section class="done-section">
     <h2>💻 코딩의 세계로 오신 것을 환영합니다</h2>

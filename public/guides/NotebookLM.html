@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -238,7 +282,7 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">📒 NotebookLM 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 지원하는 소스 종류</a></li><li><a href="#sec-2">2. NotebookLM 사용 방법</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">📒 NotebookLM 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 지원하는 소스 종류</a></li><li><a href="#sec-2">2. NotebookLM 사용 방법</a></li><li><a href="#sec-3">3. 오디오 개요 — AI 팟캐스트</a></li><li><a href="#sec-4">4. 실전 활용 사례</a></li><li><a href="#sec-5">5. NotebookLM 활용 팁</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🔵 Google이 만든 AI 지식 어시스턴트</div>
@@ -250,38 +294,38 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 지원하는 소스 종류</h2></div><div class="card"><p>다양한 형식의 문서를 하나의 노트북에 연결하여 통합 분석합니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>논문, 보고서, 계약서 등 PDF 파일</p>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📄</div>
+<div class="icon-card-title" style="color: var(--text);">PDF</div>
+<p>논문, 보고서, 계약서 등 PDF 파일 분석</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>구글 문서 직접 연결</p>
+<div class="icon-card-icon" style="color: var(--brand);">📝</div>
+<div class="icon-card-title" style="color: var(--text);">Google Docs</div>
+<p>구글 문서 계정 직접 연결 지원</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>프레젠테이션 자료</p>
+<div class="icon-card-icon" style="color: var(--brand);">📊</div>
+<div class="icon-card-title" style="color: var(--text);">Google Slides</div>
+<p>프레젠테이션 슬라이드 파일 직접 연결</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>URL 붙여넣기로 웹 콘텐츠 추가</p>
+<div class="icon-card-icon" style="color: var(--brand);">🌐</div>
+<div class="icon-card-title" style="color: var(--text);">웹페이지</div>
+<p>URL 붙여넣기로 웹 콘텐츠 즉시 추가</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>자막이 있는 영상 내용 분석</p>
+<div class="icon-card-icon" style="color: var(--brand);">▶️</div>
+<div class="icon-card-title" style="color: var(--text);">YouTube</div>
+<p>자막이 있는 동영상 내용 스캔 및 분석</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>팟캐스트, 강의 녹음 파일</p>
+<div class="icon-card-icon" style="color: var(--brand);">🎵</div>
+<div class="icon-card-title" style="color: var(--text);">오디오</div>
+<p>팟캐스트, 강의 녹음 파일 텍스트화 분석</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>.txt, .md 파일</p>
+<div class="icon-card-icon" style="color: var(--brand);">📄</div>
+<div class="icon-card-title" style="color: var(--text);">텍스트 파일</div>
+<p>.txt, .md 마크다운 파일 호환</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
-<p>노트나 텍스트 직접 붙여넣기</p>
+<div class="icon-card-icon" style="color: var(--brand);">💬</div>
+<div class="icon-card-title" style="color: var(--text);">직접 입력</div>
+<p>노트나 텍스트 직접 붙여넣어 생성</p>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
@@ -291,14 +335,115 @@
 </div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. NotebookLM 사용 방법</h2></div><div class="card"><p>4단계로 나만의 AI 지식 베이스를 만들어보세요.</p>
 <div class="workflow-strip">
 <div class="wf-step" >
-<div class="wf-icon" >🔗</div>
-<div class="wf-name" >🔗 NotebookLM Importer 확장 활용</div>
-<div class="wf-tool"></div>
-</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="wf-icon" >🆕</div>
+<div class="wf-name" >노트북 생성</div>
+<div class="wf-tool">notebooklm.google.com 접속 후 새 노트북 가동</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >📥</div>
+<div class="wf-name" >소스 추가</div>
+<div class="wf-tool">PDF, URL, Docs, 유튜브 링크 업로드 및 인덱싱</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >💬</div>
+<div class="wf-name" >AI와 대화</div>
+<div class="wf-tool">내 문서만을 원천 소스로 정밀 질문 및 분석 요청</div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >📝</div>
+<div class="wf-name" >노트 저장</div>
+<div class="wf-tool">유용한 답변들을 노트 카드로 영구 보관 및 정리</div>
+</div></div><h3>AI에게 이렇게 물어보세요</h3>
+<p>나만의 AI 어시스턴트에게 적합한 프롬프트를 사용하여 원하는 최적의 분석을 받아내세요.</p>
+<div class="columns-grid" >
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >📋 요약 요청</div>
+<p>* &quot;이 보고서의 핵심 주장을 3가지로 요약해줘&quot;
+* &quot;이 전체 자료를 요약해서 목차를 만들어줘&quot;</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >🔍 특정 정보 검색</div>
+<p>* &quot;3장에서 언급된 핵심 방법론은 무엇인가?&quot;
+* &quot;문서 내부의 참고문헌 목록을 모두 모아줘&quot;</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >⚖️ 비교 분석</div>
+<p>* &quot;소스 A와 소스 B의 핵심 주장 차이점은?&quot;
+* &quot;두 논문에서 제시하는 연구 방법론을 대조해줘&quot;</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >❓ 심층 질문</div>
+<p>* &quot;이 수집 데이터가 가지는 내재적 한계점은?&quot;
+* &quot;전체 콘텐츠를 기반으로 예상 질문 FAQ를 만들어줘&quot;</p>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 오디오 개요 — AI 팟캐스트</h2></div><div class="card"><p>문서를 두 AI 진행자가 나누는 자연스러운 팟캐스트로 변환합니다.</p>
+<div class="feature-grid" ><div class="feature-card" style="border-color: #1A73E8; background-color: #1A73E808;">
+<div class="card-top-bar" style="background-color:#1A73E8"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🔊</span>자연스러운 대화체
+</div>
+<p>딱딱한 기계식 텍스트 낭독이 아닌, 남녀 진행자 두 사람이 상호 토론하고 대화하는 팟캐스트 형식입니다.</p>
+</div><div class="feature-card" style="border-color: #1A73E8; background-color: #1A73E808;">
+<div class="card-top-bar" style="background-color:#1A73E8"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🌍</span>다국어 지원
+</div>
+<p>한국어를 포함하여 다양한 다국어로 팟캐스트 자동 오디오 변환을 깔끔하게 지원합니다.</p>
+</div><div class="feature-card" style="border-color: #1A73E8; background-color: #1A73E808;">
+<div class="card-top-bar" style="background-color:#1A73E8"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">💾</span>MP3 다운로드
+</div>
+<p>생성된 팟캐스트 오디오 파일을 로컬에 MP3 포맷으로 저장하여 무선 환경에서도 청취 가능합니다.</p>
+</div><div class="feature-card" style="border-color: #1A73E8; background-color: #1A73E808;">
+<div class="card-top-bar" style="background-color:#1A73E8"></div>
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚙️</span>커스텀 가이드
+</div>
+<p>특정 관심 주제, 타깃 청중, 또는 특별히 강조하고 싶은 내용을 지정하여 맞춤 생성이 가능합니다.</p>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 실전 활용 사례</h2></div><div class="card"><p>이런 용도로 활용하면 생산성이 크게 향상됩니다.</p>
+<div class="columns-grid" >
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >🎓 학업 &amp; 연구</div>
+<p>* 수십 편의 해외 논문을 한 곳에 모아 통합 비교 분석
+* 수강하는 강의 자료 업로드 후 시험 대비 자동 Q&amp;A 진행
+* 참고 문헌 자동 추출 및 요약 정리
+* 리뷰 논문 작성 시 초안 뼈대 생성 지원</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >💼 업무 &amp; 보고서</div>
+<p>* 장대한 외부 산업/연구 보고서 신속 요약 및 핵심 발췌
+* 회의록 여러 개를 한데 묶어 부서간 주요 이슈 통합 스캔
+* 경쟁사 서비스 분석 및 비교 우위 인사이트 도출
+* 대형 세미나 발표 자료용 원고 스크립트 작성 보조</p>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >📰 콘텐츠 제작</div>
+<p>* 유튜브 영상 링크를 걸어 전체 내용을 한국어 텍스트로 속사포 정리
+* 트렌디한 해외 아티클 수집 후 즉시 핵심 뉴스레터 원고 빌드
+* 전문 서적 요약 및 독서 기록 아카이브 구성
+* 오디오 팟캐스트 기획 원고 및 질의응답 시나리오 자동 생성</p>
+</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. NotebookLM 활용 팁</h2></div><div class="card"><p>더 정확하고 유용한 결과를 얻기 위한 노하우입니다.</p>
+<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">🔗</div>
+<div class="alert-body">
+<strong>🔗 NotebookLM Importer 확장 활용</strong>
+<p>크롬 확장 &#39;NotebookLM Importer&#39;를 설치하면 브라우저에서 읽는 페이지를 버튼 하나로 노트북에 추가할 수 있습니다. 웹서핑 중 발견한 자료를 즉시 저장하세요.</p>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">🎯</div>
 <div class="alert-body">
 <strong>🎯 노트북을 주제별로 분리하세요</strong>
-<p>하나의 노트북에 모든 자료를 넣기보다, &quot;AI 동향 리서치&quot;, &quot;Q3 프로젝트&quot;, &quot;독서 노트&quot;처럼 주제별로 분리하면 AI 답변의 정확도가 높아집니다.</p>
+<p>하나의 노트북에 모든 자료를 넣기보다, \&quot;AI 동향 리서치\&quot;, \&quot;Q3 프로젝트\&quot;, \&quot;독서 노트\&quot;처럼 주제별로 분리하면 AI 답변의 정확도가 높아집니다.</p>
 </div>
 </div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">📌</div>
@@ -310,7 +455,7 @@
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 노트 기능 적극 활용</strong>
-<p>AI 답변 중 유용한 내용은 &quot;노트에 추가&quot; 버튼으로 저장합니다. 저장된 노트들은 다시 AI 분석의 소스로 활용할 수 있습니다.</p>
+<p>AI 답변 중 유용한 내용은 \&quot;노트에 추가\&quot; 버튼으로 저장합니다. 저장된 노트들은 다시 AI 분석의 소스로 활용할 수 있습니다.</p>
 </div>
 </div>
 </div></section></main>

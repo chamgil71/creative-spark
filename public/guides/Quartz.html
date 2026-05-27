@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,37 +294,37 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Quartz는 어떤 도구인가</h2></div><div class="card"><p>Quartz는 개발 지식이 깊지 않아도 개인의 마크다운 노트를 블로그나 위키 형태의 웹사이트로 퍼블리싱할 수 있게 해주는 도구입니다. 특히 옵시디언(Obsidian)의 문법(위키링크, 태그, 프론트매터 등)을 완벽하게 지원하여, 로컬 지식 저장소를 그대로 웹으로 옮기는 &#39;디지털 정원(Digital Garden)&#39; 구축에 최적화되어 있습니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🔗</div>
-<div class="icon-card-title" >위키링크 완벽 지원</div>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔗</div>
+<div class="icon-card-title" style="color: var(--text);">위키링크 완벽 지원</div>
 <p>`[[문서명]]` 형태의 내부 링크를 웹사이트의 라우팅으로 완벽하게 변환합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🕸️</div>
-<div class="icon-card-title" >인터랙티브 그래프 뷰</div>
+<div class="icon-card-icon" style="color: var(--brand);">🕸️</div>
+<div class="icon-card-title" style="color: var(--text);">인터랙티브 그래프 뷰</div>
 <p>문서 간의 연결 관계를 보여주는 노드 그래프를 우측 화면에 자동으로 생성합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🔍</div>
-<div class="icon-card-title" >강력한 로컬 검색</div>
+<div class="icon-card-icon" style="color: var(--brand);">🔍</div>
+<div class="icon-card-title" style="color: var(--text);">강력한 로컬 검색</div>
 <p>서버 통신 없이 브라우저 내에서 즉각적으로 작동하는 초고속 전체 텍스트 검색을 지원합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >⚡</div>
-<div class="icon-card-title" >극강의 퍼포먼스</div>
+<div class="icon-card-icon" style="color: var(--brand);">⚡</div>
+<div class="icon-card-title" style="color: var(--text);">극강의 퍼포먼스</div>
 <p>불필요한 자바스크립트를 배제하고 순수 HTML/CSS 위주로 빌드되어 로딩이 매우 빠릅니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid" ><div class="feature-card" >
 <span class="feature-tag" >기록</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📝</span>옵시디언 헤비 유저
 </div>
 <p>로컬에 쌓인 수백 개의 노트를 깨진 링크 없이 웹으로 퍼블리싱하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >브랜딩</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>🪴 디지털 정원사
 </div>
 <p>완벽하게 정제된 글(블로그)보다, 생각의 연결과 발전 과정을 공유하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >개발</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>🛠️ 커스텀 위키 구축자
 </div>
 <p>노션(Notion)의 느린 속도와 제한된 커스텀에 지쳐 나만의 빠르고 예쁜 위키가 필요한 분.</p>
@@ -355,7 +399,7 @@
 </tr>
 </tbody></table>
 </div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 실전 커스터마이징 팁</h2></div><div class="card"><p>Quartz 4버전부터는 TypeScript 기반으로 구조가 개편되어 더욱 강력한 수정이 가능합니다.</p>
-</div><div class="card"><h3 class="card-title">핵심 설정 파일 가이드</h3><div class="compare-grid">
+</div><div class="card"><h3 class="card-title">핵심 설정 파일 가이드</h3><div class="compare-grid" >
 <div class="compare-card" >
 <div class="compare-card-title" >색상 및 테마 변경 (`quartz.config.ts`)</div>
 <p>라이트/다크 모드의 메인 컬러, 배경색, 폰트(Google Fonts)를 직관적으로 변경할 수 있습니다.</p>

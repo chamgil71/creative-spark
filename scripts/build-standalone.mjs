@@ -25,7 +25,7 @@ const OUT = process.argv[2] || path.join(PUBLIC, "standalone.html");
 
 // ---------- helpers ----------
 function readGuideHtml(file) {
-  const fp = path.join(PUBLIC, "guides", file);
+  const fp = file.includes("/") ? path.join(PUBLIC, file) : path.join(PUBLIC, "guides", file);
   if (!fs.existsSync(fp)) {
     console.warn(`  ⚠️  missing: ${fp}`);
     return null;

@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,56 +294,62 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 클로드 코드란 무엇인가요?</h2></div><div class="card"><p>설치하기 전에 클로드 코드가 어떤 도구인지 간단히 알아봐요!</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >💬</div>
-<div class="icon-card-title" >말로 하는 코딩 도우미</div>
-<p>이 코드가 왜 오류가 나요?&quot; 처럼 우리말로 물어보면 AI가 답해줍니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >📁</div>
-<div class="icon-card-title" >내 컴퓨터 파일과 직접 연결</div>
+<div class="icon-grid" ><div class="icon-card" style="border-color: #EBF2FF; background-color: #EBF2FF08;">
+<div class="icon-card-icon" style="color: var(--brand);">💬</div>
+<div class="icon-card-title" style="color: var(--text);">말로 하는 코딩 도우미</div>
+<p>\&quot;이 코드가 왜 오류가 나요?\&quot; 처럼 우리말로 물어보면 AI가 답해줍니다.</p>
+</div><div class="icon-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+<div class="icon-card-icon" style="color: var(--brand);">📁</div>
+<div class="icon-card-title" style="color: var(--text);">내 컴퓨터 파일과 직접 연결</div>
 <p>인터넷 창에 붙여넣기 할 필요 없이, 내 컴퓨터 파일을 직접 분석합니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >⚡</div>
-<div class="icon-card-title" >터미널(명령 창)에서 동작</div>
+</div><div class="icon-card" style="border-color: #FFF7ED; background-color: #FFF7ED08;">
+<div class="icon-card-icon" style="color: var(--brand);">⚡</div>
+<div class="icon-card-title" style="color: var(--text);">터미널(명령 창)에서 동작</div>
 <p>검은 화면의 터미널에서 실행하지만, 사용 방법은 매우 간단합니다!</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >🔄</div>
-<div class="icon-card-title" >Claude.ai 와는 다른 도구</div>
+</div><div class="icon-card" style="border-color: #FDF4FF; background-color: #FDF4FF08;">
+<div class="icon-card-icon" style="color: var(--brand);">🔄</div>
+<div class="icon-card-title" style="color: var(--text);">Claude.ai 와는 다른 도구</div>
 <p>claude.ai(웹사이트)와 별개로 설치해서 쓰는 전문 개발자 도구입니다.</p>
 </div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 설치 전 준비물을 확인해요</h2></div><div class="card"><p>아래 항목들을 미리 준비하시면 설치가 훨씬 매끄럽게 진행됩니다.</p>
-<div class="feature-grid"><div class="feature-card" >
-<span class="feature-tag" >필수 확인</span>
-<div class="feature-card-title" >
+<div class="feature-grid" ><div class="feature-card" style="border-color: #EBF2FF; background-color: #EBF2FF08;">
+<div class="card-top-bar" style="background-color:#EBF2FF"></div>
+<span class="feature-tag" style="background:#EBF2FF; color:#fff;">필수 확인</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">💻</span>지원 운영체제
 </div>
 <p>Windows, macOS(맥), Linux 모두 지원됩니다. 본인의 운영체제에 맞는 설치 방법을 선택해 주세요.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >필수 설치</span>
-<div class="feature-card-title" >
+</div><div class="feature-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+<div class="card-top-bar" style="background-color:#F0FDF4"></div>
+<span class="feature-tag" style="background:#F0FDF4; color:#fff;">필수 설치</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🟢</span>Node.js (버전 18 이상)
 </div>
 <p>클로드 코드가 동작하려면 Node.js가 필요합니다. 아직 없다면 설치 과정에서 함께 안내해 드려요.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >필수</span>
-<div class="feature-card-title" >
+</div><div class="feature-card" style="border-color: #FFF7ED; background-color: #FFF7ED08;">
+<div class="card-top-bar" style="background-color:#FFF7ED"></div>
+<span class="feature-tag" style="background:#FFF7ED; color:#fff;">필수</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🔑</span>Anthropic 계정
 </div>
 <p>claude.ai 계정이 있으면 됩니다. Claude Pro ($20/월) 이상 구독 또는 API 키가 필요합니다.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >필수</span>
-<div class="feature-card-title" >
+</div><div class="feature-card" style="border-color: #F5F3FF; background-color: #F5F3FF08;">
+<div class="card-top-bar" style="background-color:#F5F3FF"></div>
+<span class="feature-tag" style="background:#F5F3FF; color:#fff;">필수</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📶</span>인터넷 연결
 </div>
 <p>설치 중 파일 다운로드 및 인증에 인터넷이 필요합니다. 안정적인 Wi-Fi 환경을 권장합니다.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >경우에 따라</span>
-<div class="feature-card-title" >
+</div><div class="feature-card" style="border-color: #FEF2F2; background-color: #FEF2F208;">
+<div class="card-top-bar" style="background-color:#FEF2F2"></div>
+<span class="feature-tag" style="background:#FEF2F2; color:#fff;">경우에 따라</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">⚡</span>관리자 권한
 </div>
 <p>설치 시 컴퓨터 관리자 비밀번호를 묻는 경우가 있을 수 있습니다. 미리 비밀번호를 확인해 두세요.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >권장 사항</span>
-<div class="feature-card-title" >
+</div><div class="feature-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+<div class="card-top-bar" style="background-color:#F0FDF4"></div>
+<span class="feature-tag" style="background:#F0FDF4; color:#fff;">권장 사항</span>
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🐙</span>Git (선택)
 </div>
 <p>코드 버전 관리를 위한 Git이 있으면 더 편리합니다. Windows 사용자는 Git for Windows를 권장합니다.</p>
@@ -311,115 +361,97 @@
 </div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 본인의 운영체제를 선택해 주세요</h2></div><div class="card"><p>사용하시는 컴퓨터 종류에 맞는 탭을 눌러주세요. 각 탭마다 맞춤 설치 방법을 안내해 드립니다.</p>
 <div class="tabs-wrap">
 <div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'tr7d1f-0')">탭 1</button><button class="tab-btn" onclick="switchTab(this,'tr7d1f-1')">탭 2</button><button class="tab-btn" onclick="switchTab(this,'tr7d1f-2')">탭 3</button>
+<button class="tab-btn active" onclick="switchTab(this,'tq5vpi-0')">macOS (맥)</button><button class="tab-btn" onclick="switchTab(this,'tq5vpi-1')">Windows</button><button class="tab-btn" onclick="switchTab(this,'tq5vpi-2')">Linux</button>
 </div>
-<div class="tab-panel active" id="tr7d1f-0"></div><div class="tab-panel" id="tr7d1f-1"></div><div class="tab-panel" id="tr7d1f-2"></div>
-</div><div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" >터미널 열기</div>
-<p>명령어를 입력하는 검은 화면 창을 열어요</p>
+<div class="tab-panel active" id="tq5vpi-0"><h4>1. 터미널 열기</h4>
+<ul>
+<li><strong>방법 1:</strong> <code>Cmd + Space</code>를 누르고 <strong>터미널</strong> 또는 <strong>Terminal</strong>을 입력한 뒤 Enter를 누르세요.</li>
+<li><strong>방법 2:</strong> Finder -&gt; 응용 프로그램 -&gt; 유틸리티 -&gt; 터미널을 클릭하세요.</li>
+</ul>
+<h4>2. Node.js 설치 여부 확인</h4>
+<p>터미널에 아래 명령어를 입력하고 Enter를 누르세요.</p>
+<pre><code class="language-bash">node --version
+</code></pre>
+<ul>
+<li>결과가 <code>v18.0.0</code> 이상이면 이미 설치되어 있으므로 3단계로 바로 이동하세요!</li>
+<li>에러가 나거나 낮은 버전이면 아래 공식 스크립트로 자동 설치해 주세요.</li>
+</ul>
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
+</code></pre>
+<h4>3. 클로드 코드 설치</h4>
+<p>터미널에 아래 명령어를 입력하여 설치합니다.</p>
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
+</code></pre>
+<p><em>(또는 <code>npm install -g @anthropic-ai/claude-code</code> 사용 가능)</em>
+설치 완료 후 아래 명령어로 정상 설치 여부를 확인합니다.</p>
+<pre><code class="language-bash">claude --version
+</code></pre>
+</div><div class="tab-panel" id="tq5vpi-1"><h4>1. PowerShell 열기</h4>
+<p>키보드에서 <code>Windows</code> 키를 누르고 <strong>PowerShell</strong>을 검색해 클릭하여 실행하세요.</p>
+<h4>2. 공식 설치 스크립트 실행</h4>
+<p>PowerShell에 아래 명령어를 입력하고 Enter를 누르세요.</p>
+<pre><code class="language-powershell">irm https://claude.ai/install.ps1 | iex
+</code></pre>
+<ul>
+<li>보안 오류가 발생하는 경우 아래 명령어를 먼저 입력하세요.</li>
+</ul>
+<pre><code class="language-powershell">Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+</code></pre>
+<h4>3. Node.js 별도 설치 방법 (위 방법 실패 시)</h4>
+<ul>
+<li>공식 스크립트가 잘 안 될 경우 <a href="https://nodejs.org">nodejs.org</a>에 접속해 <strong>LTS 버전</strong>을 설치하세요.</li>
+<li>설치 완료 후 PowerShell을 완전히 닫았다가 다시 열고 아래 명령어로 수동 설치하세요.</li>
+</ul>
+<pre><code class="language-powershell">npm install -g @anthropic-ai/claude-code
+</code></pre>
+<h4>4. 설치 확인</h4>
+<pre><code class="language-powershell">claude --version
+</code></pre>
+</div><div class="tab-panel" id="tq5vpi-2"><h4>1. 터미널 열기</h4>
+<p><code>Ctrl + Alt + T</code> 단축키로 터미널을 실행하거나 애플리케이션 메뉴에서 검색해 주세요.</p>
+<h4>2. 공식 설치 스크립트 실행</h4>
+<p>아래 명령어를 입력해 설치하세요.</p>
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
+</code></pre>
+<p>설치 후 셸 설정을 새로고침해 줍니다.</p>
+<pre><code class="language-bash">source ~/.bashrc  # 또는 source ~/.zshrc
+</code></pre>
+<h4>3. Node.js 수동 설치 (필요 시)</h4>
+<p>Node.js가 아예 설치되어 있지 않은 경우:</p>
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt install nodejs npm -y
+npm install -g @anthropic-ai/claude-code
+</code></pre>
 </div>
+</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 처음으로 클로드 코드 실행하기</h2></div><div class="card"><p>설치가 끝났으면 이제 실행해볼까요? 처음 실행 시 로그인이 필요합니다.</p>
+<div class="workflow-strip">
+<div class="wf-step" >
+<div class="wf-icon" >⌨</div>
+<div class="wf-name" >claude 입력</div>
+<div class="wf-tool">터미널에 입력</div>
+<div class="wf-arrow">→</div>
 </div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" >Node.js 설치 여부 확인</div>
-<p>이미 설치되어 있는지 먼저 확인해봐요</p>
+<div class="wf-step" >
+<div class="wf-icon" >🌐</div>
+<div class="wf-name" >브라우저 열림</div>
+<div class="wf-tool">인증창 자동 호출</div>
+<div class="wf-arrow">→</div>
 </div>
+<div class="wf-step" >
+<div class="wf-icon" >🔑</div>
+<div class="wf-name" >로그인</div>
+<div class="wf-tool">Claude 계정 로그인</div>
+<div class="wf-arrow">→</div>
 </div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" >클로드 코드 설치</div>
-<p>실제로 설치하는 명령어를 입력합니다</p>
+<div class="wf-step" >
+<div class="wf-icon" >🔒</div>
+<div class="wf-name" >권한 허용</div>
+<div class="wf-tool">Authorize 버튼 허용</div>
+<div class="wf-arrow">→</div>
 </div>
-</div></div><div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" >PowerShell 열기</div>
-<p>Windows의 명령 창을 열어요</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" >공식 설치 스크립트 실행</div>
-<p>Anthropic 공식 설치 스크립트를 사용합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" >Node.js 별도 설치 방법 (위 방법 실패 시)</div>
-<p>공식 스크립트가 안 될 때 수동으로 설치하는 방법</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >4</div>
-<div class="step-content">
-<div class="step-title" >설치 확인</div>
-<p>제대로 설치되었는지 확인합니다</p>
-</div>
-</div></div><div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" >터미널 열기</div>
-<p>리눅스에서 터미널을 실행합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" >공식 설치 스크립트 실행</div>
-<p>macOS와 동일한 방법으로 설치합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" >Node.js 수동 설치 (필요 시)</div>
-<p>Node.js가 없을 때 설치하는 방법</p>
-</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 처음으로 클로드 코드 실행하기</h2></div><div class="card"><p>설치가 끝났으면 이제 실행해볼까요? 처음 실행 시 로그인이 필요합니다.</p>
-<div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" ></div>
-<p>터미널에 claude를 입력하고 Enter</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" ></div>
-<p>자동으로 웹 브라우저가 열립니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" ></div>
-<p>Claude.ai 계정으로 로그인합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >4</div>
-<div class="step-content">
-<div class="step-title" ></div>
-<p>Authorize&#39; 버튼을 눌러 허용합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >5</div>
-<div class="step-content">
-<div class="step-title" ></div>
-<p>터미널로 돌아와 사용 시작 🎉</p>
-</div>
+<div class="wf-step" >
+<div class="wf-icon" >🎉</div>
+<div class="wf-name" >시작!</div>
+<div class="wf-tool">사용 준비 완료 🎉</div>
 </div></div><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
@@ -445,14 +477,14 @@
 <div class="faq-list">
 <div class="faq-item">
 <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>command not found: claude&quot; 오류가 나요</span>
+<span>\&quot;command not found: claude\&quot; 오류가 나요</span>
 <span class="faq-arrow">▼</span>
 </button>
 <div class="faq-a"><p>설치는 됐지만 터미널이 claude 명령어 위치를 아직 모르는 경우입니다.</p></div>
 </div>
 <div class="faq-item">
 <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>npm 설치 시 &quot;EACCES: permission denied&quot; 오류가 나요</span>
+<span>npm 설치 시 \&quot;EACCES: permission denied\&quot; 오류가 나요</span>
 <span class="faq-arrow">▼</span>
 </button>
 <div class="faq-a"><p>npm이 시스템 폴더에 쓰려고 할 때 발생하는 권한 오류입니다. 아래처럼 npm 전역 설치 경로를 내 폴더로 바꿔주세요.</p></div>
@@ -473,7 +505,7 @@
 </div>
 <div class="faq-item">
 <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>Windows에서 &quot;Claude Code is not supported on Windows&quot; 오류가 나요</span>
+<span>Windows에서 \&quot;Claude Code is not supported on Windows\&quot; 오류가 나요</span>
 <span class="faq-arrow">▼</span>
 </button>
 <div class="faq-a"><p>CMD나 일반 PowerShell에서 WSL(Linux) 없이 실행할 때 발생합니다. 공식 PowerShell 설치 스크립트를 사용하면 대부분 해결됩니다.</p></div>

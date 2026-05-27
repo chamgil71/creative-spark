@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,35 +294,35 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 옵시디언이란?</h2></div><div class="card"><p>옵시디언은 마크다운(.md) 파일을 기반으로 동작하는 로컬 지식 관리 도구입니다. 모든 데이터는 내 컴퓨터에 저장됩니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🧠</div>
-<div class="icon-card-title" >두 번째 뇌 (Second Brain)</div>
+<div class="icon-grid" ><div class="icon-card" style="border-color: #F5F3FF; background-color: #F5F3FF08;">
+<div class="icon-card-icon" style="color: var(--brand);">🧠</div>
+<div class="icon-card-title" style="color: var(--text);">두 번째 뇌 (Second Brain)</div>
 <p>PKM(개인 지식 관리) 방법론을 실현하는 도구. 생각과 정보를 체계적으로 수집·연결·활용할 수 있습니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >📁</div>
-<div class="icon-card-title" >Vault (볼트)</div>
+</div><div class="icon-card" style="border-color: #FFF7ED; background-color: #FFF7ED08;">
+<div class="icon-card-icon" style="color: var(--brand);">📁</div>
+<div class="icon-card-title" style="color: var(--text);">Vault (볼트)</div>
 <p>옵시디언의 작업 단위. 하나의 폴더가 하나의 볼트가 됩니다. 모든 노트와 첨부파일이 이 폴더 안에 저장됩니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >🔗</div>
-<div class="icon-card-title" >내부 링크 ([[wikilink]])</div>
+</div><div class="icon-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+<div class="icon-card-icon" style="color: var(--brand);">🔗</div>
+<div class="icon-card-title" style="color: var(--text);">내부 링크 ([[wikilink]])</div>
 <p>[[노트이름]] 형식으로 노트 간 연결. 이 링크들이 쌓여 지식 그래프가 완성됩니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >🏷️</div>
-<div class="icon-card-title" >태그 &amp; 프로퍼티</div>
+</div><div class="icon-card" style="border-color: #FEF3C7; background-color: #FEF3C708;">
+<div class="icon-card-icon" style="color: var(--brand);">🏷️</div>
+<div class="icon-card-title" style="color: var(--text);">태그 &amp; 프로퍼티</div>
 <p>#태그와 YAML 프론트매터로 노트를 분류·필터링할 수 있습니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >🗺️</div>
-<div class="icon-card-title" >그래프 뷰 (Graph View)</div>
+</div><div class="icon-card" style="border-color: #F5F3FF; background-color: #F5F3FF08;">
+<div class="icon-card-icon" style="color: var(--brand);">🗺️</div>
+<div class="icon-card-title" style="color: var(--text);">그래프 뷰 (Graph View)</div>
 <p>모든 노트와 연결 관계를 시각화. 지식의 클러스터와 고립된 노트를 한눈에 파악할 수 있습니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" >🔌</div>
-<div class="icon-card-title" >플러그인 생태계</div>
+</div><div class="icon-card" style="border-color: #FFF0F3; background-color: #FFF0F308;">
+<div class="icon-card-icon" style="color: var(--brand);">🔌</div>
+<div class="icon-card-title" style="color: var(--text);">플러그인 생태계</div>
 <p>공식 코어 플러그인과 1,400개 이상의 커뮤니티 플러그인으로 기능을 무한히 확장할 수 있습니다.</p>
 </div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 꼭 알아야 할 핵심 기능</h2></div><div class="card"><p>옵시디언을 강력하게 만드는 주요 기능들을 소개합니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >📎</div>
-<div class="icon-card-title" >백링크 (Backlinks)</div>
-<p>현재 노트를 링크한 다른 노트들의 목록을 자동으로 표시합니다. &quot;이 개념이 어디서 언급되었는가&quot;를 역추적할 수 있어 지식의 맥락을 풍부하게 만들어줍니다.</p>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📎</div>
+<div class="icon-card-title" style="color: var(--text);">백링크 (Backlinks)</div>
+<p>현재 노트를 링크한 다른 노트들의 목록을 자동으로 표시합니다. \&quot;이 개념이 어디서 언급되었는가\&quot;를 역추적할 수 있어 지식의 맥락을 풍부하게 만들어줍니다.</p>
 </div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 그래프 뷰: 지식 지도</h2></div><div class="card"><p>연결된 노트들을 시각화하여 지식 구조를 한눈에 파악합니다.</p>
 <p>AI</p>
 <p>독서</p>
@@ -291,45 +335,45 @@
 <p>💡 그래프 뷰 활용 팁 노드 크기: 링크가 많을수록 노드가 커집니다 — 허브 노트를 식별할 수 있습니다 색상 필터: 태그별로 노드 색상을 다르게 설정하면 카테고리가 한눈에 보입니다 고립 노트: 연결이 없는 노트를 찾아 링크를 추가하면 지식 그래프가 풍부해집니다 로컬 그래프: 현재 노트와 연결된 노트만 보여주는 뷰도 활용해보세요</p>
 </div>
 </div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 필수 커뮤니티 플러그인</h2></div><div class="card"><p>설정 → 커뮤니티 플러그인 → 탐색에서 설치할 수 있습니다.</p>
-<div class="icon-grid"><div class="icon-card" >
+<div class="icon-grid" ><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >📅</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">📅</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>고급 템플릿 기능. 날짜, 파일명, 스크립트를 템플릿에 삽입할 수 있습니다.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >✅</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">✅</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>볼트 전체의 할 일을 한 곳에 모아서 관리합니다. 마감일, 우선순위 설정 가능.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >📊</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">📊</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>노트를 데이터베이스처럼 쿼리합니다. 특정 태그, 날짜, 속성을 가진 노트 목록을 동적으로 생성합니다.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >🤖</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>ChatGPT, Claude 등 AI를 옵시디언 내에서 직접 사용합니다. 노트 요약, 번역, 질문 응답 등.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >🗂️</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">🗂️</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>노트 파일로 칸반 보드를 생성합니다. 프로젝트 관리와 작업 흐름 시각화에 활용됩니다.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >공식</span>
-<div class="icon-card-icon" >🌐</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">🌐</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>브라우저에서 웹페이지를 클리핑하여 옵시디언 볼트로 저장합니다. (공식 확장)</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >🎨</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">🎨</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>옵시디언 내에서 손으로 그린 듯한 다이어그램을 작성합니다. 노트에 직접 삽입 가능.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >커뮤니티</span>
-<div class="icon-card-icon" >⏱️</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);">⏱️</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
 <p>주간, 월간, 분기별, 연간 노트를 자동으로 생성하고 관리합니다.</p>
 </div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 필수 단축키</h2></div><div class="card"><p>이 단축키들만 익혀도 작업 속도가 크게 향상됩니다.</p>
 <table>

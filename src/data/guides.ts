@@ -25,8 +25,17 @@ export type GuideCollection = {
   indexFile: string;
 };
 
+export type GuideShowcase = {
+  title: string;
+  subtitle: string;
+  file: string;
+  pptxFile: string;
+  mdFile: string;
+};
+
 export const categories: GuideCategory[] = data.categories as GuideCategory[];
 export const collections: GuideCollection[] = (data.collections || []) as GuideCollection[];
+export const showcase: GuideShowcase = data.showcase as GuideShowcase;
 
 export const allGuides = categories.flatMap((c) =>
   c.guides.map((g) => ({ ...g, categoryId: c.id, categoryLabel: c.label, colorVar: c.colorVar })),

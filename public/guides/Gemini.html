@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -249,56 +293,56 @@
       <div class="hero-stats"><div class="hero-stat"><strong>2M</strong><span>컨텍스트 토큰 (Ultra)</span></div><div class="hero-stat"><strong>4종</strong><span>모델 라인업</span></div><div class="hero-stat"><strong>Google</strong><span>전체 생태계 통합</span></div><div class="hero-stat"><strong>실시간</strong><span>웹 검색 연동</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Gemini 모델 라인업</h2></div><div class="card"><div class="feature-grid"><div class="feature-card" >
-<div class="feature-card-title" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Gemini 모델 라인업</h2></div><div class="card"><div class="feature-grid" ><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>Gemini Ultra
 </div>
 <p>가장 강력한 멀티모달 추론. 복잡한 과학·수학·코딩 문제에 탁월. 전문가급 성능.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>Gemini Pro / Pro Vision
 </div>
 <p>일상 업무와 비즈니스에 최적화. 텍스트·이미지·PDF 분석. Google Workspace 통합.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>Gemini Flash
 </div>
 <p>빠른 속도와 낮은 비용. API 대량 처리, 실시간 응답이 필요한 서비스에 적합.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>Gemini Nano
 </div>
 <p>Android 기기에서 인터넷 없이 실행. Pixel 폰, Galaxy AI 탑재. 완전한 프라이버시.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 핵심 기능 &amp; 강점</h2></div><div class="card"><div class="feature-grid"><div class="feature-card" >
-<div class="feature-card-title" >
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 핵심 기능 &amp; 강점</h2></div><div class="card"><div class="feature-grid" ><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🌐</span>실시간 Google 검색 연동
 </div>
 <p>최신 정보를 실시간으로 검색하여 답변에 포함. 뉴스, 주가, 최신 연구도 즉시 확인 가능. 다른 AI 대비 최대 강점.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🖼️</span>네이티브 멀티모달
 </div>
 <p>텍스트·이미지·영상·음성·문서를 하나의 대화에서 처리. PDF·PPT 업로드 후 즉시 분석·요약·질의응답.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🎨</span>Imagen 3 이미지 생성
 </div>
 <p>Google의 최신 이미지 생성 모델 통합. 고품질 사진, 일러스트, 다이어그램 생성. Gemini Pro에서 직접 사용.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🎙️</span>Deep Research &amp; Gems
 </div>
 <p>복잡한 주제를 심층 분석하는 Deep Research 기능. Gems로 특정 역할의 AI 에이전트를 만들어 재활용.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">💻</span>코드 실행 (Python)
 </div>
 <p>Python 코드를 대화 중 직접 실행하고 결과 확인. 데이터 분석, 차트 생성, 계산을 실시간으로 수행.</p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🔗</span>Google 생태계 완전 통합
 </div>
-<p>Gmail·Drive·Docs·Sheets·YouTube 직접 접근. &quot;내 지난주 이메일 요약해줘&quot; 같은 개인화 작업 가능.</p>
+<p>Gmail·Drive·Docs·Sheets·YouTube 직접 접근. \&quot;내 지난주 이메일 요약해줘\&quot; 같은 개인화 작업 가능.</p>
 </div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 효과적인 프롬프트 &amp; Gems 설정</h2></div><div class="card"><div class="prompt-box">
 <div class="prompt-label">Gems 시스템 지침 예시 — 업무 보고서 작성 에이전트</div>
 <pre class="prompt-content">역할: 당신은 한국 공공기관 전문 보고서 작성 AI입니다. 능력: - Google Drive에서 관련 문서를 검색하여 참고 - 최신 정책 동향을 Google 검색으로 확인 - 표·차트를 포함한 구조화된 보고서 작성 출력 형식: 1. 개요 (3줄 이내) 2. 현황 분석 (표 포함) 3. 시사점 및 제언 # Gems는 claude.ai의 프로젝트와 유사한 개인화 에이전트</pre>
@@ -334,26 +378,26 @@
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 Workspace AI 활성화:</strong>
-<p>Google Workspace 계정에서 Gemini for Workspace 구독 시 Docs·Sheets·Slides·Gmail에서 AI 기능 직접 사용. &quot;@Gemini&quot;를 입력하면 즉시 호출.</p>
+<p>Google Workspace 계정에서 Gemini for Workspace 구독 시 Docs·Sheets·Slides·Gmail에서 AI 기능 직접 사용. \&quot;@Gemini\&quot;를 입력하면 즉시 호출.</p>
 </div>
 </div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 고급 활용 — AI Studio &amp; API</h2></div><div class="card"><p>🔬 Google AI Studio 핵심 기능</p>
-<div class="feature-grid"><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-grid" ><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>

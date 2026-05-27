@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -249,24 +293,10 @@
       <div class="hero-stats"><div class="hero-stat"><strong>3종</strong><span>모델 라인업</span></div><div class="hero-stat"><strong>200K</strong><span>컨텍스트 토큰</span></div><div class="hero-stat"><strong>무제한</strong><span>프로젝트 생성</span></div><div class="hero-stat"><strong>50+</strong><span>연결 가능 서비스</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 모델 선택 가이드</h2></div><div class="card"><div class="feature-grid"><div class="feature-card" >
-<span class="feature-tag" >Claude Opus</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>최고 성능
-</div>
-<p>복잡한 분석, 장문 보고서, 다단계 추론에 최적. 가장 강력하지만 응답 속도가 느림.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >Claude Sonnet ⭐ 추천</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>균형 잡힌 선택
-</div>
-<p>성능과 속도의 황금비율. 일상 업무, 코딩, 문서 작성에 가장 적합. 대부분의 상황에서 최선.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >Claude Haiku</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>빠른 응답
-</div>
-<p>단순 요약, 분류, 빠른 Q&amp;A에 최적화. API 활용 및 대량 처리에 비용 효율적.</p>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 모델 선택 가이드</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">•</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
+<p></p>
 </div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시스템 프롬프트 &amp; 세부 설정</h2></div><div class="card"><p>⚙️</p>
 <p>시스템 프롬프트 구성 예시</p>
 <p>프로젝트 → 설정 → System Prompt에 입력</p>
@@ -278,65 +308,47 @@
 <p>출처를 명시하세요. 불확실한 내용은 &quot;추가 확인 필요&quot;로 표기하세요. 1차 문서 외 추측을 배제하세요.</p>
 <div class="prompt-box">
 <div class="prompt-label">실전 시스템 프롬프트 템플릿</div>
-<pre class="prompt-content">[역할] 당신은 {직책/전문분야} 전문가입니다. # 구체적일수록 좋음: &quot;시니어 파이썬 개발자&quot;, &quot;한국어 카피라이터&quot; [맥락] 현재 {프로젝트명}을 진행 중입니다. {핵심 배경 정보 2-3줄} [출력 규칙] - 언어: 한국어 (기술 용어는 영문 병기) - 형식: {마크다운/표/리스트 등} - 길이: {간결/상세} 위주 [금지 사항] 불필요한 서문 생략, 확인되지 않은 수치 사용 금지</pre>
-</div></div><div class="card"><h3 class="card-title">🎯효과적인 프롬프트 기법</h3><p><strong>Chain of Thought:</strong></p>
-<p><strong>Few-shot 예시:</strong></p>
-<p><strong>XML 태그 구조화:</strong></p>
-<p><strong>역할 부여:</strong></p>
-</div><div class="card"><h3 class="card-title">⚡Claude 고유 강점 활용</h3><p><strong>긴 문서 분석:</strong></p>
-<p><strong>정확한 지시 이해:</strong></p>
-<p><strong>코드 작업:</strong></p>
-<p><strong>윤리적 추론:</strong></p>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. Claude 스킬 (Skills) 활용</h2></div><div class="card"><p>스킬은 Claude에게 특정 작업 방식을 학습시키는 지시 문서입니다. SKILL.md 파일로 관리하며, 프로젝트에 업로드하면 자동으로 적용됩니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >📝</div>
-<div class="icon-card-title" >HWPX 생성</div>
+<pre class="prompt-content">[역할] 당신은 {직책/전문분야} 전문가입니다. # 구체적일수록 좋음: \&quot;시니어 파이썬 개발자\&quot;, \&quot;한국어 카피라이터\&quot; [맥락] 현재 {프로젝트명}을 진행 중입니다. {핵심 배경 정보 2-3줄} [출력 규칙] - 언어: 한국어 (기술 용어는 영문 병기) - 형식: {마크다운/표/리스트 등} - 길이: {간결/상세} 위주 [금지 사항] 불필요한 서문 생략, 확인되지 않은 수치 사용 금지</pre>
+</div><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎯</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
+<p></p>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. Claude 스킬 (Skills) 활용</h2></div><div class="card"><p>스킬은 Claude에게 특정 작업 방식을 학습시키는 지시 문서입니다. SKILL.md 파일로 관리하며, 프로젝트에 업로드하면 자동으로 적용됩니다.</p>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📝</div>
+<div class="icon-card-title" style="color: var(--text);">HWPX 생성</div>
 <p>한글 보고서 자동화</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📊</div>
-<div class="icon-card-title" >Excel/PPTX</div>
+<div class="icon-card-icon" style="color: var(--brand);">📊</div>
+<div class="icon-card-title" style="color: var(--text);">Excel/PPTX</div>
 <p>문서 생성 자동화</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🤖</div>
-<div class="icon-card-title" >AI 전략 보고서</div>
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);">AI 전략 보고서</div>
 <p>시장 분석 특화</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🔤</div>
-<div class="icon-card-title" >문장 정규화</div>
+<div class="icon-card-icon" style="color: var(--brand);">🔤</div>
+<div class="icon-card-title" style="color: var(--text);">문장 정규화</div>
 <p>공문서 스타일 변환</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >💻</div>
-<div class="icon-card-title" >Frontend 설계</div>
+<div class="icon-card-icon" style="color: var(--brand);">💻</div>
+<div class="icon-card-title" style="color: var(--text);">Frontend 설계</div>
 <p>UI/UX 컴포넌트</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📖</div>
-<div class="icon-card-title" >PDF 파싱</div>
+<div class="icon-card-icon" style="color: var(--brand);">📖</div>
+<div class="icon-card-title" style="color: var(--text);">PDF 파싱</div>
 <p>문서 구조 추출</p>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 스킬 파일 작성 팁:</strong>
-<p>SKILL.md에 &quot;언제 이 스킬을 사용하는가&quot;를 명확히 명시하고, 입출력 예시를 포함시키면 Claude가 자동으로 적절한 스킬을 선택합니다.</p>
+<p>SKILL.md에 \&quot;언제 이 스킬을 사용하는가\&quot;를 명확히 명시하고, 입출력 예시를 포함시키면 Claude가 자동으로 적절한 스킬을 선택합니다.</p>
 </div>
-</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 프로젝트 (Projects) 설정</h2></div><div class="card"><div class="tool-card">
-<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
-<div class="tc-icon">📋</div>
-<div class="tc-content">
-<div class="tc-name">업무 자동화 프로젝트</div>
-<div class="tc-sub">반복 문서 작업 제거</div>
-</div>
-</div>
-<ul class="tc-list"><li>시스템 프롬프트로 역할과 출력 형식 고정</li><li>SKILL.md 파일 업로드로 전문 기능 추가</li><li>참고 문서(예시 보고서) 컨텍스트에 유지</li><li>대화 히스토리로 맥락 지속 유지</li></ul>
-</div><div class="tool-card">
-<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
-<div class="tc-icon">💻</div>
-<div class="tc-content">
-<div class="tc-name">개발 지원 프로젝트</div>
-<div class="tc-sub">코딩 생산성 극대화</div>
-</div>
-</div>
-<ul class="tc-list"><li>코드베이스 구조 문서를 프로젝트 파일로 업로드</li><li>코딩 컨벤션, 스택 정보 시스템 프롬프트에 명시</li><li>에러 로그 첨부하면 즉시 디버깅</li><li>Claude Code와 연동하여 직접 코드 실행</li></ul>
-</div></div><div class="card"><h3 class="card-title">🗂️프로젝트 구성 3단계</h3><p>1️⃣</p>
+</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 프로젝트 (Projects) 설정</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">•</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
+<p></p>
+</div></div></div><div class="card"><h3 class="card-title">🗂️프로젝트 구성 3단계</h3><p>1️⃣</p>
 <p><strong>시스템 프롬프트</strong></p>
 <p>역할·형식·제약 조건 설정</p>
 <p>2️⃣</p>
@@ -345,51 +357,51 @@
 <p>3️⃣</p>
 <p><strong>팀 공유</strong></p>
 <p>Team 플랜에서 협업</p>
-</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 연결 서비스 &amp; 통합</h2></div><div class="card"><div class="feature-grid"><div class="feature-card" >
+</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 연결 서비스 &amp; 통합</h2></div><div class="card"><div class="feature-grid" ><div class="feature-card" >
 <span class="feature-tag" >이메일 자동화</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📧</span>Gmail
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >일정 관리</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📅</span>Google Calendar
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >문서 접근</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📁</span>Google Drive
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >팀 커뮤니케이션</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">💬</span>Slack
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >지식 베이스</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📋</span>Notion
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >DB 연동</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🗄️</span>Supabase
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >배포 자동화</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🚀</span>Vercel
 </div>
 <p></p>
 </div><div class="feature-card" >
 <span class="feature-tag" >코드 관리</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🐙</span>GitHub
 </div>
 <p></p>

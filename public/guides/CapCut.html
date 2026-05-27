@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,37 +294,37 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. CapCut은 어떤 도구인가</h2></div><div class="card"><p>CapCut은 모바일과 데스크톱에서 사용할 수 있는 영상 편집 도구입니다. 짧은 숏폼 영상부터 튜토리얼, 제품 소개, 강의 클립까지 빠르게 만들 수 있고, 자동 자막과 템플릿 기능 덕분에 초보자도 결과물을 빨리 확인할 수 있습니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 용도</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🎬</div>
-<div class="icon-card-title" >숏폼 편집</div>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 용도</h3><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎬</div>
+<div class="icon-card-title" style="color: var(--text);">숏폼 편집</div>
 <p>릴스, 쇼츠, 틱톡용 세로 영상을 빠르게 제작합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🗣️</div>
-<div class="icon-card-title" >자동 자막</div>
+<div class="icon-card-icon" style="color: var(--brand);">🗣️</div>
+<div class="icon-card-title" style="color: var(--text);">자동 자막</div>
 <p>음성을 분석해 자막을 만들고 스타일을 입힙니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🎵</div>
-<div class="icon-card-title" >음악과 효과</div>
+<div class="icon-card-icon" style="color: var(--brand);">🎵</div>
+<div class="icon-card-title" style="color: var(--text);">음악과 효과</div>
 <p>배경음악, 전환, 필터, 스티커를 쉽게 추가합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🤖</div>
-<div class="icon-card-title" >AI 보조</div>
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);">AI 보조</div>
 <p>배경 제거, 영상 보정, 텍스트 기반 편집을 활용합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 사람에게 특히 좋습니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div></div><div class="card"><h3 class="card-title">이런 사람에게 특히 좋습니다</h3><div class="feature-grid" ><div class="feature-card" >
 <span class="feature-tag" >크리에이터</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📱</span>SNS 콘텐츠 제작자
 </div>
 <p>촬영한 영상을 빠르게 자르고 자막을 붙여 게시용 영상으로 만들 수 있습니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >마케팅</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>🛍️ 제품 소개 영상
 </div>
 <p>템플릿과 문구를 활용해 쇼핑몰, 강의, 서비스 소개 영상을 짧게 제작합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >교육</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🎓</span>강의·튜토리얼 클립
 </div>
 <p>긴 화면 녹화나 설명 영상을 짧은 학습 클립으로 정리할 수 있습니다.</p>
@@ -362,7 +406,7 @@
 </tr>
 </tbody></table>
 </div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 숏폼 제작 패턴</h2></div><div class="card"><p>좋은 숏폼은 길이가 짧은 것보다 구조가 분명한 영상입니다. 처음 2초에 이유를 만들고, 중간에 핵심을 보여주고, 마지막에 행동을 유도합니다.</p>
-</div><div class="card"><h3 class="card-title">추천 구성</h3><div class="compare-grid">
+</div><div class="card"><h3 class="card-title">추천 구성</h3><div class="compare-grid" >
 <div class="compare-card" >
 <div class="compare-card-title" >튜토리얼형</div>
 <p>문제 제시 → 단계 설명 → 결과 확인 순서로 구성합니다.</p>
@@ -377,21 +421,21 @@
 <div class="compare-card-title" >정보 요약형</div>
 <p>3가지 팁, 5가지 실수처럼 목록형으로 빠르게 전달합니다.</p>
 <div class="compare-note" >예: 체크리스트 쇼츠</div>
-</div></div></div><div class="card"><h3 class="card-title">작업 시간을 줄이는 요령</h3><div class="feature-grid"><div class="feature-card" >
+</div></div></div><div class="card"><h3 class="card-title">작업 시간을 줄이는 요령</h3><div class="feature-grid" ><div class="feature-card" >
 <span class="feature-tag" >템플릿</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🧩</span>반복 포맷 저장
 </div>
 <p>자막 위치, 폰트, 색상, 인트로 형식을 정해두면 매번 새로 디자인하지 않아도 됩니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >자막</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>✍️ 자동 자막 후 수정
 </div>
 <p>자동 자막을 그대로 쓰기보다 고유명사와 줄바꿈을 다듬으면 완성도가 크게 올라갑니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >리듬</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🥁</span>음악 박자에 컷 맞추기
 </div>
 <p>장면 전환을 음악 박자와 맞추면 단순한 영상도 더 전문적으로 보입니다.</p>

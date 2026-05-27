@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -249,42 +293,48 @@
       <div class="hero-stats"><div class="hero-stat"><strong>실시간</strong><span>X 데이터 연동</span></div><div class="hero-stat"><strong>Aurora</strong><span>이미지 생성 내장</span></div><div class="hero-stat"><strong>DeepSearch</strong><span>심층 웹 검색</span></div><div class="hero-stat"><strong>무제한</strong><span>SuperGrok 플랜</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 핵심 기능 &amp; 강점</h2></div><div class="card"><p>🐦</p>
-<p>X(트위터) 실시간 연동</p>
-<p>X 플랫폼의 실시간 트렌드, 게시물, 여론을 즉시 분석. 소셜 미디어 동향 파악에서 타 AI 대비 압도적 우위. &quot;지금 X에서 ~에 대해 뭐라고 하는지 알려줘&quot;</p>
-<p>🔍</p>
-<p>DeepSearch — 심층 웹 검색</p>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 핵심 기능 &amp; 강점</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🐦</div>
+<div class="icon-card-title" style="color: var(--text);">X(트위터) 실시간 연동</div>
+<p>X 플랫폼의 실시간 트렌드, 게시물, 여론을 즉시 분석. 소셜 미디어 동향 파악에서 타 AI 대비 압도적 우위. \&quot;지금 X에서 ~에 대해 뭐라고 하는지 알려줘\&quot;</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔍</div>
+<div class="icon-card-title" style="color: var(--text);">DeepSearch — 심층 웹 검색</div>
 <p>단순 검색을 넘어 수십 개 소스를 동시에 분석하는 심층 리서치 모드. 복잡한 주제에 대해 출처가 명확한 종합 보고서를 자동 생성.</p>
-<p>🎨</p>
-<p>Aurora — 이미지 생성</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎨</div>
+<div class="icon-card-title" style="color: var(--text);">Aurora — 이미지 생성</div>
 <p>xAI가 자체 개발한 Aurora 이미지 모델 통합. 텍스트 프롬프트로 고품질 이미지 생성. 다른 AI보다 콘텐츠 제한이 유연하여 창의적 표현에 강점.</p>
-<p>🧠</p>
-<p>Think 모드 — 추론 강화</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🧠</div>
+<div class="icon-card-title" style="color: var(--text);">Think 모드 — 추론 강화</div>
 <p>복잡한 문제 해결 시 단계별로 추론하는 Think 모드 활성화. 수학, 코딩, 논리 문제에서 정확도 대폭 향상. o3/Gemini Ultra와 경쟁하는 추론 능력.</p>
-<p>🎤</p>
-<p>음성 대화 모드</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎤</div>
+<div class="icon-card-title" style="color: var(--text);">음성 대화 모드</div>
 <p>iOS/Android 앱에서 실시간 음성 대화. 자연스러운 대화 흐름과 감정 표현 지원. 영어 외 다국어 음성 지원.</p>
-<p>📎</p>
-<p>멀티모달 파일 처리</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📎</div>
+<div class="icon-card-title" style="color: var(--text);">멀티모달 파일 처리</div>
 <p>이미지, PDF, 문서를 업로드하여 분석. 스크린샷 내 텍스트 추출, 차트 해석, 문서 요약 모두 지원.</p>
-</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. Grok의 특별한 위치</h2></div><div class="card"><p>⚡ xAI Grok만의 차별점</p>
-<div class="feature-grid"><div class="feature-card" >
-<div class="feature-card-title" >
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. Grok의 특별한 위치</h2></div><div class="card"><p>⚡ xAI Grok만의 차별점</p>
+<div class="feature-grid" ><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
 </div><div class="feature-card" >
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>
 </div>
 <p></p>
@@ -292,16 +342,15 @@
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 Grok이 빛나는 순간:</strong>
-<p>X에서 오늘 ~에 대한 여론은?&quot; / &quot;최신 테슬라 FSD 업데이트 내용 알려줘&quot; / &quot;논란이 되는 이 주제에 대해 솔직하게 분석해줘&quot; — 소셜 데이터와 직설적 분석이 필요할 때 최강.</p>
+<p>\&quot;X에서 오늘 ~에 대한 여론은?\&quot; / \&quot;최신 테슬라 FSD 업데이트 내용 알려줘\&quot; / \&quot;논란이 되는 이 주제에 대해 솔직하게 분석해줘\&quot; — 소셜 데이터와 직설적 분석이 필요할 때 최강.</p>
 </div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 플랜 &amp; 접근 방법</h2></div><div class="card"><div class="plan-grid"><div class="plan-card " >
+</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 플랜 &amp; 접근 방법</h2></div><div class="card"><div class="plan-grid" ><div class="plan-card " >
 <div class="card-top-bar" ></div>
 <div class="plan-badge" >Free</div>
 <div class="plan-title" >무료</div>
 <ul class="plan-features">
 <li>Grok 기본 모델</li><li>제한된 메시지 수</li><li>X 계정 필요</li><li>기본 이미지 생성</li>
 </ul>
-<div class="plan-note" >₩0</div>
 </div><div class="plan-card " >
 <div class="card-top-bar" ></div>
 <div class="plan-title" >Free</div>
@@ -314,7 +363,6 @@
 <ul class="plan-features">
 <li>Grok 확장 접근</li><li>더 많은 메시지</li><li>Aurora 이미지</li><li>DeepSearch 사용</li>
 </ul>
-<div class="plan-note" >$8~16 / 월</div>
 </div><div class="plan-card " >
 <div class="card-top-bar" ></div>
 <div class="plan-badge" >SuperGrok</div>
@@ -322,20 +370,16 @@
 <ul class="plan-features">
 <li>무제한 Grok 사용</li><li>Think 모드 무제한</li><li>Aurora 무제한</li><li>DeepSearch 무제한</li><li>API 접근</li>
 </ul>
-<div class="plan-note" >$30 / 월</div>
 </div><div class="plan-card " >
 <div class="card-top-bar" ></div>
 <div class="plan-title" >SuperGrok</div>
 <ul class="plan-features">
 </ul>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 실전 활용 팁</h2></div><div class="card"><p>🐦 소셜 분석 활용법</p>
-<p><strong>&quot;X에서 오늘 [주제] 트렌드 분석해줘&quot;</strong></p>
-<p><strong>&quot;[인물]에 대한 최근 X 여론은?&quot;</strong></p>
-<p><strong>&quot;이 주제 찬반 의견을 X 데이터로 요약해줘&quot;</strong></p>
-<p>🧠 Think 모드 활용법</p>
-<p><strong>수학 문제:</strong></p>
-<p><strong>코딩:</strong></p>
-<p><strong>분석:</strong></p>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 실전 활용 팁</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">•</div>
+<div class="icon-card-title" style="color: var(--text);"></div>
+<p></p>
+</div></div>
 </div></section></main>
   
   

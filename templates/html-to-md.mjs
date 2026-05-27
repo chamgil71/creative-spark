@@ -31,7 +31,7 @@ for (const [type, rule] of Object.entries(SHORTCODE_MAP)) {
 }
 
 // icon 기본값을 "•"로 채울 shortcode 타입
-const ICON_DEFAULT_TYPES = new Set(["icon-grid", "feature-grid", "tool-card"]);
+const ICON_DEFAULT_TYPES = new Set(["icon-grid", "feature-grid", "tool-box"]);
 
 // ════════════════════════════════════════════════════════════════
 //  유틸
@@ -60,7 +60,7 @@ function inlineToMd($, el) {
   return out.trim();
 }
 
-function extractColor($el) {
+function extractColor($, $el) {
   const HEX_RE = /#(?:[0-9a-fA-F]{3}){1,2}\b/;
   // 1. 본인 style 속성
   const own = ($el.attr("style") || "").match(HEX_RE);
@@ -125,7 +125,7 @@ function genericItemsToMd($, el, type, rule) {
 
   $items.each((_, item) => {
     const $item = $(item);
-    const color = extractColor($item);
+    const color = extractColor($, $item);
 
     // 1단계: 모든 필드 값 수집
     const col = {};
@@ -222,11 +222,17 @@ function alertBoxToMd($, el, rule) {
   }
   desc = descParts.join(" ");
 
-  const lines = ["::: alert-box"];
-  lines.push(`- type: ${alertType}`);
-  if (icon)  lines.push(`  icon: ${icon}`);
-  if (title) lines.push(`  title: ${title}`);
-  if (desc)  lines.push(`  desc: ${desc}`);
+  const lines = [`::: alert-box ${alertType}`];
+  let started = false;
+  if (icon)  { lines.push(`- icon: ${icon}`); started = true; }
+  if (title) {
+    if (!started) { lines.push(`- title: ${title}`); started = true; }
+    else          { lines.push(`  title: ${title}`); }
+  }
+  if (desc)  {
+    if (!started) { lines.push(`- desc: ${desc}`); started = true; }
+    else          { lines.push(`  desc: ${desc}`); }
+  }
   lines.push(":::");
   return lines.join("\n");
 }
@@ -241,8 +247,45 @@ function tabsToMd($, el) {
   const lines = ["::: tabs"];
   const max = Math.max(labels.length, contents.length);
   for (let i = 0; i < max; i++) {
-    if (labels[i]) lines.push(`- label: ${labels[i]}`);
-    if (contents[i]) lines.push(`  desc: ${contents[i]}`);
+    let started = false;
+    if (labels[i]) { lines.push(`- title: ${labels[i]}`); started = true; }
+    if (contents[i]) {
+      if (!started) { lines.push(`- desc: ${contents[i]}`); started = true; }
+      else          { lines.push(`  desc: ${contents[i]}`); }
+    }
+  }
+  lines.push(":::");
+  return lines.join("\n");
+}
+
+function commandBlockToMd($, el, rule) {
+  const $el = $(el);
+  let title = norm($el.find(".cmd-label, .term-title, .terminal-title").first().text()) || "Terminal";
+  let lang = norm($el.find(".cmd-lang").first().text()) || "bash";
+  
+  let descParts = [];
+  const bodyEl = $el.find(".terminal-body, code, .cmd").first();
+  if (bodyEl.length) {
+    bodyEl.find("div").each((_, div) => {
+      descParts.push($(div).text());
+    });
+    if (!descParts.length) {
+      descParts.push(bodyEl.text());
+    }
+  } else {
+    descParts.push($el.text());
+  }
+  
+  let desc = descParts.map(s => s.trim()).filter(s => s !== null && s !== undefined).join("\n");
+  
+  const lines = [`::: command-block`];
+  lines.push(`- title: ${title}`);
+  if (lang) lines.push(`  meta: ${lang}`);
+  if (desc) {
+    lines.push(`  desc: |`);
+    desc.split("\n").forEach(line => {
+      lines.push(`    ${line}`);
+    });
   }
   lines.push(":::");
   return lines.join("\n");
@@ -264,8 +307,10 @@ function dispatchShortcode($, el, lines) {
     switch (type) {
       case "alert-box":
         lines.push(alertBoxToMd($, el, rule), ""); return true;
-      case "tabs":
+      case "os-tabs":
         lines.push(tabsToMd($, el), ""); return true;
+      case "cmd-box":
+        lines.push(commandBlockToMd($, el, rule), ""); return true;
       default:
         lines.push(genericItemsToMd($, el, type, rule), ""); return true;
     }
@@ -305,8 +350,9 @@ function processElement($, el, lines) {
 
   // 네비게이션/헤더/장식 요소 무시
   if ($el.hasClass("section-header") || $el.hasClass("nav") || $el.hasClass("nav-inner")) return;
-  if ($el.hasClass("section-num")) return;  // 섹션 번호 뱃지 (장식용)
+  if ($el.hasClass("section-num") || $el.hasClass("toc-section") || $el.hasClass("toc")) return;  // 섹션 번호 뱃지, 목차 차단
   if ($el.hasClass("what-visual") || $el.hasClass("typing-cursor")) return;
+  if ($el.hasClass("sp-browser-bar") || $el.hasClass("sp-dots") || $el.hasClass("sp-dot") || $el.hasClass("sp-url") || $el.hasClass("sp-query") || $el.hasClass("sp-title")) return; // Sparkpage 데모 장식 제거
   if (tag === "h2" && $el.hasClass("section-title")) return;  // section-inner 내 중복 h2
   if (tag === "nav" || tag === "footer" || tag === "a" && $el.hasClass("back-top")) return;
 
@@ -556,7 +602,7 @@ if (isMain) {
   const md = htmlToMdString(path.resolve(inFile));
   const dest = outFile
     ? path.resolve(outFile)
-    : path.resolve(inFile).replace(/\.html$/, ".md");
+    : path.resolve(inFile).replace(/\.html?$/, ".md");
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, md, "utf8");
   console.log(`✅ 변환 완료: ${dest}`);

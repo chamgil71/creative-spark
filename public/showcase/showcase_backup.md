@@ -26,6 +26,17 @@ footer:
 
 # 0. 스타일 선택
 
+- icon: 🤖
+  title: ai-chat
+  desc: AI 챗봇 (그린) — ChatGPT·Claude 등 대화형 AI 가이드
+  tag: style: ai-chat
+  color: "#10A37F"
+- icon: 💻
+  title: ai-dev
+  desc: AI 개발 도구 (오렌지) — Cursor·GitHub Copilot 등 개발 도구
+  tag: style: ai-dev
+  color: "#D97757"
+
 MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
 ::: tool-card
@@ -82,6 +93,18 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 :::
 
 # 1. 아이콘 그리드
+- icon: ⚡
+  title: 빠른 작업
+  desc: 반복 작업을 줄이고 결과물을 빠르게 만듭니다.
+- icon: 🎨
+  title: 쉬운 디자인
+  desc: 템플릿과 프리셋으로 초보자도 보기 좋은 결과를 만듭니다.
+- icon: 📱
+  title: 모바일 친화
+  desc: 스마트폰에서도 주요 기능을 바로 사용할 수 있습니다.
+- icon: 🤝
+  title: 팀 협업
+  desc: 링크 공유와 댓글로 팀 작업을 이어갈 수 있습니다.
 
 ## icon-grid — 이모지 카드 격자
 
@@ -101,9 +124,6 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 :::
 
 # 2. 기능 카드 feature-grid
-
-## feature-grid — 태그 + 아이콘 + 설명
-
 - tag: 핵심
   icon: 🧠
   title: AI 자동화
@@ -116,6 +136,9 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
   icon: 🔗
   title: 링크 배포
   desc: 완성된 결과를 링크나 파일로 공유하고 팀원 피드백을 받을 수 있습니다.
+
+
+## feature-grid — 태그 + 아이콘 + 설명
 
 ::: feature-grid
 - tag: 핵심
@@ -134,8 +157,6 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
 # 3. 단계 흐름 steps
 
-## steps — 순서형 단계 목록
-
 - title: 계정 만들기
   desc: 공식 사이트에 접속해 이메일 또는 소셜 계정으로 로그인합니다.
 - title: 새 프로젝트 만들기
@@ -144,6 +165,9 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
   desc: 텍스트, 이미지, 파일, 링크 등 필요한 자료를 추가합니다.
 - title: 결과 내보내기
   desc: PDF, 이미지, 영상, 링크 등 목적에 맞는 형식으로 저장합니다.
+
+
+## steps — 순서형 단계 목록
 
 ::: steps
 - title: 계정 만들기
@@ -158,8 +182,6 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
 # 4. 비교 카드 compare-grid
 
-## compare-grid — 사용자 유형별 비교
-
 - title: 처음 배우는 사용자
   desc: 무료 플랜과 기본 템플릿으로 시작합니다.
   note: 추천 — 기본 워크플로우
@@ -169,6 +191,8 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 - title: 팀 작업
   desc: 공유 링크, 댓글, 권한 관리가 가능한 플랜을 선택합니다.
   note: 추천 — 팀 플랜
+
+## compare-grid — 사용자 유형별 비교
 
 ::: compare-grid
 - title: 처음 배우는 사용자
@@ -183,9 +207,6 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 :::
 
 # 5. 도구 카드 tool-card
-
-## tool-card — 브랜드 배너 카드
-
 - icon: 🎬
   title: Runway Gen-4
   desc: 영상 편집 특화 AI 플랫폼
@@ -198,6 +219,9 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
   tag: Pro
   meta: 이미지 생성|스타일 변환|업스케일링
   color: "#E11D48"
+
+## tool-card — 브랜드 배너 카드
+
 
 ::: tool-card
 - icon: 🎬
@@ -260,8 +284,6 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
 # 7. 요금제 plan-grid
 
-## plan-grid — Free / Pro / Enterprise
-
 - title: Free
   tag: 무료
   meta: 기본 기능 모두 사용|하루 10회 사용|커뮤니티 지원|5GB 저장공간
@@ -275,6 +297,8 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
   tag: 팀
   meta: 팀 계정 관리|전용 지원 담당|SLA 보장|SSO 연동|무제한 저장
   note: 문의 필요
+
+## plan-grid — Free / Pro / Enterprise
 
 ::: plan-grid
 - title: Free
@@ -294,14 +318,15 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
 # 8. 좌우 2단 비교
 
-## compare-2col — 클라우드 vs 자체 호스팅
-
 - title: 자체 호스팅
   meta: 완전한 데이터 통제|비용 최적화 가능|커스터마이징 자유|초기 설정 필요|DevOps 역량 필요
   note: 기술팀 보유 시 추천
 - title: 클라우드 SaaS
   meta: 즉시 사용 가능|자동 업데이트|전용 지원 서비스|사용량 기반 과금|99.9% SLA 보장
   note: 빠른 시작에 추천
+
+
+## compare-2col — 클라우드 vs 자체 호스팅
 
 ::: compare-2col
 - title: 자체 호스팅
@@ -314,11 +339,12 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 
 # 9. 요점 정리
 
-## bottom-list — 본문 + 하단 칩 배치
-
 - title: 이 도구를 선택해야 하는 이유
   desc: 기존 도구와의 가장 큰 차이는 설정 없이도 강력한 기본값이 제공된다는 점입니다. 복잡한 구성 없이 5분 안에 첫 번째 결과를 만들 수 있으며, 필요할 때만 세부 설정을 조정하면 됩니다.
   meta: 즉시 시작|무설정 기본값|5분 온보딩|단계별 심화|무료 플랜 제공
+
+
+## bottom-list — 본문 + 하단 칩 배치
 
 ::: bottom-list
 - title: 이 도구를 선택해야 하는 이유
@@ -351,7 +377,6 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 :::
 
 # 11. FAQ 아코디언 faq-accordion
-
 - title: 무료로 사용할 수 있나요?
   desc: 네, 기본 기능은 무료 플랜으로 사용할 수 있습니다. 고급 기능은 Pro 플랜에서 제공됩니다.
 - title: 어떤 파일 형식을 지원하나요?
@@ -371,12 +396,10 @@ MD 파일 frontmatter에서 `style: <키>` 로 선택합니다.
 :::
 
 # 12. 프롬프트 예시 prompt-example
-
-## prompt-example — 실전 프롬프트 박스
-
 - title: 가이드 문서 생성 프롬프트
   desc: 다음 도구에 대한 활용 가이드를 작성해 주세요. icon-grid로 핵심 기능 4가지, feature-grid로 사용 사례 3가지, steps로 시작 방법 4단계를 포함해 주세요.
 
+## prompt-example — 실전 프롬프트 박스
 ::: prompt-example
 - title: 가이드 문서 생성 프롬프트
   desc: 다음 도구에 대한 활용 가이드를 작성해 주세요. icon-grid로 핵심 기능 4가지, feature-grid로 사용 사례 3가지, steps로 시작 방법 4단계를 포함해 주세요.

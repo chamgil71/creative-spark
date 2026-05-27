@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,37 +294,37 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Ollama는 어떤 도구인가</h2></div><div class="card"><p>Ollama는 Meta의 Llama 3, 구글의 Gemma 등 성능이 뛰어난 오픈소스 AI 모델을 로컬 환경(내 PC)에서 클릭 몇 번 또는 명령어 한 줄로 쉽게 다운로드하고 구동할 수 있게 해주는 런타임 플랫폼입니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🔒</div>
-<div class="icon-card-title" >완벽한 프라이버시</div>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔒</div>
+<div class="icon-card-title" style="color: var(--text);">완벽한 프라이버시</div>
 <p>모든 연산이 내 컴퓨터 내부에서 이루어지므로 회사 기밀이나 개인 일기를 입력해도 외부로 유출되지 않습니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🔌</div>
-<div class="icon-card-title" >OpenAI 호환 API</div>
+<div class="icon-card-icon" style="color: var(--brand);">🔌</div>
+<div class="icon-card-title" style="color: var(--text);">OpenAI 호환 API</div>
 <p>Ollama를 실행하면 로컬에 `localhost:11434` API 서버가 열리며, 기존 OpenAI용으로 짠 코드를 URL만 바꿔 그대로 씁니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🐳</div>
-<div class="icon-card-title" >Docker 환경 지원</div>
+<div class="icon-card-icon" style="color: var(--brand);">🐳</div>
+<div class="icon-card-title" style="color: var(--text);">Docker 환경 지원</div>
 <p>호스트 PC가 지저분해지는 것을 막기 위해 도커 컨테이너 내부에서도 완벽하게 구동 가능합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🧩</div>
-<div class="icon-card-title" >다양한 Vibe 도구 연동</div>
+<div class="icon-card-icon" style="color: var(--brand);">🧩</div>
+<div class="icon-card-title" style="color: var(--text);">다양한 Vibe 도구 연동</div>
 <p>Roo Code, Cline(Claude Dev) 등 에디터 확장에 로컬 모델을 연결하여 무료 코딩 비서로 활용합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid" ><div class="feature-card" >
 <span class="feature-tag" >보안</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">•</span>🛡️ 보안에 민감한 개발자
 </div>
 <p>외부 API로 코드를 보내는 것이 규정상 금지되어 있어 혼자만의 로컬 AI 보조가 필요한 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >절약</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">💳</span>Vibe Coding 헤비 유저
 </div>
 <p>수천 줄의 코드를 AI에게 읽히다 보니 API 비용(토큰 값)이 감당 안 되어 로컬로 전환하려는 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >연구</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🧪</span>프롬프트 실험가
 </div>
 <p>RAG(검색 증강 생성) 기술이나 파이썬 랭체인(LangChain) 튜토리얼을 돈 걱정 없이 무제한으로 테스트하고 싶은 분.</p>
@@ -318,10 +362,10 @@
 <div class="step-num" >5</div>
 <div class="step-content">
 <div class="step-title" >모델 커스텀(Modelfile)</div>
-<p>`FROM llama3`, `SYSTEM &quot;너는 한국어 번역가야&quot;` 형태의 파일로 나만의 맞춤형 에이전트를 빌드합니다.</p>
+<p>`FROM llama3`, `SYSTEM \&quot;너는 한국어 번역가야\&quot;` 형태의 파일로 나만의 맞춤형 에이전트를 빌드합니다.</p>
 </div>
 </div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 모델 선택 가이드 및 활용 팁</h2></div><div class="card"><p>Ollama 생태계에는 수많은 모델이 있습니다. PC 스펙(RAM)에 맞게 고르는 것이 핵심입니다.</p>
-<div class="compare-grid">
+<div class="compare-grid" >
 <div class="compare-card" >
 <div class="compare-card-title" >코딩 전용 (DeepSeek Coder 등)</div>
 <p>`ollama run deepseek-coder`. 코딩 지식에 특화된 모델로, 일반 모델보다 훨씬 정교한 코드 제안을 해줍니다.</p>

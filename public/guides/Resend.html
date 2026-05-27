@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -250,37 +294,37 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Resend는 어떤 도구인가</h2></div><div class="card"><p>기존의 이메일 발송 서비스(SendGrid, AWS SES 등)는 강력하지만 API가 복잡하고, 메일 디자인을 위해 1990년대 방식의 <code>&lt;table&gt;</code> 태그 HTML을 억지로 작성해야 했습니다. Resend는 이러한 고통을 해결하기 위해 직관적인 API를 제공하며, 특히 <strong>React 컴포넌트를 이용해 이메일을 UI 짜듯이 개발</strong>할 수 있게 해주는 혁신적인 도구입니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >⚛️</div>
-<div class="icon-card-title" >React Email 통합</div>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">⚛️</div>
+<div class="icon-card-title" style="color: var(--text);">React Email 통합</div>
 <p>복잡한 HTML/CSS 대신 React 컴포넌트와 Tailwind CSS로 이메일 템플릿을 디자인합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >⚡</div>
-<div class="icon-card-title" >극강의 DX (개발자 경험)</div>
+<div class="icon-card-icon" style="color: var(--brand);">⚡</div>
+<div class="icon-card-title" style="color: var(--text);">극강의 DX (개발자 경험)</div>
 <p>Node, Python, Ruby 등 직관적인 공식 SDK를 제공하여 단 3줄의 코드로 이메일을 발송합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📊</div>
-<div class="icon-card-title" >실시간 트래킹</div>
+<div class="icon-card-icon" style="color: var(--brand);">📊</div>
+<div class="icon-card-title" style="color: var(--text);">실시간 트래킹</div>
 <p>사용자가 메일을 열었는지(Open), 링크를 클릭했는지(Click), 반송되었는지(Bounce) 대시보드에서 추적합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🎯</div>
-<div class="icon-card-title" >뛰어난 도달률</div>
+<div class="icon-card-icon" style="color: var(--brand);">🎯</div>
+<div class="icon-card-title" style="color: var(--text);">뛰어난 도달률</div>
 <p>자체 전용 IP 및 도메인 인증 최적화를 통해 메일이 스팸함에 빠지는 것을 최소화합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 상황에서 필수로 사용됩니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div></div><div class="card"><h3 class="card-title">이런 상황에서 필수로 사용됩니다</h3><div class="feature-grid" ><div class="feature-card" >
 <span class="feature-tag" >알림</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🔔</span>시스템 자동 알림 메일
 </div>
 <p>자동화 스크립트(크롤러, 투자 분석기 등)에서 에러가 나거나 리포트가 완성됐을 때 알림을 받을 용도.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >온보딩</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">👋</span>회원가입 환영 메일
 </div>
 <p>Supabase 등으로 회원이 가입했을 때, 서비스 소개가 담긴 깔끔한 환영 메일을 자동 발송할 때.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >비즈니스</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🧾</span>결제 및 영수증 발송
 </div>
 <p>전자상거래 또는 SaaS 서비스에서 구매자에게 상세한 결제 내역을 전송할 때.</p>
@@ -344,7 +388,7 @@
 <td>월 100건(SendGrid) / 무료없음(SES)</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 자동화 프로젝트 적용 팁</h2></div><div class="card"><div class="compare-grid">
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 자동화 프로젝트 적용 팁</h2></div><div class="card"><div class="compare-grid" >
 <div class="compare-card" >
 <div class="compare-card-title" >Python 크롤링 봇 연동</div>
 <p>부동산 경매 리포트나 주식/배당금 분석 결과가 나오면, 파이썬용 `resend` 패키지를 이용해 요약된 데이터를 메일로 자동 전송합니다.</p>

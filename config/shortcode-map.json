@@ -4,8 +4,8 @@
   "icon-grid": {
     "htmlClasses": ["icon-grid", "use-case-grid", "source-grid", "block-grid", "view-grid",
                     "concept-grid", "plugin-grid", "ext-grid", "feat-grid", "skill-grid",
-                    "workspace-grid", "feature-list"],
-    "itemSelector": ".icon-card,.feat-item,.uc-card,.source-card,.block-card,.view-card,.concept-card,.plugin-card,.ext-card,.skill-item,.workspace-item,li",
+                    "workspace-grid", "feature-list", "grid-3", "grid-2"],
+    "itemSelector": ".icon-card,.feat-item,.uc-card,.source-card,.block-card,.view-card,.concept-card,.plugin-card,.ext-card,.skill-item,.workspace-item,.feat-card,li",
     "fields": {
       "icon":  ".icon,.feat-icon,.uc-icon,.concept-icon,.plugin-icon,.ext-icon,.skill-icon,.gf-icon,.feature-icon,.icon-card-icon",
       "title": ".title,.feat-title,.uc-title,.block-text,.skill-info strong,.gf-title,.feature-text strong,.icon-card-title,h3",
@@ -27,7 +27,7 @@
     }
   },
 
-  "tool-card": {
+  "tool-box": {
     "htmlClasses": ["tool-card", "service-block", "tool-block"],
     "itemSelector": ".tool-card,.service-block,.tool-block,.project-card",
     "fields": {
@@ -39,7 +39,7 @@
     }
   },
 
-  "workflow": {
+  "workflow-strip": {
     "htmlClasses": ["workflow-strip", "agent-flow", "actions-flow", "flow-demo",
                     "flow-container", "workflow", "workflow-diagram"],
     "itemSelector": ".wf-step,.af-step,.flow-step,.action-step,.wf-node,.branch-row",
@@ -50,7 +50,7 @@
     }
   },
 
-  "steps": {
+  "step-list": {
     "htmlClasses": ["step-list", "step-card", "auth-flow"],
     "itemSelector": ".step-item,.step-card,.auth-step",
     "fields": {
@@ -73,13 +73,14 @@
     }
   },
 
-  "compare-2col": {
-    "htmlClasses": ["compare-2col", "ba-box", "vs-box", "vs-grid", "before-after"],
-    "itemSelector": ".c2-card,.col-item,.ba-before,.ba-after,.vs-item",
+  "compare-split": {
+    "htmlClasses": ["compare-2col", "ba-box", "vs-box", "vs-grid", "before-after", "sd-compare", "speed-demo"],
+    "itemSelector": ".c2-card,.col-item,.ba-before,.ba-after,.vs-item,.sd-before,.sd-after",
     "fields": {
-      "title": ".c2-title,.col-title,.ba-label,.vs-label",
+      "title": ".c2-title,.col-title,.ba-label,.vs-label,.sd-label",
+      "desc":  ".sd-content",
       "meta":  ".c2-list li,.col-items li,.ba-list li",
-      "note":  ".c2-note,.col-note,.ba-note"
+      "note":  ".c2-note,.col-note,.ba-note,.sd-time"
     }
   },
 
@@ -90,6 +91,16 @@
       "title": ".compare-card-title",
       "desc":  ".compare-card-desc,p",
       "note":  ".compare-note"
+    }
+  },
+  
+  "columns-grid": {
+    "htmlClasses": ["columns-grid", "syntax-grid", "col-grid", "sp-sections", "sparkpage-demo"],
+    "itemSelector": ".column-card, .syntax-item, .col-item, .sp-section",
+    "fields": {
+      "title": ".col-title, .syn-query, .sp-section-title, h3",
+      "desc":  ".syn-desc, .sp-section-text, p",
+      "meta":  ".syn-ex, .col-note"
     }
   },
 
@@ -120,27 +131,27 @@
     }
   },
 
-  "command-block": {
-    "htmlClasses": ["cmd-block"],
-    "itemSelector": ".cmd-block",
+  "cmd-box": {
+    "htmlClasses": ["cmd-block", "terminal"],
+    "itemSelector": ".cmd-block, .terminal",
     "fields": {
-      "label": ".cmd-label,.term-title",
+      "title": ".cmd-label,.term-title",
       "meta":  ".cmd-lang",
       "desc":  "code,.cmd"
     }
   },
 
-  "tabs": {
+  "os-tabs": {
     "htmlClasses": ["os-tabs"],
     "itemSelector": ".os-tab",
     "contentSelector": ".os-content",
     "fields": {
-      "label": "",
+      "title": "",
       "desc":  ""
     }
   },
 
-  "faq-accordion": {
+  "faq-list": {
     "htmlClasses": ["trouble-list", "faq-accordion", "faq-grid"],
     "itemSelector": ".trouble-item,.faq-item,.faq-card",
     "fields": {
@@ -149,7 +160,7 @@
     }
   },
 
-  "prompt-example": {
+  "console-box": {
     "htmlClasses": ["prompt-box"],
     "itemSelector": ".prompt-box",
     "fields": {
@@ -158,13 +169,42 @@
     }
   },
 
-  "stat-highlight": {
+  "stat-grid": {
     "htmlClasses": ["stat-box", "stat-grid"],
     "itemSelector": ".stat-box,.stat-item",
     "fields": {
       "icon":  ".stat-value",
       "title": ".stat-label",
       "desc":  ".stat-sub"
+    }
+  },
+
+  "git-flow-strip": {
+    "htmlClasses": ["flow-branches", "branch-row"],
+    "itemSelector": ".branch-row",
+    "fields": {
+      "title": ".branch-label",
+      "tag": ".commit-label",
+      "meta": ".commit-line li"
+    }
+  },
+
+  "editor-box": {
+    "htmlClasses": ["editor-sim"],
+    "itemSelector": ".editor-sim",
+    "fields": {
+      "title": ".editor-filename",
+      "tag": ".editor-tab",
+      "desc": ".code-area"
+    }
+  },
+
+  "network-box": {
+    "htmlClasses": ["graph-visual"],
+    "itemSelector": ".graph-visual",
+    "fields": {
+      "title": ".node-main",
+      "desc": ".node"
     }
   }
 }

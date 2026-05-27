@@ -35,35 +35,117 @@ function cleanValue(v) {
   return String(v ?? "").trim().replace(/^["']|["']$/g, "");
 }
 
+function splitMeta(meta) {
+  if (!meta) return [];
+  return String(meta)
+    .split(/[|\n]/)
+    .map(s => s.trim().replace(/^["']|["']$/g, "").trim())
+    .filter(Boolean);
+}
+
 function standardizeItem(item) {
   const rawName = item.name || item.title || "";
   const iconMatch = rawName.match(/^([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])\s*(.*)$/);
 
+  const icon =     item.icon || (iconMatch ? iconMatch[1] : "") || "";
+  const title =    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "";
+  const desc =     item.desc || item.description || item.tagline || item.body || "";
+  const tag =      item.tag || item.badge || item.type || "";
+  const color =    item.color || "";
+  const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
+
+  // meta와 note를 뭉개지 않고 각각의 고유값을 완벽하게 보존합니다.
+  const meta = item.meta || item.tool || item.features || item.items || item.points || "";
+  const note = item.note || "";
+
   return {
     ...item,
-    icon:  item.icon || (iconMatch ? iconMatch[1] : "") || "",
-    title: item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "",
-    desc:  item.desc || item.description || item.tagline || item.body || "",
-    tag:   item.tag || item.badge || item.type || "",
-    meta:  item.meta || item.note || item.tool || item.features || item.items || item.points || "",
-    color: item.color || ""
+    icon,
+    title,
+    desc,
+    tag,
+    meta,
+    note,
+    color,
+    featured
   };
 }
 
 function parseShortcodeItems(src) {
   const items = [];
   let current = null;
+  let currentKey = null;
+  let inLiteralBlock = false;
+
   for (const line of src.split(/\r?\n/)) {
-    if (!line.trim()) continue;
-    const first = line.match(/^\s*-\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
-    const next  = line.match(/^\s+([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
-    if (first) {
-      current = { [first[1]]: cleanValue(first[2]) };
+    const trimmed = line.trim();
+    if (!trimmed) continue;  // 빈 줄 무시
+
+    // 멀티라인 리터럴 블록 내부 파싱 보장 (공백 4칸 들여쓰기 유지 시)
+    if (inLiteralBlock && line.startsWith("    ")) {
+      const val = line.slice(4);
+      const sep = currentKey === 'meta' ? ' | ' : '\n';
+      const existing = current[currentKey];
+      current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
+      continue;
+    } else {
+      inLiteralBlock = false;
+    }
+
+    // 1. 새 아이템 시작: - key: value
+    const firstMatch = line.match(/^\s*-\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+    if (firstMatch) {
+      currentKey = firstMatch[1];
+      let val = cleanValue(firstMatch[2]);
+      if (val === "|") {
+        inLiteralBlock = true;
+        current = { [currentKey]: "" };
+      } else {
+        current = { [currentKey]: val };
+      }
       items.push(current);
-    } else if (next && current) {
-      current[next[1]] = cleanValue(next[2]);
+      continue;
+    }
+
+    // 2. 기존 아이템 내 새 키 (들여쓰기 + key: value)
+    const nextMatch = line.match(/^\s+([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+    if (nextMatch && current) {
+      currentKey = nextMatch[1];
+      let val = cleanValue(nextMatch[2]);
+      if (val === "|") {
+        inLiteralBlock = true;
+        current[currentKey] = "";
+      } else {
+        current[currentKey] = val;
+      }
+      continue;
+    }
+
+    // 3. 들여쓰기된 하이픈 리스트 항목 (들여쓰기 + - value)
+    //    meta → | 구분, desc/note → \n 구분
+    const listMatch = line.match(/^\s+-\s+(.+)$/);
+    if (listMatch && current && currentKey) {
+      const val = listMatch[1].trim();
+      const existing = current[currentKey];
+      const sep = currentKey === 'meta' ? ' | ' : '\n';
+      current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
+      continue;
+    }
+
+    // 4. 들여쓰기된 연속 텍스트 (desc/note 멀티라인, YAML | 블록 스칼라 지원)
+    //    반드시 인덴트가 있어야 캡처됨 → 새 아이템 오인 방지
+    if (line.match(/^\s+\S/) && current && currentKey) {
+      const val = line.trim();
+      if (val === '|') {
+        inLiteralBlock = true;
+        continue;
+      }
+      const existing = current[currentKey];
+      const sep = currentKey === 'meta' ? ' | ' : '\n';
+      current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
     }
   }
+
   return items.map(standardizeItem);
 }
 
@@ -71,44 +153,61 @@ function parseShortcodeItems(src) {
 //  2. 숏코드 렌더링 엔진 (모든 숏코드 지원)
 // ════════════════════════════════════════════════════════════════
 
-function renderShortcode(type, body) {
+function renderShortcode(type, body, args) {
   const items = parseShortcodeItems(body);
   if (!items.length) return "";
 
   const renderAccent = (color) => color ? `style="border-color: ${color}; background-color: ${color}08;"` : "";
   const renderTextColor = (color) => color ? `style="color: ${color};"` : "";
 
+  // cols=N 파싱 로직 전격 탑재
+  const colsMatch = (args || "").match(/cols=(\d+)/);
+  const cols = colsMatch ? colsMatch[1] : null;
+  const gridStyle = cols ? `style="grid-template-columns: repeat(${cols}, 1fr);"` : "";
+
   // 1. icon-grid, feature-grid, badge-grid
-  if (["icon-grid", "feature-grid", "badge-grid"].includes(type)) {
-    return `<div class="${type}">${items.map(it => {
-      if (type === "badge-grid") {
+  if (["icon-grid", "feature-grid", "badge-grid", "stat-grid"].includes(type)) {
+    const isBadge = type === "badge-grid";
+    const isFeat = type === "feature-grid";
+    const isStat = type === "stat-grid";
+    const clsName = isBadge ? "badge-grid" : (isFeat ? "feature-grid" : (isStat ? "stat-grid" : "icon-grid"));
+
+    return `<div class="${clsName}" ${gridStyle}>${items.map(it => {
+      if (isBadge) {
         return `<div class="badge-item" ${renderAccent(it.color)}>
           <div class="badge-icon">${escapeHtml(it.icon)}</div>
-          <div class="badge-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
+          <div class="badge-title" style="color: var(--text);">${escapeHtml(it.title)}</div>
           <div class="badge-tag">${escapeHtml(it.tag)}</div>
         </div>`;
       }
-      const isFeat = type === "feature-grid";
+      if (isStat) {
+        return `<div class="stat-card" ${it.color ? `style="border-top: 3px solid ${it.color};"` : `style="border-top: 3px solid var(--brand);"`}>
+          <div class="stat-val" ${it.color ? `style="color:${it.color}"` : ""}>${escapeHtml(it.icon || it.title)}</div>
+          ${it.icon ? `<div class="stat-name">${escapeHtml(it.title)}</div>` : ""}
+          ${it.desc ? `<div class="stat-note">${escapeHtml(it.desc)}</div>` : ""}
+        </div>`;
+      }
       return `<div class="${isFeat ? 'feature-card' : 'icon-card'}" ${renderAccent(it.color)}>
         ${isFeat && it.color ? `<div class="card-top-bar" style="background-color:${it.color}"></div>` : ''}
         ${it.tag ? `<span class="feature-tag" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.tag)}</span>` : ""}
         ${isFeat ? `
-          <div class="feature-card-title" ${renderTextColor(it.color)}>
+          <div class="feature-card-title" style="color: var(--brand-dark);">
             ${it.icon ? `<span class="fc-icon">${escapeHtml(it.icon)}</span>` : ""}${escapeHtml(it.title)}
           </div>
         ` : `
-          <div class="icon-card-icon" ${renderTextColor(it.color)}>${escapeHtml(it.icon)}</div>
-          <div class="icon-card-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
+          <div class="icon-card-icon" style="color: var(--brand);">${escapeHtml(it.icon)}</div>
+          <div class="icon-card-title" style="color: var(--text);">${escapeHtml(it.title)}</div>
         `}
         <p>${escapeHtml(it.desc)}</p>
       </div>`;
     }).join("")}</div>`;
   }
 
-  // 2. tool-card
-  if (type === "tool-card") {
+  // 2. tool-box (구 tool-card)
+  if (type === "tool-box") {
     return items.map(it => {
       const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `var(--brand-gradient)`;
+      const metaItems = splitMeta(it.meta);
       return `<div class="tool-card">
         <div class="tc-header" style="background: ${grad}; color: #fff;">
           <div class="tc-icon">${escapeHtml(it.icon)}</div>
@@ -118,13 +217,13 @@ function renderShortcode(type, body) {
           </div>
           ${it.tag ? `<div class="tc-badge">${escapeHtml(it.tag)}</div>` : ""}
         </div>
-        ${it.meta ? `<ul class="tc-list">${it.meta.split("|").filter(Boolean).map(f => `<li>${escapeHtml(f.trim())}</li>`).join("")}</ul>` : ""}
+        ${metaItems.length ? `<ul class="tc-list">${metaItems.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>` : ""}
       </div>`;
     }).join("");
   }
 
-  // 3. workflow
-  if (type === "workflow") {
+  // 3. workflow-strip (구 workflow)
+  if (type === "workflow-strip") {
     return `<div class="workflow-strip">${items.map((it, idx) => `
       <div class="wf-step" ${renderAccent(it.color)}>
         <div class="wf-icon" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.icon)}</div>
@@ -134,8 +233,8 @@ function renderShortcode(type, body) {
       </div>`).join("")}</div>`;
   }
 
-  // 4. steps
-  if (type === "steps") {
+  // 4. step-list (구 steps)
+  if (type === "step-list") {
     return `<div class="step-list">${items.map((it, idx) => `
       <div class="step-item" ${renderAccent(it.color)}>
         <div class="step-num" ${it.color ? `style="background:${it.color}"` : ""}>${idx + 1}</div>
@@ -148,28 +247,32 @@ function renderShortcode(type, body) {
 
   // 5. compare-grid
   if (type === "compare-grid") {
-    return `<div class="compare-grid">${items.map(it => `
+    return `<div class="compare-grid" ${gridStyle}>${items.map(it => {
+      const activeNote = it.note || it.meta;
+      return `
       <div class="compare-card" ${renderAccent(it.color)}>
         <div class="compare-card-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
         <p>${escapeHtml(it.desc)}</p>
-        ${it.meta ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(it.meta)}</div>` : ""}
-      </div>`).join("")}</div>`;
+        ${activeNote ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(activeNote)}</div>` : ""}
+      </div>`;
+    }).join("")}</div>`;
   }
 
   // 6. plan-grid
   if (type === "plan-grid") {
-    return `<div class="plan-grid">${items.map(it => {
+    return `<div class="plan-grid" ${gridStyle}>${items.map(it => {
       const isFeat = it.featured === "true" || it.tag === "Best" || it.color;
       const highlight = isFeat ? "plan-featured" : "";
       const style = it.color ? `style="border-color:${it.color}; box-shadow: 0 8px 24px ${it.color}33;"` : "";
       const topBarStyle = it.color ? `style="background:${it.color};"` : "";
+      const metaItems = splitMeta(it.meta);
       
       return `<div class="plan-card ${highlight}" ${style}>
         <div class="card-top-bar" ${topBarStyle}></div>
         ${it.tag ? `<div class="plan-badge" ${topBarStyle}>${escapeHtml(it.tag)}</div>` : ""}
         <div class="plan-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
         <ul class="plan-features">
-          ${it.meta.split('|').filter(Boolean).map(f => `<li>${escapeHtml(f.trim())}</li>`).join('')}
+          ${metaItems.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
         </ul>
         ${it.desc ? `<div class="plan-note" ${topBarStyle}>${escapeHtml(it.desc)}</div>` : ""}
       </div>`;
@@ -186,49 +289,55 @@ function renderShortcode(type, body) {
       </div>`).join("")}</div>`;
   }
 
-  // 8. columns
-  if (type === "columns") {
-    return `<div class="columns-grid">${items.map(it => `
+  // 8. columns-grid (구 columns)
+  if (type === "columns-grid") {
+    return `<div class="columns-grid" ${gridStyle}>${items.map(it => {
+      const activeNote = it.note || it.meta;
+      return `
       <div class="column-card" ${renderAccent(it.color)}>
         <div class="card-top-bar" ${it.color ? `style="background:${it.color}"` : ""}></div>
         <div class="col-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
         <p>${escapeHtml(it.desc)}</p>
-      </div>`).join("")}</div>`;
+        ${activeNote ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(activeNote)}</div>` : ""}
+      </div>`;
+    }).join("")}</div>`;
   }
 
   // 9. bottom-list
   if (type === "bottom-list") {
     const it = items[0];
-    const chips = it.meta.split('|').filter(Boolean);
+    const chips = splitMeta(it.meta);
     return `<div class="bottom-list-card" ${renderAccent(it.color)}>
       <div class="bl-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
       <p class="bl-desc">${escapeHtml(it.desc)}</p>
-      ${chips.length ? `<div class="bl-chips">${chips.map(c => `<span class="bl-chip" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(c.trim())}</span>`).join('')}</div>` : ""}
+      ${chips.length ? `<div class="bl-chips">${chips.map(c => `<span class="bl-chip" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(c)}</span>`).join('')}</div>` : ""}
     </div>`;
   }
 
-  // 10. compare-2col
-  if (type === "compare-2col") {
-    if (items.length < 2) return renderShortcode("compare-grid", body);
+  // 10. compare-split (구 compare-2col)
+  if (type === "compare-split") {
+    if (items.length < 2) return renderShortcode("compare-grid", body, args);
     return `<div class="compare-2col">${items.slice(0, 2).map((it, idx) => {
       const isLeft = idx === 0;
       const classes = isLeft ? "c2-card c2-left" : "c2-card c2-right";
+      const metaItems = splitMeta(it.meta);
+      const metaHtml = metaItems.length ? `<ul class="c2-list">${metaItems.map(f => `<li>${escapeHtml(f)}</li>`).join('')}</ul>` : "";
+      const descHtml = it.desc ? `<p class="c2-desc" style="font-size: 0.9rem; color: var(--text-2); margin-bottom: 12px; white-space: pre-line;">${escapeHtml(it.desc)}</p>` : "";
       return `<div class="${classes}">
         <div class="card-top-bar"></div>
         <div class="c2-title">${escapeHtml(it.title)}</div>
-        <ul class="c2-list">
-          ${it.meta.split('|').filter(Boolean).map(f => `<li>${escapeHtml(f.trim())}</li>`).join('')}
-        </ul>
-        ${it.desc ? `<div class="c2-note">${escapeHtml(it.desc)}</div>` : ""}
+        ${metaHtml}
+        ${descHtml}
+        ${it.note ? `<div class="c2-note">${escapeHtml(it.note)}</div>` : ""}
       </div>`;
     }).join("")}</div>`;
   }
 
-  // 11. alert-box — tip / warn / success / danger 타입 알림 박스
+  // 11. alert-box
   if (type === "alert-box") {
     const typeColors = { tip: "var(--brand)", warn: "#F59E0B", success: "#22C55E", danger: "#EF4444" };
     return items.map(it => {
-      const t = it.type || it.tag || "tip";
+      const t = (args || it.type || it.tag || "tip").trim().toLowerCase();
       const color = typeColors[t] || "var(--brand)";
       return `<div class="alert-box alert-${t}" style="--alert-color:${color}">
         ${it.icon ? `<div class="alert-icon">${escapeHtml(it.icon)}</div>` : ""}
@@ -240,8 +349,8 @@ function renderShortcode(type, body) {
     }).join("");
   }
 
-  // 12. command-block — 복사 버튼 있는 터미널 코드 블록
-  if (type === "command-block") {
+  // 12. cmd-box (구 command-block)
+  if (type === "cmd-box") {
     return items.map(it => {
       const label = it.title || it.tag || "Terminal";
       const lang  = it.meta || "bash";
@@ -256,8 +365,8 @@ function renderShortcode(type, body) {
     }).join("");
   }
 
-  // 13. tabs — 클릭으로 전환되는 탭 UI (OS별 안내 등)
-  if (type === "tabs") {
+  // 13. os-tabs (구 tabs)
+  if (type === "os-tabs") {
     const uid = "t" + Math.random().toString(36).slice(2, 7);
     return `<div class="tabs-wrap">
       <div class="tabs-nav">
@@ -267,8 +376,8 @@ function renderShortcode(type, body) {
     </div>`;
   }
 
-  // 14. faq-accordion — 펼침/접힘 FAQ
-  if (type === "faq-accordion") {
+  // 14. faq-list (구 faq-accordion)
+  if (type === "faq-list") {
     return `<div class="faq-list">${items.map(it => `
       <div class="faq-item">
         <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
@@ -279,8 +388,8 @@ function renderShortcode(type, body) {
       </div>`).join("")}</div>`;
   }
 
-  // 15. prompt-example — AI 프롬프트 예시 블록
-  if (type === "prompt-example") {
+  // 15. console-box (구 prompt-example)
+  if (type === "console-box") {
     return items.map(it => `
       <div class="prompt-box">
         ${it.title ? `<div class="prompt-label">${escapeHtml(it.title)}</div>` : ""}
@@ -288,14 +397,69 @@ function renderShortcode(type, body) {
       </div>`).join("");
   }
 
-  // 16. stat-highlight — 큰 수치 강조 카드 그리드
-  if (type === "stat-highlight") {
-    return `<div class="stat-grid">${items.map(it => `
-      <div class="stat-card" ${it.color ? `style="border-top: 3px solid ${it.color};"` : `style="border-top: 3px solid var(--brand);"`}>
-        <div class="stat-val" ${it.color ? `style="color:${it.color}"` : ""}>${escapeHtml(it.icon || it.title)}</div>
-        ${it.icon ? `<div class="stat-name">${escapeHtml(it.title)}</div>` : ""}
-        ${it.desc ? `<div class="stat-note">${escapeHtml(it.desc)}</div>` : ""}
-      </div>`).join("")}</div>`;
+  // 16. [NEW] git-flow-strip (다차원 깃 플로우 브랜치 흐름 시각화)
+  if (type === "git-flow-strip") {
+    return `<div class="git-flow-container"><div class="flow-branches">${items.map((it, idx) => {
+      const color = it.color || "var(--brand)";
+      const metaItems = splitMeta(it.meta);
+      return `<div class="branch-row">
+        <div class="branch-label" style="background: ${color}12; border-left: 4px solid ${color}; color: ${color}; font-weight: 800;">
+          ${escapeHtml(it.title)}
+        </div>
+        <div class="branch-line" style="background: linear-gradient(90deg, ${color} 30%, rgba(203, 213, 225, 0.4) 100%);">
+          <div class="commit" style="border-color: ${color};">
+            ${it.tag ? `<span class="commit-label" style="background: ${color};">${escapeHtml(it.tag)}</span>` : ""}
+            <div class="commit-line" style="border-color: ${color};">
+              ${metaItems.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join("")}</div></div>`;
+  }
+
+  // 17. [NEW] editor-box (VS Code 모양의 가상 코드 에디터 시뮬레이션)
+  if (type === "editor-box") {
+    return items.map(it => {
+      const codeLines = (it.desc || "").split('\n');
+      const filename = it.title || "untitled";
+      const lang = it.tag || "javascript";
+      return `<div class="editor-sim">
+        <div class="editor-titlebar">
+          <div class="editor-dot red"></div>
+          <div class="editor-dot yellow"></div>
+          <div class="editor-dot green"></div>
+          <div class="editor-tab active">${escapeHtml(filename)} <span style="font-size:0.75rem;opacity:0.5;">(${escapeHtml(lang)})</span></div>
+        </div>
+        <div class="editor-body">
+          <div class="line-nums">
+            ${codeLines.map((_, i) => `<span>${i + 1}</span>`).join('')}
+          </div>
+          <div class="code-area"><pre><code>${escapeHtml(it.desc)}</code></pre></div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  // 18. [NEW] network-box (둥둥 떠다니는 은하수 지식 그래프 성단)
+  if (type === "network-box") {
+    const mainNode = items[0];
+    const subNodes = items.slice(1);
+    const color = mainNode.color || "var(--brand)";
+    return `<div class="graph-visual">
+      <div class="graph-nodes">
+        <div class="node node-main" style="background: ${color}; box-shadow: 0 0 24px ${color}88;">
+          ${escapeHtml(mainNode.title)}
+        </div>
+        ${subNodes.map((n, i) => {
+          const subColor = n.color || "var(--brand-dark)";
+          return `<div class="node node-${i + 1}" style="border: 2px solid ${subColor}; color: ${subColor};">
+            ${escapeHtml(n.title)}
+            ${n.meta ? `<span style="font-size:0.7rem; opacity:0.6; display:block;">${escapeHtml(n.meta)}</span>` : ""}
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`;
   }
 
   return "";
@@ -315,8 +479,8 @@ export function buildHtml(inputPath, opts = {}) {
   const radiusVal = CONFIG?.slide?.globalRadius || 0.08;
   const cssRadius = radiusVal > 0 ? `${Math.round(radiusVal * 150)}px` : "0px";
 
-  const processedContent = content.replace(/^:::\s*([A-Za-z0-9_-]+)\s*\n([\s\S]*?)\n:::\s*$/gm, (_, type, body) => {
-    const html = renderShortcode(type, body);
+  const processedContent = content.replace(/^:::\s*([A-Za-z0-9_-]+)(?:[ \t]+([^\r\n]+))?[ \t]*\r?\n([\s\S]*?)(?:\r?\n|^):::[ \t]*$/gm, (_, type, args, body) => {
+    const html = renderShortcode(type, body, args);
     // 💡 핵심: \n 뒤의 모든 공백(들여쓰기)을 제거하여 코드 블록으로 인식되는 것을 방지합니다.
     return html ? `\n${html.replace(/\n\s+/g, '\n')}\n` : "";
   });
@@ -497,6 +661,50 @@ export function buildHtml(inputPath, opts = {}) {
   .c2-note { margin-top: 20px; padding: 10px; background: var(--brand); color: #fff; font-size: 0.85rem; font-weight: bold; text-align: center; border-radius: 8px; }
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
+
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
 
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
