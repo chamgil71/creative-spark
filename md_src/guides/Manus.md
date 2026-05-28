@@ -1,9 +1,8 @@
 ---
-title: Manus 완전 활용 가이드
-subtitle: 채팅이 아닌 실행 — 지시하면 스스로 웹을 탐색하고파일을 만들고 완성된 결과물을 가져오는 AI 에이전트
-logo: 🤖Manus
-badge: Monica.im · AI Agent · 2025
-style: ai-chat
+title: "Manus완전 활용 가이드"
+subtitle: "자율 작업 AI 에이전트"
+badge: "Monica.im · AI Agent · 2025"
+style: "ai-chat"
 stats:
   - value: "자율"
     label: "스스로 실행"
@@ -15,44 +14,43 @@ stats:
     label: "멀티태스킹"
 ---
 
-# 1. Manus란? — AI 에이전트의 패러다임
+# Manus란? — AI 에이전트의 패러다임
+
 ::: workflow-strip
+- title: "⚡ Manus 작동 방식 — \"조사해서 보고서 만들어줘\" 한 마디면"
 - icon: "💬"
   title: "목표 이해"
-  meta: "요청 분석·계획 수립"
+  desc: "요청 분석·계획 수립"
+- icon: "💬"
+  title: "목표 이해"
+  desc: "요청 분석·계획 수립"
 - icon: "🌐"
   title: "웹 자동 탐색"
-  meta: "수십 개 소스 검색"
+  desc: "수십 개 소스 검색"
 - icon: "📊"
   title: "데이터 처리"
-  meta: "정보 추출·분석"
+  desc: "정보 추출·분석"
 - icon: "📄"
   title: "결과물 생성"
-  meta: "문서·파일 완성"
+  desc: "문서·파일 완성"
 - icon: "✅"
   title: "전달"
-  meta: "다운로드 제공"
+  desc: "다운로드 제공"
 :::
 
 💡 일반 AI vs Manus 차이
 
-::: compare-split
-- title: "🤔 일반 AI (ChatGPT, Claude)"
-  desc: |
-    * 질문에 텍스트나 코드로 단순 답변
-    * 웹 검색, 파일 생성, 실제 도구 실행은 사용자가 직접 수동 수행 필요
-    * 매 대화마다 한 번의 정적 작업만 처리
-  note: "단순 대화 및 답변"
-- title: "🤖 Manus (AI 에이전트)"
-  desc: |
-    * 지시하면 목표를 달성하기 위한 구체적 계획을 스스로 수립 및 실행
-    * 브라우저 자동 탐색, Python 코드 직접 구동, 완성된 파일 생성 자율 수행
-    * 복잡한 멀티태스킹 및 병렬 동시 작업 완수
-  note: "자율 계획 및 실행"
-:::
+🤔 일반 AI (ChatGPT, Claude)
 
-# 2. 핵심 기능
-::: icon-grid
+질문에 텍스트로 답변. 검색·파일 생성·실행은 직접 해야 함. 대화 한 번 = 한 번의 작업.
+
+🤖 Manus (AI 에이전트)
+
+목표를 주면 스스로 계획·실행·완성. 웹 탐색, 파일 생성, 코드 실행을 자율적으로 수행.
+
+# 핵심 기능
+
+::: icon-grid cols=2
 - icon: "🌐"
   title: "자율 웹 브라우징"
   desc: "실제 브라우저처럼 웹사이트를 열고, 클릭하고, 로그인하고, 데이터를 수집. 사람이 하는 웹 작업의 대부분을 자동화."
@@ -67,7 +65,8 @@ stats:
   desc: "여러 작업을 동시에 병렬 처리. \"3개 경쟁사 동시에 조사해줘\" → 동시 실행으로 시간 단축."
 :::
 
-# 3. 실전 활용 사례
+# 실전 활용 사례
+
 ::: icon-grid
 - icon: "📊"
   title: "시장 조사 보고서"

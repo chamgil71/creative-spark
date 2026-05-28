@@ -7,14 +7,54 @@
       "colorVar": "--cat-chat",
       "color": "#6366f1",
       "guides": [
-        { "slug": "chatgpt", "title": "ChatGPT", "subtitle": "OpenAI 대화형 AI 활용 가이드", "file": "Chatgpt.html" },
-        { "slug": "claude", "title": "Claude", "subtitle": "Anthropic의 추론 강화형 AI", "file": "Claude.html" },
-        { "slug": "gemini", "title": "Gemini", "subtitle": "Google 멀티모달 AI", "file": "Gemini.html" },
-        { "slug": "grok", "title": "Grok", "subtitle": "xAI 실시간 대화형 AI", "file": "Grok.html" },
-        { "slug": "perplexity", "title": "Perplexity", "subtitle": "출처 기반 AI 검색", "file": "Perplexity.html" },
-        { "slug": "genspark", "title": "Genspark", "subtitle": "AI 에이전트 검색 엔진", "file": "Genspark.html" },
-        { "slug": "manus", "title": "Manus", "subtitle": "자율 작업 AI 에이전트", "file": "Manus.html" },
-        { "slug": "ollama", "title": "ollama", "subtitle": "오픈소스 AI 활용 툴", "file": "Ollama.html" }
+        {
+          "slug": "chatgpt",
+          "title": "ChatGPT",
+          "subtitle": "OpenAI 대화형 AI 활용 가이드",
+          "file": "chatGPT.html"
+        },
+        {
+          "slug": "claude",
+          "title": "Claude",
+          "subtitle": "Anthropic의 추론 강화형 AI",
+          "file": "Claude.html"
+        },
+        {
+          "slug": "gemini",
+          "title": "Gemini",
+          "subtitle": "Google 멀티모달 AI",
+          "file": "Gemini.html"
+        },
+        {
+          "slug": "grok",
+          "title": "Grok",
+          "subtitle": "xAI 실시간 대화형 AI",
+          "file": "Grok.html"
+        },
+        {
+          "slug": "perplexity",
+          "title": "Perplexity",
+          "subtitle": "출처 기반 AI 검색",
+          "file": "perplexity.html"
+        },
+        {
+          "slug": "genspark",
+          "title": "Genspark",
+          "subtitle": "AI 에이전트 검색 엔진",
+          "file": "Genspark.html"
+        },
+        {
+          "slug": "manus",
+          "title": "Manus",
+          "subtitle": "자율 작업 AI 에이전트",
+          "file": "Manus.html"
+        },
+        {
+          "slug": "ollama",
+          "title": "ollama",
+          "subtitle": "오픈소스 AI 활용 툴",
+          "file": "Ollama.html"
+        }
       ]
     },
     {
@@ -24,12 +64,72 @@
       "colorVar": "--cat-dev",
       "color": "#10b981",
       "guides": [
-        { "slug": "antigravity", "title": "Antigravity", "subtitle": "AI 개발 생산성 플랫폼", "file": "Antigravity.html" },
-        { "slug": "vscode", "title": "VS Code", "subtitle": "코드 에디터 완전 정복", "file": "Vscode.html" },
-        { "slug": "claude-code", "title": "Claude Code", "subtitle": "클로드 코드 설치 가이드", "file": "ClaudeCode.html" },
-        { "slug": "copilot", "title": "GitHub Copilot", "subtitle": "AI 짝 코딩 & 자동완성", "file": "Copilot.html" },
-        { "slug": "codex", "title": "OpenAI Codex", "subtitle": "자연어로 코드 생성하기", "file": "Codex.html" },
-        { "slug": "n8n", "title": "N8N", "subtitle": "워크플로우 자동화 도구", "file": "n8n.html" }
+        {
+          "slug": "antigravity",
+          "title": "Antigravity",
+          "subtitle": "AI 개발 생산성 플랫폼",
+          "file": "Antigravity.html"
+        },
+        {
+          "slug": "vscode",
+          "title": "VS Code",
+          "subtitle": "코드 에디터 완전 정복",
+          "file": "Vscode.html"
+        },
+        {
+          "slug": "claude-code",
+          "title": "Claude Code",
+          "subtitle": "클로드 코드 설치 가이드",
+          "file": "ClaudeCode.html"
+        },
+        {
+          "slug": "copilot",
+          "title": "GitHub Copilot",
+          "subtitle": "AI 짝 코딩 & 자동완성",
+          "file": "Copilot.html"
+        },
+        {
+          "slug": "codex",
+          "title": "OpenAI Codex",
+          "subtitle": "자연어로 코드 생성하기",
+          "file": "Codex.html"
+        },
+        {
+          "slug": "n8n",
+          "title": "N8N",
+          "subtitle": "워크플로우 자동화 도구",
+          "file": "n8n.html"
+        },
+        {
+          "slug": "terminal-ai-tools",
+          "title": "터미널 AI 코딩 도구 3종 실무 활용기",
+          "subtitle": "Claude Code · Antigravity 2.0 · Codex 완벽 비교 분석",
+          "file": "terminal-ai-tools.html"
+        },
+        {
+          "slug": "cursor",
+          "title": "Cursor 완전 활용 가이드",
+          "subtitle": "VS Code를 대체할 가장 강력한 AI 네이티브 코드 에디터이자 Vibe Coding의 끝판왕",
+          "file": "Cursor.html"
+        },
+        {
+          "slug": "gemini-code-1778632757537",
+          "title": "Everything (에브리띵)",
+          "subtitle": "Windows 파일 검색을 완전히 바꾸는 도구 수백만 개의 파일을 0.1초 안에 찾아내는 인덱싱 검색",
+          "file": "gemini-code-1778632757537.html"
+        },
+        {
+          "slug": "playwright",
+          "title": "Playwright 완전 활용 가이드",
+          "subtitle": "Selenium의 단점을 모두 극복한 MS의 차세대 웹 크롤링 및 자동 테스트 프레임워크",
+          "file": "Playwright.html"
+        },
+        {
+          "slug": "devtools",
+          "title": "터미널 AI 코딩 도구 3종 실무 활용기",
+          "subtitle": "Claude Code · Antigravity 2.0 · Codex 완벽 비교 분석",
+          "file": "devtools.html"
+        }
       ]
     },
     {
@@ -39,13 +139,48 @@
       "colorVar": "--cat-webdev",
       "color": "#0ea5e9",
       "guides": [
-        { "slug": "github", "title": "GitHub", "subtitle": "버전 관리와 협업", "file": "github.html" },
-        { "slug": "lovable", "title": "Lovable", "subtitle": "AI 풀스택 앱 빌더", "file": "Lovable.html" },
-        { "slug": "v0-dev", "title": "v0.dev", "subtitle": "AI 프론트엔드 UI 생성기", "file": "v0.dev.html" },
-        { "slug": "vercel", "title": "Vercel", "subtitle": "프론트엔드 배포 플랫폼", "file": "Vercel.html" },
-        { "slug": "supabase", "title": "Supabase", "subtitle": "오픈소스 Firebase 대안 BaaS", "file": "Supabase.html" },
-        { "slug": "cloudflare", "title": "Cloudflare", "subtitle": "CDN · DNS · 인프라 보안", "file": "Cloudflare.html" },
-        { "slug": "resend", "title": "Resend", "subtitle": "개발자용 이메일 API", "file": "Resend.html" }
+        {
+          "slug": "github",
+          "title": "GitHub",
+          "subtitle": "버전 관리와 협업",
+          "file": "Github.html"
+        },
+        {
+          "slug": "lovable",
+          "title": "Lovable",
+          "subtitle": "AI 풀스택 앱 빌더",
+          "file": "Lovable.html"
+        },
+        {
+          "slug": "v0-dev",
+          "title": "v0.dev",
+          "subtitle": "AI 프론트엔드 UI 생성기",
+          "file": "v0.dev.html"
+        },
+        {
+          "slug": "vercel",
+          "title": "Vercel",
+          "subtitle": "프론트엔드 배포 플랫폼",
+          "file": "Vercel.html"
+        },
+        {
+          "slug": "supabase",
+          "title": "Supabase",
+          "subtitle": "오픈소스 Firebase 대안 BaaS",
+          "file": "Supabase.html"
+        },
+        {
+          "slug": "cloudflare",
+          "title": "Cloudflare",
+          "subtitle": "CDN · DNS · 인프라 보안",
+          "file": "Cloudflare.html"
+        },
+        {
+          "slug": "resend",
+          "title": "Resend",
+          "subtitle": "개발자용 이메일 API",
+          "file": "Resend.html"
+        }
       ]
     },
     {
@@ -55,11 +190,36 @@
       "colorVar": "--cat-knowledge",
       "color": "#f59e0b",
       "guides": [
-        { "slug": "notebooklm", "title": "NotebookLM", "subtitle": "Google AI 노트 도구", "file": "NotebookLM.html" },
-        { "slug": "notebooklm-importer", "title": "NotebookLM Importer", "subtitle": "NotebookLM 자료 가져오기", "file": "NotebookLM Importer.html" },
-        { "slug": "notion", "title": "Notion", "subtitle": "올인원 워크스페이스", "file": "notion.html" },
-        { "slug": "obsidian", "title": "Obsidian", "subtitle": "로컬 마크다운 지식 그래프", "file": "obsidian.html" },
-        { "slug": "quartz", "title": "Quartz", "subtitle": "마크다운 기반 디지털 가든 퍼블리싱", "file": "Quartz.html" }
+        {
+          "slug": "notebooklm",
+          "title": "NotebookLM",
+          "subtitle": "Google AI 노트 도구",
+          "file": "NotebookLM.html"
+        },
+        {
+          "slug": "notebooklm-importer",
+          "title": "NotebookLM Importer",
+          "subtitle": "NotebookLM 자료 가져오기",
+          "file": "NotebookLM Importer.html"
+        },
+        {
+          "slug": "notion",
+          "title": "Notion",
+          "subtitle": "올인원 워크스페이스",
+          "file": "notion.html"
+        },
+        {
+          "slug": "obsidian",
+          "title": "Obsidian",
+          "subtitle": "로컬 마크다운 지식 그래프",
+          "file": "obsidian.html"
+        },
+        {
+          "slug": "quartz",
+          "title": "Quartz",
+          "subtitle": "마크다운 기반 디지털 가든 퍼블리싱",
+          "file": "Quartz.html"
+        }
       ]
     },
     {
@@ -69,9 +229,24 @@
       "colorVar": "--cat-prod",
       "color": "#ec4899",
       "guides": [
-        { "slug": "everything", "title": "Everything (에브리띵)", "subtitle": "초고속 파일 검색", "file": "Everything.html" },
-        { "slug": "grabit", "title": "Grabit (그랩잇)", "subtitle": "스크린 캡처 & 텍스트 추출", "file": "Grabit.html" },
-        { "slug": "snipaste", "title": "Snipaste", "subtitle": "캡처와 화면 부착 도구", "file": "Snipaste.html" }
+        {
+          "slug": "everything",
+          "title": "Everything (에브리띵)",
+          "subtitle": "초고속 파일 검색",
+          "file": "Everything.html"
+        },
+        {
+          "slug": "grabit",
+          "title": "Grabit (그랩잇)",
+          "subtitle": "스크린 캡처 & 텍스트 추출",
+          "file": "Grabit.html"
+        },
+        {
+          "slug": "snipaste",
+          "title": "Snipaste",
+          "subtitle": "캡처와 화면 부착 도구",
+          "file": "Snipaste.html"
+        }
       ]
     },
     {
@@ -81,14 +256,42 @@
       "colorVar": "--cat-creative",
       "color": "#8b5cf6",
       "guides": [
-        { "slug": "capcut", "title": "CapCut", "subtitle": "숏폼 영상 편집과 AI 자막 제작", "file": "CapCut.html" },
-        { "slug": "image-ai", "title": "이미지 생성 AI", "subtitle": "텍스트로 이미지 만들기", "file": "이미지생성ai.html" },
-        { "slug": "video-music-ai", "title": "영상 · 음악 AI", "subtitle": "AI로 멀티미디어 제작", "file": "영상음악AI.html" },
-        { "slug": "design-viz", "title": "디자인 & 시각화", "subtitle": "디자인 자동화와 데이터 시각화", "file": "디자인및시각화.html" }
+        {
+          "slug": "capcut",
+          "title": "CapCut",
+          "subtitle": "숏폼 영상 편집과 AI 자막 제작",
+          "file": "CapCut.html"
+        },
+        {
+          "slug": "image-ai",
+          "title": "이미지 생성 AI",
+          "subtitle": "텍스트로 이미지 만들기",
+          "file": "이미지생성ai.html"
+        },
+        {
+          "slug": "video-music-ai",
+          "title": "영상 · 음악 AI",
+          "subtitle": "AI로 멀티미디어 제작",
+          "file": "영상음악AI.html"
+        },
+        {
+          "slug": "design-viz",
+          "title": "디자인 & 시각화",
+          "subtitle": "디자인 자동화와 데이터 시각화",
+          "file": "디자인및시각화.html"
+        }
       ]
     }
   ],
   "collections": [
+    {
+      "id": "test",
+      "label": "test 시리즈",
+      "description": "test 가이드 컬렉션",
+      "color": "#6366f1",
+      "folder": "test",
+      "indexFile": "table-of-contents.html"
+    },
     {
       "id": "vibecoding",
       "label": "바이브코딩 & 에이전트 코딩",

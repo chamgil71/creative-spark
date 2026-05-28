@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OpenAI Codex 완전 활용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #D97757;
+  --brand-dark: #B85F3F;
+  --brand-deep: #8B4530;
+  --brand-light: #FDF0EB;
+  --brand-mid: #F4C5AE;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #FBF7F5;
+  --white: #FFFFFF;
+  --border: #F0D4C4;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 18px 0; }
+.icon-card { background: linear-gradient(180deg, white, var(--brand-light)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.icon-card-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 12px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 26px; }
+.icon-card-title { font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.icon-card p { margin: 0; font-size: .88rem; color: var(--text-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.feature-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.feature-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.feature-tag { display: inline-flex; margin-bottom: 12px; background: var(--brand-light); color: var(--brand-dark); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; font-size: .76rem; font-weight: 800; }
+.feature-card-title { font-weight: 800; color: var(--text); font-size: 1.03rem; margin-bottom: 8px; }
+.feature-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.step-list { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+.step-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow); }
+.step-num { width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.step-title { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.step-item p { margin: 0; color: var(--text-2); }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 18px 0; }
+.compare-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.compare-card-title { font-weight: 800; color: var(--brand-dark); margin-bottom: 8px; }
+.compare-card p { margin: 0 0 10px; color: var(--text-2); }
+.compare-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 10px; font-size: .84rem; font-weight: 700; }
+.done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+.done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+.done-section p { opacity: .86; margin-bottom: 24px; }
+.done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+footer a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🧠 AI 언어 모델 · 코드 생성</div>
+    <div class="hero-logo">💻</div>
+    <h1>OpenAI Codex 완전 활용 가이드</h1>
+    <p>자연어를 코드로 변환하는 AI 프로그래밍의 시초이자 깃허브 코파일럿의 심장</p>
+    <a class="hero-cta" href="https://platform.openai.com/docs" target="_blank" rel="noopener">OpenAI API 문서 보기</a>
+    <div class="hero-stats"><div class="hero-stat"><strong>GPT-4o</strong><span>최신 통합 모델</span></div><div class="hero-stat"><strong>다국어</strong><span>자연어 완벽 이해</span></div><div class="hero-stat"><strong>수십 개</strong><span>프로그래밍 언어 지원</span></div><div class="hero-stat"><strong>API</strong><span>커스텀 연동</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>Codex(현재의 GPT 모델)는 어떤 도구인가</h2></div><div class="card"><p>Codex는 수십억 줄의 오픈소스 코드를 학습하여 자연어(사람의 언어)를 프로그래밍 코드로 번역하는 OpenAI의 AI 모델입니다. GitHub Copilot을 구동하는 핵심 엔진으로 처음 등장했으며, 현재는 GPT-4o와 o1 모델 등으로 진화하여 단순한 자동완성을 넘어 복잡한 시스템 아키텍처 설계와 로직 추론까지 수행하는 수준에 이르렀습니다.</p>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon-card-icon">🗣️</div>
+        <div class="icon-card-title">자연어 → 코드 변환</div>
+        <p>파이썬으로 특정 웹페이지의 제목을 크롤링하는 스크립트를 짜줘&quot;라는 말만으로 작동하는 코드를 생성합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🔄</div>
+        <div class="icon-card-title">코드 번역기</div>
+        <p>레거시 코드(예: VBA, PHP)를 최신 프레임워크(예: Python, React) 코드로 정확하게 변환합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🐛</div>
+        <div class="icon-card-title">디버깅 및 리뷰</div>
+        <p>에러가 발생한 코드를 던져주면, 원인을 분석하고 해결된 코드를 즉시 제안합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">📚</div>
+        <div class="icon-card-title">자동 문서화</div>
+        <p>복잡하고 주석이 없는 코드 블록을 분석하여 이해하기 쉬운 주석과 README 파일을 작성해 줍니다.</p>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-tag">개발</span>
+        <div class="feature-card-title">🛠️ 자동화 툴 제작자</div>
+        <p>API를 끌어와 나만의 슬랙 봇, 텔레그램 알림 봇, 혹은 코드 리뷰 자동화 파이프라인을 만들고 싶은 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">학습</span>
+        <div class="feature-card-title">🎓 코딩 입문자 및 전환자</div>
+        <p>모르는 문법을 검색할 필요 없이 &quot;이 코드가 왜 안 돌아가는지 설명해줘&quot;라며 1:1 과외를 받고 싶은 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">데이터</span>
+        <div class="feature-card-title">📊 데이터 분석가</div>
+        <p>엑셀 데이터를 처리하는 복잡한 Pandas 코드나 정규표현식을 외우지 않고 말로 작성하고 싶은 분.</p>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>실전 활용: API로 나만의 도구 만들기</h2></div><div class="card"><p>웹 인터페이스(ChatGPT)를 넘어, API를 통해 내 프로젝트에 Codex의 능력을 심는 방법입니다.</p>
+</div><div class="card"><h3 class="card-title">기본 API 연동 흐름</h3><div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">API 키 발급</div>
+          <p>OpenAI 플랫폼에 가입하고 결제 수단을 등록하여 프로젝트 전용 API 키를 발급받습니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">환경 설정</div>
+          <p>파이썬 등 사용하는 언어에서 `openai` 공식 라이브러리를 설치합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">프롬프트 엔지니어링</div>
+          <p>시스템 프롬프트에 &quot;너는 파이썬 데이터 분석 전문가야. 오직 코드만 반환해&quot;와 같이 역할을 부여합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">API 호출</div>
+          <p>사용자의 입력(자연어)을 받아 `gpt-4o` 모델로 전송하고 응답받은 코드를 출력하거나 실행합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">안전성 검증</div>
+          <p>AI가 생성한 코드를 자동 실행할 경우, 샌드박스(안전한 격리 환경) 내에서 실행되도록 방어 로직을 구성합니다.</p>
+        </div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>최적의 결과를 얻는 프롬프트 팁</h2></div><div class="card"><div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">명확한 컨텍스트 제공</div>
+        <p>로그인 화면 만들어줘&quot; (X) -&gt; &quot;React와 Tailwind를 사용해서 이메일/비밀번호를 받는 로그인 컴포넌트를 만들어줘.&quot; (O)</p>
+        <div class="compare-note">기술 스택 명시 필수</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">주석으로 유도하기</div>
+        <p>코드 에디터에서 함수 이름과 역할을 주석으로 먼저 상세히 달아두면, 뒤이어 나올 코드를 AI가 훨씬 정확하게 예측합니다.</p>
+        <div class="compare-note">IDE 환경 최적화</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">에러 메시지 통째로 복사</div>
+        <p>코드가 안 돌아갈 때는 내 코드만 주지 말고, 콘솔에 찍힌 붉은색 에러 로그를 그대로 복사해서 같이 던져줍니다.</p>
+        <div class="compare-note">원인 파악의 핵심</div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">AI 코드 사용 시 주의사항</h3><ul>
+<li><input disabled="" type="checkbox"> 생성된 코드에 무한 루프나 메모리 누수 같은 잠재적 결함이 없는지 눈으로 한 번 더 확인했는가?</li>
+<li><input disabled="" type="checkbox"> 회사 내부의 민감한 데이터나 인증 키(API Key), 개인정보를 프롬프트에 포함하지 않았는가?</li>
+<li><input disabled="" type="checkbox"> 사용하려는 라이브러리가 최신 버전인지 확인했는가? (AI가 구버전 문법을 제시할 수 있음)</li>
+</ul>
+<blockquote>
+<p>💡 <strong>TIP</strong>: AI에게 코드를 수정해달라고 할 때는 전체 코드를 다시 짜달라고 하기보다, &quot;이 함수의 이 부분 로직만 수정해서 전체 코드로 다시 보여줘&quot;라고 지시해야 기존 구조가 망가지는 것을 막을 수 있습니다.</p>
+</blockquote>
+</div></section>
+</main>
+<section class="done-section"><h2>나만의 AI 코딩 비서를 직접 구축해보세요</h2><p>OpenAI API를 활용해 코드 리뷰, 자동 생성, 버그 탐지 기능을 내 프로그램에 추가해보세요.</p><a class="done-link" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">API 키 발급</a></section>
+<footer><div>초기의 독립된 Codex API는 2023년에 종료되었으며, 현재는 GPT-4o 등 최신 메인 모델에 완벽히 통합되어 훨씬 뛰어난 코딩 능력을 제공합니다.</div><div>공식 사이트: <a href="https://openai.com">openai.com</a></div></footer>
+</body>
+</html>

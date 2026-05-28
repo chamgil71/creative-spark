@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">💻 OpenAI Codex 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Codex(현재의 GPT 모델)는 어떤 도구인가</a></li><li><a href="#sec-2">2. 실전 활용: API로 나만의 도구 만들기</a></li><li><a href="#sec-3">3. 최적의 결과를 얻는 프롬프트 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">OpenAI Codex 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Codex(현재의 GPT 모델)는 어떤 도구인가</a></li><li><a href="#sec-2">실전 활용: API로 나만의 도구 만들기</a></li><li><a href="#sec-3">최적의 결과를 얻는 프롬프트 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🧠 AI 언어 모델 · 코드 생성</div>
-      <div class="hero-logo">💻</div>
+      
       <h1>OpenAI Codex 완전 활용 가이드</h1>
-      <p>자연어를 코드로 변환하는 AI 프로그래밍의 시초이자 깃허브 코파일럿의 심장</p>
-      <a class="hero-cta" href="https://platform.openai.com/docs" target="_blank" rel="noopener">OpenAI API 문서 보기</a>
+      <p>자연어로 코드 생성하기</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>GPT-4o</strong><span>최신 통합 모델</span></div><div class="hero-stat"><strong>다국어</strong><span>자연어 완벽 이해</span></div><div class="hero-stat"><strong>수십 개</strong><span>프로그래밍 언어 지원</span></div><div class="hero-stat"><strong>API</strong><span>커스텀 연동</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Codex(현재의 GPT 모델)는 어떤 도구인가</h2></div><div class="card"><p>Codex는 수십억 줄의 오픈소스 코드를 학습하여 자연어(사람의 언어)를 프로그래밍 코드로 번역하는 OpenAI의 AI 모델입니다. GitHub Copilot을 구동하는 핵심 엔진으로 처음 등장했으며, 현재는 GPT-4o와 o1 모델 등으로 진화하여 단순한 자동완성을 넘어 복잡한 시스템 아키텍처 설계와 로직 추론까지 수행하는 수준에 이르렀습니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Codex(현재의 GPT 모델)는 어떤 도구인가</h2></div><div class="card"><p>Codex는 수십억 줄의 오픈소스 코드를 학습하여 자연어(사람의 언어)를 프로그래밍 코드로 번역하는 OpenAI의 AI 모델입니다. GitHub Copilot을 구동하는 핵심 엔진으로 처음 등장했으며, 현재는 GPT-4o와 o1 모델 등으로 진화하여 단순한 자동완성을 넘어 복잡한 시스템 아키텍처 설계와 로직 추론까지 수행하는 수준에 이르렀습니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🗣️</div>
 <div class="icon-card-title" style="color: var(--text);">자연어 → 코드 변환</div>
 <p>파이썬으로 특정 웹페이지의 제목을 크롤링하는 스크립트를 짜줘\&quot;라는 말만으로 작동하는 코드를 생성합니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">📚</div>
 <div class="icon-card-title" style="color: var(--text);">자동 문서화</div>
 <p>복잡하고 주석이 없는 코드 블록을 분석하여 이해하기 쉬운 주석과 README 파일을 작성해 줍니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >개발</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>🛠️ 자동화 툴 제작자
+<span class="fc-icon">🛠</span>🛠️ 자동화 툴 제작자
 </div>
 <p>API를 끌어와 나만의 슬랙 봇, 텔레그램 알림 봇, 혹은 코드 리뷰 자동화 파이프라인을 만들고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >학습</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🎓</span>코딩 입문자 및 전환자
+<span class="fc-icon">🎓</span>🎓 코딩 입문자 및 전환자
 </div>
 <p>모르는 문법을 검색할 필요 없이 \&quot;이 코드가 왜 안 돌아가는지 설명해줘\&quot;라며 1:1 과외를 받고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >데이터</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📊</span>데이터 분석가
+<span class="fc-icon">📊</span>📊 데이터 분석가
 </div>
 <p>엑셀 데이터를 처리하는 복잡한 Pandas 코드나 정규표현식을 외우지 않고 말로 작성하고 싶은 분.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 실전 활용: API로 나만의 도구 만들기</h2></div><div class="card"><p>웹 인터페이스(ChatGPT)를 넘어, API를 통해 내 프로젝트에 Codex의 능력을 심는 방법입니다.</p>
-</div><div class="card"><h3 class="card-title">기본 API 연동 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>실전 활용: API로 나만의 도구 만들기</h2></div><div class="card"><p>웹 인터페이스(ChatGPT)를 넘어, API를 통해 내 프로젝트에 Codex의 능력을 심는 방법입니다.</p>
+<h3>기본 API 연동 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,7 +367,7 @@
 <div class="step-title" >안전성 검증</div>
 <p>AI가 생성한 코드를 자동 실행할 경우, 샌드박스(안전한 격리 환경) 내에서 실행되도록 방어 로직을 구성합니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 최적의 결과를 얻는 프롬프트 팁</h2></div><div class="card"><div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>최적의 결과를 얻는 프롬프트 팁</h2></div><div class="card"><div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >명확한 컨텍스트 제공</div>
 <p>로그인 화면 만들어줘\&quot; (X) -&gt; \&quot;React와 Tailwind를 사용해서 이메일/비밀번호를 받는 로그인 컴포넌트를 만들어줘.\&quot; (O)</p>
@@ -379,7 +382,8 @@
 <div class="compare-card-title" >에러 메시지 통째로 복사</div>
 <p>코드가 안 돌아갈 때는 내 코드만 주지 말고, 콘솔에 찍힌 붉은색 에러 로그를 그대로 복사해서 같이 던져줍니다.</p>
 <div class="compare-note" >원인 파악의 핵심</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">AI 코드 사용 시 주의사항</h3><ul>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>AI 코드 사용 시 주의사항</h3>
+<ul>
 <li>생성된 코드에 무한 루프나 메모리 누수 같은 잠재적 결함이 없는지 눈으로 한 번 더 확인했는가?</li>
 <li>회사 내부의 민감한 데이터나 인증 키(API Key), 개인정보를 프롬프트에 포함하지 않았는가?</li>
 <li>사용하려는 라이브러리가 최신 버전인지 확인했는가? (AI가 구버전 문법을 제시할 수 있음)</li>
@@ -387,13 +391,11 @@
 <blockquote>
 <p>💡 TIP: AI에게 코드를 수정해달라고 할 때는 전체 코드를 다시 짜달라고 하기보다, &quot;이 함수의 이 부분 로직만 수정해서 전체 코드로 다시 보여줘&quot;라고 지시해야 기존 구조가 망가지는 것을 막을 수 있습니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">나만의 AI 코딩 비서를 직접 구축해보세요</h3><p>OpenAI API를 활용해 코드 리뷰, 자동 생성, 버그 탐지 기능을 내 프로그램에 추가해보세요.</p>
+<p>API 키 발급</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>나만의 AI 코딩 비서를 직접 구축해보세요</h2>
-    <p>OpenAI API를 활용해 코드 리뷰, 자동 생성, 버그 탐지 기능을 내 프로그램에 추가해보세요.</p>
-    <a class="done-link" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">API 키 발급</a>
-  </section>
-  <footer><div>초기의 독립된 Codex API는 2023년에 종료되었으며, 현재는 GPT-4o 등 최신 메인 모델에 완벽히 통합되어 훨씬 뛰어난 코딩 능력을 제공합니다.</div><div>공식 사이트: <a href="https://openai.com">openai.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

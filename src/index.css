@@ -17,9 +17,16 @@ All colors MUST be HSL.
 
     --cat-chat: 210 90% 55%;
     --cat-dev: 150 65% 42%;
+    --cat-webdev: 199 89% 48%;
     --cat-knowledge: 280 70% 58%;
     --cat-prod: 25 90% 55%;
     --cat-creative: 340 80% 60%;
+    --cat-security: 188 94% 43%;
+    --cat-finance: 43 80% 46%;
+    --cat-future: 84 81% 44%;
+    --cat-enterprise: 215 19% 35%;
+    --cat-media: 347 77% 50%;
+    --cat-uncategorized: 215 16% 47%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;

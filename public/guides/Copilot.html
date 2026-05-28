@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🐙 GitHub Copilot 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Copilot은 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 에디터에 AI 심기</a></li><li><a href="#sec-3">3. 생산성을 200% 올리는 활용 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">GitHub Copilot 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Copilot은 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 에디터에 AI 심기</a></li><li><a href="#sec-3">생산성을 200% 올리는 활용 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🤝 AI 짝 코딩 · 자동완성</div>
-      <div class="hero-logo">🐙</div>
+      
       <h1>GitHub Copilot 완전 활용 가이드</h1>
-      <p>편집기 안에서 내 코딩 스타일을 파악해 실시간으로 코드를 완성해주는 전 세계 1위 AI 짝꿍</p>
-      <a class="hero-cta" href="https://github.com/features/copilot" target="_blank" rel="noopener">Copilot 시작하기</a>
+      <p>AI 짝 코딩 &amp; 자동완성</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>$10/월</strong><span>개인 플랜</span></div><div class="hero-stat"><strong>VS Code</strong><span>최고의 궁합</span></div><div class="hero-stat"><strong>Chat</strong><span>대화형 UI</span></div><div class="hero-stat"><strong>CLI</strong><span>터미널 지원</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Copilot은 어떤 도구인가</h2></div><div class="card"><p>GitHub Copilot은 VS Code, IntelliJ 같은 코드 에디터에 확장 프로그램 형태로 설치되어, 개발자가 코드를 치는 동안 다음 줄이나 전체 함수를 실시간으로 유추하고 제안해주는 AI 어시스턴트입니다. 단순히 검색된 코드를 붙여넣는 것이 아니라, 현재 열려 있는 파일과 프로젝트의 맥락을 읽어 내 프로젝트 스타일에 딱 맞는 코드를 짜줍니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Copilot은 어떤 도구인가</h2></div><div class="card"><p>GitHub Copilot은 VS Code, IntelliJ 같은 코드 에디터에 확장 프로그램 형태로 설치되어, 개발자가 코드를 치는 동안 다음 줄이나 전체 함수를 실시간으로 유추하고 제안해주는 AI 어시스턴트입니다. 단순히 검색된 코드를 붙여넣는 것이 아니라, 현재 열려 있는 파일과 프로젝트의 맥락을 읽어 내 프로젝트 스타일에 딱 맞는 코드를 짜줍니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">👻</div>
 <div class="icon-card-title" style="color: var(--text);">고스트 텍스트 자동완성</div>
 <p>코드를 작성하는 도중 회색 글씨(Ghost Text)로 다음 로직이 추천되며, `Tab` 키로 즉시 적용합니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">🖥️</div>
 <div class="icon-card-title" style="color: var(--text);">Copilot CLI</div>
 <p>터미널에서 외우기 힘든 Git 요령이나 복잡한 쉘(Shell) 명령어를 자연어로 물어보고 즉시 실행합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >생산성</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">⚡</span>반복 작업이 지겨운 개발자
+<span class="fc-icon">⚡</span>⚡ 반복 작업이 지겨운 개발자
 </div>
 <p>보일러플레이트 코드, DTO, 무의미한 Getter/Setter 작성에 시간을 낭비하고 싶지 않은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >풀스택</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🤹</span>새로운 언어를 익히는 중인 분
+<span class="fc-icon">🤹</span>🤹 새로운 언어를 익히는 중인 분
 </div>
 <p>Python은 잘하지만 JS 문법이 헷갈릴 때, 검색창으로 가지 않고 에디터 안에서 바로 해결하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >클린코드</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🧹</span>테스트/정규식 혐오자
+<span class="fc-icon">🧹</span>🧹 테스트/정규식 혐오자
 </div>
 <p>짜기 귀찮은 단위 테스트 코드나, 머리 아픈 정규표현식을 3초 만에 완벽하게 생성하고 싶은 분.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 에디터에 AI 심기</h2></div><div class="card"><p>가장 많이 사용하는 VS Code를 기준으로 한 초기 세팅입니다.</p>
-</div><div class="card"><h3 class="card-title">3분 세팅 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 에디터에 AI 심기</h2></div><div class="card"><p>가장 많이 사용하는 VS Code를 기준으로 한 초기 세팅입니다.</p>
+<h3>3분 세팅 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,8 +367,8 @@
 <div class="step-title" >제안 수락하기</div>
 <p>회색 코드가 나타나면 `Tab`을 눌러 수락하거나, `Alt + ]`를 눌러 다른 제안을 살펴봅니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 생산성을 200% 올리는 활용 팁</h2></div><div class="card"><p>Copilot Chat에는 에디터 환경에서만 쓸 수 있는 강력한 &#39;컨텍스트 멘션(@)&#39; 기능이 있습니다.</p>
-<div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>생산성을 200% 올리는 활용 팁</h2></div><div class="card"><p>Copilot Chat에는 에디터 환경에서만 쓸 수 있는 강력한 &#39;컨텍스트 멘션(@)&#39; 기능이 있습니다.</p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >@workspace</div>
 <p>현재 열려있는 전체 폴더의 코드를 훑어보고 답변합니다. \&quot;이 프로젝트에서 DB 라우팅은 어디서 처리해?\&quot;라고 물어볼 수 있습니다.</p>
@@ -380,21 +383,29 @@
 <div class="compare-card-title" >#file</div>
 <p>특정 파일을 지목하여 질문합니다. \&quot;#app.py 와 #utils.py를 비교해서 중복 코드를 찾아줘\&quot;라고 지시합니다.</p>
 <div class="compare-note" >파일 간 맥락 연결</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">실무 적용 전 확인</h3><ul>
-<li>사내 보안 규정상 소스 코드가 외부(GitHub 서버)로 전송되어도 문제가 없는지 확인했는가?</li>
-<li>추천받은 코드가 회사에서 사용하는 라이브러리 버전과 호환되는지 점검했는가?</li>
-<li>내가 단축키를 제대로 활용하고 있는가? (수락: <code>Tab</code>, 단어별 수락: <code>Ctrl + Right</code>, 거절: <code>Esc</code>)</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>실무 적용 전 확인</h3>
+<ul>
+<li><p>사내 보안 규정상 소스 코드가 외부(GitHub 서버)로 전송되어도 문제가 없는지 확인했는가?</p>
+</li>
+<li><p>추천받은 코드가 회사에서 사용하는 라이브러리 버전과 호환되는지 점검했는가?</p>
+</li>
+<li><p>내가 단축키를 제대로 활용하고 있는가? (수락:</p>
+<p>Tab</p>
+<p>, 단어별 수락:</p>
+<p>Ctrl + Right</p>
+<p>, 거절:</p>
+<p>Esc</p>
+<p>)</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: Copilot은 열려 있는 다른 탭의 파일들을 컨텍스트로 강력하게 참조합니다. 따라서 코드를 짤 때 관련 있는 파일(데이터 모델, 공통 유틸 등)의 탭을 에디터에 띄워두면 훨씬 더 맥락에 맞는 정확한 코드를 제안받을 수 있습니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">타이핑의 고통에서 해방되세요</h3><p>주석 한 줄을 적고 잠시 멈춰보세요. Copilot이 당신이 원하는 코드를 마법처럼 제안합니다.</p>
+<p>VS Code 확장 설치</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>타이핑의 고통에서 해방되세요</h2>
-    <p>주석 한 줄을 적고 잠시 멈춰보세요. Copilot이 당신이 원하는 코드를 마법처럼 제안합니다.</p>
-    <a class="done-link" href="https://marketplace.visualstudio.com/items?itemName=GitHub.copilot" target="_blank" rel="noopener">VS Code 확장 설치</a>
-  </section>
-  <footer><div>GitHub Copilot은 OpenAI의 최신 모델을 기반으로 사용자의 프로젝트 컨텍스트를 이해합니다.</div><div>공식 사이트: <a href="https://github.com/features/copilot">github.com/features/copilot</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

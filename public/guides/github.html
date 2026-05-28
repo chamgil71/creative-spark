@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>깃허브(GitHub) 완전 정복 가이드</title>
+<title>코드를 함께 만들고,함께 관리하는 GitHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -282,112 +282,144 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">깃허브 깃허브(GitHub) 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Git 핵심 개념과 기본 명령어</a></li><li><a href="#sec-2">2. GitHub 핵심 기능</a></li><li><a href="#sec-3">3. GitHub Actions — CI/CD 자동화</a></li><li><a href="#sec-4">4. GitHub 웹 단축키</a></li><li><a href="#sec-5">5. 실전 GitHub 활용 팁</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">코드를 함께 만들고,함께 관리하는 GitHub</a><ul class="nav-links"><li><a href="#sec-1">Git 핵심 개념과 기본 명령어</a></li><li><a href="#sec-2">GitHub 핵심 기능</a></li><li><a href="#sec-3">GitHub Actions — CI/CD 자동화</a></li><li><a href="#sec-4">GitHub 웹 단축키</a></li><li><a href="#sec-5">실전 GitHub 활용 팁</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🐙 세계 최대 코드 협업 플랫폼</div>
-      <div class="hero-logo">깃허브</div>
-      <h1>깃허브(GitHub) 완전 정복 가이드</h1>
-      <p>버전 관리(Git)와 협업을 위한 플랫폼. 코드 저장소, Pull Request, Actions, Copilot까지 — 개발의 모든 과정이 여기에 있습니다.</p>
-      <a class="hero-cta" href="https://github.com" target="_blank" rel="noopener">🐙 GitHub 시작하기 (무료)</a>
+      
+      <h1>코드를 함께 만들고,함께 관리하는 GitHub</h1>
+      <p>버전 관리와 협업</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>무료</strong><span>Public 저장소</span></div><div class="hero-stat"><strong>1억+</strong><span>개발자 사용</span></div><div class="hero-stat"><strong>Copilot</strong><span>AI 코딩 어시스턴트</span></div><div class="hero-stat"><strong>Actions</strong><span>CI/CD 자동화</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Git 핵심 개념과 기본 명령어</h2></div><div class="card"><p>Git은 코드 변경 이력을 관리하는 분산 버전 관리 시스템입니다.</p>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Git 핵심 개념과 기본 명령어</h2></div><div class="card"><p>Git은 코드 변경 이력을 관리하는 분산 버전 관리 시스템입니다.</p>
 <div class="cmd-block">
 <div class="cmd-header">
-<span class="cmd-label">bash — Git 기본 워크플로우</span>
+<span class="cmd-label">명령어</span>
 <span class="cmd-lang">bash</span>
 <button class="cmd-copy" onclick="(function(b){var p=b.closest('.cmd-block').querySelector('.cmd-pre');navigator.clipboard.writeText(p.textContent.trim()).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1500)})})(this)">복사</button>
 </div>
-<pre class="cmd-pre"><code># 저장소 초기화 또는 클론
-git init              # 새 저장소 만들기
-git clone [URL]        # 원격 저장소 복제
-# 변경 사항 기록
-git status            # 현재 상태 확인
-git add .             # 모든 변경 파일 스테이징
-git commit -m &quot;메시지&quot;  # 커밋 생성
-# 원격 저장소 동기화
-git push origin main  # 원격에 업로드
-git pull              # 원격 변경 사항 가져오기
-# 브랜치 관리
-git branch feature/login # 브랜치 생성
-git checkout -b feature/login # 생성+이동
-git merge feature/login  # 브랜치 합치기</code></pre>
+<pre class="cmd-pre"><code>git init</code></pre>
 </div><h3>브랜치 전략 (Git Flow)</h3>
-<ul>
-<li><strong>main</strong>: 배포 가능한 상태의 안정적인 기준 브랜치 (v1.0, v1.1, v2.0 배포)</li>
-<li><strong>develop</strong>: 다음 릴리즈를 위해 개발을 진행하고 병합하는 통합 브랜치</li>
-<li><strong>feature</strong>: 개별 신규 기능이나 버그 수정을 개발하는 단기 브랜치</li>
-</ul>
-</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. GitHub 핵심 기능</h2></div><div class="card"><p>코드 협업과 개발 자동화를 위한 강력한 도구들입니다.</p>
-<div class="feature-grid" ><div class="feature-card" >
+<div class="workflow-strip">
+<div class="wf-step" >
+<div class="wf-icon" ></div>
+<div class="wf-name" >main
+v1.0
+v1.1
+v2.0
+develop
+feature</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" ></div>
+<div class="wf-name" >main
+v1.0
+v1.1
+v2.0</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" ></div>
+<div class="wf-name" >develop</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" ></div>
+<div class="wf-name" >feature</div>
+<div class="wf-tool"></div>
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>GitHub 핵심 기능</h2></div><div class="card"><p>코드 협업과 개발 자동화를 위한 강력한 도구들입니다.</p>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >협업 필수</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>Pull Request (PR)
+Pull Request (PR)
 </div>
 <p>변경 사항을 코드 리뷰를 거쳐 병합하는 협업 워크플로우. 코드 품질 유지의 핵심입니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >프로젝트 관리</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>Issues
+Issues
 </div>
 <p>버그 리포트, 기능 요청, 할 일 관리를 위한 이슈 트래커. 라벨, 마일스톤, 담당자 지정 가능.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >자동화</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>GitHub Actions
+GitHub Actions
 </div>
 <p>코드 푸시, PR 등의 이벤트에 자동으로 빌드·테스트·배포를 실행하는 CI/CD 자동화 도구.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >AI 코딩</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>GitHub Copilot
+GitHub Copilot
 </div>
 <p>AI 기반 코드 자동완성 도구. 주석을 작성하면 코드를 제안하고, 전체 함수도 생성합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >패키지 관리</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>Packages
+Packages
 </div>
 <p>npm, Docker, Maven 등의 패키지를 GitHub 내에서 바로 배포하고 관리합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >무료 호스팅</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>GitHub Pages
+GitHub Pages
 </div>
 <p>저장소에서 직접 정적 웹사이트를 무료로 호스팅합니다. 포트폴리오, 문서 사이트에 최적.</p>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. GitHub Actions — CI/CD 자동화</h2></div><div class="card"><p>코드를 푸시하면 자동으로 테스트하고 배포하는 파이프라인을 구성합니다.</p>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>GitHub Actions — CI/CD 자동화</h2></div><div class="card"><p>코드를 푸시하면 자동으로 테스트하고 배포하는 파이프라인을 구성합니다.</p>
 <div class="workflow-strip">
 <div class="wf-step" >
 <div class="wf-icon" >💾</div>
 <div class="wf-name" >코드 Push</div>
-<div class="wf-tool">개발자가 GitHub에 코드 업로드</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >→</div>
+<div class="wf-name" >→</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >🔧</div>
 <div class="wf-name" >Build</div>
-<div class="wf-tool">빌드 환경 설정 및 의존성 설치</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >→</div>
+<div class="wf-name" >→</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >🧪</div>
 <div class="wf-name" >Test</div>
-<div class="wf-tool">자동 테스트 실행 및 결과 확인</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" >→</div>
+<div class="wf-name" >→</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >🚀</div>
 <div class="wf-name" >Deploy</div>
-<div class="wf-tool">서버 또는 클라우드에 자동 배포</div>
+<div class="wf-tool"></div>
 </div></div><div class="cmd-block">
 <div class="cmd-header">
-<span class="cmd-label">.github/workflows/ci.yml</span>
+<span class="cmd-label">명령어</span>
 <span class="cmd-lang">bash</span>
 <button class="cmd-copy" onclick="(function(b){var p=b.closest('.cmd-block').querySelector('.cmd-pre');navigator.clipboard.writeText(p.textContent.trim()).then(()=>{b.textContent='복사됨';setTimeout(()=>b.textContent='복사',1500)})})(this)">복사</button>
 </div>
-<pre class="cmd-pre"><code>name: CI Pipeline
+<pre class="cmd-pre"><code>.github/workflows/ci.yml
+name: CI Pipeline
 on: [push, pull_request]
 jobs:
 test:
@@ -396,7 +428,7 @@ steps:
 - uses: actions/checkout@v4
 - name: Run Tests
 run: npm test</code></pre>
-</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. GitHub 웹 단축키</h2></div><div class="card"><p>? 키를 누르면 현재 페이지의 모든 단축키를 볼 수 있습니다.</p>
+</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>GitHub 웹 단축키</h2></div><div class="card"><p>? 키를 누르면 현재 페이지의 모든 단축키를 볼 수 있습니다.</p>
 <table>
 <thead>
 <tr>
@@ -446,22 +478,20 @@ run: npm test</code></pre>
 <td>PR 코멘트 제출</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 실전 GitHub 활용 팁</h2></div><div class="card"><p>개발 효율을 높이는 GitHub 노하우입니다.</p>
-<p><strong>🤖 GitHub Copilot + Claude Code 조합</strong></p>
+</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>실전 GitHub 활용 팁</h2></div><div class="card"><p>개발 효율을 높이는 GitHub 노하우입니다.</p>
+<p>🤖 GitHub Copilot + Claude Code 조합</p>
 <p>VS Code에서 GitHub Copilot으로 인라인 코드 완성, 터미널에서 Claude Code로 복잡한 리팩토링. 두 AI를 역할에 맞게 사용하면 생산성이 극대화됩니다.</p>
-<p><strong>📝 커밋 메시지 컨벤션</strong></p>
+<p>📝 커밋 메시지 컨벤션</p>
 <p>feat: 새 기능 | fix: 버그 수정 | docs: 문서 | style: 포맷 | refactor: 리팩토링 | test: 테스트. 이 규칙으로 커밋 히스토리가 깔끔해집니다.</p>
-<p><strong>🔒 .gitignore 꼭 설정하기</strong></p>
+<p>🔒 .gitignore 꼭 설정하기</p>
 <p>API 키, 환경변수(.env), node_modules, <strong>pycache</strong> 등은 절대 커밋하면 안 됩니다. gitignore.io에서 자신의 스택에 맞는 .gitignore를 자동 생성하세요.</p>
-<p><strong>⭐ GitHub Stars &amp; Trending</strong></p>
+<p>⭐ GitHub Stars &amp; Trending</p>
 <p>github.com/trending에서 매일 인기 오픈소스 프로젝트를 확인하세요. 좋은 코드를 읽는 것이 최고의 학습입니다.</p>
+</div><div class="card"><h3 class="card-title">🐙 코드를 세상과 공유하세요</h3><p>첫 저장소를 만들고, 첫 커밋을 남겨보세요.</p>
+<p>🐙 GitHub 시작하기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>🐙 코드를 세상과 공유하세요</h2>
-    <p>첫 저장소를 만들고, 첫 커밋을 남겨보세요.</p>
-    <a class="done-link" href="https://github.com" target="_blank" rel="noopener">🐙 GitHub 시작하기</a>
-  </section>
-  <footer><div>GitHub은 Microsoft가 운영하는 세계 최대 코드 호스팅 플랫폼입니다.</div><div>공식 사이트: <a href="https://github.com">github.com</a> | 문서: <a href="https://docs.github.com">docs.github.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vercel 완전 활용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #D97757;
+  --brand-dark: #B85F3F;
+  --brand-deep: #8B4530;
+  --brand-light: #FDF0EB;
+  --brand-mid: #F4C5AE;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #FBF7F5;
+  --white: #FFFFFF;
+  --border: #F0D4C4;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 18px 0; }
+.icon-card { background: linear-gradient(180deg, white, var(--brand-light)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.icon-card-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 12px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 26px; }
+.icon-card-title { font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.icon-card p { margin: 0; font-size: .88rem; color: var(--text-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.feature-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.feature-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.feature-tag { display: inline-flex; margin-bottom: 12px; background: var(--brand-light); color: var(--brand-dark); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; font-size: .76rem; font-weight: 800; }
+.feature-card-title { font-weight: 800; color: var(--text); font-size: 1.03rem; margin-bottom: 8px; }
+.feature-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.step-list { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+.step-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow); }
+.step-num { width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.step-title { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.step-item p { margin: 0; color: var(--text-2); }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 18px 0; }
+.compare-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.compare-card-title { font-weight: 800; color: var(--brand-dark); margin-bottom: 8px; }
+.compare-card p { margin: 0 0 10px; color: var(--text-2); }
+.compare-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 10px; font-size: .84rem; font-weight: 700; }
+.done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+.done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+.done-section p { opacity: .86; margin-bottom: 24px; }
+.done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+footer a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🌐 프론트엔드 배포 · Edge Computing</div>
+    <div class="hero-logo">▲</div>
+    <h1>Vercel 완전 활용 가이드</h1>
+    <p>전 세계에서 가장 빠른 웹 배포와 강력한 개발자 경험을 제공하는 클라우드 플랫폼</p>
+    <a class="hero-cta" href="https://vercel.com" target="_blank" rel="noopener">Vercel 시작하기</a>
+    <div class="hero-stats"><div class="hero-stat"><strong>Hobby 무료</strong><span>개인 프로젝트</span></div><div class="hero-stat"><strong>Next.js</strong><span>공식 플랫폼</span></div><div class="hero-stat"><strong>Global</strong><span>CDN 자동적용</span></div><div class="hero-stat"><strong>SSL</strong><span>기본 무료</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>Vercel은 어떤 도구인가</h2></div><div class="card"><p>Vercel은 복잡한 서버 인프라 지식 없이도 웹 애플리케이션을 배포하고 운영할 수 있게 해주는 &#39;프론트엔드 클라우드&#39;입니다. 특히 React, Next.js, Vue, Svelte 등 최신 프레임워크와 Quartz 같은 정적 사이트 생성기에 최적화되어 있습니다.</p>
+</div><div class="card"><h3 class="card-title">핵심 가치와 기능</h3><div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon-card-icon">⚡</div>
+        <div class="icon-card-title">Zero-Config 배포</div>
+        <p>별도의 설정 파일 없이도 프로젝트 구조를 분석하여 최적의 빌드 환경을 구성합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🌿</div>
+        <div class="icon-card-title">브랜치별 프리뷰</div>
+        <p>GitHub 브랜치를 만들 때마다 별도의 고유 URL을 생성하여 변경 사항을 미리 확인합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">☁️</div>
+        <div class="icon-card-title">Edge Functions</div>
+        <p>서버가 아닌 사용자 근처의 네트워크(Edge)에서 코드를 실행하여 응답 속도를 극대화합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">📈</div>
+        <div class="icon-card-title">Analytics &amp; Speed</div>
+        <p>방문자 수 통계와 실제 사용자가 느끼는 웹 성능 점수(Web Vitals)를 실시간 모니터링합니다.</p>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">이런 상황에서 빛을 발합니다</h3><div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-tag">개인</span>
+        <div class="feature-card-title">🖋️ 개발 블로그/포트폴리오</div>
+        <p>Quartz나 Astro로 만든 정적 사이트를 무료로, 가장 빠르게 운영하고 싶을 때.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">협업</span>
+        <div class="feature-card-title">👥 스타트업 및 팀 프로젝트</div>
+        <p>개발자가 코드를 올리면 기획자가 즉시 배포된 화면을 보고 댓글로 피드백을 주고받을 때.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">기업</span>
+        <div class="feature-card-title">🏭 대규모 상용 서비스</div>
+        <p>트래픽 급증 시 자동으로 서버 자원을 확장하고 안정적인 가용성을 보장받아야 할 때.</p>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>배포 가이드 (Step-by-Step)</h2></div><div class="card"><p>Vercel의 가장 큰 장점은 &quot;설정할 것이 거의 없다&quot;는 점입니다.</p>
+</div><div class="card"><h3 class="card-title">기본 연결 순서</h3><div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">GitHub 저장소 준비</div>
+          <p>배포할 소스 코드가 포함된 저장소(Repository)를 GitHub에 생성하고 Push합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Vercel 계정 연동</div>
+          <p>Vercel 홈페이지에서 GitHub 계정으로 로그인하고 저장소 접근 권한을 승인합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">프로젝트 임포트 (Import)</div>
+          <p>대시보드에서 &#39;Import&#39;를 클릭해 배포를 원하는 저장소를 선택합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">환경 변수(Env) 설정</div>
+          <p>API 키나 DB 비밀번호 등 보안이 필요한 값들을 대시보드의 &#39;Environment Variables&#39; 섹션에 입력합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">빌드 및 배포 완료</div>
+          <p>Deploy&#39; 버튼을 누르면 약 1~2분 내로 글로벌 CDN에 배포된 실서비스 URL이 생성됩니다.</p>
+        </div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>운영 및 최적화 전략</h2></div><div class="card"></div><div class="card"><h3 class="card-title">효율적인 운영 패턴</h3><div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">프로덕션 배포</div>
+        <p>`main` 브랜치에 코드를 합치면(Merge) 실제 서비스 도메인에 즉시 반영됩니다.</p>
+        <div class="compare-note">CI/CD 자동화</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">커스텀 도메인 설정</div>
+        <p>구입한 도메인을 연결하고, Vercel이 제공하는 무료 SSL 인증서를 통해 HTTPS를 자동 적용합니다.</p>
+        <div class="compare-note">보안 및 브랜딩</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">서버리스 백엔드</div>
+        <p>`api/` 폴더에 코드를 넣는 것만으로 별도 서버 구축 없이 API 엔드포인트를 생성합니다.</p>
+        <div class="compare-note">가벼운 API 서비스 적합</div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">안정적인 운영을 위한 확인</h3><ul>
+<li><input disabled="" type="checkbox"> 배포 로그(Build Logs)에서 경고나 에러 메세지가 없는가</li>
+<li><input disabled="" type="checkbox"> 모든 페이지의 이미지들이 최적화되어 빠르게 로딩되는가</li>
+<li><input disabled="" type="checkbox"> 도메인 연결 시 <code>www</code> 여부와 리다이렉트 설정이 올바른가</li>
+<li><input disabled="" type="checkbox"> Vercel Analytics를 활성화하여 사용자 유입 경로를 추적 중인가</li>
+</ul>
+<blockquote>
+<p>💡 <strong>TIP</strong>: Quartz 사용자라면 Vercel은 필수입니다. <code>.md</code> 파일을 수정해 GitHub에 올리기만 하면, Vercel이 백그라운드에서 다시 빌드하여 수 초 내로 블로그 내용을 업데이트해줍니다.</p>
+</blockquote>
+</div></section>
+</main>
+<section class="done-section"><h2>당신의 프로젝트를 세계로 연결하세요</h2><p>GitHub에 커밋하는 순간, 전 세계 어디서나 접속 가능한 가장 빠른 웹사이트가 완성됩니다.</p><a class="done-link" href="https://vercel.com/new" target="_blank" rel="noopener">배포 시작하기</a></section>
+<footer><div>Vercel은 프론트엔드 프레임워크 Next.js의 개발사가 직접 운영하는 최적화 배포 플랫폼입니다.</div><div>공식 사이트: <a href="https://vercel.com">vercel.com</a></div></footer>
+</body>
+</html>

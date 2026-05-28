@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manus 완전 활용 가이드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand:      #6B46C1;
+      --brand-dark: #553C9A;
+      --brand-light:#F0EBFF;
+      --brand-mid:  #C4B5FD;
+      --text:      #1A1A2E;
+      --text-2:    #4B5575;
+      --text-3:    #8892B0;
+      --bg:        #FAFAF8;
+      --white:     #FFFFFF;
+      --border:    #DDD6FE;
+      --shadow:    0 4px 24px rgba(107,70,193,0.10);
+      --shadow-lg: 0 8px 40px rgba(107,70,193,0.16);
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--brand); text-decoration: none; }
+    .nav-logo .logo-icon { width: 34px; height: 34px; background: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-links { display: flex; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all .2s; }
+    .nav-links a:hover { background: var(--brand-light); color: var(--brand); }
+
+    .hero { background: linear-gradient(135deg, #1A0A3E 0%, #3D1A78 40%, #6B46C1 75%, #9F7AEA 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(107,70,193,0.4) 0%, transparent 55%), radial-gradient(ellipse at 75% 20%, rgba(159,122,234,0.25) 0%, transparent 50%); }
+    .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+    .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+    .hero-emoji { font-size: 72px; margin: 0 auto 24px; display: block; }
+    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+    .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+    .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+    .hero-stat span { font-size: .8rem; opacity: .7; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+    .section { margin-bottom: 72px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+    .section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+    .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+    .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+
+    /* 에이전트 플로우 */
+    .agent-flow { background: linear-gradient(135deg, #1A0A3E, #3D1A78); border-radius: var(--radius); padding: 32px; color: white; margin-bottom: 20px; }
+    .af-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 24px; }
+    .af-steps { display: flex; align-items: center; gap: 0; flex-wrap: wrap; gap: 8px; }
+    .af-step { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-sm); padding: 14px 18px; text-align: center; flex: 1; min-width: 130px; }
+    .af-step-icon { font-size: 1.6rem; margin-bottom: 6px; }
+    .af-step-title { font-size: .85rem; font-weight: 700; }
+    .af-step-desc { font-size: .75rem; opacity: .7; margin-top: 3px; }
+    .af-arrow { font-size: 1.4rem; color: rgba(255,255,255,0.4); flex-shrink: 0; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .feat-card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; transition: all .2s; }
+    .feat-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+    .feat-icon { font-size: 2rem; margin-bottom: 12px; }
+    .feat-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+    .feat-desc { font-size: .88rem; color: var(--text-2); line-height: 1.7; }
+
+    .use-case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .uc-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; transition: all .2s; }
+    .uc-card:hover { border-color: var(--brand); transform: translateY(-2px); }
+    .uc-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .uc-title { font-weight: 700; font-size: .9rem; margin-bottom: 5px; }
+    .uc-desc { font-size: .82rem; color: var(--text-2); }
+
+    .vs-box { background: var(--brand-light); border: 1px solid var(--brand-mid); border-radius: var(--radius); padding: 24px; }
+    .vs-title { font-weight: 700; margin-bottom: 16px; color: var(--brand-dark); }
+    .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .vs-item strong { display: block; font-size: .9rem; margin-bottom: 4px; }
+    .vs-item span { font-size: .85rem; color: var(--text-2); }
+
+    .tip-box { background: linear-gradient(135deg, var(--brand-light), #fff); border-left: 4px solid var(--brand); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 20px; margin-top: 12px; font-size: .9rem; }
+    .tip-box strong { color: var(--brand-dark); }
+
+    .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+    footer { background: #1A0A3E; color: rgba(255,255,255,0.6); text-align: center; padding: 32px 24px; font-size: .88rem; }
+    footer strong { color: #C4B5FD; }
+  </style>
+</head>
+<body>
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><div class="logo-icon">🤖</div>Manus 가이드</a>
+    <ul class="nav-links">
+      <li><a href="#what">에이전트란</a></li>
+      <li><a href="#features">핵심 기능</a></li>
+      <li><a href="#cases">활용 사례</a></li>
+      <li><a href="#vs">Claude 비교</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> Monica.im · AI Agent · 2025</div>
+    <span class="hero-emoji">🤖</span>
+    <h1>Manus<br>완전 활용 가이드</h1>
+    <p>채팅이 아닌 실행 — 지시하면 스스로 웹을 탐색하고<br>파일을 만들고 완성된 결과물을 가져오는 AI 에이전트</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>자율</strong><span>스스로 실행</span></div>
+      <div class="hero-stat"><strong>웹 탐색</strong><span>자동 브라우징</span></div>
+      <div class="hero-stat"><strong>파일 생성</strong><span>문서·코드·데이터</span></div>
+      <div class="hero-stat"><strong>병렬</strong><span>멀티태스킹</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="section" id="what">
+    <div class="section-header"><div class="section-num">1</div><h2>Manus란? — AI 에이전트의 패러다임</h2></div>
+    <div class="agent-flow">
+      <div class="af-title">⚡ Manus 작동 방식 — "조사해서 보고서 만들어줘" 한 마디면</div>
+      <div class="af-steps">
+        <div class="af-step"><div class="af-step-icon">💬</div><div class="af-step-title">목표 이해</div><div class="af-step-desc">요청 분석·계획 수립</div></div>
+        <div class="af-arrow">→</div>
+        <div class="af-step"><div class="af-step-icon">🌐</div><div class="af-step-title">웹 자동 탐색</div><div class="af-step-desc">수십 개 소스 검색</div></div>
+        <div class="af-arrow">→</div>
+        <div class="af-step"><div class="af-step-icon">📊</div><div class="af-step-title">데이터 처리</div><div class="af-step-desc">정보 추출·분석</div></div>
+        <div class="af-arrow">→</div>
+        <div class="af-step"><div class="af-step-icon">📄</div><div class="af-step-title">결과물 생성</div><div class="af-step-desc">문서·파일 완성</div></div>
+        <div class="af-arrow">→</div>
+        <div class="af-step"><div class="af-step-icon">✅</div><div class="af-step-title">전달</div><div class="af-step-desc">다운로드 제공</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;margin-bottom:12px;">💡 일반 AI vs Manus 차이</div>
+      <div class="vs-box">
+        <div class="vs-grid">
+          <div class="vs-item">
+            <strong>🤔 일반 AI (ChatGPT, Claude)</strong>
+            <span>질문에 텍스트로 답변. 검색·파일 생성·실행은 직접 해야 함. 대화 한 번 = 한 번의 작업.</span>
+          </div>
+          <div class="vs-item">
+            <strong>🤖 Manus (AI 에이전트)</strong>
+            <span>목표를 주면 스스로 계획·실행·완성. 웹 탐색, 파일 생성, 코드 실행을 자율적으로 수행.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="features">
+    <div class="section-header"><div class="section-num">2</div><h2>핵심 기능</h2></div>
+    <div class="grid-2">
+      <div class="feat-card">
+        <div class="feat-icon">🌐</div>
+        <div class="feat-title">자율 웹 브라우징</div>
+        <div class="feat-desc">실제 브라우저처럼 웹사이트를 열고, 클릭하고, 로그인하고, 데이터를 수집. 사람이 하는 웹 작업의 대부분을 자동화.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💻</div>
+        <div class="feat-title">코드 작성 & 실행</div>
+        <div class="feat-desc">Python, JavaScript 등 코드를 작성하고 직접 실행. 데이터 분석, 차트 생성, 웹 스크래핑을 완전 자동화.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📁</div>
+        <div class="feat-title">파일 생성 & 관리</div>
+        <div class="feat-desc">Excel, Word, PDF, PPT, CSV를 실제로 생성하여 다운로드 제공. 단순 텍스트 답변이 아닌 완성된 파일.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔄</div>
+        <div class="feat-title">병렬 멀티태스킹</div>
+        <div class="feat-desc">여러 작업을 동시에 병렬 처리. "3개 경쟁사 동시에 조사해줘" → 동시 실행으로 시간 단축.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="cases">
+    <div class="section-header"><div class="section-num">3</div><h2>실전 활용 사례</h2></div>
+    <div class="use-case-grid">
+      <div class="uc-card"><div class="uc-icon">📊</div><div class="uc-title">시장 조사 보고서</div><div class="uc-desc">"국내 AI 스타트업 TOP 20 조사해서 Excel로 정리해줘" → 자동으로 웹 탐색 후 완성된 파일 제공.</div></div>
+      <div class="uc-card"><div class="uc-icon">🛒</div><div class="uc-title">가격 비교 분석</div><div class="uc-desc">여러 쇼핑몰의 제품 가격을 자동 수집·비교. 최저가 및 스펙 비교표 자동 생성.</div></div>
+      <div class="uc-card"><div class="uc-icon">📰</div><div class="uc-title">뉴스 모니터링</div><div class="uc-desc">특정 키워드로 매일 뉴스 수집·요약. 업계 동향 보고서 자동 생성.</div></div>
+      <div class="uc-card"><div class="uc-icon">🏢</div><div class="uc-title">경쟁사 분석</div><div class="uc-desc">경쟁사 웹사이트, 채용공고, 보도자료를 자동 수집하여 종합 분석 보고서 완성.</div></div>
+    </div>
+    <div class="tip-box" style="margin-top:16px;">
+      <strong>💡 Manus 잘 활용하는 법:</strong> 구체적인 목표와 원하는 출력 형식을 명시하세요. "~를 조사해서 항목별로 Excel 표로 만들어줘 (열: 회사명, 서비스, 가격, 특징)" 처럼 상세할수록 정확한 결과물을 받습니다.
+    </div>
+  </div>
+</main>
+
+<a class="back-top" href="#top">↑</a>
+<footer><strong>Manus 완전 활용 가이드</strong> · Monica.im · AI Agent · 2025</footer>
+</body>
+</html>

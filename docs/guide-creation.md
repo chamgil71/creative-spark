@@ -6,10 +6,11 @@
 
 ## 1. 기본 개념 및 빌드 워크플로우
 
-1. **마크다운 작성**: `data/md_final/` 폴더 하위에 `.md` 가이드 파일을 작성합니다.
-2. **HTML 컴파일**: `node templates/build-guide.mjs --all` 또는 `<파일명.md>`를 실행하여 고품질 반응형 HTML 가이드를 빌드합니다.
-3. **PPTX 슬라이드 변환**: `node scripts/md-to-pptx.mjs --all` 또는 `<파일명.md>`를 실행하여 레이아웃이 자동 분할 및 계산된 발표용 PPTX 파일을 빌드합니다.
-4. **허브 병합**: `npm run build`를 실행하여 모든 개별 가이드를 하나의 단일 오프라인 구동형 통합 파일인 `dist/standalone.html`로 자동 릴리즈합니다.
+1. **마크다운 작성**: `md_src/guides/` 폴더 하위에 `.md` 가이드 파일을 작성합니다.
+2. **목록 동기화**: `npm run sync:guides`를 실행하여 마크다운 정보와 `style` 구성을 인덱스 파일(`src/data/guides.json`)에 자동 정렬 반영합니다. (수동 정렬 순서 보존)
+3. **HTML 및 리소스 컴파일**: `npm run build:publish`를 실행하여 고품질 반응형 HTML 가이드를 빌드하고 쇼케이스용 PPTX 프레젠테이션 파일을 생성합니다.
+4. **PPTX 개별 슬라이드 변환**: 필요한 경우 `node scripts/md-to-pptx.mjs <파일명.md>` 또는 `--all`을 실행하여 발표용 PPTX 파일을 개별 빌드합니다.
+5. **통합 빌드 및 허브 병합**: `npm run build`를 일괄 실행하여 목록 갱신, HTML 컴파일, React 빌드 및 오프라인 통합 단일 구동 파일인 `dist/standalone.html` 빌드를 한 번에 수행합니다.
 
 ---
 

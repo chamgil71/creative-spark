@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #D97757;
+    --brand-dark: #B85F3F;
+    --brand-deep: #8B4530;
+    --brand-light:#FDF0EB;
+    --brand-mid:  #F4C5AE;
+    --border:     #F0D4C4;
+    --bg:         #FBF7F5;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,90 +282,96 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🤖 Everything (에브리띵)</a><ul class="nav-links"><li><a href="#sec-1">1. 1. 왜 Everything인가?</a></li><li><a href="#sec-2">2. 2. 검색 문법 &amp; 고급 쿼리</a></li><li><a href="#sec-3">3. 3. 주요 기능</a></li><li><a href="#sec-4">4. 4. 설치 &amp; 설정</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Everything (에브리띵)</a><ul class="nav-links"><li><a href="#sec-1">1. 왜 Everything인가?</a></li><li><a href="#sec-2">2. 검색 문법 &amp; 고급 쿼리</a></li><li><a href="#sec-3">3. 주요 기능</a></li><li><a href="#sec-4">4. 설치 &amp; 설정</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       
-      <div class="hero-logo">🤖</div>
+      
       <h1>Everything (에브리띵)</h1>
       <p>Windows 파일 검색을 완전히 바꾸는 도구 수백만 개의 파일을 0.1초 안에 찾아내는 인덱싱 검색</p>
       
       
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 1. 왜 Everything인가?</h2></div><div class="card"><div class="compare-2col"><div class="c2-card c2-left">
-<div class="card-top-bar"></div>
-<div class="c2-title">Windows 기본 검색</div>
-<ul class="c2-list"><li>인덱스 없는 폴더 탐색기 검색</li><li>드라이브 전체 스캔</li><li>로딩 인디케이터 대기</li><li>파일 하나씩 순차 검색</li></ul>
-<div class="c2-note">소요 시간: 30초 ~ 5분</div>
-</div><div class="c2-card c2-right">
-<div class="card-top-bar"></div>
-<div class="c2-title">Everything</div>
-<ul class="c2-list"><li>Win+Alt+E로 실행</li><li>파일명 타이핑 시작</li><li>입력과 동시에 결과 표시</li><li>전체 드라이브 즉시 완료</li></ul>
-<div class="c2-note">소요 시간: 0.1초</div>
-</div></div><blockquote>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 왜 Everything인가?</h2></div><div class="card"><p>Windows 기본 검색</p>
+<ul>
+<li>인덱스 없는 폴더 탐색기 검색</li>
+<li>드라이브 전체 스캔</li>
+<li>로딩 인디케이터 대기</li>
+<li>파일 하나씩 순차 검색</li>
+</ul>
+<p>소요 시간: 30초 ~ 5분</p>
+<p>Everything</p>
+<ul>
+<li>Win+Alt+E로 실행</li>
+<li>파일명 타이핑 시작</li>
+<li>입력과 동시에 결과 표시</li>
+<li>전체 드라이브 즉시 완료</li>
+</ul>
+<p>소요 시간: 0.1초</p>
+<blockquote>
 <p>💡 동작 원리: Windows NTFS의 MFT(Master File Table)를 직접 읽어 모든 파일 정보를 메모리에 인덱싱. 설치 직후 빠르게 인덱스 구축 후 실시간 업데이트.</p>
 </blockquote>
-</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 2. 검색 문법 &amp; 고급 쿼리</h2></div><div class="card"><div class="feature-grid" ><div class="feature-card" >
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 검색 문법 &amp; 고급 쿼리</h2></div><div class="card"><div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >*.xlsx</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>특정 확장자 파일 전체 검색
+<span class="fc-icon">•</span>•특정 확장자 파일 전체 검색
 </div>
 <p>예: *.pptx, *.pdf, *.py</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >보고서 2025</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>두 단어 모두 포함 (AND)
+<span class="fc-icon">•</span>•두 단어 모두 포함 (AND)
 </div>
 <p>띄어쓰기 = AND 조건</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >ext:xlsx dm:today</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>오늘 수정된 Excel 파일
+<span class="fc-icon">•</span>•오늘 수정된 Excel 파일
 </div>
 <p>dm:yesterday / dm:thisweek</p>
 </div><div class="feature-card" >
-<span class="feature-tag" >path:C:\Projects *.py</span>
+<span class="feature-tag" >path:C:\\Projects *.py</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>특정 폴더 내에서만 검색
+<span class="fc-icon">•</span>•특정 폴더 내에서만 검색
 </div>
 <p>경로 + 파일명 조합</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >size:&gt;10mb *.mp4</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>10MB 초과 MP4 파일
+<span class="fc-icon">•</span>•10MB 초과 MP4 파일
 </div>
 <p>size:&lt;1mb, size:1mb..100mb</p>
 </div><div class="feature-card" >
-<span class="feature-tag" >regex:2025\d{4}</span>
+<span class="feature-tag" >regex:2025\\d{4}</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>정규식 패턴 검색
+<span class="fc-icon">•</span>•정규식 패턴 검색
 </div>
 <p>고급 사용자 패턴 매칭</p>
 </div></div><blockquote>
 <p>⭐ 자주 쓰는 쿼리 저장: 자주 사용하는 검색식은 Bookmarks로 저장 가능. 예: &quot;*.pptx dm:thismonth&quot; → &quot;이달 PPT 파일&quot;로 즐겨찾기.</p>
 </blockquote>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 3. 주요 기능</h2></div><div class="card"><div class="feature-grid" ><div class="feature-card" >
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 주요 기능</h2></div><div class="card"><div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>⚡실시간 인덱스
+<span class="fc-icon">•</span>•⚡실시간 인덱스
 </div>
 <p>파일 생성·삭제·이동 즉시 반영. 항상 최신 상태 유지.</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>🖱️우클릭 메뉴 통합
+<span class="fc-icon">•</span>•🖱️우클릭 메뉴 통합
 </div>
 <p>결과에서 우클릭 → 열기·경로 복사·폴더 열기 즉시 실행.</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>🌐HTTP 서버
+<span class="fc-icon">•</span>•🌐HTTP 서버
 </div>
 <p>내부망에서 Everything을 웹 서버로 실행. 다른 PC에서 검색 가능.</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>⌨️글로벌 단축키
+<span class="fc-icon">•</span>•⌨️글로벌 단축키
 </div>
 <p>어떤 창에서도 Win+Alt+E로 즉시 검색창 호출 (설정 가능).</p>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 4. 설치 &amp; 설정</h2></div><div class="card"><div class="step-list">
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 설치 &amp; 설정</h2></div><div class="card"><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">

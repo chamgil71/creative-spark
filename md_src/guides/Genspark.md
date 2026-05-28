@@ -1,9 +1,8 @@
 ---
-title: Genspark 완전 활용 가이드
-subtitle: 링크 목록이 아닌 맞춤형 페이지로 — 검색 결과를 AI가즉석에서 종합 정리한 "Sparkpage"를 제공하는 차세대 검색 AI
-logo: ✨Genspark
-badge: Genspark AI · 검색의 재발명 · 2025
-style: ai-chat
+title: "Genspark완전 활용 가이드"
+subtitle: "AI 에이전트 검색 엔진"
+badge: "Genspark AI · 검색의 재발명 · 2025"
+style: "ai-chat"
 stats:
   - value: "Sparkpage"
     label: "AI 종합 정리 페이지"
@@ -15,13 +14,20 @@ stats:
     label: "기본 사용 가능"
 ---
 
-# 1. Sparkpage — 검색의 재발명
-::: columns-grid
-- title: "시장 동향"
+# Sparkpage — 검색의 재발명
+
+genspark.ai/search?q=2025+AI+트렌드
+
+🔍 검색: "2025년 AI 산업 주요 트렌드"
+
+2025 AI 산업 주요 트렌드 — Sparkpage
+
+::: columns-grid cols=3
+- title: "📊 시장 동향"
   desc: "20개 이상 소스를 종합한 시장 규모·성장률 요약. 출처 링크 첨부."
-- title: "주요 기업"
+- title: "🏢 주요 기업"
   desc: "OpenAI·Anthropic·Google 등 주요 플레이어 동향 자동 정리."
-- title: "전망"
+- title: "🔮 전망"
   desc: "전문가 의견·보고서 종합 분석. 핵심 인사이트 추출."
 :::
 
@@ -34,8 +40,9 @@ stats:
 | 출처 확인 | 링크 클릭 필요 | ✓ 인라인 출처 표시 |
 | 페이지 공유 | 검색 URL 공유 | ✓ 완성된 페이지 공유 |
 
-# 2. 핵심 기능
-::: icon-grid
+# 핵심 기능
+
+::: icon-grid cols=2
 - icon: "📄"
   title: "Sparkpage 생성"
   desc: "어떤 주제든 검색하면 AI가 수십 개 출처를 종합한 맞춤형 페이지를 즉석 생성. 공유 가능한 영구 링크 제공."
@@ -50,7 +57,8 @@ stats:
   desc: "항상 최신 웹 정보 기반으로 답변. 학습 데이터 의존이 아닌 실시간 검색으로 최신성 보장."
 :::
 
-# 3. Genspark 활용 시나리오
+# Genspark 활용 시나리오
+
 ::: icon-grid
 - icon: "✈️"
   title: "여행 계획"
@@ -74,5 +82,6 @@ stats:
 
 ::: alert-box tip
 - title: "💡 Genspark vs Perplexity:"
-  desc: "두 서비스 모두 AI 검색이지만, Genspark는 에이전트 기능이 더 강력하고 Sparkpage의 완성도가 높습니다. Perplexity는 빠른 답변, Genspark는 종합 리서치 페이지 생성에 최적."
+  desc: |
+    두 서비스 모두 AI 검색이지만, Genspark는 에이전트 기능이 더 강력하고 Sparkpage의 완성도가 높습니다. Perplexity는 빠른 답변, Genspark는 종합 리서치 페이지 생성에 최적.
 :::

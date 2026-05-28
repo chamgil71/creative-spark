@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">💡 Ollama 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Ollama는 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 터미널에서 AI와 대화하기</a></li><li><a href="#sec-3">3. 모델 선택 가이드 및 활용 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Ollama 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Ollama는 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 터미널에서 AI와 대화하기</a></li><li><a href="#sec-3">모델 선택 가이드 및 활용 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🦙 로컬 AI · LLM</div>
-      <div class="hero-logo">💡</div>
+      
       <h1>Ollama 완전 활용 가이드</h1>
-      <p>내 컴퓨터의 자원을 활용해 오픈소스 대규모 언어 모델(LLM)을 오프라인으로 실행하는 도구</p>
-      <a class="hero-cta" href="https://ollama.com" target="_blank" rel="noopener">Ollama 다운로드</a>
+      <p>오픈소스 AI 활용 툴</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>오프라인</strong><span>완벽한 보안</span></div><div class="hero-stat"><strong>무료</strong><span>API 과금 없음</span></div><div class="hero-stat"><strong>Llama 3</strong><span>최신 모델 지원</span></div><div class="hero-stat"><strong>CLI</strong><span>가벼운 터미널</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Ollama는 어떤 도구인가</h2></div><div class="card"><p>Ollama는 Meta의 Llama 3, 구글의 Gemma 등 성능이 뛰어난 오픈소스 AI 모델을 로컬 환경(내 PC)에서 클릭 몇 번 또는 명령어 한 줄로 쉽게 다운로드하고 구동할 수 있게 해주는 런타임 플랫폼입니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Ollama는 어떤 도구인가</h2></div><div class="card"><p>Ollama는 Meta의 Llama 3, 구글의 Gemma 등 성능이 뛰어난 오픈소스 AI 모델을 로컬 환경(내 PC)에서 클릭 몇 번 또는 명령어 한 줄로 쉽게 다운로드하고 구동할 수 있게 해주는 런타임 플랫폼입니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🔒</div>
 <div class="icon-card-title" style="color: var(--text);">완벽한 프라이버시</div>
 <p>모든 연산이 내 컴퓨터 내부에서 이루어지므로 회사 기밀이나 개인 일기를 입력해도 외부로 유출되지 않습니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">🧩</div>
 <div class="icon-card-title" style="color: var(--text);">다양한 Vibe 도구 연동</div>
 <p>Roo Code, Cline(Claude Dev) 등 에디터 확장에 로컬 모델을 연결하여 무료 코딩 비서로 활용합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >보안</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>🛡️ 보안에 민감한 개발자
+<span class="fc-icon">🛡</span>🛡️ 보안에 민감한 개발자
 </div>
 <p>외부 API로 코드를 보내는 것이 규정상 금지되어 있어 혼자만의 로컬 AI 보조가 필요한 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >절약</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">💳</span>Vibe Coding 헤비 유저
+<span class="fc-icon">💳</span>💳 Vibe Coding 헤비 유저
 </div>
 <p>수천 줄의 코드를 AI에게 읽히다 보니 API 비용(토큰 값)이 감당 안 되어 로컬로 전환하려는 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >연구</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🧪</span>프롬프트 실험가
+<span class="fc-icon">🧪</span>🧪 프롬프트 실험가
 </div>
 <p>RAG(검색 증강 생성) 기술이나 파이썬 랭체인(LangChain) 튜토리얼을 돈 걱정 없이 무제한으로 테스트하고 싶은 분.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 터미널에서 AI와 대화하기</h2></div><div class="card"><p>윈도우 사용자의 경우 WSL2 환경이나 Docker Desktop을 통해 실행하는 것이 좋습니다.</p>
-</div><div class="card"><h3 class="card-title">기본 실행 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 터미널에서 AI와 대화하기</h2></div><div class="card"><p>윈도우 사용자의 경우 WSL2 환경이나 Docker Desktop을 통해 실행하는 것이 좋습니다.</p>
+<h3>기본 실행 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,8 +367,8 @@
 <div class="step-title" >모델 커스텀(Modelfile)</div>
 <p>`FROM llama3`, `SYSTEM \&quot;너는 한국어 번역가야\&quot;` 형태의 파일로 나만의 맞춤형 에이전트를 빌드합니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 모델 선택 가이드 및 활용 팁</h2></div><div class="card"><p>Ollama 생태계에는 수많은 모델이 있습니다. PC 스펙(RAM)에 맞게 고르는 것이 핵심입니다.</p>
-<div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>모델 선택 가이드 및 활용 팁</h2></div><div class="card"><p>Ollama 생태계에는 수많은 모델이 있습니다. PC 스펙(RAM)에 맞게 고르는 것이 핵심입니다.</p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >코딩 전용 (DeepSeek Coder 등)</div>
 <p>`ollama run deepseek-coder`. 코딩 지식에 특화된 모델로, 일반 모델보다 훨씬 정교한 코드 제안을 해줍니다.</p>
@@ -380,21 +383,27 @@
 <div class="compare-card-title" >Web UI 연결 (Open-WebUI)</div>
 <p>터미널이 불편하다면 도커로 `Open-WebUI`를 띄워 로컬에 챗GPT와 똑같이 생긴 깔끔한 웹 화면을 구축하세요.</p>
 <div class="compare-note" >완벽한 개인용 ChatGPT</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">원활한 구동을 위한 확인</h3><ul>
-<li>모델 크기에 비해 내 컴퓨터의 여유 메모리(RAM, VRAM)가 충분한가? (보통 7B 모델은 8GB RAM 권장)</li>
-<li>윈도우 WSL2 환경이라면 Docker 및 WSL이 리소스를 충분히 할당받을 수 있도록 설정되었는가?</li>
-<li>다른 컴퓨터나 로컬 네트워크 앱(웹서버 등)에서 접근하려면 환경 변수(<code>OLLAMA_HOST</code>)를 <code>0.0.0.0</code>으로 개방했는가?</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>원활한 구동을 위한 확인</h3>
+<ul>
+<li><p>모델 크기에 비해 내 컴퓨터의 여유 메모리(RAM, VRAM)가 충분한가? (보통 7B 모델은 8GB RAM 권장)</p>
+</li>
+<li><p>윈도우 WSL2 환경이라면 Docker 및 WSL이 리소스를 충분히 할당받을 수 있도록 설정되었는가?</p>
+</li>
+<li><p>다른 컴퓨터나 로컬 네트워크 앱(웹서버 등)에서 접근하려면 환경 변수(</p>
+<p>OLLAMA_HOST</p>
+<p>)를</p>
+<p>0.0.0.0</p>
+<p>으로 개방했는가?</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: Ollama의 가장 강력한 무기는 Modelfile입니다. Dockerfile을 짜듯 내가 자주 쓰는 프롬프트, 창의성(Temperature) 수치, 기본 지침을 파일에 저장해 두고 ollama create로 구워내면 매번 긴 설정을 입력할 필요가 없습니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">내 PC를 AI 서버로 만들어보세요</h3><p>터미널 명령어 한 줄로 전 세계의 강력한 오픈소스 AI 모델들을 내 컴퓨터에 다운받고 실행하세요.</p>
+<p>모델 라이브러리 보기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>내 PC를 AI 서버로 만들어보세요</h2>
-    <p>터미널 명령어 한 줄로 전 세계의 강력한 오픈소스 AI 모델들을 내 컴퓨터에 다운받고 실행하세요.</p>
-    <a class="done-link" href="https://ollama.com/library" target="_blank" rel="noopener">모델 라이브러리 보기</a>
-  </section>
-  <footer><div>Ollama는 무거운 AI 모델을 가볍게 패키징하여 맥, 윈도우(WSL), 리눅스에서 쉽게 돌리게 해줍니다.</div><div>공식 사이트: <a href="https://ollama.com">ollama.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

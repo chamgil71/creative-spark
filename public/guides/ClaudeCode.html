@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>클로드 코드 설치 가이드</title>
+<title>클로드 코드설치 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #D97757;
+    --brand-dark: #B85F3F;
+    --brand-deep: #8B4530;
+    --brand-light:#FDF0EB;
+    --brand-mid:  #F4C5AE;
+    --border:     #F0D4C4;
+    --bg:         #FBF7F5;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,73 +282,113 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">클로드 클로드 코드 설치 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 클로드 코드란 무엇인가요?</a></li><li><a href="#sec-2">2. 설치 전 준비물을 확인해요</a></li><li><a href="#sec-3">3. 본인의 운영체제를 선택해 주세요</a></li><li><a href="#sec-4">4. 처음으로 클로드 코드 실행하기</a></li><li><a href="#sec-5">5. 설치 중 문제가 생겼나요?</a></li><li><a href="#sec-6">❓. 자주 묻는 질문</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">클로드 코드설치 가이드</a><ul class="nav-links"><li><a href="#sec-1">클로드 코드란 무엇인가요?</a></li><li><a href="#sec-2">설치 전 준비물을 확인해요</a></li><li><a href="#sec-3">본인의 운영체제를 선택해 주세요</a></li><li><a href="#sec-4">처음으로 클로드 코드 실행하기</a></li><li><a href="#sec-5">설치 중 문제가 생겼나요?</a></li><li><a href="#sec-6">자주 묻는 질문</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🎉 완전 초보자 맞춤 가이드</div>
-      <div class="hero-logo">클로드</div>
-      <h1>클로드 코드 설치 가이드</h1>
-      <p>처음 설치하는 분도 걱정 없어요!차근차근 따라오시면 누구든 설치할 수 있습니다 😊</p>
-      <a class="hero-cta" href="#" target="_blank" rel="noopener">시작하기</a>
+      
+      <h1>클로드 코드설치 가이드</h1>
+      <p>클로드 코드 설치 가이드</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>약 10분</strong><span>설치 소요 시간</span></div><div class="hero-stat"><strong>3가지</strong><span>운영체제 지원</span></div><div class="hero-stat"><strong>무료</strong><span>Node.js 설치</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 클로드 코드란 무엇인가요?</h2></div><div class="card"><p>설치하기 전에 클로드 코드가 어떤 도구인지 간단히 알아봐요!</p>
-<div class="icon-grid" ><div class="icon-card" style="border-color: #EBF2FF; background-color: #EBF2FF08;">
+  <main id="top"><div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">💡</span>💡
+클로드 코드란?Step 1
+</div>
+<p></p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">📋</span>📋
+준비물 확인Step 2
+</div>
+<p></p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚙️</span>⚙️
+설치하기Step 3
+</div>
+<p></p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🚀</span>🚀
+첫 번째 실행Step 4
+</div>
+<p></p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🔧</span>🔧
+문제 해결Step 5
+</div>
+<p></p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">❓</span>❓
+자주 묻는 질문FAQ
+</div>
+<p></p>
+</div></div><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>클로드 코드란 무엇인가요?</h2></div><div class="card"><p>설치하기 전에 클로드 코드가 어떤 도구인지 간단히 알아봐요!</p>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">💬</div>
 <div class="icon-card-title" style="color: var(--text);">말로 하는 코딩 도우미</div>
 <p>\&quot;이 코드가 왜 오류가 나요?\&quot; 처럼 우리말로 물어보면 AI가 답해줍니다.</p>
-</div><div class="icon-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
+</div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">📁</div>
 <div class="icon-card-title" style="color: var(--text);">내 컴퓨터 파일과 직접 연결</div>
 <p>인터넷 창에 붙여넣기 할 필요 없이, 내 컴퓨터 파일을 직접 분석합니다.</p>
-</div><div class="icon-card" style="border-color: #FFF7ED; background-color: #FFF7ED08;">
+</div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">⚡</div>
 <div class="icon-card-title" style="color: var(--text);">터미널(명령 창)에서 동작</div>
 <p>검은 화면의 터미널에서 실행하지만, 사용 방법은 매우 간단합니다!</p>
-</div><div class="icon-card" style="border-color: #FDF4FF; background-color: #FDF4FF08;">
+</div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🔄</div>
 <div class="icon-card-title" style="color: var(--text);">Claude.ai 와는 다른 도구</div>
 <p>claude.ai(웹사이트)와 별개로 설치해서 쓰는 전문 개발자 도구입니다.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 설치 전 준비물을 확인해요</h2></div><div class="card"><p>아래 항목들을 미리 준비하시면 설치가 훨씬 매끄럽게 진행됩니다.</p>
-<div class="feature-grid" ><div class="feature-card" style="border-color: #EBF2FF; background-color: #EBF2FF08;">
-<div class="card-top-bar" style="background-color:#EBF2FF"></div>
-<span class="feature-tag" style="background:#EBF2FF; color:#fff;">필수 확인</span>
+</div></div><p>$</p>
+<p>claude</p>
+<p>✻ Claude Code 2.x.x 에 오신 걸 환영합니다!</p>
+<p>/help 로 사용법을 확인하세요.</p>
+<p>›</p>
+<p>이 파일에서 버그를 찾아줘</p>
+<p>⦿ app.py 파일을 분석하고 있습니다...</p>
+<p>⦿ 17번째 줄에서 오류를 발견했습니다.</p>
+<p>→ <code>None</code> 값에 대한 예외 처리가 필요합니다.</p>
+<p>›</p>
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>설치 전 준비물을 확인해요</h2></div><div class="card"><p>아래 항목들을 미리 준비하시면 설치가 훨씬 매끄럽게 진행됩니다.</p>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
+<span class="feature-tag" >필수 확인</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">💻</span>지원 운영체제
 </div>
 <p>Windows, macOS(맥), Linux 모두 지원됩니다. 본인의 운영체제에 맞는 설치 방법을 선택해 주세요.</p>
-</div><div class="feature-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
-<div class="card-top-bar" style="background-color:#F0FDF4"></div>
-<span class="feature-tag" style="background:#F0FDF4; color:#fff;">필수 설치</span>
+</div><div class="feature-card" >
+<span class="feature-tag" >필수 설치</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🟢</span>Node.js (버전 18 이상)
 </div>
 <p>클로드 코드가 동작하려면 Node.js가 필요합니다. 아직 없다면 설치 과정에서 함께 안내해 드려요.</p>
-</div><div class="feature-card" style="border-color: #FFF7ED; background-color: #FFF7ED08;">
-<div class="card-top-bar" style="background-color:#FFF7ED"></div>
-<span class="feature-tag" style="background:#FFF7ED; color:#fff;">필수</span>
+</div><div class="feature-card" >
+<span class="feature-tag" >필수</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🔑</span>Anthropic 계정
 </div>
 <p>claude.ai 계정이 있으면 됩니다. Claude Pro ($20/월) 이상 구독 또는 API 키가 필요합니다.</p>
-</div><div class="feature-card" style="border-color: #F5F3FF; background-color: #F5F3FF08;">
-<div class="card-top-bar" style="background-color:#F5F3FF"></div>
-<span class="feature-tag" style="background:#F5F3FF; color:#fff;">필수</span>
+</div><div class="feature-card" >
+<span class="feature-tag" >필수</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📶</span>인터넷 연결
 </div>
 <p>설치 중 파일 다운로드 및 인증에 인터넷이 필요합니다. 안정적인 Wi-Fi 환경을 권장합니다.</p>
-</div><div class="feature-card" style="border-color: #FEF2F2; background-color: #FEF2F208;">
-<div class="card-top-bar" style="background-color:#FEF2F2"></div>
-<span class="feature-tag" style="background:#FEF2F2; color:#fff;">경우에 따라</span>
+</div><div class="feature-card" >
+<span class="feature-tag" >경우에 따라</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">⚡</span>관리자 권한
 </div>
 <p>설치 시 컴퓨터 관리자 비밀번호를 묻는 경우가 있을 수 있습니다. 미리 비밀번호를 확인해 두세요.</p>
-</div><div class="feature-card" style="border-color: #F0FDF4; background-color: #F0FDF408;">
-<div class="card-top-bar" style="background-color:#F0FDF4"></div>
-<span class="feature-tag" style="background:#F0FDF4; color:#fff;">권장 사항</span>
+</div><div class="feature-card" >
+<span class="feature-tag" >권장 사항</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🐙</span>Git (선택)
 </div>
@@ -356,102 +396,121 @@
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-body">
 <strong>Node.js가 뭔가요?</strong>
-<p>💡 JavaScript 프로그래밍 언어를 컴퓨터에서 직접 실행할 수 있게 해주는 도구입니다. 클로드 코드 내부적으로 이것을 사용하기 때문에 미리 설치되어 있어야 합니다. 마치 한글 문서를 열기 위해 &#39;한글(HWP)&#39; 프로그램이 필요한 것과 같아요!</p>
+<p>💡
+JavaScript 프로그래밍 언어를 컴퓨터에서 직접 실행할 수 있게 해주는 도구입니다. 클로드 코드 내부적으로 이것을 사용하기 때문에 미리 설치되어 있어야 합니다. 마치 한글 문서를 열기 위해 &#39;한글(HWP)&#39; 프로그램이 필요한 것과 같아요!</p>
 </div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 본인의 운영체제를 선택해 주세요</h2></div><div class="card"><p>사용하시는 컴퓨터 종류에 맞는 탭을 눌러주세요. 각 탭마다 맞춤 설치 방법을 안내해 드립니다.</p>
+</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>본인의 운영체제를 선택해 주세요</h2></div><div class="card"><p>사용하시는 컴퓨터 종류에 맞는 탭을 눌러주세요. 각 탭마다 맞춤 설치 방법을 안내해 드립니다.</p>
 <div class="tabs-wrap">
 <div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'t8zynl-0')">macOS (맥)</button><button class="tab-btn" onclick="switchTab(this,'t8zynl-1')">Windows</button><button class="tab-btn" onclick="switchTab(this,'t8zynl-2')">Linux</button>
+<button class="tab-btn active" onclick="switchTab(this,'tfih42-0')">macOS (맥)</button><button class="tab-btn" onclick="switchTab(this,'tfih42-1')">Windows</button><button class="tab-btn" onclick="switchTab(this,'tfih42-2')">Linux</button>
 </div>
-<div class="tab-panel active" id="t8zynl-0"><h4>1. 터미널 열기</h4>
-<ul>
-<li><strong>방법 1:</strong> <code>Cmd + Space</code>를 누르고 <strong>터미널</strong> 또는 <strong>Terminal</strong>을 입력한 뒤 Enter를 누르세요.</li>
-<li><strong>방법 2:</strong> Finder -&gt; 응용 프로그램 -&gt; 유틸리티 -&gt; 터미널을 클릭하세요.</li>
-</ul>
-<h4>2. Node.js 설치 여부 확인</h4>
-<p>터미널에 아래 명령어를 입력하고 Enter를 누르세요.</p>
-<pre><code class="language-bash">node --version
-</code></pre>
-<ul>
-<li>결과가 <code>v18.0.0</code> 이상이면 이미 설치되어 있으므로 3단계로 바로 이동하세요!</li>
-<li>에러가 나거나 낮은 버전이면 아래 공식 스크립트로 자동 설치해 주세요.</li>
-</ul>
-<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
-</code></pre>
-<h4>3. 클로드 코드 설치</h4>
-<p>터미널에 아래 명령어를 입력하여 설치합니다.</p>
-<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
-</code></pre>
-<p><em>(또는 <code>npm install -g @anthropic-ai/claude-code</code> 사용 가능)</em>
-설치 완료 후 아래 명령어로 정상 설치 여부를 확인합니다.</p>
-<pre><code class="language-bash">claude --version
-</code></pre>
-</div><div class="tab-panel" id="t8zynl-1"><h4>1. PowerShell 열기</h4>
-<p>키보드에서 <code>Windows</code> 키를 누르고 <strong>PowerShell</strong>을 검색해 클릭하여 실행하세요.</p>
-<h4>2. 공식 설치 스크립트 실행</h4>
-<p>PowerShell에 아래 명령어를 입력하고 Enter를 누르세요.</p>
-<pre><code class="language-powershell">irm https://claude.ai/install.ps1 | iex
-</code></pre>
-<ul>
-<li>보안 오류가 발생하는 경우 아래 명령어를 먼저 입력하세요.</li>
-</ul>
-<pre><code class="language-powershell">Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
-</code></pre>
-<h4>3. Node.js 별도 설치 방법 (위 방법 실패 시)</h4>
-<ul>
-<li>공식 스크립트가 잘 안 될 경우 <a href="https://nodejs.org">nodejs.org</a>에 접속해 <strong>LTS 버전</strong>을 설치하세요.</li>
-<li>설치 완료 후 PowerShell을 완전히 닫았다가 다시 열고 아래 명령어로 수동 설치하세요.</li>
-</ul>
-<pre><code class="language-powershell">npm install -g @anthropic-ai/claude-code
-</code></pre>
-<h4>4. 설치 확인</h4>
-<pre><code class="language-powershell">claude --version
-</code></pre>
-</div><div class="tab-panel" id="t8zynl-2"><h4>1. 터미널 열기</h4>
-<p><code>Ctrl + Alt + T</code> 단축키로 터미널을 실행하거나 애플리케이션 메뉴에서 검색해 주세요.</p>
-<h4>2. 공식 설치 스크립트 실행</h4>
-<p>아래 명령어를 입력해 설치하세요.</p>
-<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
-</code></pre>
-<p>설치 후 셸 설정을 새로고침해 줍니다.</p>
-<pre><code class="language-bash">source ~/.bashrc  # 또는 source ~/.zshrc
-</code></pre>
-<h4>3. Node.js 수동 설치 (필요 시)</h4>
-<p>Node.js가 아예 설치되어 있지 않은 경우:</p>
-<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt install nodejs npm -y
-npm install -g @anthropic-ai/claude-code
-</code></pre>
+<div class="tab-panel active" id="tfih42-0"></div><div class="tab-panel" id="tfih42-1"></div><div class="tab-panel" id="tfih42-2"></div>
+</div><div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >터미널 열기</div>
+<p>명령어를 입력하는 검은 화면 창을 열어요</p>
 </div>
-</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 처음으로 클로드 코드 실행하기</h2></div><div class="card"><p>설치가 끝났으면 이제 실행해볼까요? 처음 실행 시 로그인이 필요합니다.</p>
-<div class="workflow-strip">
-<div class="wf-step" >
-<div class="wf-icon" >⌨</div>
-<div class="wf-name" >claude 입력</div>
-<div class="wf-tool">터미널에 입력</div>
-<div class="wf-arrow">→</div>
 </div>
-<div class="wf-step" >
-<div class="wf-icon" >🌐</div>
-<div class="wf-name" >브라우저 열림</div>
-<div class="wf-tool">인증창 자동 호출</div>
-<div class="wf-arrow">→</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >Node.js 설치 여부 확인</div>
+<p>이미 설치되어 있는지 먼저 확인해봐요</p>
 </div>
-<div class="wf-step" >
-<div class="wf-icon" >🔑</div>
-<div class="wf-name" >로그인</div>
-<div class="wf-tool">Claude 계정 로그인</div>
-<div class="wf-arrow">→</div>
 </div>
-<div class="wf-step" >
-<div class="wf-icon" >🔒</div>
-<div class="wf-name" >권한 허용</div>
-<div class="wf-tool">Authorize 버튼 허용</div>
-<div class="wf-arrow">→</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >클로드 코드 설치</div>
+<p>실제로 설치하는 명령어를 입력합니다</p>
 </div>
-<div class="wf-step" >
-<div class="wf-icon" >🎉</div>
-<div class="wf-name" >시작!</div>
-<div class="wf-tool">사용 준비 완료 🎉</div>
+</div></div><div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >PowerShell 열기</div>
+<p>Windows의 명령 창을 열어요</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >공식 설치 스크립트 실행</div>
+<p>Anthropic 공식 설치 스크립트를 사용합니다</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >Node.js 별도 설치 방법 (위 방법 실패 시)</div>
+<p>공식 스크립트가 안 될 때 수동으로 설치하는 방법</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >4</div>
+<div class="step-content">
+<div class="step-title" >설치 확인</div>
+<p>제대로 설치되었는지 확인합니다</p>
+</div>
+</div></div><div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >터미널 열기</div>
+<p>리눅스에서 터미널을 실행합니다</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >공식 설치 스크립트 실행</div>
+<p>macOS와 동일한 방법으로 설치합니다</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >Node.js 수동 설치 (필요 시)</div>
+<p>Node.js가 없을 때 설치하는 방법</p>
+</div>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>처음으로 클로드 코드 실행하기</h2></div><div class="card"><p>설치가 끝났으면 이제 실행해볼까요? 처음 실행 시 로그인이 필요합니다.</p>
+<div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >claude 입력</div>
+<p>터미널에 claude를 입력하고 Enter</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >브라우저 열림</div>
+<p>자동으로 웹 브라우저가 열립니다</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >로그인</div>
+<p>Claude.ai 계정으로 로그인합니다</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >4</div>
+<div class="step-content">
+<div class="step-title" >권한 허용</div>
+<p>&#39;Authorize&#39; 버튼을 눌러 허용합니다</p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >5</div>
+<div class="step-content">
+<div class="step-title" >시작!</div>
+<p>터미널로 돌아와 사용 시작 🎉</p>
+</div>
 </div></div><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
@@ -473,7 +532,7 @@ npm install -g @anthropic-ai/claude-code
 <div class="step-title" >자주 쓰는 명령어</div>
 <p>기본 명령어를 알아두면 편리해요</p>
 </div>
-</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 설치 중 문제가 생겼나요?</h2></div><div class="card"><p>가장 자주 발생하는 문제와 해결 방법을 모아봤습니다. 아래 항목을 클릭하면 해결 방법이 펼쳐집니다.</p>
+</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>설치 중 문제가 생겼나요?</h2></div><div class="card"><p>가장 자주 발생하는 문제와 해결 방법을 모아봤습니다. 아래 항목을 클릭하면 해결 방법이 펼쳐집니다.</p>
 <div class="faq-list">
 <div class="faq-item">
 <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
@@ -516,7 +575,7 @@ npm install -g @anthropic-ai/claude-code
 <span class="faq-arrow">▼</span>
 </button>
 <div class="faq-a"><p>인터넷 연결 상태를 먼저 확인해주세요. 클로드 코드는 매 응답마다 Anthropic 서버와 통신합니다.</p></div>
-</div></div></div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>❓. 자주 묻는 질문</h2></div><div class="card"><p>설치 전후로 많이 물어보시는 질문들을 모았습니다.</p>
+</div></div></div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>자주 묻는 질문</h2></div><div class="card"><p>설치 전후로 많이 물어보시는 질문들을 모았습니다.</p>
 <div class="faq-list">
 <div class="faq-item">
 <button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
@@ -573,14 +632,14 @@ npm install -g @anthropic-ai/claude-code
 <span class="faq-arrow">▼</span>
 </button>
 <div class="faq-a"><p>물론입니다! 클로드 코드는 한국어를 완벽하게 지원합니다. 질문도 한국어로, 답변도 한국어로 받을 수 있습니다.</p></div>
-</div></div>
+</div></div></div><div class="card"><h3 class="card-title">🎉 설치 완료! 이제 시작해봐요</h3><p>아래 명령어들로 클로드 코드의 다양한 기능을 탐험해보세요!</p>
+<p>$ claude</p>
+<p>$ claude &quot;이 코드를 설명해줘&quot;</p>
+<p>$ claude doctor</p>
+<p>📚 공식 문서 바로가기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>🎉 설치 완료! 이제 시작해봐요</h2>
-    <p>아래 명령어들로 클로드 코드의 다양한 기능을 탐험해보세요!</p>
-    <a class="done-link" href="https://docs.claude.com/en/docs/claude-code/overview" target="_blank" rel="noopener">📚 공식 문서 바로가기</a>
-  </section>
-  <footer><div>이 가이드는 Anthropic 공식 문서를 기반으로 제작되었습니다.</div><div>공식 문서: <a href="https://docs.claude.com/en/docs/claude-code/overview">docs.claude.com</a> | npm: <a href="https://npmjs.com/package/@anthropic-ai/claude-code">@anthropic-ai/claude-code</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

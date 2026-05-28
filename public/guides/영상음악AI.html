@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AI 영상 & 음악 생성 가이드</title>
+<title>AI 영상 & 음악생성 완전 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #9B59B6;
+    --brand-dark: #7D3C98;
+    --brand-deep: #5B2C6F;
+    --brand-light:#F4ECF7;
+    --brand-mid:  #D7BDE2;
+    --border:     #E0CCEA;
+    --bg:         #FBF7FC;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #2A1A3E 40%, #5B2C6F 70%, #9B59B6 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #9B59B655 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,19 +282,19 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">AV영상 AI 영상 & 음악 생성 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. AI 영상 생성</a></li><li><a href="#sec-2">2. AI 음악 생성</a></li><li><a href="#sec-3">3. 도구 선택 가이드</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">AI 영상 & 음악생성 완전 가이드</a><ul class="nav-links"><li><a href="#sec-1">AI 영상 생성</a></li><li><a href="#sec-2">AI 음악 생성</a></li><li><a href="#sec-3">도구 선택 가이드</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>AI Creative Media · 2025</div>
-      <div class="hero-logo">AV영상</div>
-      <h1>AI 영상 &amp; 음악 생성 가이드</h1>
-      <p>Sora · Google Flow · Veo 3 · Runway — 텍스트 한 줄로 영상을Suno · Udio · Lyria 2 — 프롬프트로 완성된 음악을</p>
+      
+      <h1>AI 영상 &amp; 음악생성 완전 가이드</h1>
+      <p>AI로 멀티미디어 제작</p>
       
       <div class="hero-stats"><div class="hero-stat"><strong>Sora</strong><span>OpenAI 영상</span></div><div class="hero-stat"><strong>Google Flow</strong><span>Veo 3 영상 플랫폼</span></div><div class="hero-stat"><strong>Suno</strong><span>AI 음악 생성</span></div><div class="hero-stat"><strong>Udio</strong><span>고품질 음악</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. AI 영상 생성</h2></div><div class="card"><div class="tool-card">
-<div class="tc-header" style="background: linear-gradient(135deg, #0D47A1, #0D47A1CC); color: #fff;">
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>AI 영상 생성</h2></div><div class="card"><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
 <div class="tc-icon">Flow</div>
 <div class="tc-content">
 <div class="tc-name">Google Flow</div>
@@ -302,8 +302,9 @@
 </div>
 <div class="tc-badge">AI Pro/Ultra</div>
 </div>
+<ul class="tc-list"><li>Veo 3 영상 생성: 텍스트·이미지·영상 프레임으로 고품질 영상 생성. 오디오·대사 포함 가능.</li><li>Ingredients 시스템: 캐릭터·장소·오브젝트를 재료로 등록 후 일관된 장면 연속 생성.</li><li>카메라 제어: 팬·줌·달리·트래킹 등 정밀한 카메라 무브먼트 텍스트로 지정.</li><li>Imagen 4 이미지 통합: Whisk·ImageFX 기능 통합. 이미지 생성 후 즉시 영상화. 무료 이미지 생성.</li></ul>
 </div><div class="tool-card">
-<div class="tc-header" style="background: linear-gradient(135deg, #085040, #085040CC); color: #fff;">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
 <div class="tc-icon">Sora</div>
 <div class="tc-content">
 <div class="tc-name">Sora</div>
@@ -311,8 +312,9 @@
 </div>
 <div class="tc-badge">Plus 이상</div>
 </div>
+<ul class="tc-list"><li>최대 20초 HD 영상: 텍스트 프롬프트로 1080p 고화질 영상 생성. 물리 법칙 이해한 현실적 움직임.</li><li>Storyboard 기능: 여러 장면을 순서대로 배치하여 단편 영상 제작. 장면 간 연속성 유지.</li><li>Re-cut &amp; Remix: 기존 영상의 특정 부분 수정·재생성. 스타일 변환 및 영상 확장 가능.</li><li>Loop 생성: 끊김 없이 반복되는 루프 영상 생성. SNS·배경 영상 제작에 최적.</li></ul>
 </div><div class="tool-card">
-<div class="tc-header" style="background: linear-gradient(135deg, #1A1A2E, #1A1A2ECC); color: #fff;">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
 <div class="tc-icon">RW</div>
 <div class="tc-content">
 <div class="tc-name">Runway Gen-4</div>
@@ -320,13 +322,30 @@
 </div>
 <div class="tc-badge">무료/Pro</div>
 </div>
-</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. AI 음악 생성</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">•</div>
-<div class="icon-card-title" style="color: var(--text);"></div>
-<p></p>
-</div></div><p>Google Lyria 2 — Google Flow 통합 음악 AI</p>
+<ul class="tc-list"><li>이미지→영상 변환: 정적 이미지를 자연스럽게 움직이는 영상으로. 제품 사진 애니메이션에 최적.</li><li>인페인팅·아웃페인팅: 영상 내 특정 영역 제거·추가·교체. 배경 교체 및 객체 삭제 자동화.</li><li>모션 브러시: 원하는 영역에 직접 그려서 움직임 방향 지정. 세밀한 애니메이션 제어.</li><li>Act-One 액팅 캡처: 웹캠으로 표정·동작 캡처 → AI 캐릭터에 적용. 1인 영상 제작에 혁신적.</li></ul>
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>AI 음악 생성</h2></div><div class="card"><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">Su</div>
+<div class="tc-content">
+<div class="tc-name">Suno</div>
+<div class="tc-sub">suno.com · 가사+음악 동시 생성</div>
+</div>
+<div class="tc-badge">무료/Pro</div>
+</div>
+<ul class="tc-list"><li>장르·분위기·가사 입력 → 2분 내외 완성 노래 즉시 생성</li><li>한국어 가사 포함 K-pop 스타일 생성 가능</li><li>무료: 1일 5곡</li><li>Pro $8/월: 무제한 상업적 이용</li><li>Custom 모드: 가사·스타일·제목 직접 지정</li><li>프롬프트 예: &quot;K-pop, upbeat, female vocal, 2025 summer vibes&quot; 또는 한국어로 &quot;신나는 여름 팝송, 여성 보컬, 기타 중심</li></ul>
+</div><div class="tool-card">
+<div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
+<div class="tc-icon">Ud</div>
+<div class="tc-content">
+<div class="tc-name">Udio</div>
+<div class="tc-sub">udio.com · 전문가급 음악 품질</div>
+</div>
+<div class="tc-badge">무료/Pro</div>
+</div>
+<ul class="tc-list"><li>Suno 대비 더 높은 음악 품질·믹싱 수준</li><li>스템 분리: 보컬·드럼·베이스 개별 추출 가능</li><li>Inpainting: 곡의 특정 구간만 수정·재생성</li><li>상업적 사용 가능 (Pro 이상)</li></ul>
+</div><p>Google Lyria 2 — Google Flow 통합 음악 AI</p>
 <p>Google DeepMind의 Lyria 2 음악 생성 모델이 Google Flow에 통합됩니다. 영상 생성 시 배경음악 자동 생성, 분위기에 맞는 사운드트랙 제작. 뮤지션들과 협업하여 개발된 모델로 음악적 완성도가 높음. YouTube MusicFX에서도 사용 가능.</p>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 도구 선택 가이드</h2></div><div class="card"><table>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>도구 선택 가이드</h2></div><div class="card"><table>
 <thead>
 <tr>
 <th>목적</th>

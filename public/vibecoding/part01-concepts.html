@@ -1,503 +1,553 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1부. 개념 이해 — 바이브코딩 & 에이전트 코딩 완전 입문</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --brand:      #4F7EFF;
-      --brand-dark: #2952CC;
-      --brand-deep: #1A2E7A;
-      --brand-light:#EEF3FF;
-      --brand-mid:  #A8BFFF;
-      --green:     #22C55E;
-      --red:       #EF4444;
-      --yellow:    #F59E0B;
-      --text:      #1A1A2E;
-      --text-2:    #4B5575;
-      --text-3:    #8892B0;
-      --bg:        #F7F9FF;
-      --white:     #FFFFFF;
-      --border:    #DDE4FF;
-      --shadow:    0 4px 24px rgba(79,126,255,0.10);
-      --shadow-lg: 0 8px 40px rgba(79,126,255,0.16);
-      --radius:    16px;
-      --radius-sm: 10px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>개념 이해</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand:      #D97757;
+    --brand-dark: #B85F3F;
+    --brand-deep: #8B4530;
+    --brand-light:#FDF0EB;
+    --brand-mid:  #F4C5AE;
+    --border:     #F0D4C4;
+    --bg:         #FBF7F5;
+    --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
+    --shadow:    0 4px 24px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  
+  /* Navigation & Hero */
+  .nav { position: sticky; top: 0; z-index: 1000; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); height: 60px; }
+  .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 24px; }
+  .nav-logo { font-weight: 900; color: var(--brand); text-decoration: none; font-size: 1.1rem; }
+  .nav-links { display: flex; gap: 18px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
+  .nav-links a:hover { color: var(--brand); }
+  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+  .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+  .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+  .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+  .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+  .hero-stat span { font-size: .8rem; opacity: .7; }
+  @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(1.2); } }
 
-    /* NAV */
-    .nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
-    .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; color: var(--brand); text-decoration: none; }
-    .nav-logo .logo-icon { width: 32px; height: 32px; background: var(--brand); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; }
-    .nav-part { font-size: 12px; background: var(--brand-light); color: var(--brand-dark); padding: 3px 10px; border-radius: 100px; font-weight: 600; }
-    .nav-links { display: flex; gap: 4px; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--text-2); font-size: 13px; font-weight: 500; padding: 5px 10px; border-radius: 8px; transition: all .2s; }
-    .nav-links a:hover { background: var(--brand-light); color: var(--brand); }
+  /* Layout */
+  main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+  .section { margin-bottom: 80px; scroll-margin-top: 80px; }
+  .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+  .section-num { width: 40px; height: 40px; background: var(--brand); color: #fff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.15rem; }
+  .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.9rem; font-weight: 700; }
+  .card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 35px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .card-title { font-size: 1.4rem; color: var(--brand-dark); margin-bottom: 20px; border-bottom: 2px solid var(--brand-light); display: inline-block; padding-bottom: 5px; font-weight: 800;}
+  
+  /* 공통 카드 스타일 */
+  .card-top-bar { height: 4px; background: var(--brand); position: absolute; top: 0; left: 0; right: 0; }
+  .feature-card { padding: 18px; }
+  
+  /* Grid Systems */
+  .icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid { display: grid; gap: 20px; margin: 25px 0; }
+  .icon-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .plan-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .compare-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .columns-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin: 25px 0;}
 
-    /* HERO */
-    .hero { background: linear-gradient(135deg, #0D1B4B 0%, #1A2E7A 40%, #2952CC 75%, #4F7EFF 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(79,126,255,0.3) 0%, transparent 60%), radial-gradient(ellipse at 70% 20%, rgba(168,191,255,0.2) 0%, transparent 50%); }
-    .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
-    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 20px; }
-    .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
-    .hero-part-num { font-size: 13px; opacity: .6; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; }
-    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 700; margin-bottom: 16px; line-height: 1.25; }
-    .hero p { font-size: 1.05rem; opacity: .85; margin-bottom: 36px; }
-    .hero-chapters { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .hero-chapter-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-family: 'JetBrains Mono', monospace; }
+  /* Cards */
+  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .bottom-list-card, .badge-item { 
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; 
+    position: relative; overflow: hidden; transition: 0.2s; box-shadow: var(--shadow);
+  }
+  .icon-card:hover, .feature-card:hover, .plan-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  
+  
+  .icon-card-icon { font-size: 2.5rem; margin-bottom: 15px; text-align: center; }
+  .icon-card-title, .feature-card-title, .compare-card-title, .col-title, .plan-title, .bl-title { 
+    font-weight: 800; font-size: 1.15rem; margin-bottom: 10px; color: var(--text); 
+  }
+  .icon-card-title { text-align: center; }
+  .fc-icon { margin-right: 8px; font-size: 1.2rem; }
+  .feature-tag { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 100px; background: var(--brand-light); color: var(--brand-dark); }
+  p { color: var(--text-2); font-size: 0.95rem; margin-bottom: 1rem; }
+  .icon-card p { text-align: center; }
 
-    /* MAIN */
-    main { max-width: 960px; margin: 0 auto; padding: 60px 24px 80px; }
-    .section { margin-bottom: 72px; scroll-margin-top: 80px; }
-    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
-    .section-num { width: 44px; height: 44px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
-    .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.55rem; font-weight: 700; }
-    .section-lead { font-size: 1rem; color: var(--text-2); line-height: 1.85; margin-bottom: 28px; padding: 20px 24px; background: white; border-radius: var(--radius-sm); border-left: 4px solid var(--brand); box-shadow: var(--shadow); }
+  /* Tool Card */
+  .tool-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); margin: 25px 0; }
+  .tc-header { padding: 25px; display: flex; align-items: center; gap: 20px; }
+  .tc-icon { width: 55px; height: 55px; border-radius: calc(var(--radius) / 2); background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+  .tc-name { font-size: 1.3rem; font-weight: 800; }
+  .tc-sub { font-size: 0.9rem; opacity: 0.9; }
+  .tc-badge { margin-left: auto; font-size: 0.8rem; font-weight: 800; padding: 5px 15px; border-radius: 100px; background: rgba(255,255,255,0.25); }
+  .tc-list { padding: 12px 25px 14px 40px; font-size: 0.88rem; background: var(--bg); border-top: 1px solid var(--border); color: var(--text-2); margin: 0; line-height: 1.9; }
 
-    /* CARDS */
-    .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .card-title .icon { width: 30px; height: 30px; background: var(--brand-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  /* Workflow */
+  .workflow-strip { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; }
+  .wf-step { flex: 1; min-width: 140px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; }
+  .wf-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .wf-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .wf-tool { font-size: 0.8rem; color: var(--text-2); }
+  .wf-arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-weight: 900; color: #cbd5e1; z-index: 1; font-size: 1.2rem; }
 
-    /* QUOTE BOX */
-    .quote-box { background: linear-gradient(135deg, #0D1B4B, #1A2E7A); color: white; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
-    .quote-box::before { content: '"'; position: absolute; top: -10px; left: 16px; font-size: 100px; opacity: .08; font-family: Georgia, serif; line-height: 1; }
-    .quote-text { font-size: 1.1rem; line-height: 1.8; font-style: italic; margin-bottom: 12px; position: relative; z-index: 1; }
-    .quote-author { font-size: .85rem; opacity: .6; font-family: 'JetBrains Mono', monospace; }
+  /* Steps */
+  .step-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .step-item { display: flex; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  .step-num { width: 35px; height: 35px; background: var(--brand); color: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+  .step-title { font-weight: 800; font-size: 1.1rem; margin-bottom: 5px; }
 
-    /* COMPARE TABLE */
-    .compare-table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-    .compare-table th { background: var(--brand); color: white; padding: 13px 18px; text-align: left; font-weight: 600; font-size: .9rem; }
-    .compare-table td { padding: 13px 18px; border-bottom: 1px solid var(--border); font-size: .9rem; vertical-align: top; }
-    .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table tr:nth-child(even) td { background: var(--bg); }
+  /* Plan Grid */
+  .plan-card { text-align: center; padding-top: 35px; }
+  .plan-featured { border-color: var(--brand); box-shadow: 0 8px 30px rgba(99,102,241,0.15); transform: translateY(-5px); }
+  .plan-badge { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: 0.75rem; font-weight: 900; padding: 4px 15px; border-radius: 100px; }
+  .plan-title { font-size: 1.3rem; margin-bottom: 20px; }
+  .plan-features { list-style: none; margin: 0 0 20px 0; padding: 0; text-align: left; }
+  .plan-features li { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text-2); }
+  .plan-features li:before { content: '✓'; color: var(--brand); margin-right: 8px; font-weight: bold; }
+  .plan-note { margin-top: auto; padding: 8px; background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
 
-    /* LEVEL CARDS */
-    .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 16px; }
-    .level-card { background: white; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 16px; text-align: center; transition: all .2s; }
-    .level-card:hover { border-color: var(--brand); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-    .level-card.highlight { border-color: var(--brand); background: var(--brand-light); }
-    .level-num { font-family: 'JetBrains Mono', monospace; font-size: .8rem; color: var(--brand); font-weight: 600; margin-bottom: 6px; letter-spacing: .1em; }
-    .level-name { font-weight: 700; font-size: .92rem; margin-bottom: 6px; }
-    .level-tool { font-size: .78rem; color: var(--text-3); }
-    .level-desc { font-size: .8rem; color: var(--text-2); margin-top: 6px; }
+  /* Skill List */
+  .skill-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; }
+  .skill-item { display: flex; align-items: center; gap: 20px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 25px; }
+  .skill-icon { width: 40px; height: 40px; background: var(--brand-light); color: var(--brand); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .skill-title { font-weight: 800; font-size: 1.05rem; width: 30%; }
+  .skill-desc { font-size: 0.95rem; color: var(--text-2); flex: 1; margin: 0; }
 
-    /* FLOW DIAGRAM */
-    .flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin: 20px 0; }
-    .flow-step { background: white; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; text-align: center; min-width: 120px; flex: 1; }
-    .flow-step.active { border-color: var(--brand); background: var(--brand-light); }
-    .flow-step .fs-icon { font-size: 22px; margin-bottom: 6px; }
-    .flow-step .fs-title { font-weight: 700; font-size: .88rem; }
-    .flow-step .fs-sub { font-size: .76rem; color: var(--text-3); margin-top: 3px; }
-    .flow-arrow { color: var(--brand); font-size: 18px; padding: 0 4px; flex-shrink: 0; }
+  /* Badge Grid */
+  .badge-item { text-align: center; padding: 20px 15px; }
+  .badge-icon { font-size: 2rem; margin-bottom: 10px; }
+  .badge-title { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
+  .badge-tag { font-size: 0.8rem; color: var(--text-2); }
 
-    /* CONCEPT BOX */
-    .concept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-    .concept-item { background: white; border-radius: var(--radius-sm); border: 1px solid var(--border); padding: 20px; box-shadow: var(--shadow); transition: all .2s; }
-    .concept-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--brand-mid); }
-    .concept-icon { font-size: 28px; margin-bottom: 10px; }
-    .concept-title { font-weight: 700; font-size: .95rem; margin-bottom: 6px; }
-    .concept-desc { font-size: .84rem; color: var(--text-2); line-height: 1.7; }
+  /* Bottom List */
+  .bl-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .bl-chip { background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; font-weight: 800; padding: 6px 15px; border-radius: 100px; }
 
-    /* TIP BOX */
-    .tip-box { background: linear-gradient(135deg, var(--brand-light), #fff); border-left: 4px solid var(--brand); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 20px; margin-top: 16px; font-size: .92rem; }
-    .tip-box strong { color: var(--brand-dark); }
+  /* Compare 2Col */
+  .compare-2col { display: flex; gap: 20px; margin: 25px 0; }
+  .c2-card { flex: 1; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .c2-left { background: var(--brand-light); border-color: var(--brand); border-width: 2px; }
+  .c2-left .card-top-bar { background: var(--brand); }
+  .c2-right .card-top-bar { background: var(--text-2); }
+  .c2-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color: var(--brand-dark); }
+  .c2-right .c2-title { color: var(--text); }
+  .c2-list { list-style: none; margin: 0; padding: 0; }
+  .c2-list li { padding: 8px 0; font-size: 1rem; color: var(--text-2); display: flex; gap: 10px; }
+  .c2-left .c2-list li { color: var(--brand-dark); }
+  .c2-list li:before { content: '•'; font-weight: bold; }
+  .c2-note { margin-top: 20px; padding: 10px; background: var(--brand); color: #fff; font-size: 0.85rem; font-weight: bold; text-align: center; border-radius: 8px; }
+  .c2-right .c2-note { background: var(--border); color: var(--text); }
+  @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
-    .warn-box { background: #FFF8E8; border-left: 4px solid var(--yellow); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 20px; margin-top: 16px; font-size: .92rem; }
-    .warn-box strong { color: #92650A; }
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
 
-    /* CODE */
-    .code-block { background: #1A1A2E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 20px 24px; font-family: 'JetBrains Mono', monospace; font-size: .88rem; line-height: 1.9; margin: 16px 0; overflow-x: auto; }
-    .code-block .kw { color: #7DD3FC; }
-    .code-block .str { color: #86EFAC; }
-    .code-block .cm { color: #6B7280; }
-    .code-block .hl { color: #FCA5A5; }
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
 
-    /* KEY TAKEAWAY */
-    .takeaway { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: white; border-radius: var(--radius); padding: 24px 28px; margin-top: 24px; display: flex; gap: 14px; align-items: flex-start; }
-    .takeaway .ta-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
-    .takeaway .ta-label { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; opacity: .7; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
-    .takeaway .ta-text { font-size: .97rem; line-height: 1.75; font-weight: 500; }
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
 
-    /* SECTION DIVIDER */
-    .chapter-divider { border: none; border-top: 2px dashed var(--border); margin: 56px 0; }
+  /* Done section */
+  .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+  .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
+  .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
-    /* BACK TOP */
-    .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
-    .back-top:hover { background: var(--brand-dark); transform: translateY(-2px); }
+  /* Back to top */
+  .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: var(--brand); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+  .back-top:hover { background: var(--brand-dark); transform: translateY(-2px); }
 
-    /* FOOTER */
-    footer { background: #1A1A2E; color: rgba(255,255,255,0.6); text-align: center; padding: 32px 24px; font-size: .88rem; }
-    footer strong { color: var(--brand); }
-    .footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
-    .footer-nav a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: .85rem; transition: color .2s; }
-    .footer-nav a:hover { color: var(--brand); }
+  /* Footer */
+  footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+  footer a { color: var(--brand); text-decoration: none; }
 
-    /* BADGE */
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: .78rem; font-weight: 600; }
-    .badge-blue { background: var(--brand-light); color: var(--brand-dark); }
-    .badge-green { background: #DCFCE7; color: #166534; }
-    .badge-dark { background: #1A1A2E; color: white; }
-  </style>
+  /* Alert Box */
+  .alert-box { display: flex; gap: 14px; padding: 16px 20px; border-radius: var(--radius); border-left: 4px solid var(--alert-color, var(--brand)); background: color-mix(in srgb, var(--alert-color, var(--brand)) 8%, white); margin: 20px 0; }
+  .alert-tip  { --alert-color: var(--brand); }
+  .alert-warn { --alert-color: #F59E0B; }
+  .alert-success { --alert-color: #22C55E; }
+  .alert-danger { --alert-color: #EF4444; }
+  .alert-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1.5; }
+  .alert-body strong { display: block; font-size: 0.95rem; font-weight: 800; color: var(--alert-color, var(--brand)); margin-bottom: 4px; }
+  .alert-body p { margin: 0; font-size: 0.92rem; color: var(--text-2); }
+
+  /* Command Block */
+  .cmd-block { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .cmd-header { display: flex; align-items: center; gap: 8px; padding: 9px 16px; background: rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .cmd-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; flex: 1; }
+  .cmd-lang { font-size: 0.75rem; color: var(--brand); font-family: 'JetBrains Mono', monospace; }
+  .cmd-copy { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 3px 10px; font-size: 0.75rem; cursor: pointer; transition: 0.15s; font-family: inherit; }
+  .cmd-copy:hover { background: rgba(255,255,255,0.16); color: white; }
+  .cmd-pre { margin: 0; padding: 18px 20px; background: transparent; color: #CBD5E1; font-size: 0.92rem; overflow-x: auto; border-radius: 0; white-space: pre-wrap; word-break: break-all; }
+  .cmd-pre code { background: none; padding: 0; font-size: inherit; }
+
+  /* Tabs */
+  .tabs-wrap { margin: 25px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .tabs-nav { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab-btn { padding: 11px 20px; background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-size: 0.9rem; font-weight: 600; color: var(--text-2); white-space: nowrap; transition: 0.15s; font-family: inherit; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--brand); border-bottom-color: var(--brand); background: white; }
+  .tab-btn:hover:not(.active) { color: var(--text); background: rgba(0,0,0,0.03); }
+  .tab-panel { display: none; padding: 24px; background: white; }
+  .tab-panel.active { display: block; }
+  .tab-panel p { margin-bottom: 0.8rem; }
+
+  /* FAQ Accordion */
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin: 25px 0; }
+  .faq-item { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s; }
+  .faq-item.open { border-color: var(--brand); }
+  .faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: transparent; border: none; cursor: pointer; font-size: 0.97rem; font-weight: 700; color: var(--text); text-align: left; gap: 12px; font-family: inherit; transition: background 0.15s; }
+  .faq-q:hover { background: var(--brand-light); }
+  .faq-item.open .faq-q { color: var(--brand-dark); background: var(--brand-light); }
+  .faq-arrow { transition: transform 0.2s; font-size: 0.7rem; opacity: 0.5; flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); opacity: 1; }
+  .faq-a { display: none; padding: 0 20px 16px; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a p { margin: 0; font-size: 0.93rem; color: var(--text-2); }
+
+  /* Prompt Example */
+  .prompt-box { background: #0F172A; border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+  .prompt-label { padding: 9px 16px; background: var(--brand); color: white; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.03em; }
+  .prompt-content { display: block; margin: 0; padding: 18px 20px; color: #CBD5E1; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.9; background: transparent; border-radius: 0; }
+
+  /* Stat Highlight */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 25px 0; }
+  .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 16px; text-align: center; box-shadow: var(--shadow); transition: 0.2s; }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .stat-val { font-size: 1.9rem; font-weight: 900; color: var(--brand); font-family: 'Noto Serif KR', serif; margin-bottom: 6px; line-height: 1.1; }
+  .stat-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+  .stat-note { font-size: 0.8rem; color: var(--text-3); }
+
+  /* Misc */
+  .compare-note { margin-top: 15px; padding: 8px; background: var(--brand-light); color: var(--brand-dark); text-align: center; font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+  blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius); padding: 14px 18px; margin: 14px 0; color: var(--brand-dark); }
+  blockquote p { margin: 0; color: var(--brand-dark); }
+  pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  
+  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
+  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
+  tr:nth-child(even) { background: #fafafa; }
+
+  /* ✓ 기호가 들어간 셀 자동 강조 */
+  td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+</style>
 </head>
 <body>
-
-<nav class="nav" id="top">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#top">
-      <div class="logo-icon">💡</div>
-      바이브코딩 & 에이전트 코딩
-    </a>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span class="nav-part">1부 · 개념 이해</span>
-      <ul class="nav-links">
-        <li><a href="#ch01">Ch.01</a></li>
-        <li><a href="#ch02">Ch.02</a></li>
-        <li><a href="#ch03">Ch.03</a></li>
-      </ul>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">개념 이해</a><ul class="nav-links"><li><a href="#sec-1">바이브코딩이란?</a></li><li><a href="#sec-2">에이전트 코딩이란?</a></li><li><a href="#sec-3">에이전트 작동 원리 — MCP / Sub-agent / Hook / Memory</a></li></ul></div></nav>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge"><span></span>바이브코딩 &amp; 에이전트 코딩 완전 입문 가이드</div>
+      
+      <h1>개념 이해</h1>
+      <p>바이브코딩과 에이전트 코딩의 정의, 작동 원리,MCP·Sub-agent·Hook·Memory — 4가지 핵심 원리까지</p>
+      
+      
     </div>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge"><span></span> 바이브코딩 & 에이전트 코딩 완전 입문 가이드</div>
-    <div class="hero-part-num">Part 01 / 08</div>
-    <h1>개념 이해</h1>
-    <p>바이브코딩과 에이전트 코딩의 정의, 작동 원리,<br>MCP·Sub-agent·Hook·Memory — 4가지 핵심 원리까지</p>
-    <div class="hero-chapters">
-      <span class="hero-chapter-badge">Ch.01 바이브코딩이란?</span>
-      <span class="hero-chapter-badge">Ch.02 에이전트 코딩이란?</span>
-      <span class="hero-chapter-badge">Ch.03 에이전트 작동 원리</span>
-    </div>
-  </div>
-</section>
-
-<main>
-
-  <!-- ══════════════════════════════════════════════ -->
-  <!-- CH.01 바이브코딩이란? -->
-  <!-- ══════════════════════════════════════════════ -->
-  <div class="section" id="ch01">
-    <div class="section-header">
-      <div class="section-num">01</div>
-      <h2>바이브코딩이란?</h2>
-    </div>
-
-    <div class="quote-box">
-      <div class="quote-text">"There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, embrace exponentials, and forget that the code even exists."</div>
-      <div class="quote-author">— Andrej Karpathy (전 Tesla AI 총괄, OpenAI 공동창업자), 2025</div>
-    </div>
-
-    <div class="section-lead">
-      <strong>바이브코딩(Vibe Coding)</strong>이란 코드의 세부 문법이나 알고리즘을 직접 작성하는 대신, <strong>AI에게 원하는 것을 자연어로 설명하고 AI가 생성한 코드를 검토·활용하는 개발 방식</strong>입니다. 코딩 문법보다 "무엇을 만들고 싶은지" 명확히 설명하는 능력이 핵심입니다.
-    </div>
-
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">전통 코딩 vs 바이브코딩</h3>
-    <table class="compare-table" style="margin-bottom:24px;">
-      <thead><tr><th>구분</th><th>전통 코딩</th><th>바이브코딩</th></tr></thead>
-      <tbody>
-        <tr><td><strong>핵심 역량</strong></td><td>문법·알고리즘·디버깅</td><td>요구사항 설명·결과 검증</td></tr>
-        <tr><td><strong>작업 방식</strong></td><td>직접 코드 작성</td><td>AI에게 요청 → 결과 확인</td></tr>
-        <tr><td><strong>필요 지식</strong></td><td>프로그래밍 언어 필수</td><td>도메인 지식이 더 중요</td></tr>
-        <tr><td><strong>속도</strong></td><td>기능 1개에 수 시간</td><td>기능 1개에 수 분</td></tr>
-        <tr><td><strong>리스크</strong></td><td>버그를 내가 만듦</td><td>AI 버그를 내가 못 잡을 수 있음</td></tr>
-      </tbody>
-    </table>
-
-    <h3 style="font-size:1.1rem;font-weight:700;margin:24px 0 16px;">바이브코딩의 작동 흐름</h3>
-    <div class="flow">
-      <div class="flow-step active"><div class="fs-icon">🧑</div><div class="fs-title">사람</div><div class="fs-sub">원하는 것 설명</div></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><div class="fs-icon">🤖</div><div class="fs-title">AI</div><div class="fs-sub">코드 생성</div></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step active"><div class="fs-icon">🧑</div><div class="fs-title">사람</div><div class="fs-sub">실행 및 검토</div></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step"><div class="fs-icon">🔄</div><div class="fs-title">반복</div><div class="fs-sub">수정 요청</div></div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-step active"><div class="fs-icon">✅</div><div class="fs-title">완성</div><div class="fs-sub">결과물</div></div>
-    </div>
-
-    <div class="grid-2" style="margin-top:20px;">
-      <div class="card">
-        <div class="card-title"><div class="icon">✅</div>바이브코딩이 강한 상황</div>
-        <div style="font-size:.9rem;color:var(--text-2);line-height:1.9;">
-          <div>📄 반복 문서 작업 자동화</div>
-          <div>📊 데이터 분석 프로토타입</div>
-          <div>🔧 내부 업무 도구 빠른 제작</div>
-          <div>🚀 아이디어 검증 (MVP)</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title"><div class="icon">⚠️</div>안티 패턴 — 이럴 때는 주의</div>
-        <div style="font-size:.9rem;color:var(--text-2);line-height:1.9;">
-          <div>❌ 코드를 검토하지 않고 실행</div>
-          <div>❌ 보안이 중요한 시스템에 무검증 적용</div>
-          <div>❌ "뭔가 자동화해줘" 추상적 요청</div>
-          <div>❌ 오류 메시지 없이 "안 돼요" 보고</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tip-box">
-      <strong>💡 비유:</strong> 바이브코딩은 건축 설계도를 직접 그리는 대신, 건축가(AI)에게 "거실은 넓고 채광이 좋아야 한다"고 설명하는 것과 같습니다. 설계 언어를 몰라도 원하는 집을 얻을 수 있지만, <strong>무엇을 원하는지 명확히 알아야</strong> 합니다.
-    </div>
-
-    <div class="warn-box">
-      <strong>⚠️ 환각(Hallucination) 주의:</strong> AI가 존재하지 않는 라이브러리나 함수를 사용하는 경우가 있습니다. 실행 전 "이 코드에서 사용한 라이브러리가 실제로 존재하는지 확인해줘"라고 재확인하는 습관이 중요합니다.
-    </div>
-
-    <div class="takeaway">
-      <div class="ta-icon">💡</div>
-      <div>
-        <div class="ta-label">Key Takeaway</div>
-        <div class="ta-text">바이브코딩은 코드를 쓰는 능력이 아니라 <strong>원하는 것을 정확히 설명하는 능력</strong>이 핵심인 새로운 개발 패러다임입니다.</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="chapter-divider">
-
-  <!-- ══════════════════════════════════════════════ -->
-  <!-- CH.02 에이전트 코딩이란? -->
-  <!-- ══════════════════════════════════════════════ -->
-  <div class="section" id="ch02">
-    <div class="section-header">
-      <div class="section-num">02</div>
-      <h2>에이전트 코딩이란?</h2>
-    </div>
-
-    <div class="section-lead">
-      <strong>에이전트 코딩(Agentic Coding)</strong>이란 AI가 주어진 목표를 달성하기 위해 <strong>계획 수립 → 도구 사용 → 실행 → 결과 검증 → 자기 수정</strong>의 루프를 자율적으로 반복하는 개발 방식입니다. 사람은 목표와 방향을 제시하고, AI가 경로를 스스로 찾습니다.
-    </div>
-
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">바이브코딩 vs 에이전트 코딩</h3>
-    <div class="grid-2" style="margin-bottom:24px;">
-      <div class="card">
-        <div class="card-title"><div class="icon">💬</div>바이브코딩 (대화형)</div>
-        <div class="code-block" style="font-size:.82rem;padding:14px 18px;">
-          <span class="kw">사람</span> ──요청──→ AI<br>
-          <span class="kw">AI</span>  ──코드──→ 사람<br>
-          <span class="kw">사람</span> ──직접 실행<br><br>
-          <span class="cm">→ 단발성, 사람이 실행 주도</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title"><div class="icon">🤖</div>에이전트 코딩 (자율형)</div>
-        <div class="code-block" style="font-size:.82rem;padding:14px 18px;">
-          <span class="kw">사람</span> ──목표──→ AI Agent<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">AI가 계획·실행·수정</span><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-          <span class="kw">사람</span> ──검토──→ 완료<br><br>
-          <span class="cm">→ 연속적, AI가 실행 주도</span>
-        </div>
-      </div>
-    </div>
-
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">에이전트의 4가지 핵심 능력</h3>
-    <div class="concept-grid" style="margin-bottom:24px;">
-      <div class="concept-item">
-        <div class="concept-icon">🗺️</div>
-        <div class="concept-title">계획 수립 (Planning)</div>
-        <div class="concept-desc">목표를 작은 단계로 분해하는 능력. "DB에 저장해줘" → 파싱→정제→삽입→검증 순으로 자동 분해</div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-icon">🔧</div>
-        <div class="concept-title">도구 사용 (Tool Use)</div>
-        <div class="concept-desc">파일 읽기/쓰기, 터미널 실행, 웹 검색, API 호출 등 실제 컴퓨터 도구를 직접 사용</div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-icon">🔁</div>
-        <div class="concept-title">자기 수정 (Self-correction)</div>
-        <div class="concept-desc">오류 메시지를 읽고 스스로 코드를 수정하는 피드백 루프. 사람의 복사·붙여넣기가 사라짐</div>
-      </div>
-      <div class="concept-item">
-        <div class="concept-icon">🧠</div>
-        <div class="concept-title">컨텍스트 관리 (Memory)</div>
-        <div class="concept-desc">긴 작업에서 앞서 수행한 결과를 기억하고 일관성 있게 다음 단계 처리</div>
-      </div>
-    </div>
-
-    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">레벨 1~5 스펙트럼 — 어디까지 왔나</h3>
-    <div class="level-grid">
-      <div class="level-card">
-        <div class="level-num">LEVEL 1</div>
-        <div class="level-name">코드 자동완성</div>
-        <div class="level-tool">GitHub Copilot 인라인</div>
-        <div class="level-desc">다음 줄 예측, Tab으로 수락</div>
-      </div>
-      <div class="level-card">
-        <div class="level-num">LEVEL 2</div>
-        <div class="level-name">대화형 생성</div>
-        <div class="level-tool">Claude.ai, ChatGPT</div>
-        <div class="level-desc">요청 → 붙여넣기 → 실행</div>
-      </div>
-      <div class="level-card highlight">
-        <div class="level-num">LEVEL 3</div>
-        <div class="level-name">파일 단위 에이전트</div>
-        <div class="level-tool">Cursor, Windsurf</div>
-        <div class="level-desc">수정 요청, 승인 방식</div>
-      </div>
-      <div class="level-card highlight">
-        <div class="level-num">LEVEL 4</div>
-        <div class="level-name">프로젝트 단위</div>
-        <div class="level-tool">Claude Code, Codex CLI</div>
-        <div class="level-desc">목표 제시, 결과 검토</div>
-      </div>
-      <div class="level-card">
-        <div class="level-num">LEVEL 5</div>
-        <div class="level-name">완전 자율</div>
-        <div class="level-tool">Devin, SWE-agent</div>
-        <div class="level-desc">목표만 제시</div>
-      </div>
-    </div>
-
-    <div class="tip-box">
-      <strong>💡 실무 권장:</strong> 2026년 현재 가장 많이 쓰이는 구간은 레벨 3~4입니다. 레벨 5는 기술적으로 가능하지만, 중요한 프로젝트에서는 <strong>중간 검수 포인트를 유지하는 레벨 4 방식</strong>이 더 안전하고 효율적입니다.
-    </div>
-
-    <div class="warn-box">
-      <strong>⚠️ 에이전트 실행 전 필수:</strong> AI가 파일을 직접 수정합니다. 반드시 <code>git add . && git commit -m "백업"</code> 후 실행하세요. 잘못된 수정도 즉시 되돌릴 수 있습니다.
-    </div>
-
-    <div class="takeaway">
-      <div class="ta-icon">💡</div>
-      <div>
-        <div class="ta-label">Key Takeaway</div>
-        <div class="ta-text">에이전트 코딩은 AI에게 "코드 한 줄"이 아닌 <strong>"목표 하나"를 주는 방식</strong>으로, 계획·실행·수정의 전 과정을 AI가 자율적으로 처리합니다.</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="chapter-divider">
-
-  <!-- ══════════════════════════════════════════════ -->
-  <!-- CH.03 에이전트 작동 원리 -->
-  <!-- ══════════════════════════════════════════════ -->
-  <div class="section" id="ch03">
-    <div class="section-header">
-      <div class="section-num">03</div>
-      <h2>에이전트 작동 원리 — MCP / Sub-agent / Hook / Memory</h2>
-    </div>
-
-    <div class="section-lead">
-      현대 AI 에이전트는 단순히 텍스트를 생성하는 것을 넘어 실제 세계의 도구와 시스템에 연결됩니다. 이를 가능하게 하는 4가지 핵심 원리를 해부합니다.
-    </div>
-
-    <table class="compare-table" style="margin-bottom:32px;">
-      <thead><tr><th>원리</th><th>한 줄 정의</th><th>비유</th></tr></thead>
-      <tbody>
-        <tr><td><strong>MCP</strong></td><td>AI가 외부 도구를 표준 방식으로 호출하는 규약</td><td>모든 가전을 연결하는 USB 표준 콘센트</td></tr>
-        <tr><td><strong>Sub-agent</strong></td><td>큰 작업을 여러 AI가 분담 처리하는 구조</td><td>팀장이 팀원들에게 업무를 배분하는 것</td></tr>
-        <tr><td><strong>Hook</strong></td><td>특정 사건 발생 시 에이전트를 자동 실행하는 트리거</td><td>초인종이 울리면 카메라가 자동 켜지는 것</td></tr>
-        <tr><td><strong>Memory</strong></td><td>에이전트가 이전 작업을 기억하고 활용하는 능력</td><td>업무 인수인계 문서</td></tr>
-      </tbody>
-    </table>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title"><div class="icon">🔌</div>MCP (Model Context Protocol)</div>
-        <div style="font-size:.9rem;color:var(--text-2);line-height:1.8;margin-bottom:14px;">
-          Anthropic이 2024년 발표한 오픈 표준. AI 모델이 외부 도구·데이터·서비스를 <strong>일관된 방식으로 연결</strong>할 수 있게 하는 규약입니다.
-        </div>
-        <div style="background:var(--bg);border-radius:8px;padding:14px;font-size:.85rem;">
-          <div style="font-weight:700;margin-bottom:8px;color:var(--brand);">연결 가능한 MCP 서버</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <span style="background:white;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.78rem;">📁 파일시스템</span>
-            <span style="background:white;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.78rem;">🐙 GitHub</span>
-            <span style="background:white;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.78rem;">📋 Notion</span>
-            <span style="background:white;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.78rem;">📁 Google Drive</span>
-            <span style="background:white;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.78rem;">💬 Slack</span>
-            <span style="background:white;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:.78rem;">🗄️ Supabase</span>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title"><div class="icon">👥</div>Sub-agent (서브에이전트)</div>
-        <div style="font-size:.9rem;color:var(--text-2);line-height:1.8;margin-bottom:14px;">
-          주 에이전트(오케스트레이터)가 세부 작업을 여러 하위 에이전트에게 위임하여 <strong>병렬 또는 순차적으로 처리</strong>하는 구조입니다.
-        </div>
-        <div class="code-block" style="font-size:.78rem;padding:12px 16px;">
-<span class="cm">오케스트레이터</span><br>
-├── <span class="str">서브에이전트 1</span> — 웹 검색·자료 수집<br>
-├── <span class="str">서브에이전트 2</span> — 코드 작성·테스트<br>
-└── <span class="str">서브에이전트 3</span> — 문서 작성·포맷팅<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
-<span class="kw">결과 통합 → 최종 산출물</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-top:0;">
-      <div class="card">
-        <div class="card-title"><div class="icon">🪝</div>Hook (훅)</div>
-        <div style="font-size:.9rem;color:var(--text-2);line-height:1.8;margin-bottom:14px;">
-          특정 이벤트가 발생했을 때 에이전트를 자동 실행하는 트리거 메커니즘입니다.
-        </div>
-        <table class="compare-table" style="font-size:.82rem;">
-          <thead><tr><th>유형</th><th>예시</th></tr></thead>
-          <tbody>
-            <tr><td>⏰ Schedule Hook</td><td>매일 오전 9시</td></tr>
-            <tr><td>📁 Event Hook</td><td>파일 업로드 시</td></tr>
-            <tr><td>🌐 Webhook</td><td>HTTP 요청 수신 시</td></tr>
-            <tr><td>📊 Condition Hook</td><td>특정 값 초과 시</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card">
-        <div class="card-title"><div class="icon">🧠</div>Memory (메모리)</div>
-        <div style="font-size:.9rem;color:var(--text-2);line-height:1.8;margin-bottom:14px;">
-          에이전트가 이전 작업·대화·결과를 저장하고 이후 작업에 활용하는 능력입니다.
-        </div>
-        <table class="compare-table" style="font-size:.82rem;">
-          <thead><tr><th>유형</th><th>지속성</th></tr></thead>
-          <tbody>
-            <tr><td>인컨텍스트 메모리</td><td>대화 종료 시 소멸</td></tr>
-            <tr><td>외부 메모리 (SKILL.md)</td><td>영구 보존</td></tr>
-            <tr><td>벡터 메모리 (RAG)</td><td>영구 보존</td></tr>
-            <tr><td>캐시 메모리</td><td>세션 단위</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="tip-box" style="margin-top:4px;">
-      <strong>💡 핵심 실천:</strong> SKILL.md를 프로젝트 루트에 두면 Claude Code가 자동 인식합니다. 매 대화 시작 시 첨부하면 <strong>컨텍스트 소실 없이</strong> 일관된 작업이 가능합니다. SKILL.md 작성법은 17장에서 자세히 다룹니다.
-    </div>
-
-    <div class="takeaway">
-      <div class="ta-icon">💡</div>
-      <div>
-        <div class="ta-label">Key Takeaway</div>
-        <div class="ta-text">현대 에이전트는 <strong>MCP로 도구를 쓰고, Sub-agent로 팀을 이루고, Hook으로 자동 실행되며, Memory로 맥락을 유지</strong>합니다 — 이 4가지가 결합될 때 진정한 자동화가 완성됩니다.</div>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<a class="back-top" href="#top" title="맨 위로">↑</a>
-
-<footer>
-  <div class="footer-nav">
-    <a href="table-of-contents.html">← 목차로</a>
-    <a href="part02-conversation.html">2부. AI와 대화하는 법 →</a>
-  </div>
-  <strong>바이브코딩 & 에이전트 코딩 완전 입문 가이드</strong> · 1부. 개념 이해<br>
-  <span style="margin-top:6px;display:block;">Ch.01 바이브코딩 · Ch.02 에이전트 코딩 · Ch.03 에이전트 작동 원리</span>
-</footer>
-
+  </header>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>바이브코딩이란?</h2></div><div class="card"><p>&quot;There&#39;s a new kind of coding I call &#39;vibe coding&#39;, where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.&quot;</p>
+<p>— Andrej Karpathy (전 Tesla AI 총괄, OpenAI 공동창업자), 2025</p>
+<p>바이브코딩(Vibe Coding)</p>
+<p>이란 코드의 세부 문법이나 알고리즘을 직접 작성하는 대신,</p>
+<p>AI에게 원하는 것을 자연어로 설명하고 AI가 생성한 코드를 검토·활용하는 개발 방식</p>
+<p>입니다. 코딩 문법보다 &quot;무엇을 만들고 싶은지&quot; 명확히 설명하는 능력이 핵심입니다.</p>
+<h3>전통 코딩 vs 바이브코딩</h3>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>전통 코딩</th>
+<th>바이브코딩</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>핵심 역량</strong></td>
+<td>문법·알고리즘·디버깅</td>
+<td>요구사항 설명·결과 검증</td>
+</tr>
+<tr>
+<td><strong>작업 방식</strong></td>
+<td>직접 코드 작성</td>
+<td>AI에게 요청 → 결과 확인</td>
+</tr>
+<tr>
+<td><strong>필요 지식</strong></td>
+<td>프로그래밍 언어 필수</td>
+<td>도메인 지식이 더 중요</td>
+</tr>
+<tr>
+<td><strong>속도</strong></td>
+<td>기능 1개에 수 시간</td>
+<td>기능 1개에 수 분</td>
+</tr>
+<tr>
+<td><strong>리스크</strong></td>
+<td>버그를 내가 만듦</td>
+<td>AI 버그를 내가 못 잡을 수 있음</td>
+</tr>
+</tbody></table>
+<h3>바이브코딩의 작동 흐름</h3>
+<p>🧑</p>
+<p>사람</p>
+<p>원하는 것 설명</p>
+<p>→</p>
+<p>🤖</p>
+<p>AI</p>
+<p>코드 생성</p>
+<p>→</p>
+<p>🧑</p>
+<p>사람</p>
+<p>실행 및 검토</p>
+<p>→</p>
+<p>🔄</p>
+<p>반복</p>
+<p>수정 요청</p>
+<p>→</p>
+<p>✅</p>
+<p>완성</p>
+<p>결과물</p>
+<div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">✅</div>
+<div class="icon-card-title" style="color: var(--text);">✅바이브코딩이 강한 상황
+📄 반복 문서 작업 자동화
+📊 데이터 분석 프로토타입
+🔧 내부 업무 도구 빠른 제작
+🚀 아이디어 검증 (MVP)</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">⚠️</div>
+<div class="icon-card-title" style="color: var(--text);">⚠️안티 패턴 — 이럴 때는 주의
+❌ 코드를 검토하지 않고 실행
+❌ 보안이 중요한 시스템에 무검증 적용
+❌ &quot;뭔가 자동화해줘&quot; 추상적 요청
+❌ 오류 메시지 없이 &quot;안 돼요&quot; 보고</div>
+<p></p>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 비유:</strong>
+<p>바이브코딩은 건축 설계도를 직접 그리는 대신, 건축가(AI)에게 \&quot;거실은 넓고 채광이 좋아야 한다\&quot;고 설명하는 것과 같습니다. 설계 언어를 몰라도 원하는 집을 얻을 수 있지만, 합니다.</p>
+</div>
+</div><div class="alert-box alert-warn" style="--alert-color:#F59E0B">
+<div class="alert-icon">⚠</div>
+<div class="alert-body">
+<strong>⚠️ 환각(Hallucination) 주의:</strong>
+<p>AI가 존재하지 않는 라이브러리나 함수를 사용하는 경우가 있습니다. 실행 전 \&quot;이 코드에서 사용한 라이브러리가 실제로 존재하는지 확인해줘\&quot;라고 재확인하는 습관이 중요합니다.</p>
+</div>
+</div><p>💡</p>
+<p>Key Takeaway</p>
+<p>바이브코딩은 코드를 쓰는 능력이 아니라</p>
+<p>원하는 것을 정확히 설명하는 능력</p>
+<p>이 핵심인 새로운 개발 패러다임입니다.</p>
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>에이전트 코딩이란?</h2></div><div class="card"><p>에이전트 코딩(Agentic Coding)</p>
+<p>이란 AI가 주어진 목표를 달성하기 위해</p>
+<p>계획 수립 → 도구 사용 → 실행 → 결과 검증 → 자기 수정</p>
+<p>의 루프를 자율적으로 반복하는 개발 방식입니다. 사람은 목표와 방향을 제시하고, AI가 경로를 스스로 찾습니다.</p>
+<h3>바이브코딩 vs 에이전트 코딩</h3>
+<div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">💬</div>
+<div class="icon-card-title" style="color: var(--text);">💬바이브코딩 (대화형)
+사람 ──요청──→ AI
+AI ──코드──→ 사람
+사람 ──직접 실행
+→ 단발성, 사람이 실행 주도</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);">🤖에이전트 코딩 (자율형)
+사람 ──목표──→ AI Agent
+↓
+AI가 계획·실행·수정
+↓
+사람 ──검토──→ 완료
+→ 연속적, AI가 실행 주도</div>
+<p></p>
+</div></div><h3>에이전트의 4가지 핵심 능력</h3>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🗺️</div>
+<div class="icon-card-title" style="color: var(--text);">🗺️
+계획 수립 (Planning)
+목표를 작은 단계로 분해하는 능력. &quot;DB에 저장해줘&quot; → 파싱→정제→삽입→검증 순으로 자동 분해</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔧</div>
+<div class="icon-card-title" style="color: var(--text);">🔧
+도구 사용 (Tool Use)
+파일 읽기/쓰기, 터미널 실행, 웹 검색, API 호출 등 실제 컴퓨터 도구를 직접 사용</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔁</div>
+<div class="icon-card-title" style="color: var(--text);">🔁
+자기 수정 (Self-correction)
+오류 메시지를 읽고 스스로 코드를 수정하는 피드백 루프. 사람의 복사·붙여넣기가 사라짐</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🧠</div>
+<div class="icon-card-title" style="color: var(--text);">🧠
+컨텍스트 관리 (Memory)
+긴 작업에서 앞서 수행한 결과를 기억하고 일관성 있게 다음 단계 처리</div>
+<p></p>
+</div></div><h3>레벨 1~5 스펙트럼 — 어디까지 왔나</h3>
+<p>LEVEL 1</p>
+<p>코드 자동완성</p>
+<p>GitHub Copilot 인라인</p>
+<p>다음 줄 예측, Tab으로 수락</p>
+<p>LEVEL 2</p>
+<p>대화형 생성</p>
+<p>Claude.ai, ChatGPT</p>
+<p>요청 → 붙여넣기 → 실행</p>
+<p>LEVEL 3</p>
+<p>파일 단위 에이전트</p>
+<p>Cursor, Windsurf</p>
+<p>수정 요청, 승인 방식</p>
+<p>LEVEL 4</p>
+<p>프로젝트 단위</p>
+<p>Claude Code, Codex CLI</p>
+<p>목표 제시, 결과 검토</p>
+<p>LEVEL 5</p>
+<p>완전 자율</p>
+<p>Devin, SWE-agent</p>
+<p>목표만 제시</p>
+<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 실무 권장:</strong>
+<p>2026년 현재 가장 많이 쓰이는 구간은 레벨 3~4입니다. 레벨 5는 기술적으로 가능하지만, 중요한 프로젝트에서는 이 더 안전하고 효율적입니다.</p>
+</div>
+</div><div class="alert-box alert-warn" style="--alert-color:#F59E0B">
+<div class="alert-icon">⚠</div>
+<div class="alert-body">
+<strong>⚠️ 에이전트 실행 전 필수:</strong>
+<p>AI가 파일을 직접 수정합니다. 반드시 git add . &amp;&amp; git commit -m \&quot;백업\&quot; 후 실행하세요. 잘못된 수정도 즉시 되돌릴 수 있습니다.</p>
+</div>
+</div><p>💡</p>
+<p>Key Takeaway</p>
+<p>에이전트 코딩은 AI에게 &quot;코드 한 줄&quot;이 아닌</p>
+<p>&quot;목표 하나&quot;를 주는 방식</p>
+<p>으로, 계획·실행·수정의 전 과정을 AI가 자율적으로 처리합니다.</p>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>에이전트 작동 원리 — MCP / Sub-agent / Hook / Memory</h2></div><div class="card"><p>현대 AI 에이전트는 단순히 텍스트를 생성하는 것을 넘어 실제 세계의 도구와 시스템에 연결됩니다. 이를 가능하게 하는 4가지 핵심 원리를 해부합니다.</p>
+<table>
+<thead>
+<tr>
+<th>원리</th>
+<th>한 줄 정의</th>
+<th>비유</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>MCP</strong></td>
+<td>AI가 외부 도구를 표준 방식으로 호출하는 규약</td>
+<td>모든 가전을 연결하는 USB 표준 콘센트</td>
+</tr>
+<tr>
+<td><strong>Sub-agent</strong></td>
+<td>큰 작업을 여러 AI가 분담 처리하는 구조</td>
+<td>팀장이 팀원들에게 업무를 배분하는 것</td>
+</tr>
+<tr>
+<td><strong>Hook</strong></td>
+<td>특정 사건 발생 시 에이전트를 자동 실행하는 트리거</td>
+<td>초인종이 울리면 카메라가 자동 켜지는 것</td>
+</tr>
+<tr>
+<td><strong>Memory</strong></td>
+<td>에이전트가 이전 작업을 기억하고 활용하는 능력</td>
+<td>업무 인수인계 문서</td>
+</tr>
+</tbody></table>
+<div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔌</div>
+<div class="icon-card-title" style="color: var(--text);">일관된 방식으로 연결</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">👥</div>
+<div class="icon-card-title" style="color: var(--text);">병렬 또는 순차적으로 처리</div>
+<p></p>
+</div></div><div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🪝</div>
+<div class="icon-card-title" style="color: var(--text);">🪝Hook (훅)
+특정 이벤트가 발생했을 때 에이전트를 자동 실행하는 트리거 메커니즘입니다.
+유형예시
+⏰ Schedule Hook매일 오전 9시
+📁 Event Hook파일 업로드 시
+🌐 WebhookHTTP 요청 수신 시
+📊 Condition Hook특정 값 초과 시</div>
+<p></p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🧠</div>
+<div class="icon-card-title" style="color: var(--text);">🧠Memory (메모리)
+에이전트가 이전 작업·대화·결과를 저장하고 이후 작업에 활용하는 능력입니다.
+유형지속성
+인컨텍스트 메모리대화 종료 시 소멸
+외부 메모리 (SKILL.md)영구 보존
+벡터 메모리 (RAG)영구 보존
+캐시 메모리세션 단위</div>
+<p></p>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 핵심 실천:</strong>
+<p>SKILL.md를 프로젝트 루트에 두면 Claude Code가 자동 인식합니다. 매 대화 시작 시 첨부하면 일관된 작업이 가능합니다. SKILL.md 작성법은 17장에서 자세히 다룹니다.</p>
+</div>
+</div><p>💡</p>
+<p>Key Takeaway</p>
+<p>현대 에이전트는</p>
+<p>MCP로 도구를 쓰고, Sub-agent로 팀을 이루고, Hook으로 자동 실행되며, Memory로 맥락을 유지</p>
+<p>합니다 — 이 4가지가 결합될 때 진정한 자동화가 완성됩니다.</p>
+</div></section></main>
+  
+  
+  <a class="back-top" href="#top" title="맨 위로">↑</a>
+<script>
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+</script>
 </body>
 </html>

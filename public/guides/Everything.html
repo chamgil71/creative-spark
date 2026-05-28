@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Everything (에브리띵) 가이드</title>
+<title>Everything(에브리띵)</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -282,38 +282,37 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🔍Everything Everything (에브리띵) 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 왜 Everything인가?</a></li><li><a href="#sec-2">2. 검색 문법 &amp; 고급 쿼리</a></li><li><a href="#sec-3">3. 주요 기능</a></li><li><a href="#sec-4">4. 설치 &amp; 설정</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Everything(에브리띵)</a><ul class="nav-links"><li><a href="#sec-1">왜 Everything인가?</a></li><li><a href="#sec-2">검색 문법 &amp; 고급 쿼리</a></li><li><a href="#sec-3">주요 기능</a></li><li><a href="#sec-4">설치 &amp; 설정</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🔍 Windows 전용 · 완전 무료 · 오픈소스</div>
-      <div class="hero-logo">🔍Everything</div>
-      <h1>Everything (에브리띵) 가이드</h1>
-      <p>Windows 파일 검색을 완전히 바꾸는 도구수백만 개의 파일을 0.1초 안에 찾아내는 인덱싱 검색</p>
+      
+      <h1>Everything(에브리띵)</h1>
+      <p>초고속 파일 검색</p>
       
       <div class="hero-stats"><div class="hero-stat"><strong>&lt;1초</strong><span>전체 드라이브 검색</span></div><div class="hero-stat"><strong>0MB</strong><span>RAM 점유율</span></div><div class="hero-stat"><strong>무료</strong><span>완전 무료</span></div><div class="hero-stat"><strong>실시간</strong><span>파일 변경 반영</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 왜 Everything인가?</h2></div><div class="card"><div class="compare-2col"><div class="c2-card c2-left">
-<div class="card-top-bar"></div>
-<div class="c2-title">Windows 기본 검색</div>
-<p class="c2-desc" style="font-size: 0.9rem; color: var(--text-2); margin-bottom: 12px; white-space: pre-line;">* 인덱스 없는 폴더: 탐색기에서 검색
-* 드라이브 전체 스캔 로딩 인디케이터 무한 루프
-* 파일 하나씩 순차 스캔</p>
-<div class="c2-note">30초 ~ 5분</div>
-</div><div class="c2-card c2-right">
-<div class="card-top-bar"></div>
-<div class="c2-title">Everything</div>
-<p class="c2-desc" style="font-size: 0.9rem; color: var(--text-2); margin-bottom: 12px; white-space: pre-line;">* 글로벌 단축키 `Win+Alt+E`로 즉시 창 호출
-* 파일명 타이핑과 동시에 검색 결과 즉시 표시
-* 전체 드라이브 초고속 인덱싱 완료</p>
-<div class="c2-note">0.1초</div>
-</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>왜 Everything인가?</h2></div><div class="card"><p>검색 속도 비교 — &quot;2024 예산보고서.xlsx&quot; 찾기</p>
+<p>🐌 Windows 기본 검색</p>
+<p>인덱스 없는 폴더: 탐색기에서 검색</p>
+<p>드라이브 전체 스캔</p>
+<p>로딩 인디케이터 돌아가는 중...</p>
+<p>파일 하나씩 순차 검색</p>
+<p>30초 ~ 5분</p>
+<p>⚡ Everything</p>
+<p>Win+Alt+E로 실행</p>
+<p>파일명 타이핑 시작</p>
+<p>입력과 동시에 결과 표시</p>
+<p>전체 드라이브 즉시 완료</p>
+<p>0.1초</p>
+<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 동작 원리:</strong>
 <p>Windows NTFS의 MFT(Master File Table)를 직접 읽어 모든 파일 정보를 메모리에 인덱싱. 설치 직후 빠르게 인덱스 구축 후 실시간 업데이트.</p>
 </div>
-</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 검색 문법 &amp; 고급 쿼리</h2></div><div class="card"><div class="columns-grid" >
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>검색 문법 &amp; 고급 쿼리</h2></div><div class="card"><div class="columns-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="column-card" >
 <div class="card-top-bar" ></div>
 <div class="col-title" >*.xlsx</div>
@@ -349,12 +348,9 @@
 <div class="col-title" >regex:2025\\d{4}</div>
 <p>정규식 패턴 검색</p>
 <div class="compare-note" >고급 사용자 패턴 매칭</div>
-</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
-<div class="alert-body">
-<strong>⭐ 자주 쓰는 쿼리 저장:</strong>
-<p>자주 사용하는 검색식은 Bookmarks로 저장 가능. 예: `*.pptx dm:thismonth` → `이달 PPT 파일`로 즐겨찾기.</p>
-</div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 주요 기능</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+</div></div><p>⭐ 자주 쓰는 쿼리 저장:</p>
+<p>자주 사용하는 검색식은 Bookmarks로 저장 가능. 예: &quot;*.pptx dm:thismonth&quot; → &quot;이달 PPT 파일&quot;로 즐겨찾기.</p>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>주요 기능</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">⚡</div>
 <div class="icon-card-title" style="color: var(--text);">실시간 인덱스</div>
 <p>파일 생성·삭제·이동 즉시 반영. 항상 최신 상태 유지.</p>
@@ -370,33 +366,33 @@
 <div class="icon-card-icon" style="color: var(--brand);">⌨️</div>
 <div class="icon-card-title" style="color: var(--text);">글로벌 단축키</div>
 <p>어떤 창에서도 Win+Alt+E로 즉시 검색창 호출 (설정 가능).</p>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 설치 &amp; 설정</h2></div><div class="card"><div class="step-list">
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>설치 &amp; 설정</h2></div><div class="card"><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" >voidtools.com 접속 및 다운로드</div>
-<p>공식 사이트에서 본인의 OS에 맞는 32/64비트 버전을 받아 설치합니다. 설치 파일 크기가 2MB 이하로 대단히 가볍습니다.</p>
+<div class="step-title" >1voidtools.com 접속 → Everything 다운로드 및 설치 (무료)32/64비트 선택. 설치 파일 크기 2MB 이하로 매우 가벼움.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >2</div>
 <div class="step-content">
-<div class="step-title" >최초 실행 시 자동 인덱싱 구축</div>
-<p>최초 가동 시 전체 디스크 인덱스를 즉시 메모리에 적재합니다. SSD 환경에서는 100만 개 파일도 1분 이내에 완료되며, 이후 실시간 동기화됩니다.</p>
+<div class="step-title" >2최초 실행 시 자동 인덱싱 시작 (수십 초 ~ 수 분)SSD 환경에서는 100만 파일도 1분 이내 완료. 이후 실시간 업데이트.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >3</div>
 <div class="step-content">
-<div class="step-title" >글로벌 단축키 및 시작 옵션 설정</div>
-<p>옵션(Tools -&gt; Options)에서 글로벌 단축키(예: Win+Alt+E)를 설정하고, 윈도우 시작 시 자동 실행되도록 등록을 적극 권장합니다.</p>
+<div class="step-title" >3Tools → Options → 글로벌 단축키 설정Win+Alt+E 또는 원하는 단축키로 변경. 시작 프로그램에 등록 권장.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >4</div>
 <div class="step-content">
-<div class="step-title" >백그라운드에서 조용히 대기</div>
-<p>시스템 트레이에 상주하며 CPU 및 RAM 리소스를 거의 점유하지 않습니다. 항상 켜두고 언제든 불러와 즉시 검색하세요.</p>
+<div class="step-title" >4시스템 트레이에 상주하며 백그라운드 실행CPU·RAM 점유율 거의 0%. 항상 켜두어도 성능 영향 없음.</div>
+<p></p>
 </div>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
@@ -404,14 +400,9 @@
 <strong>💡 PowerToys Run 연동:</strong>
 <p>Microsoft PowerToys 설치 후 Alt+Space → Everything 플러그인 활성화. PowerToys Run 검색창에서 Everything 검색 동시 사용 가능.</p>
 </div>
-</div>
-</div></section></main>
-  <section class="done-section">
-    <h2>⚡ Everything으로 파일 검색의 신세계를 경험하세요</h2>
-    <p>수백만 개의 파일을 단 0.1초 만에 찾아내는 짜릿함을 누리세요!</p>
-    <a class="done-link" href="https://www.voidtools.com" target="_blank" rel="noopener">voidtools 공식 홈페이지 바로가기</a>
-  </section>
-  <footer><div>Everything은 voidtools에서 개발한 완전 무료 인덱싱 파일 검색 유틸리티입니다.</div><div>공식 웹사이트: <a href="https://www.voidtools.com">voidtools.com</a></div></footer>
+</div></div></section></main>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

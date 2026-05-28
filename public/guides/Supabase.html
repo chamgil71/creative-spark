@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #D97757;
-    --brand-dark: #B85F3F;
-    --brand-deep: #8B4530;
-    --brand-light:#FDF0EB;
-    --brand-mid:  #F4C5AE;
-    --border:     #F0D4C4;
-    --bg:         #FBF7F5;
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">⚡ Supabase 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Supabase는 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 프론트엔드와 연결하기</a></li><li><a href="#sec-3">3. 실무 구축 시 주의/활용 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Supabase 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Supabase는 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 프론트엔드와 연결하기</a></li><li><a href="#sec-3">실무 구축 시 주의/활용 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🗄️ 백엔드 서비스 · PostgreSQL</div>
-      <div class="hero-logo">⚡</div>
+      
       <h1>Supabase 완전 활용 가이드</h1>
-      <p>프론트엔드 개발자도 백엔드를 완벽하게 다룰 수 있게 해주는 오픈소스 Firebase 대안</p>
-      <a class="hero-cta" href="https://supabase.com" target="_blank" rel="noopener">Supabase 시작하기</a>
+      <p>오픈소스 Firebase 대안 BaaS</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>PostgreSQL</strong><span>기본 엔진</span></div><div class="hero-stat"><strong>Auth</strong><span>인증 기본제공</span></div><div class="hero-stat"><strong>API</strong><span>자동 생성</span></div><div class="hero-stat"><strong>Realtime</strong><span>웹소켓 지원</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Supabase는 어떤 도구인가</h2></div><div class="card"><p>Supabase는 데이터베이스 연동, 사용자 인증(회원가입/로그인), 스토리지(파일 저장), 실시간 데이터 업데이트 등 백엔드 개발에 필요한 모든 기능을 하나의 대시보드와 클라이언트 라이브러리로 제공하는 BaaS(Backend as a Service)입니다. Firebase와 비슷하지만, 관계형 데이터베이스인 PostgreSQL을 사용하여 복잡한 데이터 분석과 쿼리에 훨씬 강력합니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Supabase는 어떤 도구인가</h2></div><div class="card"><p>Supabase는 데이터베이스 연동, 사용자 인증(회원가입/로그인), 스토리지(파일 저장), 실시간 데이터 업데이트 등 백엔드 개발에 필요한 모든 기능을 하나의 대시보드와 클라이언트 라이브러리로 제공하는 BaaS(Backend as a Service)입니다. Firebase와 비슷하지만, 관계형 데이터베이스인 PostgreSQL을 사용하여 복잡한 데이터 분석과 쿼리에 훨씬 강력합니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🗃️</div>
 <div class="icon-card-title" style="color: var(--text);">자동 API 및 Database</div>
 <p>대시보드에서 테이블(엑셀 시트 형태)을 만들면 CRUD 조작이 가능한 REST 및 GraphQL API가 즉시 생성됩니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">📂</div>
 <div class="icon-card-title" style="color: var(--text);">Storage</div>
 <p>프로필 이미지나 문서를 저장하고 최적화하여 서빙하는 S3 호환 클라우드 스토리지를 제공합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 프레임워크와 찰떡궁합입니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 프레임워크와 찰떡궁합입니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >프론트엔드</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>⚛️ React + Vite 생태계
+<span class="fc-icon">⚛</span>⚛️ React + Vite 생태계
 </div>
 <p>Vite로 빌드한 React 앱(대시보드 등)에 SDK를 붙여 즉각적으로 데이터를 불러오고 인증을 유지합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >풀스택</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">▲</span>Next.js
+<span class="fc-icon">▲</span>▲ Next.js
 </div>
 <p>서버 사이드 렌더링(SSR) 환경에서도 안전하게 쿠키 기반으로 사용자 세션을 유지할 수 있는 툴킷을 제공합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >모바일</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📱</span>Flutter / React Native
+<span class="fc-icon">📱</span>📱 Flutter / React Native
 </div>
 <p>웹뿐만 아니라 모바일 환경에서도 동일한 백엔드 인프라를 완벽하게 공유하여 사용합니다.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 프론트엔드와 연결하기</h2></div><div class="card"><p>복잡한 서버 프레임워크(Spring, Express 등) 없이 프론트엔드에서 직접 DB를 제어합니다.</p>
-</div><div class="card"><h3 class="card-title">React(Vite) 앱 연결 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 프론트엔드와 연결하기</h2></div><div class="card"><p>복잡한 서버 프레임워크(Spring, Express 등) 없이 프론트엔드에서 직접 DB를 제어합니다.</p>
+<h3>React(Vite) 앱 연결 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,7 +367,8 @@
 <div class="step-title" >데이터 쿼리</div>
 <p>`const { data, error } = await supabase.from(&#39;budgets&#39;).select(&#39;*&#39;)` 처럼 직관적으로 데이터를 불러옵니다.</p>
 </div>
-</div></div></div><div class="card"><h3 class="card-title">Firebase vs Supabase 핵심 비교</h3><table>
+</div></div><h3>Firebase vs Supabase 핵심 비교</h3>
+<table>
 <thead>
 <tr>
 <th>구분</th>
@@ -373,28 +377,28 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>DB 종류</td>
+<td><strong>DB 종류</strong></td>
 <td>RDBMS (PostgreSQL) - 구조적 데이터</td>
 <td>NoSQL - 비정형/계층적 데이터</td>
 </tr>
 <tr>
-<td>데이터 결합(JOIN)</td>
+<td><strong>데이터 결합(JOIN)</strong></td>
 <td>매우 쉬움 (외래키 활용)</td>
 <td>구조상 어렵거나 불가능</td>
 </tr>
 <tr>
-<td>마이그레이션</td>
+<td><strong>마이그레이션</strong></td>
 <td>순수 SQL이라 타 서버로 이전 쉬움</td>
 <td>구글 생태계 종속성 높음</td>
 </tr>
 <tr>
-<td>러닝 커브</td>
+<td><strong>러닝 커브</strong></td>
 <td>SQL 지식이 약간 필요함</td>
 <td>JSON 다루듯 직관적</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 실무 구축 시 주의/활용 팁</h2></div><div class="card"><p>특히 예산 분석 대시보드처럼 데이터를 정밀하게 다루는 앱에서 중요한 포인트입니다.</p>
-<div class="compare-grid" >
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>실무 구축 시 주의/활용 팁</h2></div><div class="card"><p>특히 예산 분석 대시보드처럼 데이터를 정밀하게 다루는 앱에서 중요한 포인트입니다.</p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >Row Level Security (RLS) 활성화</div>
 <p>테이블을 만들면 기본적으로 모든 접근이 차단됩니다. 반드시 \&quot;인증된 사용자는 자신의 데이터만 Select/Insert 할 수 있다\&quot;는 RLS 정책을 설정해야 합니다.</p>
@@ -409,21 +413,28 @@
 <div class="compare-card-title" >Edge Functions</div>
 <p>결제 처리나 외부 API 통신처럼 프론트엔드에서 노출되면 안 되는 보안 로직은 Deno 기반의 Edge Function에 작성하여 실행합니다.</p>
 <div class="compare-note" >백엔드 로직 분리</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">배포 전 필수 보안 점검</h3><ul>
-<li><code>.env</code> 파일에 <code>service_role</code> 키(모든 권한을 가진 마스터 키)가 노출되지 않았는가? (반드시 <code>anon_key</code>만 사용)</li>
-<li>예산, 금융 데이터 등이 저장된 민감한 테이블에 RLS(행 수준 보안)가 정확히 켜져 있는가?</li>
-<li>이메일 회원가입 시 인증 메일 템플릿과 리다이렉트 URL이 실제 배포된 사이트(예: Vercel 도메인)로 설정되었는가?</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>배포 전 필수 보안 점검</h3>
+<ul>
+<li><p>.env</p>
+<p>파일에</p>
+<p>service_role</p>
+<p>키(모든 권한을 가진 마스터 키)가 노출되지 않았는가? (반드시</p>
+<p>anon_key</p>
+<p>만 사용)</p>
+</li>
+<li><p>예산, 금융 데이터 등이 저장된 민감한 테이블에 RLS(행 수준 보안)가 정확히 켜져 있는가?</p>
+</li>
+<li><p>이메일 회원가입 시 인증 메일 템플릿과 리다이렉트 URL이 실제 배포된 사이트(예: Vercel 도메인)로 설정되었는가?</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: React + Vite로 &#39;BudgetN&#39; 같은 프로젝트를 구성할 때, 로그인 세션이 리프레시될 때 깜빡임(Flicker) 현상이 생길 수 있습니다. 이를 방지하려면 Supabase의 onAuthStateChange 리스너를 앱 최상단에 배치하여 유저 상태를 전역 상태(Zustand 등)에 동기화하는 패턴을 사용하세요.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">서버리스 백엔드의 강력함을 경험하세요</h3><p>테이블을 만들면 즉시 REST API가 생성되고, 몇 줄의 코드로 소셜 로그인을 구현할 수 있습니다.</p>
+<p>프로젝트 생성</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>서버리스 백엔드의 강력함을 경험하세요</h2>
-    <p>테이블을 만들면 즉시 REST API가 생성되고, 몇 줄의 코드로 소셜 로그인을 구현할 수 있습니다.</p>
-    <a class="done-link" href="https://supabase.com/dashboard" target="_blank" rel="noopener">프로젝트 생성</a>
-  </section>
-  <footer><div>Supabase는 확장성과 안정성이 검증된 순수 PostgreSQL을 기반으로 작동합니다.</div><div>공식 사이트: <a href="https://supabase.com">supabase.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

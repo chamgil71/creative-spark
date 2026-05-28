@@ -1,9 +1,8 @@
 ---
-title: Everything (에브리띵) 가이드
-subtitle: Windows 파일 검색을 완전히 바꾸는 도구수백만 개의 파일을 0.1초 안에 찾아내는 인덱싱 검색
-logo: 🔍Everything
-badge: 🔍 Windows 전용 · 완전 무료 · 오픈소스
-style: productivity
+title: "Everything(에브리띵)"
+subtitle: "초고속 파일 검색"
+badge: "🔍 Windows 전용 · 완전 무료 · 오픈소스"
+style: "productivity"
 stats:
   - value: "<1초"
     label: "전체 드라이브 검색"
@@ -13,40 +12,46 @@ stats:
     label: "완전 무료"
   - value: "실시간"
     label: "파일 변경 반영"
-done:
-  title: "⚡ Everything으로 파일 검색의 신세계를 경험하세요"
-  subtitle: "수백만 개의 파일을 단 0.1초 만에 찾아내는 짜릿함을 누리세요!"
-  ctaLabel: "voidtools 공식 홈페이지 바로가기"
-  ctaUrl: "https://www.voidtools.com"
-footer:
-  - "Everything은 voidtools에서 개발한 완전 무료 인덱싱 파일 검색 유틸리티입니다."
-  - "공식 웹사이트: [voidtools.com](https://www.voidtools.com)"
 ---
 
-# 1. 왜 Everything인가?
-::: compare-split
-- title: "Windows 기본 검색"
-  desc: |
-    * 인덱스 없는 폴더: 탐색기에서 검색
-    * 드라이브 전체 스캔 로딩 인디케이터 무한 루프
-    * 파일 하나씩 순차 스캔
-  note: "30초 ~ 5분"
-- title: "Everything"
-  desc: |
-    * 글로벌 단축키 `Win+Alt+E`로 즉시 창 호출
-    * 파일명 타이핑과 동시에 검색 결과 즉시 표시
-    * 전체 드라이브 초고속 인덱싱 완료
-  note: "0.1초"
-:::
+# 왜 Everything인가?
+
+검색 속도 비교 — "2024 예산보고서.xlsx" 찾기
+
+🐌 Windows 기본 검색
+
+인덱스 없는 폴더: 탐색기에서 검색
+
+드라이브 전체 스캔
+
+로딩 인디케이터 돌아가는 중...
+
+파일 하나씩 순차 검색
+
+30초 ~ 5분
+
+⚡ Everything
+
+Win+Alt+E로 실행
+
+파일명 타이핑 시작
+
+입력과 동시에 결과 표시
+
+전체 드라이브 즉시 완료
+
+0.1초
 
 ::: alert-box tip
 - title: "💡 동작 원리:"
   desc: "Windows NTFS의 MFT(Master File Table)를 직접 읽어 모든 파일 정보를 메모리에 인덱싱. 설치 직후 빠르게 인덱스 구축 후 실시간 업데이트."
 :::
 
-# 2. 검색 문법 & 고급 쿼리
-::: columns-grid
-- title: "*.xlsx"
+# 검색 문법 & 고급 쿼리
+
+::: columns-grid cols=3
+- title: |
+    *.xlsx
   desc: "특정 확장자 파일 전체 검색"
   meta: "예: *.pptx, *.pdf, *.py"
 - title: "보고서 2025"
@@ -66,12 +71,12 @@ footer:
   meta: "고급 사용자 패턴 매칭"
 :::
 
-::: alert-box tip
-- title: "⭐ 자주 쓰는 쿼리 저장:"
-  desc: "자주 사용하는 검색식은 Bookmarks로 저장 가능. 예: `*.pptx dm:thismonth` → `이달 PPT 파일`로 즐겨찾기."
-:::
+⭐ 자주 쓰는 쿼리 저장:
 
-# 3. 주요 기능
+자주 사용하는 검색식은 Bookmarks로 저장 가능. 예: "*.pptx dm:thismonth" → "이달 PPT 파일"로 즐겨찾기.
+
+# 주요 기능
+
 ::: icon-grid
 - icon: "⚡"
   title: "실시간 인덱스"
@@ -87,16 +92,13 @@ footer:
   desc: "어떤 창에서도 Win+Alt+E로 즉시 검색창 호출 (설정 가능)."
 :::
 
-# 4. 설치 & 설정
+# 설치 & 설정
+
 ::: step-list
-- title: "voidtools.com 접속 및 다운로드"
-  desc: "공식 사이트에서 본인의 OS에 맞는 32/64비트 버전을 받아 설치합니다. 설치 파일 크기가 2MB 이하로 대단히 가볍습니다."
-- title: "최초 실행 시 자동 인덱싱 구축"
-  desc: "최초 가동 시 전체 디스크 인덱스를 즉시 메모리에 적재합니다. SSD 환경에서는 100만 개 파일도 1분 이내에 완료되며, 이후 실시간 동기화됩니다."
-- title: "글로벌 단축키 및 시작 옵션 설정"
-  desc: "옵션(Tools -> Options)에서 글로벌 단축키(예: Win+Alt+E)를 설정하고, 윈도우 시작 시 자동 실행되도록 등록을 적극 권장합니다."
-- title: "백그라운드에서 조용히 대기"
-  desc: "시스템 트레이에 상주하며 CPU 및 RAM 리소스를 거의 점유하지 않습니다. 항상 켜두고 언제든 불러와 즉시 검색하세요."
+- title: "1voidtools.com 접속 → Everything 다운로드 및 설치 (무료)32/64비트 선택. 설치 파일 크기 2MB 이하로 매우 가벼움."
+- title: "2최초 실행 시 자동 인덱싱 시작 (수십 초 ~ 수 분)SSD 환경에서는 100만 파일도 1분 이내 완료. 이후 실시간 업데이트."
+- title: "3Tools → Options → 글로벌 단축키 설정Win+Alt+E 또는 원하는 단축키로 변경. 시작 프로그램에 등록 권장."
+- title: "4시스템 트레이에 상주하며 백그라운드 실행CPU·RAM 점유율 거의 0%. 항상 켜두어도 성능 영향 없음."
 :::
 
 ::: alert-box tip

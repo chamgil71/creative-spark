@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Playwright 완전 활용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #D97757;
+  --brand-dark: #B85F3F;
+  --brand-deep: #8B4530;
+  --brand-light: #FDF0EB;
+  --brand-mid: #F4C5AE;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #FBF7F5;
+  --white: #FFFFFF;
+  --border: #F0D4C4;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 18px 0; }
+.icon-card { background: linear-gradient(180deg, white, var(--brand-light)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.icon-card-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 12px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 26px; }
+.icon-card-title { font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.icon-card p { margin: 0; font-size: .88rem; color: var(--text-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.feature-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.feature-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.feature-tag { display: inline-flex; margin-bottom: 12px; background: var(--brand-light); color: var(--brand-dark); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; font-size: .76rem; font-weight: 800; }
+.feature-card-title { font-weight: 800; color: var(--text); font-size: 1.03rem; margin-bottom: 8px; }
+.feature-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.step-list { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+.step-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow); }
+.step-num { width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.step-title { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.step-item p { margin: 0; color: var(--text-2); }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 18px 0; }
+.compare-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.compare-card-title { font-weight: 800; color: var(--brand-dark); margin-bottom: 8px; }
+.compare-card p { margin: 0 0 10px; color: var(--text-2); }
+.compare-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 10px; font-size: .84rem; font-weight: 700; }
+.done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+.done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+.done-section p { opacity: .86; margin-bottom: 24px; }
+.done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+footer a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🕷️ 크롤링 · E2E 테스트</div>
+    <div class="hero-logo">🎭</div>
+    <h1>Playwright 완전 활용 가이드</h1>
+    <p>Selenium의 단점을 모두 극복한 MS의 차세대 웹 크롤링 및 자동 테스트 프레임워크</p>
+    <a class="hero-cta" href="https://playwright.dev" target="_blank" rel="noopener">Playwright 문서 보기</a>
+    <div class="hero-stats"><div class="hero-stat"><strong>비동기</strong><span>초고속 실행</span></div><div class="hero-stat"><strong>Python/JS</strong><span>다국어 지원</span></div><div class="hero-stat"><strong>Auto-wait</strong><span>요소 자동대기</span></div><div class="hero-stat"><strong>다중 브라우저</strong><span>크롬, 사파리, 파폭</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>Playwright는 어떤 도구인가</h2></div><div class="card"><p>Playwright는 코드를 통해 크롬, 엣지, 파이어폭스 등 웹 브라우저를 직접 조종하는 라이브러리입니다. 프론트엔드 개발자들은 자신이 만든 화면이 잘 작동하는지 테스트(E2E)하는 용도로 쓰며, 자동화 개발자들은 <strong>화면에 동적으로 그려지는 뉴스, 부동산, 주식 데이터를 막힘없이 긁어오는(Crawling) 최강의 도구</strong>로 사용합니다.</p>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon-card-icon">⏳</div>
+        <div class="icon-card-title">자동 대기 (Auto-wait)</div>
+        <p>요소가 화면에 나타날 때까지 알아서 기다려주어, `sleep(5)` 같은 불안정한 지연 코드를 쓸 필요가 없습니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🕵️‍♂️</div>
+        <div class="icon-card-title">동적 렌더링 완벽 처리</div>
+        <p>React나 Vue로 만들어져 클릭하거나 스크롤해야만 데이터가 나오는 최신 웹사이트의 데이터를 쉽게 추출합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🎥</div>
+        <div class="icon-card-title">트레이스 및 화면 녹화</div>
+        <p>크롤링 중 에러가 나면, 스크립트가 어느 시점에서 멈췄는지 스크린샷과 비디오로 녹화해 줍니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🥷</div>
+        <div class="icon-card-title">브라우저 컨텍스트</div>
+        <p>브라우저를 아예 새로 띄우지 않고 가벼운 &#39;시크릿 탭&#39; 형태로 여러 개를 동시에 열어 수집 속도를 극대화합니다.</p>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">이런 상황에서 압도적인 위력을 냅니다</h3><div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-tag">수집</span>
+        <div class="feature-card-title">📊 부동산/경매 데이터 수집가</div>
+        <p>지도를 이리저리 이동하고 팝업을 클릭해야만 볼 수 있는 복잡한 경매 사이트의 데이터를 매일 추출해야 할 때.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">자동화</span>
+        <div class="feature-card-title">📰 뉴스 애그리게이터 제작</div>
+        <p>매일 아침 여러 언론사를 돌며 특정 키워드의 기사 제목과 본문을 긁어내 리포트로 만들 때.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">품질</span>
+        <div class="feature-card-title">🧪 프론트엔드 QA</div>
+        <p>내가 만든 Vercel 배포 사이트에 &quot;로그인 후 장바구니에 담기&quot; 로직이 잘 도는지 매번 확인하기 귀찮을 때.</p>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 파이썬 기반 데이터 추출</h2></div><div class="card"><p>BeautifulSoup이나 Requests로는 한계가 있는 동적 웹페이지를 공략하는 방법입니다.</p>
+</div><div class="card"><h3 class="card-title">기본 크롤링 흐름 (Python 기준)</h3><div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">패키지 및 브라우저 설치</div>
+          <p>터미널에서 `pip install playwright` 후, `playwright install`을 쳐서 구동용 브라우저를 다운로드합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">브라우저 실행 설정</div>
+          <p>백그라운드에서 조용히 실행할지(Headless), 눈으로 보면서 디버깅할지(Headed) 설정합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">페이지 이동 및 조작</div>
+          <p>`page.goto(&quot;URL&quot;)`로 이동 후, `page.locator(&quot;.btn-search&quot;).click()` 처럼 요소를 특정해 액션을 취합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">데이터 추출 (평가)</div>
+          <p>`page.eval_on_selector_all()` 등을 사용하여 원하는 태그 내부의 텍스트(텍스트 콘텐츠)나 속성 값을 가져옵니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">파일 저장 및 종료</div>
+          <p>추출한 배열을 JSON이나 CSV로 가공하여 저장하고, 열어둔 브라우저 컨텍스트를 깔끔하게 종료합니다.</p>
+        </div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>크롤링 차단(봇 탐지) 우회 팁</h2></div><div class="card"><div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">User-Agent 커스텀</div>
+        <p>스크립트 실행 시 실제 모바일 기기나 특정 데스크톱 브라우저인 것처럼 User-Agent 값을 속여 접속합니다.</p>
+        <div class="compare-note">차단 방지의 기본</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">네트워크 가로채기</div>
+        <p>굳이 HTML을 긁지 않고, 브라우저의 네트워크 탭으로 오가는 XHR/Fetch API 응답(JSON)만 깔끔하게 빼냅니다.</p>
+        <div class="compare-note">속도/정확도 최고 수준</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">Stealth 플러그인</div>
+        <p>매우 강력한 봇 방어(Cloudflare 등)가 걸려있다면, Playwright-stealth 모듈을 엮어 봇이 아닌 척 우회합니다.</p>
+        <div class="compare-note">고급 자동화 기술</div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">스크립트 배포 전 최적화</h3><ul>
+<li><input disabled="" type="checkbox"> 불필요한 이미지나 폰트, CSS 로딩을 차단(Abort)하여 스크립트 실행 속도를 극대화했는가?</li>
+<li><input disabled="" type="checkbox"> 선택자(Selector)가 너무 길고 복잡해 사이트 디자인이 살짝만 바뀌어도 깨질 위험이 없는가? (Id나 Data 속성 권장)</li>
+<li><input disabled="" type="checkbox"> 크롤링 중 예기치 못한 팝업(광고, 공지사항)이 떴을 때 이를 무시하거나 닫아주는 예외 처리를 했는가?</li>
+</ul>
+<blockquote>
+<p>💡 <strong>TIP</strong>: 선택자(Selector)를 찾는 데 시간을 낭비하지 마세요. 터미널에 <code>playwright codegen &lt;사이트주소&gt;</code>를 치면, 사용자가 클릭하고 입력하는 모든 행동을 즉석에서 파이썬/JS 코드로 자동 기록해 줍니다.</p>
+</blockquote>
+</div></section>
+</main>
+<section class="done-section"><h2>눈에 보이는 모든 데이터를 추출하세요</h2><p>복잡하게 렌더링되는 모던 웹사이트의 데이터를 안정적이고 빠르게 수집하는 파이프라인을 구축하세요.</p><a class="done-link" href="https://playwright.dev/python/docs/intro" target="_blank" rel="noopener">시작 가이드 보기</a></section>
+<footer><div>Playwright는 Microsoft에서 개발한 오픈소스로, 과거 Selenium이 가진 속도와 대기(Wait) 문제를 완벽히 해결했습니다.</div><div>공식 사이트: <a href="https://playwright.dev">playwright.dev</a></div></footer>
+</body>
+</html>

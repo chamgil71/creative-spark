@@ -9,42 +9,42 @@
     },
     {
       "slug": "part01-concepts",
-      "title": "1부. 개념 이해",
+      "title": "개념 이해",
       "file": "part01-concepts.html"
     },
     {
       "slug": "part02-conversation",
-      "title": "2부. AI와 대화하는 법",
+      "title": "AI와 대화하는 법",
       "file": "part02-conversation.html"
     },
     {
       "slug": "part03-tools",
-      "title": "3부. AI 코딩 도구",
+      "title": "AI 코딩 도구",
       "file": "part03-tools.html"
     },
     {
       "slug": "part04-integrations",
-      "title": "4부. 연계 도구 & 조합 패턴",
+      "title": "연계 도구 &조합 패턴",
       "file": "part04-integrations.html"
     },
     {
       "slug": "part05-cases",
-      "title": "5부. 실전 사례",
+      "title": "실전 사례",
       "file": "part05-cases.html"
     },
     {
       "slug": "part06-quality",
-      "title": "6부. 품질과 운영",
+      "title": "품질과 운영",
       "file": "part06-quality.html"
     },
     {
       "slug": "part07-start-guide",
-      "title": "7부. 시작과 심화",
+      "title": "시작과 심화",
       "file": "part07-start-guide.html"
     },
     {
       "slug": "part08-warnings",
-      "title": "8부. 주의사항과 함정",
+      "title": "주의사항과 함정",
       "file": "part08-warnings.html"
     }
   ]

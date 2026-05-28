@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #D97757;
-    --brand-dark: #B85F3F;
-    --brand-deep: #8B4530;
-    --brand-light:#FDF0EB;
-    --brand-mid:  #F4C5AE;
-    --border:     #F0D4C4;
-    --bg:         #FBF7F5;
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">💖 Lovable 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Lovable은 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 0에서 배포까지</a></li><li><a href="#sec-3">3. 마스터를 위한 고급 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Lovable 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Lovable은 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 0에서 배포까지</a></li><li><a href="#sec-3">마스터를 위한 고급 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🚀 AI 엔지니어링 · No-Code to Code</div>
-      <div class="hero-logo">💖</div>
+      
       <h1>Lovable 완전 활용 가이드</h1>
-      <p>아이디어 텍스트를 실제 작동하는 풀스택 웹 서비스로 변환하는 AI 엔지니어</p>
-      <a class="hero-cta" href="https://lovable.dev" target="_blank" rel="noopener">Lovable 시작하기</a>
+      <p>AI 풀스택 앱 빌더</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>무료</strong><span>시작 가능</span></div><div class="hero-stat"><strong>React</strong><span>기반 생성</span></div><div class="hero-stat"><strong>Supabase</strong><span>DB 자동연동</span></div><div class="hero-stat"><strong>GitHub</strong><span>실시간 동기화</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Lovable은 어떤 도구인가</h2></div><div class="card"><p>Lovable은 개발 지식이 전혀 없는 사용자도 복잡한 &#39;데이터 기반 웹 애플리케이션&#39;을 만들 수 있게 돕는 AI 웹 개발 플랫폼입니다. 단순히 디자인만 예쁜 페이지가 아니라, 실제로 회원가입을 받고 데이터를 저장하며 복잡한 로직을 수행하는 앱을 대화만으로 구축합니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Lovable은 어떤 도구인가</h2></div><div class="card"><p>Lovable은 개발 지식이 전혀 없는 사용자도 복잡한 &#39;데이터 기반 웹 애플리케이션&#39;을 만들 수 있게 돕는 AI 웹 개발 플랫폼입니다. 단순히 디자인만 예쁜 페이지가 아니라, 실제로 회원가입을 받고 데이터를 저장하며 복잡한 로직을 수행하는 앱을 대화만으로 구축합니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🪄</div>
 <div class="icon-card-title" style="color: var(--text);">프롬프트 기반 생성</div>
 <p>세무사들을 위한 고객 관리 대시보드를 만들어줘\&quot; 한 문장이면 레이아웃과 기능이 설계됩니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">🛠️</div>
 <div class="icon-card-title" style="color: var(--text);">실시간 시각적 수정</div>
 <p>결과 화면을 보면서 특정 영역을 짚어 \&quot;여기에 결제 버튼을 추가해줘\&quot;라고 지시할 수 있습니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >비즈니스</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">💡</span>1인 창업자 (Solo-preneur)
+<span class="fc-icon">💡</span>💡 1인 창업자 (Solo-preneur)
 </div>
 <p>개발자 채용 없이 아이디어를 즉시 시장에 내놓고 검증(MVP)하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >실무</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📊</span>현업 기획자/PM
+<span class="fc-icon">📊</span>📊 현업 기획자/PM
 </div>
 <p>단순 기획안이 아니라 실제로 작동하는 프로토타입을 만들어 설득력을 높이고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >개발</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>🏎️ 생산성 중시 개발자
+<span class="fc-icon">🏎</span>🏎️ 생산성 중시 개발자
 </div>
 <p>반복적인 UI 코딩 시간을 90% 이상 줄이고 핵심 비즈니스 로직에만 집중하고 싶은 분.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 0에서 배포까지</h2></div><div class="card"><p>Lovable은 브라우저 내에서 모든 개발 환경이 준비되어 있습니다.</p>
-</div><div class="card"><h3 class="card-title">실전 구축 프로세스</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 0에서 배포까지</h2></div><div class="card"><p>Lovable은 브라우저 내에서 모든 개발 환경이 준비되어 있습니다.</p>
+<h3>실전 구축 프로세스</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,7 +367,8 @@
 <div class="step-title" >GitHub 동기화 및 배포</div>
 <p>완성된 코드를 내 GitHub 저장소로 푸시하고, Netlify나 Vercel로 즉시 발행합니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 마스터를 위한 고급 팁</h2></div><div class="card"></div><div class="card"><h3 class="card-title">상황별 추천 프롬프트 패턴</h3><div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>마스터를 위한 고급 팁</h2></div><div class="card"><h3>상황별 추천 프롬프트 패턴</h3>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >데이터 중심 앱</div>
 <p>사용자가 가계부를 입력하면 월별 통계를 그래프로 보여주는 대시보드 화면을 만들어줘.</p>
@@ -379,7 +383,8 @@
 <div class="compare-card-title" >디자인 커스텀</div>
 <p>미니멀한 다크 모드 테마를 적용하고, 메인 폰트는 프리텐다드를 사용해줘.</p>
 <div class="compare-note" >핵심: 스타일 일괄 적용</div>
-</div></div></div><div class="card"><h3 class="card-title">도구별 역할 비교</h3><table>
+</div></div><h3>도구별 역할 비교</h3>
+<table>
 <thead>
 <tr>
 <th>기능</th>
@@ -403,7 +408,8 @@
 <td>중급 (툴 사용법 학습 필요)</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">완벽한 앱을 위한 검토</h3><ul>
+</div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>완벽한 앱을 위한 검토</h3>
+<ul>
 <li>모바일 환경에서 터치 영역과 폰트 크기가 적절한가</li>
 <li>데이터 저장 및 불러오기가 지연 없이 작동하는가</li>
 <li>Supabase의 RLS(보안 정책)가 설정되어 데이터 노출 위험이 없는가</li>
@@ -412,13 +418,11 @@
 <blockquote>
 <p>💡 TIP: Lovable은 단순한 &#39;코드 생성기&#39;가 아닙니다. 코드를 읽고 이해하는 &#39;동료 개발자&#39;라고 생각하고 구체적인 피드백을 줄수록 더 높은 퀄리티의 결과물이 나옵니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">첫 번째 AI 웹 앱을 배포해보세요</h3><p>텍스트로 요구사항을 입력하고, AI가 생성한 결과물을 즉시 웹으로 확인하며 수정해보세요.</p>
+<p>Lovable 열기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>첫 번째 AI 웹 앱을 배포해보세요</h2>
-    <p>텍스트로 요구사항을 입력하고, AI가 생성한 결과물을 즉시 웹으로 확인하며 수정해보세요.</p>
-    <a class="done-link" href="https://lovable.dev" target="_blank" rel="noopener">Lovable 열기</a>
-  </section>
-  <footer><div>Lovable은 GPT-Engineer 프로젝트를 계승하여 더욱 강력해진 AI 웹 앱 제작 도구입니다.</div><div>공식 사이트: <a href="https://lovable.dev">lovable.dev</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

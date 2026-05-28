@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #D97757;
-    --brand-dark: #B85F3F;
-    --brand-deep: #8B4530;
-    --brand-light:#FDF0EB;
-    --brand-mid:  #F4C5AE;
-    --border:     #F0D4C4;
-    --bg:         #FBF7F5;
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">▲ Vercel 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Vercel은 어떤 도구인가</a></li><li><a href="#sec-2">2. 배포 가이드 (Step-by-Step)</a></li><li><a href="#sec-3">3. 운영 및 최적화 전략</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Vercel 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Vercel은 어떤 도구인가</a></li><li><a href="#sec-2">배포 가이드 (Step-by-Step)</a></li><li><a href="#sec-3">운영 및 최적화 전략</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🌐 프론트엔드 배포 · Edge Computing</div>
-      <div class="hero-logo">▲</div>
+      
       <h1>Vercel 완전 활용 가이드</h1>
-      <p>전 세계에서 가장 빠른 웹 배포와 강력한 개발자 경험을 제공하는 클라우드 플랫폼</p>
-      <a class="hero-cta" href="https://vercel.com" target="_blank" rel="noopener">Vercel 시작하기</a>
+      <p>프론트엔드 배포 플랫폼</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>Hobby 무료</strong><span>개인 프로젝트</span></div><div class="hero-stat"><strong>Next.js</strong><span>공식 플랫폼</span></div><div class="hero-stat"><strong>Global</strong><span>CDN 자동적용</span></div><div class="hero-stat"><strong>SSL</strong><span>기본 무료</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Vercel은 어떤 도구인가</h2></div><div class="card"><p>Vercel은 복잡한 서버 인프라 지식 없이도 웹 애플리케이션을 배포하고 운영할 수 있게 해주는 &#39;프론트엔드 클라우드&#39;입니다. 특히 React, Next.js, Vue, Svelte 등 최신 프레임워크와 Quartz 같은 정적 사이트 생성기에 최적화되어 있습니다.</p>
-</div><div class="card"><h3 class="card-title">핵심 가치와 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Vercel은 어떤 도구인가</h2></div><div class="card"><p>Vercel은 복잡한 서버 인프라 지식 없이도 웹 애플리케이션을 배포하고 운영할 수 있게 해주는 &#39;프론트엔드 클라우드&#39;입니다. 특히 React, Next.js, Vue, Svelte 등 최신 프레임워크와 Quartz 같은 정적 사이트 생성기에 최적화되어 있습니다.</p>
+<h3>핵심 가치와 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">⚡</div>
 <div class="icon-card-title" style="color: var(--text);">Zero-Config 배포</div>
 <p>별도의 설정 파일 없이도 프로젝트 구조를 분석하여 최적의 빌드 환경을 구성합니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">📈</div>
 <div class="icon-card-title" style="color: var(--text);">Analytics &amp; Speed</div>
 <p>방문자 수 통계와 실제 사용자가 느끼는 웹 성능 점수(Web Vitals)를 실시간 모니터링합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 상황에서 빛을 발합니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 상황에서 빛을 발합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >개인</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">•</span>🖋️ 개발 블로그/포트폴리오
+<span class="fc-icon">🖋</span>🖋️ 개발 블로그/포트폴리오
 </div>
 <p>Quartz나 Astro로 만든 정적 사이트를 무료로, 가장 빠르게 운영하고 싶을 때.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >협업</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">👥</span>스타트업 및 팀 프로젝트
+<span class="fc-icon">👥</span>👥 스타트업 및 팀 프로젝트
 </div>
 <p>개발자가 코드를 올리면 기획자가 즉시 배포된 화면을 보고 댓글로 피드백을 주고받을 때.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >기업</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🏭</span>대규모 상용 서비스
+<span class="fc-icon">🏭</span>🏭 대규모 상용 서비스
 </div>
 <p>트래픽 급증 시 자동으로 서버 자원을 확장하고 안정적인 가용성을 보장받아야 할 때.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 배포 가이드 (Step-by-Step)</h2></div><div class="card"><p>Vercel의 가장 큰 장점은 &quot;설정할 것이 거의 없다&quot;는 점입니다.</p>
-</div><div class="card"><h3 class="card-title">기본 연결 순서</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>배포 가이드 (Step-by-Step)</h2></div><div class="card"><p>Vercel의 가장 큰 장점은 &quot;설정할 것이 거의 없다&quot;는 점입니다.</p>
+<h3>기본 연결 순서</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,7 +367,8 @@
 <div class="step-title" >빌드 및 배포 완료</div>
 <p>Deploy&#39; 버튼을 누르면 약 1~2분 내로 글로벌 CDN에 배포된 실서비스 URL이 생성됩니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 운영 및 최적화 전략</h2></div><div class="card"></div><div class="card"><h3 class="card-title">효율적인 운영 패턴</h3><div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>운영 및 최적화 전략</h2></div><div class="card"><h3>효율적인 운영 패턴</h3>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >프로덕션 배포</div>
 <p>`main` 브랜치에 코드를 합치면(Merge) 실제 서비스 도메인에 즉시 반영됩니다.</p>
@@ -379,22 +383,27 @@
 <div class="compare-card-title" >서버리스 백엔드</div>
 <p>`api/` 폴더에 코드를 넣는 것만으로 별도 서버 구축 없이 API 엔드포인트를 생성합니다.</p>
 <div class="compare-note" >가벼운 API 서비스 적합</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">안정적인 운영을 위한 확인</h3><ul>
-<li>배포 로그(Build Logs)에서 경고나 에러 메세지가 없는가</li>
-<li>모든 페이지의 이미지들이 최적화되어 빠르게 로딩되는가</li>
-<li>도메인 연결 시 <code>www</code> 여부와 리다이렉트 설정이 올바른가</li>
-<li>Vercel Analytics를 활성화하여 사용자 유입 경로를 추적 중인가</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>안정적인 운영을 위한 확인</h3>
+<ul>
+<li><p>배포 로그(Build Logs)에서 경고나 에러 메세지가 없는가</p>
+</li>
+<li><p>모든 페이지의 이미지들이 최적화되어 빠르게 로딩되는가</p>
+</li>
+<li><p>도메인 연결 시</p>
+<p>www</p>
+<p>여부와 리다이렉트 설정이 올바른가</p>
+</li>
+<li><p>Vercel Analytics를 활성화하여 사용자 유입 경로를 추적 중인가</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: Quartz 사용자라면 Vercel은 필수입니다. .md 파일을 수정해 GitHub에 올리기만 하면, Vercel이 백그라운드에서 다시 빌드하여 수 초 내로 블로그 내용을 업데이트해줍니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">당신의 프로젝트를 세계로 연결하세요</h3><p>GitHub에 커밋하는 순간, 전 세계 어디서나 접속 가능한 가장 빠른 웹사이트가 완성됩니다.</p>
+<p>배포 시작하기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>당신의 프로젝트를 세계로 연결하세요</h2>
-    <p>GitHub에 커밋하는 순간, 전 세계 어디서나 접속 가능한 가장 빠른 웹사이트가 완성됩니다.</p>
-    <a class="done-link" href="https://vercel.com/new" target="_blank" rel="noopener">배포 시작하기</a>
-  </section>
-  <footer><div>Vercel은 프론트엔드 프레임워크 Next.js의 개발사가 직접 운영하는 최적화 배포 플랫폼입니다.</div><div>공식 사이트: <a href="https://vercel.com">vercel.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

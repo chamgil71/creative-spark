@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🎭 Playwright 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Playwright는 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 파이썬 기반 데이터 추출</a></li><li><a href="#sec-3">3. 크롤링 차단(봇 탐지) 우회 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Playwright 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Playwright는 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 파이썬 기반 데이터 추출</a></li><li><a href="#sec-3">크롤링 차단(봇 탐지) 우회 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🕷️ 크롤링 · E2E 테스트</div>
-      <div class="hero-logo">🎭</div>
+      
       <h1>Playwright 완전 활용 가이드</h1>
       <p>Selenium의 단점을 모두 극복한 MS의 차세대 웹 크롤링 및 자동 테스트 프레임워크</p>
-      <a class="hero-cta" href="https://playwright.dev" target="_blank" rel="noopener">Playwright 문서 보기</a>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>비동기</strong><span>초고속 실행</span></div><div class="hero-stat"><strong>Python/JS</strong><span>다국어 지원</span></div><div class="hero-stat"><strong>Auto-wait</strong><span>요소 자동대기</span></div><div class="hero-stat"><strong>다중 브라우저</strong><span>크롬, 사파리, 파폭</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Playwright는 어떤 도구인가</h2></div><div class="card"><p>Playwright는 코드를 통해 크롬, 엣지, 파이어폭스 등 웹 브라우저를 직접 조종하는 라이브러리입니다. 프론트엔드 개발자들은 자신이 만든 화면이 잘 작동하는지 테스트(E2E)하는 용도로 쓰며, 자동화 개발자들은 <strong>화면에 동적으로 그려지는 뉴스, 부동산, 주식 데이터를 막힘없이 긁어오는(Crawling) 최강의 도구</strong>로 사용합니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Playwright는 어떤 도구인가</h2></div><div class="card"><p>Playwright는 코드를 통해 크롬, 엣지, 파이어폭스 등 웹 브라우저를 직접 조종하는 라이브러리입니다. 프론트엔드 개발자들은 자신이 만든 화면이 잘 작동하는지 테스트(E2E)하는 용도로 쓰며, 자동화 개발자들은 <strong>화면에 동적으로 그려지는 뉴스, 부동산, 주식 데이터를 막힘없이 긁어오는(Crawling) 최강의 도구</strong>로 사용합니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">⏳</div>
 <div class="icon-card-title" style="color: var(--text);">자동 대기 (Auto-wait)</div>
 <p>요소가 화면에 나타날 때까지 알아서 기다려주어, `sleep(5)` 같은 불안정한 지연 코드를 쓸 필요가 없습니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">🥷</div>
 <div class="icon-card-title" style="color: var(--text);">브라우저 컨텍스트</div>
 <p>브라우저를 아예 새로 띄우지 않고 가벼운 &#39;시크릿 탭&#39; 형태로 여러 개를 동시에 열어 수집 속도를 극대화합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 상황에서 압도적인 위력을 냅니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 상황에서 압도적인 위력을 냅니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >수집</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📊</span>부동산/경매 데이터 수집가
+<span class="fc-icon">📊</span>📊부동산/경매 데이터 수집가
 </div>
 <p>지도를 이리저리 이동하고 팝업을 클릭해야만 볼 수 있는 복잡한 경매 사이트의 데이터를 매일 추출해야 할 때.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >자동화</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📰</span>뉴스 애그리게이터 제작
+<span class="fc-icon">📰</span>📰뉴스 애그리게이터 제작
 </div>
 <p>매일 아침 여러 언론사를 돌며 특정 키워드의 기사 제목과 본문을 긁어내 리포트로 만들 때.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >품질</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🧪</span>프론트엔드 QA
+<span class="fc-icon">🧪</span>🧪프론트엔드 QA
 </div>
-<p>내가 만든 Vercel 배포 사이트에 \&quot;로그인 후 장바구니에 담기\&quot; 로직이 잘 도는지 매번 확인하기 귀찮을 때.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 파이썬 기반 데이터 추출</h2></div><div class="card"><p>BeautifulSoup이나 Requests로는 한계가 있는 동적 웹페이지를 공략하는 방법입니다.</p>
-</div><div class="card"><h3 class="card-title">기본 크롤링 흐름 (Python 기준)</h3><div class="step-list">
+<p>내가 만든 Vercel 배포 사이트에 \\\&quot;로그인 후 장바구니에 담기\\\&quot; 로직이 잘 도는지 매번 확인하기 귀찮을 때.</p>
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 파이썬 기반 데이터 추출</h2></div><div class="card"><p>BeautifulSoup이나 Requests로는 한계가 있는 동적 웹페이지를 공략하는 방법입니다.</p>
+<h3>기본 크롤링 흐름 (Python 기준)</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -348,7 +351,7 @@
 <div class="step-num" >3</div>
 <div class="step-content">
 <div class="step-title" >페이지 이동 및 조작</div>
-<p>`page.goto(\&quot;URL\&quot;)`로 이동 후, `page.locator(\&quot;.btn-search\&quot;).click()` 처럼 요소를 특정해 액션을 취합니다.</p>
+<p>`page.goto(\\\&quot;URL\\\&quot;)`로 이동 후, `page.locator(\\\&quot;.btn-search\\\&quot;).click()` 처럼 요소를 특정해 액션을 취합니다.</p>
 </div>
 </div>
 <div class="step-item" >
@@ -364,7 +367,7 @@
 <div class="step-title" >파일 저장 및 종료</div>
 <p>추출한 배열을 JSON이나 CSV로 가공하여 저장하고, 열어둔 브라우저 컨텍스트를 깔끔하게 종료합니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 크롤링 차단(봇 탐지) 우회 팁</h2></div><div class="card"><div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>크롤링 차단(봇 탐지) 우회 팁</h2></div><div class="card"><div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >User-Agent 커스텀</div>
 <p>스크립트 실행 시 실제 모바일 기기나 특정 데스크톱 브라우저인 것처럼 User-Agent 값을 속여 접속합니다.</p>
@@ -379,7 +382,8 @@
 <div class="compare-card-title" >Stealth 플러그인</div>
 <p>매우 강력한 봇 방어(Cloudflare 등)가 걸려있다면, Playwright-stealth 모듈을 엮어 봇이 아닌 척 우회합니다.</p>
 <div class="compare-note" >고급 자동화 기술</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">스크립트 배포 전 최적화</h3><ul>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>스크립트 배포 전 최적화</h3>
+<ul>
 <li>불필요한 이미지나 폰트, CSS 로딩을 차단(Abort)하여 스크립트 실행 속도를 극대화했는가?</li>
 <li>선택자(Selector)가 너무 길고 복잡해 사이트 디자인이 살짝만 바뀌어도 깨질 위험이 없는가? (Id나 Data 속성 권장)</li>
 <li>크롤링 중 예기치 못한 팝업(광고, 공지사항)이 떴을 때 이를 무시하거나 닫아주는 예외 처리를 했는가?</li>
@@ -387,13 +391,11 @@
 <blockquote>
 <p>💡 TIP: 선택자(Selector)를 찾는 데 시간을 낭비하지 마세요. 터미널에 playwright codegen &lt;사이트주소&gt;를 치면, 사용자가 클릭하고 입력하는 모든 행동을 즉석에서 파이썬/JS 코드로 자동 기록해 줍니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">눈에 보이는 모든 데이터를 추출하세요</h3><p>복잡하게 렌더링되는 모던 웹사이트의 데이터를 안정적이고 빠르게 수집하는 파이프라인을 구축하세요.</p>
+<p>시작 가이드 보기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>눈에 보이는 모든 데이터를 추출하세요</h2>
-    <p>복잡하게 렌더링되는 모던 웹사이트의 데이터를 안정적이고 빠르게 수집하는 파이프라인을 구축하세요.</p>
-    <a class="done-link" href="https://playwright.dev/python/docs/intro" target="_blank" rel="noopener">시작 가이드 보기</a>
-  </section>
-  <footer><div>Playwright는 Microsoft에서 개발한 오픈소스로, 과거 Selenium이 가진 속도와 대기(Wait) 문제를 완벽히 해결했습니다.</div><div>공식 사이트: <a href="https://playwright.dev">playwright.dev</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

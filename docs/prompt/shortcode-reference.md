@@ -138,10 +138,10 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
   meta: "npm install -g creative-spark"
 - title: "HTML 빌드 명령어"
   desc: "마크다운을 HTML로 컴파일합니다."
-  meta: "node templates/build-guide.mjs showcase.md"
+  meta: "node scripts/build-guide.mjs md_src/guides/showcase.md"
 - title: "PPTX 빌드 명령어"
   desc: "마크다운을 슬라이드로 컴파일합니다."
-  meta: "node scripts/md-to-pptx.mjs showcase.md"
+  meta: "node scripts/md-to-pptx.mjs md_src/guides/showcase.md"
 :::
 ```
 
@@ -168,7 +168,7 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
 ```md
 ::: step-list
 - title: "가이드 마크다운 작성"
-  desc: "docs/prompt 지침에 따라 6대 표준 키와 숏코드를 활용해 data/md_final/ 아래에 가이드를 작성합니다."
+  desc: "docs/prompt 지침에 따라 6대 표준 키와 숏코드를 활용해 md_src/guides/ 아래에 가이드를 작성합니다."
   color: "#6366F1"
 - title: "HTML 및 PPTX 동시 컴파일"
   desc: "빌드 스크립트를 구동하여 무결점 HTML 가이드와 슬라이드 장표를 동시에 안전하게 변환 빌드합니다."
@@ -265,7 +265,7 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
 ::: cmd-box
 - title: "수동 빌드 가이드"
   tag: "bash"
-  desc: "node templates/build-guide.mjs data/md_final/showcase.md"
+  desc: "node scripts/build-guide.mjs md_src/guides/showcase.md"
 :::
 ```
 

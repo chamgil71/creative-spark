@@ -1,8 +1,8 @@
 ---
-title: Grok 완전 활용 가이드
-subtitle: Elon Musk의 xAI가 만든 AI — X(트위터) 실시간 데이터와Aurora 이미지 생성으로 무장한 차세대 어시스턴트
-badge: xAI · Elon Musk · 2025
-style: ai-chat
+title: "Grok완전 활용 가이드"
+subtitle: "xAI 실시간 대화형 AI"
+badge: "xAI · Elon Musk · 2025"
+style: "ai-chat"
 stats:
   - value: "실시간"
     label: "X 데이터 연동"
@@ -14,8 +14,9 @@ stats:
     label: "SuperGrok 플랜"
 ---
 
-# 1. 핵심 기능 & 강점
-::: icon-grid
+# 핵심 기능 & 강점
+
+::: icon-grid cols=2
 - icon: "🐦"
   title: "X(트위터) 실시간 연동"
   desc: "X 플랫폼의 실시간 트렌드, 게시물, 여론을 즉시 분석. 소셜 미디어 동향 파악에서 타 AI 대비 압도적 우위. \"지금 X에서 ~에 대해 뭐라고 하는지 알려줘\""
@@ -36,14 +37,23 @@ stats:
   desc: "이미지, PDF, 문서를 업로드하여 분석. 스크린샷 내 텍스트 추출, 차트 해석, 문서 요약 모두 지원."
 :::
 
-# 2. Grok의 특별한 위치
+# Grok의 특별한 위치
+
 ⚡ xAI Grok만의 차별점
 
-::: feature-grid
-- icon: "•"
-- icon: "•"
-- icon: "•"
-- icon: "•"
+::: feature-grid cols=3
+- title: |
+    X 생태계 완전 통합
+     X 계정 로그인 시 팔로우 계정의 트윗 맥락을 AI가 이해. 개인화된 소셜 분석 가능.
+- title: |
+    유머·직설적 성격
+     Grok은 의도적으로 유머러스하고 직설적. 다른 AI보다 솔직한 의견 표현. 논쟁적 주제도 회피 없이 답변.
+- title: |
+    Tesla · SpaceX 정보
+     Elon Musk 기업들의 최신 정보에 빠른 접근. 테슬라 FSD, 스타십 업데이트 실시간 파악.
+- title: |
+    오픈소스 전략
+     Grok 기반 모델 일부 오픈소스 공개. 연구자·개발자가 자체 배포 및 파인튜닝 가능.
 :::
 
 ::: alert-box tip
@@ -51,26 +61,27 @@ stats:
   desc: "\"X에서 오늘 ~에 대한 여론은?\" / \"최신 테슬라 FSD 업데이트 내용 알려줘\" / \"논란이 되는 이 주제에 대해 솔직하게 분석해줘\" — 소셜 데이터와 직설적 분석이 필요할 때 최강."
 :::
 
-# 3. 플랜 & 접근 방법
-::: plan-grid
+# 플랜 & 접근 방법
+
+::: plan-grid cols=4
 - title: "무료"
   tag: "Free"
+  desc: "₩0"
   meta: "Grok 기본 모델|제한된 메시지 수|X 계정 필요|기본 이미지 생성"
-  note: "₩0"
-- title: "Free"
 - title: "X 프리미엄"
   tag: "X Premium ⭐"
+  desc: "$8~16 / 월"
   meta: "Grok 확장 접근|더 많은 메시지|Aurora 이미지|DeepSearch 사용"
-  note: "$8~16 / 월"
   featured: "true"
 - title: "SuperGrok"
   tag: "SuperGrok"
+  desc: "$30 / 월"
   meta: "무제한 Grok 사용|Think 모드 무제한|Aurora 무제한|DeepSearch 무제한|API 접근"
-  note: "$30 / 월"
-- title: "SuperGrok"
 :::
 
-# 4. 실전 활용 팁
-::: icon-grid
-- icon: "•"
+# 실전 활용 팁
+
+::: icon-grid cols=2
+- title: "\"X에서 오늘 [주제] 트렌드 분석해줘\""
+- title: "수학 문제:"
 :::

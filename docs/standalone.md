@@ -1,81 +1,84 @@
 # Standalone HTML 빌드
 
-인터넷 없이 열 수 있는 단일 HTML 파일(`public/standalone-guides-only.html`)을 생성하는 방법.
+인터넷 없이 웹브라우저만 있으면 로컬 오프라인 환경에서도 모든 가이드를 확인하고 검색할 수 있는 단일 완성형 HTML 파일(`standalone.html`)을 빌드하는 방법입니다.
 
 ---
 
-## 명령
+## 주요 명령어
 
 ```bash
-npm run build:standalone        # public/standalone-guides-only.html 갱신
-npm run build                   # vite build + dist/ 자동 포함
+npm run sync:guides             # 가이드 목록 동기화 (md_src/guides/*.md -> src/data/guides.json)
+npm run build:publish           # 마크다운 파일을 public/ 폴더 내 정적 HTML로 컴포넌트 변환
+npm run build:standalone        # public/standalone.html 단독 생성
+npm run build                   # 전체 빌드 수행 (dist/ 및 dist/standalone.html 자동 최종 포함)
 ```
 
 ---
 
-## 렌더링 방식
+## 렌더링 방식 및 특징
 
-- 왼쪽 메뉴와 상단바는 standalone 셸이 담당
-- 각 가이드 본문은 **Shadow DOM** 안에 렌더링 → 가이드별 CSS가 셸 UI를 오염시키지 않음
-- 기본 테마는 라이트 모드, 사용자가 전환한 테마는 `localStorage`에 저장
-- 원본 HTML의 `.back-top`, `#backTop`, `footer`는 삽입 시 제거
-- 인쇄/PDF 출력 시 상단바·좌측 메뉴·이전/다음 버튼 자동 숨김, 본문 전체 출력
-
----
-
-## 자동 발견 규칙
-
-`scripts/build-standalone.mjs`가 `src/data/guides.json`을 읽어 콘텐츠를 수집.
-
-**카테고리 가이드**: `categories[].guides[].file` → `public/guides/<file>` 인라인 삽입
-
-**시리즈(컬렉션)**: `collections[]` 항목별로 `public/<folder>/` 안의 모든 `*.html` 알파벳순 자동 스캔
-- `<title>` 태그에서 part 제목 추출
-- `indexFile`은 첫 항목("목차")으로 배치
-- 결과를 `public/<folder>/manifest.json`으로 출력 (런타임도 사용)
+- **Shadow DOM 격리**: 각 가이드 본문을 **Shadow DOM** 내부에 격리하여 로딩하므로, 개별 가이드 문서 고유의 스타일(인라인 CSS 및 레이아웃 변수)이 셸(Shell) UI의 테두리, 내비게이션 메뉴 등을 침범하거나 왜곡시키지 않습니다.
+- **다이내믹 다크/라이트 테마**: 사용자 브라우저의 기본 설정 및 로컬 스토리지(`localStorage`) 테마 상태를 자동으로 유지합니다.
+- **인쇄 및 PDF 친화 설계**: 단일 가이드를 인쇄하거나 PDF로 저장(브라우저 인쇄 단축키 `Ctrl + P`)할 때 상단 바, 사이드바 메뉴, 이전/다음 버튼을 미디어 쿼리를 통해 자동으로 숨기며 문서 전체만 깔끔하게 레이아웃을 보정해 출력합니다.
+- **정리 로직**: 각 정적 가이드 HTML을 합칠 때 로컬용 자바스크립트 스크립트, 최상단 스크롤 버튼(`.back-top`, `#backTop`), 정적 푸터(`footer`) 영역 등 단일 뷰에서 중복되어 거추장스러운 요소들을 자동으로 분리 및 제거하여 패키징합니다.
 
 ---
 
-## 새 단일 가이드 추가
+## 자동 발견 및 묶음 규칙
 
-1. `mddata/MyGuide.md` 작성 (`data/templates/template.md` 복사)
-2. HTML 변환
+`scripts/build-standalone.mjs` 빌더가 수행하는 데이터 번들링 로직은 다음과 같습니다:
+
+1. **카테고리 가이드**: `src/data/guides.json` 내 `categories` 정보를 읽어 고유 `slug`에 매핑된 `public/guides/<파일명>.html` 본문을 불러와 인라인 데이터 칩셋 형태로 삽입합니다.
+2. **시리즈(컬렉션)**: `collections` 배열에 등록된 폴더 경로(예: `public/vibecoding/`)를 스캔하여 모든 가이드 `*.html` 파일을 알파벳순으로 자동 추적합니다.
+   * 각 파일의 `<title>` 태그를 파싱하여 목차 상의 파트(Part) 제목을 추출합니다.
+   * `indexFile`(예: `table-of-contents.html`)을 감지하여 항상 해당 컬렉션의 최상단("목차")에 고정 배치합니다.
+   * 최종적으로 런타임 클라이언트 앱이 비동기로 목록을 받아볼 수 있도록 `manifest.json` 파일도 해당 시리즈 폴더 내에 함께 자동 생성해 배포합니다.
+
+---
+
+## 새 단일 가이드 추가 및 Standalone 반영 흐름
+
+1. **마크다운 파일 생성**: `templates/template.md`를 복사하여 `md_src/guides/MyGuide.md`를 작성합니다.
+2. **가이드 동기화 및 퍼블리시**:
    ```bash
-   node templates/build-guide.mjs mddata/MyGuide.md public/guides/MyGuide.html
+   # 인덱스 guides.json 자동 동기화 및 갱신
+   npm run sync:guides
+   
+   # 마크다운 문서를 public/guides/ 정적 HTML로 컴파일
+   npm run build:publish
    ```
-3. `src/data/guides.json`의 적절한 카테고리 `guides[]`에 등록
-4. standalone 갱신
+3. **Standalone 파일 빌드 및 최종 배포**:
    ```bash
-   npm run build:standalone
+   # 배포용 Vite 번들 및 dist/standalone.html 일괄 빌드
+   npm run build
    ```
 
-자세한 가이드 제작 방법: [guide-creation.md](guide-creation.md)
+자세한 가이드 숏코드 작성 문법: [guide-creation.md](guide-creation.md)
 
 ---
 
-## 새 시리즈(컬렉션) 추가
+## 새 시리즈(컬렉션) 추가 방법
 
-1. `public/<my-series>/` 폴더 생성
-2. 그 안에 HTML 파일들과 `<indexFile>.html` 1개 추가
-3. `src/data/guides.json`의 `collections[]`에 항목 추가:
+1. `md_src/<my-series>/` 폴더 내에 시리즈 마크다운 문서 파일들을 추가합니다.
+2. `src/data/guides.json`의 `collections` 배열에 신규 항목 명세를 수동 혹은 코드로 추가합니다.
    ```json
    {
      "id": "my-series",
-     "label": "이름",
-     "description": "설명",
-     "color": "#abcd12",
+     "label": "신규 시리즈 타이틀",
+     "description": "시리즈 핵심 요약 설명",
+     "color": "#0ea5e9",
      "folder": "my-series",
-     "indexFile": "index.html"
+     "indexFile": "table-of-contents.html"
    }
    ```
-4. `npm run build:standalone` 실행
+3. `npm run build`를 실행하여 컴파일 및 단일 standalone 패키징을 완료합니다.
 
 ---
 
-## 배포 형태
+## 배포 형태 및 산출 위치
 
-| 형태 | 명령 | 출력 |
-|------|------|------|
-| React 앱 | `npm run build` | `dist/` |
-| Standalone | `npm run build:standalone` | `public/standalone-guides-only.html` |
-| Standalone (배포용) | `npm run build` | `dist/standalone-guides-only.html` (자동 포함) |
+| 빌드 형태 | 사용 명령어 | 최종 결과물 및 비고 |
+|:---|:---|:---|
+| **React 통합 웹앱** | `npm run build` | `dist/` 폴더 내 정적 파일 (서버 배포 가능) |
+| **Standalone (로컬용)** | `npm run build:standalone` | `public/standalone.html` (로컬 테스트용) |
+| **Standalone (배포용)** | `npm run build` | `dist/standalone.html` (동일 빌드 내 자동 통합 완료) |

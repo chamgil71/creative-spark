@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #D97757;
-    --brand-dark: #B85F3F;
-    --brand-deep: #8B4530;
-    --brand-light:#FDF0EB;
-    --brand-mid:  #F4C5AE;
-    --border:     #F0D4C4;
-    --bg:         #FBF7F5;
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,19 +282,20 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">📩 Resend 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Resend는 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 3분 만에 메일 보내기</a></li><li><a href="#sec-3">3. 자동화 프로젝트 적용 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Resend 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Resend는 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 3분 만에 메일 보내기</a></li><li><a href="#sec-3">자동화 프로젝트 적용 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>📧 이메일 API · 알림 자동화</div>
-      <div class="hero-logo">📩</div>
+      
       <h1>Resend 완전 활용 가이드</h1>
-      <p>React 컴포넌트로 디자인하고 코드 몇 줄로 발송하는 개발자 친화적 이메일 API</p>
-      <a class="hero-cta" href="https://resend.com" target="_blank" rel="noopener">Resend 살펴보기</a>
+      <p>개발자용 이메일 API</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>무료 3,000건</strong><span>월 기본 발송</span></div><div class="hero-stat"><strong>React Email</strong><span>컴포넌트 빌딩</span></div><div class="hero-stat"><strong>초고속</strong><span>지연 없는 발송</span></div><div class="hero-stat"><strong>Webhooks</strong><span>상태 추적</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Resend는 어떤 도구인가</h2></div><div class="card"><p>기존의 이메일 발송 서비스(SendGrid, AWS SES 등)는 강력하지만 API가 복잡하고, 메일 디자인을 위해 1990년대 방식의 <code>&lt;table&gt;</code> 태그 HTML을 억지로 작성해야 했습니다. Resend는 이러한 고통을 해결하기 위해 직관적인 API를 제공하며, 특히 <strong>React 컴포넌트를 이용해 이메일을 UI 짜듯이 개발</strong>할 수 있게 해주는 혁신적인 도구입니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid" ><div class="icon-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Resend는 어떤 도구인가</h2></div><div class="card"><p>기존의 이메일 발송 서비스(SendGrid, AWS SES 등)는 강력하지만 API가 복잡하고, 메일 디자인을 위해 1990년대 방식의 <code>&lt;table&gt;</code> 태그 HTML을 억지로 작성해야 했습니다. Resend는 이러한 고통을 해결하기 위해 직관적인 API를 제공하며, 특히 <strong>React 컴포넌트를 이용해 이메일을 UI 짜듯이 개발</strong>할 수 있게 해주는 혁신적인 도구입니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">⚛️</div>
 <div class="icon-card-title" style="color: var(--text);">React Email 통합</div>
 <p>복잡한 HTML/CSS 대신 React 컴포넌트와 Tailwind CSS로 이메일 템플릿을 디자인합니다.</p>
@@ -310,26 +311,28 @@
 <div class="icon-card-icon" style="color: var(--brand);">🎯</div>
 <div class="icon-card-title" style="color: var(--text);">뛰어난 도달률</div>
 <p>자체 전용 IP 및 도메인 인증 최적화를 통해 메일이 스팸함에 빠지는 것을 최소화합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 상황에서 필수로 사용됩니다</h3><div class="feature-grid" ><div class="feature-card" >
+</div></div><h3>이런 상황에서 필수로 사용됩니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >알림</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🔔</span>시스템 자동 알림 메일
+<span class="fc-icon">🔔</span>🔔 시스템 자동 알림 메일
 </div>
 <p>자동화 스크립트(크롤러, 투자 분석기 등)에서 에러가 나거나 리포트가 완성됐을 때 알림을 받을 용도.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >온보딩</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">👋</span>회원가입 환영 메일
+<span class="fc-icon">👋</span>👋 회원가입 환영 메일
 </div>
 <p>Supabase 등으로 회원이 가입했을 때, 서비스 소개가 담긴 깔끔한 환영 메일을 자동 발송할 때.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >비즈니스</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🧾</span>결제 및 영수증 발송
+<span class="fc-icon">🧾</span>🧾 결제 및 영수증 발송
 </div>
 <p>전자상거래 또는 SaaS 서비스에서 구매자에게 상세한 결제 내역을 전송할 때.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 3분 만에 메일 보내기</h2></div><div class="card"><p>복잡한 설정 없이 테스트 발송까지 매우 빠릅니다.</p>
-</div><div class="card"><h3 class="card-title">기본 발송 흐름 (Node.js/TypeScript 기준)</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 3분 만에 메일 보내기</h2></div><div class="card"><p>복잡한 설정 없이 테스트 발송까지 매우 빠릅니다.</p>
+<h3>기본 발송 흐름 (Node.js/TypeScript 기준)</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -364,7 +367,8 @@
 <div class="step-title" >React Email 연동</div>
 <p>`html` 속성 대신 `react: &lt;MyTemplate /&gt;` 형식으로 내가 만든 리액트 컴포넌트를 바로 넣습니다.</p>
 </div>
-</div></div></div><div class="card"><h3 class="card-title">타 서비스와의 비교</h3><table>
+</div></div><h3>타 서비스와의 비교</h3>
+<table>
 <thead>
 <tr>
 <th>기능</th>
@@ -373,22 +377,22 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>설정 난이도</td>
+<td><strong>설정 난이도</strong></td>
 <td>매우 낮음 (가입 즉시 테스트 가능)</td>
 <td>높음 (복잡한 권한 및 도메인 설정)</td>
 </tr>
 <tr>
-<td>템플릿 디자인</td>
+<td><strong>템플릿 디자인</strong></td>
 <td>React, Tailwind 지원 (트렌디함)</td>
 <td>자체 드래그앤드롭 빌더 또는 순수 HTML</td>
 </tr>
 <tr>
-<td>무료 플랜</td>
+<td><strong>무료 플랜</strong></td>
 <td>월 3,000건 (일 100건)</td>
 <td>월 100건(SendGrid) / 무료없음(SES)</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 자동화 프로젝트 적용 팁</h2></div><div class="card"><div class="compare-grid" >
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>자동화 프로젝트 적용 팁</h2></div><div class="card"><div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >Python 크롤링 봇 연동</div>
 <p>부동산 경매 리포트나 주식/배당금 분석 결과가 나오면, 파이썬용 `resend` 패키지를 이용해 요약된 데이터를 메일로 자동 전송합니다.</p>
@@ -403,7 +407,8 @@
 <div class="compare-card-title" >첨부파일 처리</div>
 <p>PDF 생성 라이브러리와 결합하여 월간 가계부(Budget) 분석 결과를 PDF로 변환 후, `attachments` 배열에 넣어 전송합니다.</p>
 <div class="compare-note" >문서 공유 최적화</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">실서비스 전환 시 확인</h3><ul>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>실서비스 전환 시 확인</h3>
+<ul>
 <li>테스트용 이메일 주소가 아닌 임의의 사용자에게 메일을 보내려면, 반드시 도메인 DNS 인증(DKIM/SPF)을 완료했는가?</li>
 <li>이메일 내용에 수신 거부(Unsubscribe) 링크가 포함되어 스팸 정책을 준수하는가?</li>
 <li>발송 실패(에러 캐치) 시 재시도 로직이나 슬랙/텔레그램 알림 등 폴백(Fallback) 수단을 마련했는가?</li>
@@ -411,13 +416,11 @@
 <blockquote>
 <p>💡 TIP: 다크모드를 사용하는 이메일 클라이언트(애플 메일 등) 환경을 고려하여, 로고 이미지의 배경은 투명하게(PNG) 처리하고 텍스트 컬러 대비를 점검하는 것이 좋습니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">지루한 이메일 템플릿 코딩은 끝났습니다</h3><p>낡은 테이블(Table) 기반 HTML 대신 React로 아름다운 이메일을 만들고 전송하세요.</p>
+<p>API 키 발급받기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>지루한 이메일 템플릿 코딩은 끝났습니다</h2>
-    <p>낡은 테이블(Table) 기반 HTML 대신 React로 아름다운 이메일을 만들고 전송하세요.</p>
-    <a class="done-link" href="https://resend.com/api-keys" target="_blank" rel="noopener">API 키 발급받기</a>
-  </section>
-  <footer><div>Resend는 이메일 발송 경험을 완전히 새롭게 디자인한 모던 인프라스트럭처입니다.</div><div>공식 사이트: <a href="https://resend.com">resend.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}

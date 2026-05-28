@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NotebookLM Importer 가이드</title>
+<title>NotebookLM Importer</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #6366F1;
+    --brand-dark: #4F46E5;
+    --brand-deep: #3730A3;
+    --brand-light:#EEF0FE;
+    --brand-mid:  #C7CCFB;
+    --border:     #D8DCFB;
+    --bg:         #F8F9FE;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1E1B3A 40%, #3730A3 70%, #6366F1 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #6366F155 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,69 +282,77 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">📥NLM NotebookLM Importer 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 무엇을 해결하는가?</a></li><li><a href="#sec-2">2. 설치 &amp; 사용법</a></li><li><a href="#sec-3">3. 활용 시나리오</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">NotebookLM Importer</a><ul class="nav-links"><li><a href="#sec-1">무엇을 해결하는가?</a></li><li><a href="#sec-2">설치 &amp; 사용법</a></li><li><a href="#sec-3">활용 시나리오</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>✅ 크롬 익스텐션 · 완전 무료</div>
-      <div class="hero-logo">📥NLM</div>
-      <h1>NotebookLM Importer 가이드</h1>
-      <p>웹 서핑 중 발견한 아티클을 클릭 한 번으로NotebookLM 지식베이스에 바로 저장</p>
+      
+      <h1>NotebookLM Importer</h1>
+      <p>NotebookLM 자료 가져오기</p>
       
       <div class="hero-stats"><div class="hero-stat"><strong>1클릭</strong><span>즉시 저장</span></div><div class="hero-stat"><strong>무료</strong><span>완전 무료</span></div><div class="hero-stat"><strong>Chrome</strong><span>익스텐션</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 무엇을 해결하는가?</h2></div><div class="card"><div class="workflow-strip">
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>무엇을 해결하는가?</h2></div><div class="card"><div class="workflow-strip">
 <div class="wf-step" >
-<div class="wf-icon" >🌐</div>
-<div class="wf-name" >웹 서핑 중</div>
-<div class="wf-tool">유용한 아티클 발견</div>
+<div class="wf-icon" ></div>
+<div class="wf-name" >🌐
+웹 서핑 중
+유용한 아티클 발견
+→</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
-<div class="wf-icon" >📋</div>
-<div class="wf-name" >기존 방식</div>
-<div class="wf-tool">URL 복사 → 붙여넣기</div>
+<div class="wf-icon" ></div>
+<div class="wf-name" >📋
+기존 방식
+URL 복사 → NotebookLM 열기 → 소스 추가 → 붙여넣기
+→</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
-<div class="wf-icon" >⚡</div>
-<div class="wf-name" >Importer 사용</div>
-<div class="wf-tool">아이콘 클릭 → 완료!</div>
+<div class="wf-icon" ></div>
+<div class="wf-name" >⚡
+Importer 사용
+익스텐션 아이콘 클릭 → 완료!</div>
+<div class="wf-tool"></div>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 핵심 가치:</strong>
 <p>좋은 콘텐츠를 발견했을 때 \&quot;나중에 봐야지\&quot;가 아니라 즉시 지식베이스로. 컨텍스트 전환 없이 웹 서핑 흐름 유지.</p>
 </div>
-</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 설치 &amp; 사용법</h2></div><div class="card"><div class="step-list">
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>설치 &amp; 사용법</h2></div><div class="card"><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" >Chrome 웹스토어에서 익스텐션 설치</div>
-<p>Chrome 웹스토어에서 &#39;NotebookLM Importer&#39;를 검색해 브라우저에 추가해 줍니다. 완전 무료 오픈소스입니다.</p>
+<div class="step-title" >1Chrome 웹스토어에서 \&quot;NotebookLM Importer\&quot; 검색 후 설치또는 GitHub에서 직접 설치 (오픈소스). 완전 무료.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >2</div>
 <div class="step-content">
-<div class="step-title" >Google 계정 로그인 연동</div>
-<p>설치 후 NotebookLM에서 사용하는 Google 계정으로 로그인해 줍니다. 노트북 접근 권한만 부여받습니다.</p>
+<div class="step-title" >2Google 계정으로 로그인 (NotebookLM과 동일 계정)권한: NotebookLM 접근 허용. 다른 데이터에는 접근하지 않음.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >3</div>
 <div class="step-content">
-<div class="step-title" >저장할 대상 노트북 폴더 지정</div>
-<p>드롭다운 목록에서 수집된 정보가 차곡차곡 쌓일 대상 NotebookLM 노트북을 사전에 설정해 줍니다.</p>
+<div class="step-title" >3저장할 NotebookLM 노트북 선택 (드롭다운)여러 노트북 중 원하는 곳으로 바로 지정 가능.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >4</div>
 <div class="step-content">
-<div class="step-title" >웹 브라우징 중 원클릭 저장</div>
-<p>보관하고 싶은 아티클이나 페이지에서 아이콘을 누르면 즉시 해당 URL이 NotebookLM 소스 목록에 실시간 추가됩니다.</p>
+<div class="step-title" >4웹페이지에서 아이콘 클릭 → 자동으로 소스 추가 완료URL이 자동으로 NotebookLM 소스 목록에 추가됨. 나중에 NotebookLM에서 AI 분석 가능.</div>
+<p></p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 활용 시나리오</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>활용 시나리오</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🔬</div>
 <div class="icon-card-title" style="color: var(--text);">리서치 수집</div>
 <p>논문·기사·보고서를 발견할 때마다 즉시 주제별 노트북에 저장.</p>
@@ -360,8 +368,7 @@
 <div class="icon-card-icon" style="color: var(--brand);">🏢</div>
 <div class="icon-card-title" style="color: var(--text);">경쟁사 모니터링</div>
 <p>경쟁사 블로그·보도자료 발견 즉시 저장 → 통합 분석.</p>
-</div></div>
-</div></section></main>
+</div></div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>

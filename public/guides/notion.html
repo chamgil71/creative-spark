@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>노션(Notion) 완전 정복 가이드</title>
+<title>모든 작업을 한 곳에서,노션으로 정리하세요</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #6366F1;
+    --brand-dark: #4F46E5;
+    --brand-deep: #3730A3;
+    --brand-light:#EEF0FE;
+    --brand-mid:  #C7CCFB;
+    --border:     #D8DCFB;
+    --bg:         #F8F9FE;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,8 +28,8 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1E1B3A 40%, #3730A3 70%, #6366F1 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #6366F155 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
@@ -282,72 +282,70 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">N 노션(Notion) 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 노션의 기본 단위: 블록</a></li><li><a href="#sec-2">2. 노션의 핵심: 데이터베이스</a></li><li><a href="#sec-3">3. Notion AI — 내장 AI 어시스턴트</a></li><li><a href="#sec-4">4. 필수 단축키</a></li><li><a href="#sec-5">5. 실전 노션 활용 팁</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">모든 작업을 한 곳에서,노션으로 정리하세요</a><ul class="nav-links"><li><a href="#sec-1">노션의 기본 단위: 블록</a></li><li><a href="#sec-2">노션의 핵심: 데이터베이스</a></li><li><a href="#sec-3">Notion AI — 내장 AI 어시스턴트</a></li><li><a href="#sec-4">필수 단축키</a></li><li><a href="#sec-5">실전 노션 활용 팁</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>📝 올인원 워크스페이스</div>
-      <div class="hero-logo">N</div>
-      <h1>노션(Notion) 완전 정복 가이드</h1>
-      <p>노트, 문서, 데이터베이스, 프로젝트 관리를 하나의 플랫폼에서. 개인부터 팀까지 유연하게 활용할 수 있는 올인원 생산성 도구입니다.</p>
-      <a class="hero-cta" href="https://notion.so" target="_blank" rel="noopener">📝 노션 시작하기 (무료)</a>
+      
+      <h1>모든 작업을 한 곳에서,노션으로 정리하세요</h1>
+      <p>올인원 워크스페이스</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>무료</strong><span>기본 플랜</span></div><div class="hero-stat"><strong>1억+</strong><span>사용자</span></div><div class="hero-stat"><strong>Notion AI</strong><span>내장 AI</span></div><div class="hero-stat"><strong>멀티플랫폼</strong><span>웹·앱 지원</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 노션의 기본 단위: 블록</h2></div><div class="card"><p>노션의 모든 콘텐츠는 &#39;블록&#39;으로 구성됩니다. <code>/</code>를 입력하면 블록 메뉴가 열립니다.</p>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>노션의 기본 단위: 블록</h2></div><div class="card"><p>노션의 모든 콘텐츠는 &#39;블록&#39;으로 구성됩니다. <code>/</code>를 입력하면 블록 메뉴가 열립니다.</p>
 <div class="icon-grid" ><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">📄</div>
-<div class="icon-card-title" style="color: var(--text);">텍스트</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">텍스트기본 텍스트 입력</div>
 <p>기본 텍스트 입력</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">1️⃣</div>
-<div class="icon-card-title" style="color: var(--text);">제목 H1/H2/H3</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">제목 H1/H2/H3계층별 제목 구조</div>
 <p>계층별 제목 구조</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">☑️</div>
-<div class="icon-card-title" style="color: var(--text);">할 일 목록</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">할 일 목록체크박스 할 일</div>
 <p>체크박스 할 일</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">📋</div>
-<div class="icon-card-title" style="color: var(--text);">글머리 / 번호</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">글머리 / 번호리스트 및 순서 목록</div>
 <p>리스트 및 순서 목록</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">💡</div>
-<div class="icon-card-title" style="color: var(--text);">콜아웃</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">콜아웃강조 블록</div>
 <p>강조 블록</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">💬</div>
-<div class="icon-card-title" style="color: var(--text);">인용</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">인용인용구 블록</div>
 <p>인용구 블록</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">📊</div>
-<div class="icon-card-title" style="color: var(--text);">데이터베이스</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">데이터베이스테이블/칸반/갤러리</div>
 <p>테이블/칸반/갤러리</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">🖼️</div>
-<div class="icon-card-title" style="color: var(--text);">이미지/영상</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">이미지/영상미디어 삽입</div>
 <p>미디어 삽입</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">🔗</div>
-<div class="icon-card-title" style="color: var(--text);">북마크</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">북마크URL 링크 카드</div>
 <p>URL 링크 카드</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">💻</div>
-<div class="icon-card-title" style="color: var(--text);">코드 블록</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">코드 블록신택스 하이라이팅</div>
 <p>신택스 하이라이팅</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">📐</div>
-<div class="icon-card-title" style="color: var(--text);">수식 (LaTeX)</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">수식 (LaTeX)수학 수식 표현</div>
 <p>수학 수식 표현</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">📄</div>
-<div class="icon-card-title" style="color: var(--text);">페이지 삽입</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">페이지 삽입하위 페이지 생성</div>
 <p>하위 페이지 생성</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 노션의 핵심: 데이터베이스</h2></div><div class="card"><p>스프레드시트처럼 정보를 구조화하고, 다양한 뷰로 시각화할 수 있습니다.</p>
-<div class="tabs-wrap">
-<div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'taiglf-0')">📋 테이블 뷰</button><button class="tab-btn" onclick="switchTab(this,'taiglf-1')">👁️ 뷰 종류</button>
-</div>
-<div class="tab-panel active" id="taiglf-0"><table>
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>노션의 핵심: 데이터베이스</h2></div><div class="card"><p>스프레드시트처럼 정보를 구조화하고, 다양한 뷰로 시각화할 수 있습니다.</p>
+<p>📋 테이블 뷰</p>
+<p>👁️ 뷰 종류</p>
+<table>
 <thead>
 <tr>
 <th>프로젝트명</th>
@@ -386,66 +384,67 @@
 <td>🟢 낮음</td>
 </tr>
 </tbody></table>
-</div><div class="tab-panel" id="taiglf-1"><p>::: icon-grid</p>
-<ul>
-<li>icon: &quot;📋&quot;
-title: &quot;테이블&quot;
-desc: &quot;스프레드시트 형식의 기본 뷰&quot;</li>
-<li>icon: &quot;🗂️&quot;
-title: &quot;칸반 보드&quot;
-desc: &quot;상태별 카드 보드. 프로젝트 관리 최적&quot;</li>
-<li>icon: &quot;📅&quot;
-title: &quot;캘린더&quot;
-desc: &quot;날짜 속성 기반 일정 뷰&quot;</li>
-<li>icon: &quot;🖼️&quot;
-title: &quot;갤러리&quot;
-desc: &quot;썸네일 이미지 카드 뷰&quot;</li>
-<li>icon: &quot;📊&quot;
-title: &quot;타임라인&quot;
-desc: &quot;간트 차트식 일정 관리&quot;</li>
-<li>icon: &quot;📃&quot;
-title: &quot;리스트&quot;
-desc: &quot;간결한 목록 형식&quot;
-:::</li>
-</ul>
-</div>
-</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">테이블</div>
+<p>스프레드시트 형식의 기본 뷰</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">칸반 보드</div>
+<p>상태별 카드 보드. 프로젝트 관리 최적</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">캘린더</div>
+<p>날짜 속성 기반 일정 뷰</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">갤러리</div>
+<p>썸네일 이미지 카드 뷰</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">타임라인</div>
+<p>간트 차트식 일정 관리</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">리스트</div>
+<p>간결한 목록 형식</p>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 데이터베이스 속성(프로퍼티) 종류</strong>
 <p>텍스트, 숫자, 선택/다중선택, 날짜, 담당자, 체크박스, URL, 이메일, 전화번호, 수식, 관계(Relation), 롤업(Rollup) — 다양한 속성으로 원하는 데이터 구조를 만들 수 있습니다.</p>
 </div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. Notion AI — 내장 AI 어시스턴트</h2></div><div class="card"><p>별도 앱 없이 노션 안에서 AI를 바로 활용합니다. 스페이스바를 누르면 AI 메뉴가 열립니다.</p>
+</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>Notion AI — 내장 AI 어시스턴트</h2></div><div class="card"><p>별도 앱 없이 노션 안에서 AI를 바로 활용합니다. 스페이스바를 누르면 AI 메뉴가 열립니다.</p>
 <h3>✨ Notion AI로 할 수 있는 것</h3>
 <p>문서 작성, 요약, 번역, 개선부터 Q&amp;A(Ask AI), 자동화까지 — 글쓰기의 모든 과정을 AI가 도와줍니다.</p>
-<div class="feature-grid" ><div class="feature-card" >
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">✍️</span>글쓰기 도움
+<span class="fc-icon">✍</span>✍️ 글쓰기 도움
 </div>
 <p>브레인스토밍, 초안 작성, 문체 개선, 길이 조절</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📝</span>요약 &amp; 번역
+<span class="fc-icon">📝</span>📝 요약 &amp; 번역
 </div>
 <p>긴 문서를 한 줄로, 다국어 번역 즉시 처리</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">💬</span>Ask AI (Q&amp;A)
+<span class="fc-icon">💬</span>💬 Ask AI (Q&amp;A)
 </div>
 <p>워크스페이스의 내용을 기반으로 질문에 답변</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">⚡</span>자동 채우기
+<span class="fc-icon">⚡</span>⚡ 자동 채우기
 </div>
 <p>DB 속성을 AI로 자동 분류·태깅·요약</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🔧</span>액션 아이템 추출
+<span class="fc-icon">🔧</span>🔧 액션 아이템 추출
 </div>
 <p>회의록에서 할 일 목록 자동 추출</p>
 </div><div class="feature-card" >
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🌐</span>웹 검색 연동
+<span class="fc-icon">🌐</span>🌐 웹 검색 연동
 </div>
 <p>최신 정보를 검색하여 문서에 통합</p>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
@@ -454,35 +453,55 @@ desc: &quot;간결한 목록 형식&quot;
 <strong>💰 Notion AI 요금</strong>
 <p>Notion AI는 별도 추가 요금($10/월 per user)이 있습니다. Free 플랜에서도 제한적으로 체험 가능합니다. 팀 플랜($15/월)에는 AI가 포함되어 있습니다.</p>
 </div>
-</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 필수 단축키</h2></div><div class="card"><p>노션을 빠르게 쓰기 위한 핵심 단축키 모음입니다.</p>
-<div class="columns-grid" >
-<div class="column-card" >
-<div class="card-top-bar" ></div>
-<div class="col-title" >📝 편집 단축키</div>
-<p>* **굵게**: `Ctrl + B`
-* **기울임**: `Ctrl + I`
-* **취소선**: `Ctrl + Shift + S`
-* **인라인 코드**: `Ctrl + E`
-* **실행취소/재실행**: `Ctrl + Z / Y`</p>
-</div>
-<div class="column-card" >
-<div class="card-top-bar" ></div>
-<div class="col-title" >🧭 내비게이션</div>
-<p>* **빠른 검색**: `Ctrl + P`
-* **새 페이지**: `Ctrl + N`
-* **사이드바 토글**: `Ctrl + \`
-* **앞/뒤로 이동**: `Alt + ← / →`
-* **전체화면**: `Ctrl + Shift + F`</p>
-</div>
-<div class="column-card" >
-<div class="card-top-bar" ></div>
-<div class="col-title" >⚡ 블록 명령</div>
-<p>* **블록 메뉴 열기**: `/`
-* **AI 메뉴 열기**: `Space`
-* **블록 이동**: `Ctrl + Shift + ↑↓`
-* **블록 선택**: `Esc`
-* **들여쓰기**: `Tab`</p>
-</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 실전 노션 활용 팁</h2></div><div class="card"><p>노션을 더 잘 쓰기 위한 노하우를 정리했습니다.</p>
+</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>필수 단축키</h2></div><div class="card"><p>노션을 빠르게 쓰기 위한 핵심 단축키 모음입니다.</p>
+<h4>📝 편집</h4>
+<p>굵게</p>
+<p>Ctrl</p>
+<p>B</p>
+<p>기울임</p>
+<p>Ctrl</p>
+<p>I</p>
+<p>취소선</p>
+<p>Ctrl</p>
+<p>Shift</p>
+<p>S</p>
+<p>인라인 코드</p>
+<p>Ctrl</p>
+<p>E</p>
+<p>실행취소/재실행</p>
+<p>Ctrl</p>
+<p>Z/Y</p>
+<h4>🧭 내비게이션</h4>
+<p>빠른 검색</p>
+<p>Ctrl</p>
+<p>P</p>
+<p>새 페이지</p>
+<p>Ctrl</p>
+<p>N</p>
+<p>사이드바 토글</p>
+<p>Ctrl</p>
+<p>\</p>
+<p>앞/뒤로 이동</p>
+<p>Alt</p>
+<p>←/→</p>
+<p>전체화면</p>
+<p>Ctrl</p>
+<p>Shift</p>
+<p>F</p>
+<h4>⚡ 블록 명령</h4>
+<p>블록 메뉴 열기</p>
+<p>/</p>
+<p>AI 메뉴 열기</p>
+<p>Space</p>
+<p>블록 이동</p>
+<p>Ctrl</p>
+<p>Shift</p>
+<p>↑↓</p>
+<p>블록 선택</p>
+<p>Esc</p>
+<p>들여쓰기</p>
+<p>Tab</p>
+</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>실전 노션 활용 팁</h2></div><div class="card"><p>노션을 더 잘 쓰기 위한 노하우를 정리했습니다.</p>
 <div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">🏗</div>
 <div class="alert-body">
@@ -507,14 +526,11 @@ desc: &quot;간결한 목록 형식&quot;
 <strong>📤 공유 &amp; 웹 퍼블리시</strong>
 <p>모든 페이지를 URL로 공유하거나 웹사이트로 공개할 수 있습니다. 포트폴리오, 이력서, 팀 위키로 활용됩니다.</p>
 </div>
-</div>
+</div></div><div class="card"><h3 class="card-title">📝 노션으로 나만의 워크스페이스를 만들어보세요</h3><p>무료로 시작하고, 필요에 따라 확장하세요.</p>
+<p>📝 노션 무료 시작</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>📝 노션으로 나만의 워크스페이스를 만들어보세요</h2>
-    <p>무료로 시작하고, 필요에 따라 확장하세요.</p>
-    <a class="done-link" href="https://notion.so" target="_blank" rel="noopener">📝 노션 무료 시작</a>
-  </section>
-  <footer><div>Notion은 Notion Labs Inc.에서 개발한 생산성 도구입니다.</div><div>공식 사이트: <a href="https://notion.so">notion.so</a> | 템플릿: <a href="https://notion.so/templates">notion.so/templates</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
