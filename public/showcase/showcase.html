@@ -279,18 +279,49 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Creative Spark 숏코드 쇼케이스</a><ul class="nav-links"><li><a href="#sec-1">현재 지원 숏코드 목록</a></li><li><a href="#sec-2">숏코드 표준 입력 키</a></li><li><a href="#sec-3">1. icon-grid</a></li><li><a href="#sec-4">2. feature-grid</a></li><li><a href="#sec-5">3. badge-grid</a></li><li><a href="#sec-6">4. stat-grid</a></li><li><a href="#sec-7">5. tool-box</a></li><li><a href="#sec-8">6. workflow-strip</a></li><li><a href="#sec-9">7. step-list</a></li><li><a href="#sec-10">8. compare-grid</a></li><li><a href="#sec-11">9. plan-grid</a></li><li><a href="#sec-12">10. skill-list</a></li><li><a href="#sec-13">11. columns-grid</a></li><li><a href="#sec-14">12. bottom-list</a></li><li><a href="#sec-15">13. compare-split</a></li><li><a href="#sec-16">14. alert-box</a></li><li><a href="#sec-17">15. cmd-box</a></li><li><a href="#sec-18">16. os-tabs</a></li><li><a href="#sec-19">17. faq-list</a></li><li><a href="#sec-20">18. console-box</a></li><li><a href="#sec-21">19. git-flow-strip</a></li><li><a href="#sec-22">20. editor-box</a></li><li><a href="#sec-23">21. network-box</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Creative Spark 숏코드 쇼케이스</a><ul class="nav-links"><li><a href="#sec-1">현재 지원 숏코드 목록</a></li><li><a href="#sec-2">숏코드 표준 입력 키</a></li><li><a href="#sec-3">1. icon-grid</a></li><li><a href="#sec-4">2. feature-grid</a></li><li><a href="#sec-5">3. badge-grid</a></li><li><a href="#sec-6">4. stat-grid</a></li><li><a href="#sec-7">5. tool-box</a></li><li><a href="#sec-8">6. workflow-strip</a></li><li><a href="#sec-9">7. step-list</a></li><li><a href="#sec-10">8. compare-grid</a></li><li><a href="#sec-11">9. plan-grid</a></li><li><a href="#sec-12">10. skill-list</a></li><li><a href="#sec-13">11. columns-grid</a></li><li><a href="#sec-14">12. bottom-list</a></li><li><a href="#sec-15">13. compare-split</a></li><li><a href="#sec-16">14. alert-box</a></li><li><a href="#sec-17">15. cmd-box</a></li><li><a href="#sec-18">16. os-tabs</a></li><li><a href="#sec-19">17. faq-list</a></li><li><a href="#sec-20">18. console-box</a></li><li><a href="#sec-21">19. git-flow-strip</a></li><li><a href="#sec-22">20. editor-box</a></li><li><a href="#sec-23">21. network-box</a></li><li><a href="#sec-24">22. part-deck</a></li><li><a href="#sec-25">23. chapter-list</a></li><li><a href="#sec-26">24. summary-bar</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-badge"><span></span>Shortcode Reference · v1.1</div>
+      <div class="hero-badge"><span></span>Shortcode Reference · v1.3</div>
       
       <h1>Creative Spark 숏코드 쇼케이스</h1>
       <p>현재 등록된 숏코드의 입력 문법과 HTML/PPTX 구현 결과를 함께 확인하는 레퍼런스</p>
       
-      <div class="hero-stats"><div class="hero-stat"><strong>21종</strong><span>지원 숏코드</span></div><div class="hero-stat"><strong>7대</strong><span>표준 입력 키</span></div><div class="hero-stat"><strong>HTML/PPTX</strong><span>동시 변환</span></div><div class="hero-stat"><strong>cols=N</strong><span>그리드 단수 제어</span></div></div>
+      <div class="hero-stats"><div class="hero-stat"><strong>24종</strong><span>지원 숏코드</span></div><div class="hero-stat"><strong>7대</strong><span>표준 입력 키</span></div><div class="hero-stat"><strong>HTML/PPTX</strong><span>동시 변환</span></div><div class="hero-stat"><strong>cols=N</strong><span>그리드 단수 제어</span></div></div>
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>현재 지원 숏코드 목록</h2></div><div class="card"><table>
@@ -1062,12 +1093,12 @@
 </code></pre>
 <div class="tabs-wrap">
 <div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'tezdto-0')">macOS</button><button class="tab-btn" onclick="switchTab(this,'tezdto-1')">Windows</button>
+<button class="tab-btn active" onclick="switchTab(this,'tnad9m-0')">macOS</button><button class="tab-btn" onclick="switchTab(this,'tnad9m-1')">Windows</button>
 </div>
-<div class="tab-panel active" id="tezdto-0"><h4>터미널 설치</h4>
+<div class="tab-panel active" id="tnad9m-0"><h4>터미널 설치</h4>
 <pre><code class="language-bash">brew install node
 </code></pre>
-</div><div class="tab-panel" id="tezdto-1"><h4>PowerShell 설치</h4>
+</div><div class="tab-panel" id="tnad9m-1"><h4>PowerShell 설치</h4>
 <pre><code class="language-powershell">winget install OpenJS.NodeJS
 </code></pre>
 </div>
@@ -1283,7 +1314,146 @@ Markdown
 <span style="font-size:0.7rem; opacity:0.6; display:block;">shortcode</span>
 </div>
 </div>
-</div></div></section></main>
+</div></div></section><section class="section" id="sec-24"><div class="section-header"><div class="section-num">24</div><h2>22. part-deck</h2></div><div class="card"><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>숏코드 명</td>
+<td><code>part-deck</code></td>
+</tr>
+<tr>
+<td>구현내용</td>
+<td>시리즈 가이드북 등 목차용 대단원(부, Part)을 알리는 헤더 숏코드입니다. HSL 브랜드 컬러가 다이내믹하게 적용됩니다.</td>
+</tr>
+</tbody></table>
+<p>숏코드 입력내용</p>
+<pre><code class="language-md">\::: part-deck
+- icon: &quot;1부&quot;
+  title: &quot;개념 이해&quot;
+  desc: &quot;바이브코딩과 에이전트 코딩의 작동 원리&quot;
+  tag: &quot;Ch.01–03&quot;
+  color: &quot;#1a3a5c&quot;
+- icon: &quot;2부&quot;
+  title: &quot;AI와 대화하는 법&quot;
+  desc: &quot;프롬프트 설계부터 복잡한 작업 위임까지&quot;
+  tag: &quot;Ch.04–05&quot;
+  color: &quot;#1a4a3a&quot;
+\:::
+</code></pre>
+<div class="part" style="--part-color: #1a3a5c;">
+<div class="part-header" style="background: #1a3a5c;">
+<div class="part-num-block">1부</div>
+<div class="part-title-block">
+<span class="part-title-text">개념 이해</span>
+<span class="part-tagline">바이브코딩과 에이전트 코딩의 작동 원리</span>
+<span class="part-chapter-range">Ch.01–03</span>
+</div>
+</div>
+</div><div class="part" style="--part-color: #1a4a3a;">
+<div class="part-header" style="background: #1a4a3a;">
+<div class="part-num-block">2부</div>
+<div class="part-title-block">
+<span class="part-title-text">AI와 대화하는 법</span>
+<span class="part-tagline">프롬프트 설계부터 복잡한 작업 위임까지</span>
+<span class="part-chapter-range">Ch.04–05</span>
+</div>
+</div>
+</div></div></section><section class="section" id="sec-25"><div class="section-header"><div class="section-num">25</div><h2>23. chapter-list</h2></div><div class="card"><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>숏코드 명</td>
+<td><code>chapter-list</code></td>
+</tr>
+<tr>
+<td>구현내용</td>
+<td>세부 목차 및 챕터 리스트 숏코드입니다. 챕터 번호와 뱃지 속성에 따라 이쁜 HSL 배지 색상이 자동 매핑됩니다.</td>
+</tr>
+</tbody></table>
+<p>숏코드 입력내용</p>
+<pre><code class="language-md">\::: chapter-list
+- icon: &quot;01&quot;
+  title: &quot;바이브코딩이란?&quot;
+  desc: &quot;Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전&quot;
+  tag: &quot;개념&quot;
+- icon: &quot;02&quot;
+  title: &quot;에이전트 코딩이란?&quot;
+  desc: &quot;계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이&quot;
+  tag: &quot;개념&quot;
+- icon: &quot;04&quot;
+  title: &quot;첫 대화: 프롬프트 설계&quot;
+  desc: &quot;요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시&quot;
+  tag: &quot;실습&quot;
+\:::
+</code></pre>
+<div class="chapter-list">
+<div class="chapter-item">
+<span class="chapter-num">01</span>
+<div class="chapter-title">
+<strong>바이브코딩이란?</strong>
+<span class="chapter-desc">Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전</span>
+</div>
+<span class="chapter-badge badge-concept">개념</span>
+</div>
+<div class="chapter-item">
+<span class="chapter-num">02</span>
+<div class="chapter-title">
+<strong>에이전트 코딩이란?</strong>
+<span class="chapter-desc">계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이</span>
+</div>
+<span class="chapter-badge badge-concept">개념</span>
+</div>
+<div class="chapter-item">
+<span class="chapter-num">04</span>
+<div class="chapter-title">
+<strong>첫 대화: 프롬프트 설계</strong>
+<span class="chapter-desc">요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시</span>
+</div>
+<span class="chapter-badge badge-practice">실습</span>
+</div></div></div></section><section class="section" id="sec-26"><div class="section-header"><div class="section-num">26</div><h2>24. summary-bar</h2></div><div class="card"><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>숏코드 명</td>
+<td><code>summary-bar</code></td>
+</tr>
+<tr>
+<td>구현내용</td>
+<td>숏코드 문서들의 통계, 주요 수치 등을 가로 격자 형태로 요약 노출해 주는 수치 뱃지 숏코드입니다.</td>
+</tr>
+</tbody></table>
+<p>숏코드 입력내용</p>
+<pre><code class="language-md">\::: summary-bar
+- icon: &quot;29장&quot;
+  title: &quot;Total Chapters&quot;
+- icon: &quot;8부&quot;
+  title: &quot;Parts&quot;
+- icon: &quot;24종&quot;
+  title: &quot;Support Shortcodes&quot;
+\:::
+</code></pre>
+<div class="summary-bar"><div class="summary-item">
+<span class="summary-num">29<span class="unit">장</span></span>
+<span class="summary-label">Total Chapters</span>
+</div><div class="summary-item">
+<span class="summary-num">8<span class="unit">부</span></span>
+<span class="summary-label">Parts</span>
+</div><div class="summary-item">
+<span class="summary-num">24<span class="unit">종</span></span>
+<span class="summary-label">Support Shortcodes</span>
+</div></div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>

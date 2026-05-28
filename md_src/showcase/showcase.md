@@ -1,10 +1,10 @@
 ---
 title: "Creative Spark 숏코드 쇼케이스"
 subtitle: "현재 등록된 숏코드의 입력 문법과 HTML/PPTX 구현 결과를 함께 확인하는 레퍼런스"
-badge: "Shortcode Reference · v1.1"
+badge: "Shortcode Reference · v1.3"
 style: "ai-chat"
 stats:
-  - value: "21종"
+  - value: "24종"
     label: "지원 숏코드"
   - value: "7대"
     label: "표준 입력 키"
@@ -759,4 +759,111 @@ stats:
 - title: "Markdown"
   meta: "shortcode"
   color: "#F59E0B"
+:::
+
+# 22. part-deck
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `part-deck` |
+| 구현내용 | 시리즈 가이드북 등 목차용 대단원(부, Part)을 알리는 헤더 숏코드입니다. HSL 브랜드 컬러가 다이내믹하게 적용됩니다. |
+
+숏코드 입력내용
+
+```md
+\::: part-deck
+- icon: "1부"
+  title: "개념 이해"
+  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
+  tag: "Ch.01–03"
+  color: "#1a3a5c"
+- icon: "2부"
+  title: "AI와 대화하는 법"
+  desc: "프롬프트 설계부터 복잡한 작업 위임까지"
+  tag: "Ch.04–05"
+  color: "#1a4a3a"
+\:::
+```
+
+::: part-deck
+- icon: "1부"
+  title: "개념 이해"
+  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
+  tag: "Ch.01–03"
+  color: "#1a3a5c"
+- icon: "2부"
+  title: "AI와 대화하는 법"
+  desc: "프롬프트 설계부터 복잡한 작업 위임까지"
+  tag: "Ch.04–05"
+  color: "#1a4a3a"
+:::
+
+# 23. chapter-list
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `chapter-list` |
+| 구현내용 | 세부 목차 및 챕터 리스트 숏코드입니다. 챕터 번호와 뱃지 속성에 따라 이쁜 HSL 배지 색상이 자동 매핑됩니다. |
+
+숏코드 입력내용
+
+```md
+\::: chapter-list
+- icon: "01"
+  title: "바이브코딩이란?"
+  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
+  tag: "개념"
+- icon: "02"
+  title: "에이전트 코딩이란?"
+  desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
+  tag: "개념"
+- icon: "04"
+  title: "첫 대화: 프롬프트 설계"
+  desc: "요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시"
+  tag: "실습"
+\:::
+```
+
+::: chapter-list
+- icon: "01"
+  title: "바이브코딩이란?"
+  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
+  tag: "개념"
+- icon: "02"
+  title: "에이전트 코딩이란?"
+  desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
+  tag: "개념"
+- icon: "04"
+  title: "첫 대화: 프롬프트 설계"
+  desc: "요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시"
+  tag: "실습"
+:::
+
+# 24. summary-bar
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `summary-bar` |
+| 구현내용 | 숏코드 문서들의 통계, 주요 수치 등을 가로 격자 형태로 요약 노출해 주는 수치 뱃지 숏코드입니다. |
+
+숏코드 입력내용
+
+```md
+\::: summary-bar
+- icon: "29장"
+  title: "Total Chapters"
+- icon: "8부"
+  title: "Parts"
+- icon: "24종"
+  title: "Support Shortcodes"
+\:::
+```
+
+::: summary-bar
+- icon: "29장"
+  title: "Total Chapters"
+- icon: "8부"
+  title: "Parts"
+- icon: "24종"
+  title: "Support Shortcodes"
 :::

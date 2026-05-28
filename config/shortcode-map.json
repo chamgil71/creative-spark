@@ -206,5 +206,36 @@
       "title": ".node-main",
       "desc": ".node"
     }
+  },
+
+  "part-deck": {
+    "htmlClasses": ["part-header", "part-block", "part"],
+    "itemSelector": ".part-header, .part",
+    "fields": {
+      "icon": ".part-num-block",
+      "title": ".part-title-text",
+      "desc": ".part-tagline",
+      "tag": ".part-chapter-range"
+    }
+  },
+
+  "chapter-list": {
+    "htmlClasses": ["chapter-list"],
+    "itemSelector": ".chapter-item",
+    "fields": {
+      "icon": ".chapter-num",
+      "title": ".chapter-title strong",
+      "desc": ".chapter-desc",
+      "tag": ".chapter-badge"
+    }
+  },
+
+  "summary-bar": {
+    "htmlClasses": ["summary-bar", "summary-grid"],
+    "itemSelector": ".summary-item",
+    "fields": {
+      "icon": ".summary-num",
+      "title": ".summary-label"
+    }
   }
 }

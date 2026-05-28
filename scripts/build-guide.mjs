@@ -461,6 +461,56 @@ function renderShortcode(type, body, args) {
       </div>
     </div>`;
   }
+  
+  // 19. [NEW] part-deck (시리즈 목차용 부(Part) 헤더)
+  if (type === "part-deck") {
+    return items.map(it => {
+      const color = it.color || "var(--brand)";
+      return `<div class="part" style="--part-color: ${color};">
+        <div class="part-header" style="background: ${color};">
+          <div class="part-num-block">${escapeHtml(it.icon || "부")}</div>
+          <div class="part-title-block">
+            <span class="part-title-text">${escapeHtml(it.title)}</span>
+            ${it.desc ? `<span class="part-tagline">${escapeHtml(it.desc)}</span>` : ""}
+            ${it.tag ? `<span class="part-chapter-range">${escapeHtml(it.tag)}</span>` : ""}
+          </div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  // 20. [NEW] chapter-list (시리즈 목차용 세부 챕터 목록)
+  if (type === "chapter-list") {
+    const getBadgeClass = (tag) => {
+      const map = { "개념": "badge-concept", "도구": "badge-tool", "사례": "badge-case", "가이드": "badge-guide", "실습": "badge-practice", "주의": "badge-warn", "핵심": "badge-practice" };
+      return map[tag.trim()] || "badge-concept";
+    };
+
+    return `<div class="chapter-list">${items.map(it => `
+      <div class="chapter-item">
+        <span class="chapter-num">${escapeHtml(it.icon)}</span>
+        <div class="chapter-title">
+          <strong>${escapeHtml(it.title)}</strong>
+          ${it.desc ? `<span class="chapter-desc">${escapeHtml(it.desc)}</span>` : ""}
+        </div>
+        ${it.tag ? `<span class="chapter-badge ${getBadgeClass(it.tag)}">${escapeHtml(it.tag)}</span>` : ""}
+      </div>`).join("")}</div>`;
+  }
+
+  // 21. [NEW] summary-bar (하단 지표 요약 수치 그리드)
+  if (type === "summary-bar") {
+    return `<div class="summary-bar">${items.map(it => {
+      const rawNum = it.icon || "";
+      const numMatch = rawNum.match(/^(\d+(?:\.\d+)?(?:[Kk]\+?|\+)?)\s*(.*)$/);
+      const val = numMatch ? numMatch[1] : rawNum;
+      const unit = numMatch ? numMatch[2] : "";
+
+      return `<div class="summary-item">
+        <span class="summary-num">${escapeHtml(val)}${unit ? `<span class="unit">${escapeHtml(unit)}</span>` : ""}</span>
+        <span class="summary-label">${escapeHtml(it.title)}</span>
+      </div>`;
+    }).join("")}</div>`;
+  }
 
   return "";
 }
@@ -791,6 +841,37 @@ export function buildHtml(inputPath, opts = {}) {
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>

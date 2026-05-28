@@ -279,6 +279,37 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>

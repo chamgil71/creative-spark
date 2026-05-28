@@ -279,6 +279,37 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -402,9 +433,9 @@ JavaScript 프로그래밍 언어를 컴퓨터에서 직접 실행할 수 있게
 </div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>본인의 운영체제를 선택해 주세요</h2></div><div class="card"><p>사용하시는 컴퓨터 종류에 맞는 탭을 눌러주세요. 각 탭마다 맞춤 설치 방법을 안내해 드립니다.</p>
 <div class="tabs-wrap">
 <div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'tfih42-0')">macOS (맥)</button><button class="tab-btn" onclick="switchTab(this,'tfih42-1')">Windows</button><button class="tab-btn" onclick="switchTab(this,'tfih42-2')">Linux</button>
+<button class="tab-btn active" onclick="switchTab(this,'t7aa7t-0')">macOS (맥)</button><button class="tab-btn" onclick="switchTab(this,'t7aa7t-1')">Windows</button><button class="tab-btn" onclick="switchTab(this,'t7aa7t-2')">Linux</button>
 </div>
-<div class="tab-panel active" id="tfih42-0"></div><div class="tab-panel" id="tfih42-1"></div><div class="tab-panel" id="tfih42-2"></div>
+<div class="tab-panel active" id="t7aa7t-0"></div><div class="tab-panel" id="t7aa7t-1"></div><div class="tab-panel" id="t7aa7t-2"></div>
 </div><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
