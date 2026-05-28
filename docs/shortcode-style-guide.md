@@ -1,16 +1,16 @@
 # Creative Spark 숏코드 디자인 튜닝 및 미세 조정 가이드 (Shortcode Style Guide)
 
-본 지침서는 Creative Spark가 지원하는 **21종 표준 숏코드 및 특화 시각화 컴포넌트**의 HTML 변환 스타일과 PPTX 슬라이드 도식화 결과물을 직접 커스텀하고 미세 조정(마진, 패딩, 폰트 크기, HSL 컬러, 그리드 폭 등)하고자 할 때 사용하는 **클래스/스크립트 매핑 및 튜닝 가이드**입니다.
+본 지침서는 Creative Spark가 지원하는 **24종 표준 숏코드 및 특화 시각화 컴포넌트**의 HTML 변환 스타일과 PPTX 슬라이드 도식화 결과물을 직접 커스텀하고 미세 조정(마진, 패딩, 폰트 크기, HSL 컬러, 그리드 폭 등)하고자 할 때 사용하는 **클래스/스크립트 매핑 및 튜닝 가이드**입니다.
 
 ---
 
 ## 1. 전역 디자인 설정 및 공통 토큰
 
 ### 1) HTML 전역 디자인 변수
-* **위치**: `templates/build-guide.mjs` 내의 `<style>` 태그 (:root 선택자)
+* **위치**: `scripts/build-guide.mjs` 내의 `<style>` 태그 (:root 선택자)
 * **주요 제어 토큰**:
   * `--radius`: 모든 카드와 버튼의 모서리 둥글기 값.
-    * *튜닝 원리*: `templates/build-guide.mjs` 상단에서 `CONFIG?.slide?.globalRadius` (기본 `0.08` 인치) 값을 읽어 `Math.round(radiusVal * 150)px` 형태로 자동 환산 적용하므로, `config/pptdesign.config.json`에서 조율하면 HTML과 PPTX 모서리가 동기화되어 같이 조절됩니다.
+    * *튜닝 원리*: `scripts/build-guide.mjs` 상단에서 `CONFIG?.slide?.globalRadius` (기본 `0.08` 인치) 값을 읽어 `Math.round(radiusVal * 150)px` 형태로 자동 환산 적용하므로, `config/pptdesign.config.json`에서 조율하면 HTML and PPTX 모서리가 동기화되어 같이 조절됩니다.
   * `--shadow`, `--shadow-lg`: 카드 호버 효과 및 깊이감 제어.
   * `--brand`, `--brand-dark`, `--brand-light`: frontmatter의 `style` 설정값에 따라 매핑되는 컬러 팔레트 토큰.
 
@@ -24,7 +24,7 @@
 
 ---
 
-## 2. 21종 숏코드별 상세 디자인 튜닝 매핑
+## 2. 24종 숏코드별 상세 디자인 튜닝 매핑
 
 ---
 
@@ -410,7 +410,7 @@
 * **주 사용처**: GitHub 다차원 브랜치 커밋 로그 흐름, 빌드 릴리즈 마일스톤 연출.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 398 ~ 416)
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 401 ~ 418)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.git-flow-container`: 몽환적인 다크 터미널 테두리선 세팅.
   * `.branch-row`: 좌우 2분할 가로 레이아웃 (`grid-template-columns: 160px 1fr;`).
@@ -433,7 +433,7 @@
 * **주 사용처**: VS Code 에디터 화면 연출, 정교한 파일 소스 구조 제시.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 419 ~ 439)
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 421 ~ 441)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.editor-sim`: 가상 에디터 검은 창 테두리 및 섀도우.
   * `.editor-titlebar`: 상단 좌측 3색 신호등 버튼 배색 및 활성화 파일 탭 UI 조율.
@@ -454,14 +454,76 @@
 * **주 사용처**: Obsidian 지식 맵 3D 연출, 성단 구조의 은하수 기술 성단 연출.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 442 ~ 460)
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 444 ~ 462)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.graph-visual`: 은하수 지식 맵 배경 그라데이션 및 그림자 조율.
   * `.node-main`: 중앙 메인 노드의 펄싱 광원 및 네온 이펙트 튜닝 (`box-shadow: 0 0 24px ${color}88;`).
   * `.node-1 ~ 4`: 메인 노드 주위를 몽환적으로 넘실넘실 유영하는 위성 노드들.
-* **조정 포인트 예시**: 노드들이 우주를 유영하는 흔들림 진폭 크기를 더 역동적으로 넓히려면, `templates/build-guide.mjs` 내의 CSS 흔들림 애니메이션 키프레임 `@keyframes driftOne` ~ `@keyframes driftFour` 내의 `translate(Xpx, Ypx)` 변위 반경 값을 직접 수정합니다.
+* **조정 포인트 예시**: 노드들이 우주를 유영하는 흔들림 진폭 크기를 더 역동적으로 넓히려면, `scripts/build-guide.mjs` 내의 CSS 흔들림 애니메이션 키프레임 `@keyframes driftOne` ~ `@keyframes driftFour` 내의 `translate(Xpx, Ypx)` 변위 반경 값을 직접 수정합니다.
 
 ### pptx 숏코드 디자인
 * **파일 및 위치**: [md-to-pptx.mjs](file:///c:/ai/creative-spark/scripts/md-to-pptx.mjs) (라인 764 ~ 794)
 * **해당 설정 및 조정 방법**:
   * 정적 PPTX 화면에서는 원형 노드들의 X, Y 절대 좌표값들이 렌더러 함수 내에 사분면 기준 배치식(예: `x + w/2 - 0.5` 등)으로 정교하게 하드코딩되어 있습니다. 노드의 상대적 위치 반경을 좁히거나 벌리고자 할 때 렌더러 수치를 튜닝합니다.
+
+---
+
+## [22] part-deck (시리즈 대단원 부/Part 헤더)
+
+### 숏코드설명
+* **사용 키**: `icon` (부 번호), `title` (부 제목), `desc` (태그라인), `tag` (챕터 범위), `color`
+* **주 사용처**: 대규모 시리즈 가이드나 다중 단락 챕터 입문서의 대단원 표지 연출.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 465 ~ 480)
+* **해당 CSS 클래스 및 조정 방법**:
+  * `.part`: 부 단락 사이의 마진 조율 (`margin-bottom: 30px;`).
+  * `.part-header`: 부 타이틀 카드의 둥글기 및 보더 튜닝.
+  * `.part-num-block`: 좌측의 부 번호 영역 지름 및 배경색 튜닝 (`width: 52px; height: 52px;`).
+  * `.part-title-text`: 부 타이틀의 서리프체 폰트 세팅 (`font-family: 'Noto Serif KR', serif; font-weight: 600;`).
+* **조정 포인트 예시**: 카드 전체 테마의 주입 컬러 헥스를 변경하고 싶다면 마크다운 내 `color: "#HEX"` 인자값을 변경하면 `--part-color` 인라인 변수가 실시간 반응형 동치 갱신됩니다.
+
+### pptx 숏코드 디자인
+* **파일 및 위치**: [md-to-pptx.mjs](file:///c:/ai/creative-spark/scripts/md-to-pptx.mjs) (또는 `build-presentation.mjs`)
+* **해당 설정 및 조정 방법**:
+  * PPT 횡형 슬라이더 및 PPTX 내에서 고유 레이아웃을 칼각으로 스티칭 렌더링하며, `globalRadius` 설정값에 둥글기가 연동 제어됩니다.
+
+---
+
+## [23] chapter-list (세부 단원 및 챕터 상세 목록)
+
+### 숏코드설명
+* **사용 키**: `icon` (챕터 번호), `title` (챕터 제목), `desc` (세부 설명), `tag` (구분 뱃지)
+* **주 사용처**: 시리즈 부(Part) 하위에 속해 있는 상세 챕터 리스트업과 주제 구분 뱃지 전시.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 482 ~ 498)
+* **해당 CSS 클래스 및 조정 방법**:
+  * `.chapter-list`: 챕터 목록 영역 전체의 좌측 테두리 바 튜닝 (`border-left: 2px solid var(--border); padding-left: 15px;`).
+  * `.chapter-num`: 챕터 번호 글꼴 및 너비 조율 (`min-width: 38px;`).
+  * `.chapter-badge`: `badge-concept`, `badge-tool`, `badge-case`, `badge-guide`, `badge-practice`, `badge-warn` 등을 통해 HSL 뱃지 컬러 자동 변환 매핑.
+* **조정 포인트 예시**: 챕터 카드 사이의 여백 및 마우스 오버 시 왼쪽에 뜨는 활성 지표선 스타일을 수정하려면 `.chapter-item` 및 `.chapter-item:hover` 클래스를 수정합니다.
+
+### pptx 숏코드 디자인
+* **해당 설정 및 조정 방법**:
+  * 슬라이드 폭 한계를 정교하게 계산하여, 단일 줄높이 오프셋에 맞춰 챕터 번호와 뱃지가 오버랩되지 않게 적응형 가로폭으로 정적 연쇄 드로잉합니다.
+
+---
+
+## [24] summary-bar (하단 지표 요약 수치 그리드)
+
+### 숏코드설명
+* **사용 키**: `icon` (요약 수치 및 단위), `title` (수치 라벨)
+* **주 사용처**: 챕터 분석 완료 후나 가이드 문서 맨 하단에 수치 하이라이트를 검정 가로 띠 형태로 임팩트 있게 요약 표기할 때 활용.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 500 ~ 513)
+* **해당 CSS 클래스 및 조정 방법**:
+  * `.summary-bar`: 어두운 HSL 다크 테마 배경에 모던한 그리드 정렬을 자동 컴파일 (`display: grid; repeat(auto-fit, minmax(140px, 1fr));`).
+  * `.summary-num`: 숫자의 굵기 및 크기 튜닝 (`font-size: 28px; font-weight: 700;`).
+  * `.summary-num .unit`: 수치에 함께 주입된 문자 단위(예: "장", "종")를 정규식 파서가 자동 인지하여 콤팩트하게 분리 렌더링 (`font-size: 12px; opacity: 0.6;`).
+* **조정 포인트 예시**: 수치 요약 바의 다크 배경색을 테마 브랜드 컬러로 대체하고 싶다면, `.summary-bar` 내의 `background: var(--text);` 부분을 `background: var(--brand);` 또는 `var(--brand-dark);` 로 스왑 튜닝합니다.
+
+### pptx 숏코드 디자인
+* **해당 설정 및 조정 방법**:
+  * 가로 전체 슬라이드 하단에 와이드 인디케이터 배너 형식으로 6대 표준 수치를 가로 등간격 슬롯 계산하여 정교하게 투사 배치합니다.

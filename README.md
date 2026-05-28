@@ -25,7 +25,7 @@
 
 ## ✨ Key Features
 
-- **🧠 Markdown to Interactive Webbook** — 21종의 풍부한 시각화 숏코드(숏코드: `git-flow-strip`, `editor-box`, `network-box`, `workflow-strip` 등)를 마크다운에 주입하여 즉시 반응형 컴포넌트로 렌더링.
+- **🧠 Markdown to Interactive Webbook** — 24종의 풍부한 시각화 숏코드(숏코드: `git-flow-strip`, `editor-box`, `network-box`, `part-deck`, `chapter-list`, `summary-bar` 등)를 마크다운에 주입하여 즉시 반응형 컴포넌트로 렌더링.
 - **📁 Dynamic Indexing Automation (`sync:guides`)** — 마크다운의 Frontmatter를 자동 수집하여 `guides.json` 인덱스 카테고리 자동 갱신. 사용자가 변경한 정렬 순서 및 커스텀 메타데이터는 100% 영구 보존.
 - **📽️ Horizontal Snap Presentation (`build:slide`)** — H1/H2 헤더 구조를 분석하여 PPT와 동일하게 가로로 한 장씩 넘겨 보는 **반응형 횡 스크롤 슬라이드 HTML 자동 생성**. 키보드 방향키, Space, PageUp/Down, Home/End 완벽 매핑.
 - **🎨 Dynamic HSL Theme Transition** — 병합 빌드된 슬라이드 내에서도 개별 마크다운의 고유 스타일 프리셋(Cursor 초록색, Claude 인디고 등)을 다이내믹하게 추적하여 슬라이드를 넘길 때마다 브랜드 컬러 변수 실시간 전환.
@@ -220,7 +220,7 @@ npm run build
 
 ## 📚 참고자료 및 연관 가이드
 
-* [숏코드 명세 및 가이드 작성법](docs/guide-creation.md) — 21종 숏코드의 마크다운 표현법과 주의점.
+* [숏코드 명세 및 가이드 작성법](docs/guide-creation.md) — 24종 숏코드의 마크다운 표현법과 주의점.
 * [스크립트 도구 상세 레퍼런스](docs/scripts-guide.md) — 변환 엔진별 매개변수 및 횡 슬라이드 컴파일 제어법.
 * [쇼케이스 스타일 상세 가이드](docs/shortcode-style-guide.md) — HSL 테마 매핑 구조 및 PPTX 튜닝 가이드.
 * [작업 누적 기록 일지](docs/worklog.md) — 버전별 버그 패치 및 기능 점진 고도화 누적 상세 이력.

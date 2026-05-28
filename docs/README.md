@@ -1,12 +1,12 @@
 # Creative Spark — 프로젝트 문서
 
-> 최종 업데이트: 2026-05-13
+> 최종 업데이트: 2026-05-28
 
 ## 개요
 
 AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트.  
 **Markdown → HTML**, **Markdown → PPTX** 두 출력 경로를 JSON 설정 파일 기반으로 운영한다.  
-18종 shortcode, 10가지 색상 프리셋 지원.
+24종 shortcode, 11가지 색상 프리셋 지원.
 
 ---
 
@@ -15,14 +15,14 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 ```
 [HTML 기존 가이드]
       │
-      │ templates/html-to-md.mjs  (HTML → MD 역변환)
+      │ scripts/html-to-md.mjs  (HTML → MD 역변환)
       ▼
 [md_src/guides/*.md]  ←──── 콘텐츠 원본 (표준 작성 위치)
       │
       ├─── scripts/sync-guides-index.mjs  ──→ (guides.json 자동 업데이트)
       │
       ├─── scripts/build-publish.mjs
-      │         ├─── templates/build-guide.mjs ──→ public/guides/*.html
+      │         ├─── scripts/build-guide.mjs ──→ public/guides/*.html
       │         └─── (PPTX 슬라이드 자동 생성)
       │
       └─── scripts/build-standalone.mjs   ──→ dist/standalone.html (오프라인 1파일)
@@ -56,7 +56,7 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 |------|------|
 | `config/styles.json` | 카테고리별 색상 프리셋 (11종) |
 | `config/pptdesign.config.json` | PPTX 레이아웃·여백·폰트 수치 설정 |
-| `md_src/showcase/showcase.md` | 다양한 단 구조 및 18종 숏코드 문법 참조 원본 |
+| `md_src/showcase/showcase.md` | 다양한 단 구조 및 24종 숏코드 문법 참조 원본 |
 
 ---
 
