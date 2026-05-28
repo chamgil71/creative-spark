@@ -313,113 +313,102 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">AI와 대화하는 법</a><ul class="nav-links"><li><a href="#sec-1">첫 대화: 프롬프트 설계</a></li><li><a href="#sec-2">[프로젝트명] SKILL.md</a></li><li><a href="#sec-3">에이전트에게 복잡한 작업 위임하기</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">AI와 대화하는 법</a><ul class="nav-links"><li><a href="#sec-1">첫 대화: 프롬프트 설계</a></li><li><a href="#sec-2">에이전트에게 복잡한 작업 위임하기</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>바이브코딩 &amp; 에이전트 코딩 완전 입문 가이드</div>
       
       <h1>AI와 대화하는 법</h1>
-      <p>프롬프트 설계부터 복잡한 작업 위임까지SKILL.md로 재사용 가능한 지시 체계 만들기</p>
+      <p>프롬프트 설계부터 복잡한 작업 위임까지 SKILL.md로 재사용 가능한 지시 체계 만들기</p>
       
       
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>첫 대화: 프롬프트 설계</h2></div><div class="card"><p>AI에게 무엇을 어떻게 말하느냐가 결과의 80%를 결정합니다. 같은 작업이라도 프롬프트 품질에 따라 AI의 결과물 수준이 완전히 달라집니다.</p>
 <h3>나쁜 프롬프트 vs 좋은 프롬프트</h3>
-<p>❌ 나쁜 프롬프트</p>
-<p>엑셀 자동화 코드 만들어줘.</p>
-<p>✅ 좋은 프롬프트</p>
-<p>Python으로 엑셀 자동화 코드를 작성해줘.</p>
-<p>입력: data.xlsx (A열:날짜, B열:부서명, C열:금액)</p>
-<p>출력: summary.xlsx (부서별 월간 합계, 시트 1개)</p>
-<p>조건:</p>
-<ul>
-<li><p>날짜 형식은 YYYY-MM-DD</p>
-</li>
-<li><p>금액은 천 단위 콤마 표시</p>
-</li>
-<li><p>주석은 한국어로</p>
-</li>
-<li><p>pandas와 openpyxl 사용</p>
-</li>
-</ul>
-<h3>좋은 프롬프트의 5가지 구성 요소</h3>
-<p>🎭</p>
-<p>역할 (Role)</p>
+</div><div class="compare-before-after">
+<div class="before-box">
+<div class="ba-label">❌ 나쁜 프롬프트</div>
+<div class="ba-content">엑셀 자동화 코드 만들어줘.</div>
+</div>
+<div class="after-box">
+<div class="ba-label">✅ 좋은 프롬프트</div>
+<div class="ba-content">Python으로 엑셀 자동화 코드를 작성해줘.<br>입력: data.xlsx (A열:날짜, B열:부서명, C열:금액)<br>출력: summary.xlsx (부서별 월간 합계, 시트 1개)<br>조건:<br>- 날짜 형식은 YYYY-MM-DD<br>- 금액은 천 단위 콤마 표시<br>- 주석은 한국어로<br>- pandas와 openpyxl 사용</div>
+</div>
+</div><div class="card"><h3>좋은 프롬프트의 5가지 구성 요소</h3>
+<div class="icon-grid" style="grid-template-columns: repeat(5, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎭</div>
+<div class="icon-card-title" style="color: var(--text);">역할 (Role)</div>
 <p>&quot;너는 Python 전문가야&quot;</p>
-<p>📋</p>
-<p>맥락 (Context)</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📋</div>
+<div class="icon-card-title" style="color: var(--text);">맥락 (Context)</div>
 <p>프로젝트 배경, 파일 구조</p>
-<p>🎯</p>
-<p>작업 (Task)</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎯</div>
+<div class="icon-card-title" style="color: var(--text);">작업 (Task)</div>
 <p>구체적으로 무엇을 할지</p>
-<p>⚙️</p>
-<p>조건 (Constraints)</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">⚙️</div>
+<div class="icon-card-title" style="color: var(--text);">조건 (Constraints)</div>
 <p>언어, 형식, 제약사항</p>
-<p>📤</p>
-<p>출력 형식 (Format)</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📤</div>
+<div class="icon-card-title" style="color: var(--text);">출력 형식 (Format)</div>
 <p>코드만, JSON, 한국어 등</p>
-<h3>3단계 요구사항 명세 기법</h3>
+</div></div><h3>3단계 요구사항 명세 기법</h3>
 <div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" ></div>
-<p>\&quot;PDF 파일에서 예산 표를 추출해서 JSON으로 저장하는 Python 스크립트를 만들어줘.\&quot;</p>
+<div class="step-title" >1단계: 목표 선언 (What)</div>
+<p>\&quot;PDF 파일에서 예산 표를 추출해서 JSON으로 저장하는 Python 스크립트를 만들어줘.\&quot; — 한 문장으로 목표 선언</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >2</div>
 <div class="step-content">
-<div class="step-title" ></div>
-<p>입력 파일 경로, 컬럼 구조, 특이사항 / 출력 파일 형식, JSON 구조 예시</p>
+<div class="step-title" >2단계: 입출력 정의 (I/O Spec)</div>
+<p>입력 파일 경로, 컬럼 구조, 특이사항 / 출력 파일 형식, JSON 구조 예시 제시</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >3</div>
 <div class="step-content">
-<div class="step-title" ></div>
-<p>사용할 라이브러리, 금지 패턴, 에러 처리 방식, 주석 언어</p>
+<div class="step-title" >3단계: 제약 조건 (Constraints)</div>
+<p>사용할 라이브러리, 금지 패턴, 에러 처리 방식, 주석 언어를 명확하게 기입</p>
 </div>
 </div></div><h3>SKILL.md — 재사용 가능한 AI 지시서</h3>
-<p>SKILL.md</p>
-<p>는 프로젝트의 핵심 맥락·규칙·용어를 한 파일에 정리해두는 방식입니다. 매번 같은 배경 설명을 반복하는 대신, 이 파일 하나를 첨부하면 즉시 프로젝트 맥락을 공유할 수 있습니다.</p>
-</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>[프로젝트명] SKILL.md</h2></div><div class="card"><p>← 버전: v2.0 | 최종 수정: 2026-05-01</p>
-</div><div class="card"><h3 class="card-title">1. 프로젝트 개요</h3><ul>
-<li>목적:</li>
-</ul>
-<p>과기부 PDF 예산문서를 파싱하여 SQLite DB에 저장</p>
-<ul>
-<li>언어:</li>
-</ul>
-<p>Python 3.11</p>
-<ul>
-<li>현재 단계:</li>
-</ul>
-<p>병합 셀 처리 버그 수정 중 (v15)</p>
-</div><div class="card"><h3 class="card-title">2. 핵심 규칙</h3><ul>
-<li>금액 필드:</li>
-</ul>
-<p>항상 정수(int) 타입 (float 금지)</p>
-<ul>
-<li>HTTP 요청:</li>
-</ul>
-<p>httpx 사용 (requests 금지)</p>
-<ul>
-<li>로깅:</li>
-</ul>
-<p>logging 모듈 사용 (print 금지)</p>
-</div><div class="card"><h3 class="card-title">3. 현재 이슈</h3><ul>
-<li><p><input disabled="" type="checkbox"> 3단계 이상 중첩 병합 셀 처리</p>
-</li>
-<li><p><input checked="" disabled="" type="checkbox"> PDF 파싱 기본 구조 완성</p>
-</li>
-</ul>
-<div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<p><strong>SKILL.md</strong>는 프로젝트의 핵심 맥락·규칙·용어를 한 파일에 정리해두는 방식입니다. 매번 같은 배경 설명을 반복하는 대신, 이 파일 하나를 첨부하면 즉시 프로젝트 맥락을 공유할 수 있습니다.</p>
+<div class="editor-sim">
+<div class="editor-titlebar">
+<div class="editor-dot red"></div>
+<div class="editor-dot yellow"></div>
+<div class="editor-dot green"></div>
+<div class="editor-tab active">SKILL.md <span style="font-size:0.75rem;opacity:0.5;">(markdown)</span></div>
+</div>
+<div class="editor-body">
+<div class="line-nums">
+<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+</div>
+<div class="code-area"><pre><code># [프로젝트명] SKILL.md  ← 버전: v2.0 | 최종 수정: 2026-05-01
+## 1. 프로젝트 개요
+- 목적: 과기부 PDF 예산문서를 파싱하여 SQLite DB에 저장
+- 언어: Python 3.11
+- 현재 단계: 병합 셀 처리 버그 수정 중 (v15)
+## 2. 핵심 규칙
+- 금액 필드: 항상 정수(int) 타입 (float 금지)
+- HTTP 요청: httpx 사용 (requests 금지)
+- 로깅: logging 모듈 사용 (print 금지)
+## 3. 현재 이슈
+- [ ] 3단계 이상 중첩 병합 셀 처리
+- [x] PDF 파싱 기본 구조 완성</code></pre></div>
+</div>
+</div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>💡 SKILL.md 사용법:</strong>
-<p>매 대화 시작 시 파일을 첨부하거나, Claude Projects에 등록해두면 자동 적용됩니다. Claude Code는 프로젝트 루트의 CLAUDE.md 파일을 자동 인식합니다.</p>
+<p>매 대화 시작 시 파일을 첨부하거나, Claude Projects에 등록해두면 자동 적용됩니다. Claude Code는 프로젝트 루트의 `CLAUDE.md` 파일을 자동 인식합니다.</p>
 </div>
 </div><div class="alert-box alert-warn" style="--alert-color:#F59E0B">
 <div class="alert-icon">⚠</div>
@@ -427,39 +416,66 @@
 <strong>⚠️ 보안 주의:</strong>
 <p>SKILL.md에 API 키, 비밀번호, 개인정보를 절대 넣지 마세요. 이 파일을 AI에게 첨부하거나 GitHub에 올릴 경우 외부에 노출될 수 있습니다.</p>
 </div>
-</div><p>💡</p>
-<p>Key Takeaway</p>
-<p>좋은 프롬프트는</p>
-<p>역할·맥락·작업·조건·형식</p>
-<p>을 갖추고, SKILL.md는 그 맥락을</p>
-<p>프로젝트 전체에 걸쳐 일관되게 유지</p>
-<p>하는 핵심 도구입니다.</p>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>에이전트에게 복잡한 작업 위임하기</h2></div><div class="card"><p>AI에게 &quot;해줘&quot;가 아니라 &quot;맡길게&quot;라고 말할 수 있을 때, 진짜 자동화가 시작됩니다. 복잡한 작업을 쪼개고, 검수하고, 안전하게 완성하는 전략을 다룹니다.</p>
-<h3>작업 분해 — 3가지 기준</h3>
+</div></div><div class="takeaway">
+<div class="ta-icon">💡</div>
+<div>
+<div class="ta-label">Key Takeaway</div>
+<div class="ta-text">좋은 프롬프트는 **역할·맥락·작업·조건·형식**을 갖추고, SKILL.md는 그 맥락을 **프로젝트 전체에 걸쳐 일관되게 유지**하는 핵심 도구입니다.</div>
+</div>
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>에이전트에게 복잡한 작업 위임하기</h2></div><div class="card"><p>AI에게 &quot;해줘&quot;가 아니라 &quot;맡길게&quot;라고 말할 수 있을 때, 진짜 자동화가 시작됩니다. 복잡한 작업을 쪼개고, 검수하고, 안전하게 완성하는 전략을 다룹니다.</p>
+<h3>작업 분해 — 2가지 핵심 기준</h3>
 <div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">1️⃣</div>
-<div class="icon-card-title" style="color: var(--text);">1️⃣입출력 경계 명확히
-❌ 나쁜 분해
-1단계: PDF 처리2단계: 데이터 저장
-✅ 좋은 분해
-1단계: PDF → raw.json2단계: raw.json → structured.json3단계: structured.json → DB</div>
-<p></p>
+<div class="icon-card-title" style="color: var(--text);">입출력 경계 명확히</div>
+<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">️ ❌ 나쁜 분해:</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">1단계: PDF 처리</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">2단계: 데이터 저장</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">️ ✅ 좋은 분해:</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">1단계: PDF → raw.json</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">2단계: raw.json → structured.json</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">3단계: structured.json → DB</span>
+</div></div>
 </div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">2️⃣</div>
-<div class="icon-card-title" style="color: var(--text);">결과를 파일로 저장</div>
-<p></p>
+<div class="icon-card-title" style="color: var(--text);">검증 및 복구 가능성</div>
+<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">️ 각 단계 완료 시 **결과를 파일로 저장** (체크포인트)</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">️ 단계별 **샘플 5개**로 사람이 직접 검수 진행</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">️ 3단계 실패해도 2단계 결과물부터 바로 재실행 가능</span>
+</div></div>
 </div></div><h3>3가지 위임 패턴</h3>
-<p>📋</p>
-<p>패턴 1 — 순차 위임</p>
-<p>한 단계 완료 후 사람이 검수, 그 다음 단계를 지시. 가장 안전하고 기본적인 방식.</p>
-<p>📐</p>
-<p>패턴 2 — 계획 먼저</p>
-<p>&quot;실행하지 말고 계획만 먼저 보여줘&quot;</p>
-<p>→ 계획 승인 후 실행. 복잡·중요한 작업에 적합.</p>
-<p>⚡</p>
-<p>패턴 3 — 병렬 위임</p>
-<p>독립적인 작업을 서브에이전트가 동시에 처리. PDF 10개를 5+5로 분할 병렬 처리.</p>
-<h3>중간 검수 포인트 — 언제 확인하나</h3>
+<div class="icon-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📋</div>
+<div class="icon-card-title" style="color: var(--text);">패턴 1 — 순차 위임</div>
+<p>한 단계 완료 후 사람이 직접 검수한 뒤 그 다음 단계를 차근차근 지시하는 가장 안전하고 기본적인 방식입니다.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📐</div>
+<div class="icon-card-title" style="color: var(--text);">패턴 2 — 계획 먼저</div>
+<p>\&quot;실행하지 말고 구체적 계획만 먼저 보여줘\&quot; 지시 후 사람이 계획을 승인한 뒤 실행. 복잡하고 중요한 작업에 적합합니다.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">⚡</div>
+<div class="icon-card-title" style="color: var(--text);">패턴 3 — 병렬 위임</div>
+<p>독립적인 작업을 여러 서브에이전트가 동시에 처리하는 구조입니다. (예: PDF 10개를 5+5개로 나누어 동시 파싱)</p>
+</div></div><h3>중간 검수 포인트 — 언제 확인하나</h3>
 <div class="prompt-box">
 <div class="prompt-label">검수 요청 프롬프트 패턴</div>
 <pre class="prompt-content">1단계가 완료됐어. 진행 전에 다음을 확인해줘:
@@ -467,42 +483,44 @@
 2. 금액 필드의 최솟값·최댓값·null 개수
 3. 예상과 다른 데이터 패턴이 있으면 알려줘
 # 확인 후 내가 &quot;계속&quot;이라고 하면 2단계 진행</pre>
-</div><p>📐</p>
-<p>계획 수립 후</p>
-<p>방향이 맞는지 확인</p>
-<p>1️⃣</p>
-<p>1단계 완료 후</p>
-<p>입력 데이터 검증</p>
-<p>🔄</p>
-<p>핵심 변환 후</p>
-<p>데이터 구조 일치 확인</p>
-<p>✅</p>
-<p>전체 완료 후</p>
-<p>요구사항 충족 확인</p>
-<p>🚀</p>
-<p>배포 전</p>
-<p>운영 환경 동작 확인</p>
-<div class="alert-box alert-warn" style="--alert-color:#F59E0B">
+</div></div><div class="checkpoint-grid">
+<div class="checkpoint-item">
+<div class="ci-icon">📐</div>
+<div class="ci-text"><strong>계획 수립 후</strong><br>방향이 맞는지 검토</div>
+</div>
+<div class="checkpoint-item">
+<div class="ci-icon">1️⃣</div>
+<div class="ci-text"><strong>1단계 완료 후</strong><br>입력 데이터 검증</div>
+</div>
+<div class="checkpoint-item">
+<div class="ci-icon">🔄</div>
+<div class="ci-text"><strong>핵심 변환 후</strong><br>데이터 구조 일치 확인</div>
+</div>
+<div class="checkpoint-item">
+<div class="ci-icon">✅</div>
+<div class="ci-text"><strong>전체 완료 후</strong><br>요구사항 충족 확인</div>
+</div>
+<div class="checkpoint-item">
+<div class="ci-icon">🚀</div>
+<div class="ci-text"><strong>배포 전</strong><br>운영 환경 동작 확인</div>
+</div></div><div class="card"><div class="alert-box alert-warn" style="--alert-color:#F59E0B">
 <div class="alert-icon">⚠</div>
 <div class="alert-body">
 <strong>⚠️ DB 작업 위임 시:</strong>
 <p>\&quot;DB 저장 시 트랜잭션 처리 포함해줘. 오류 발생 시 전체 롤백.\&quot;을 반드시 명시하세요. 중간에 실패하면 DB가 절반만 저장된 불완전한 상태가 됩니다.</p>
 </div>
-</div><p>💡</p>
-<p>Key Takeaway</p>
-<p>복잡한 작업은</p>
-<p>입출력이 명확한 단계로 분해</p>
-<p>하고,</p>
-<p>각 단계마다 검수</p>
-<p>하고,</p>
-<p>중간 결과를 파일로 보존</p>
-<p>하는 세 원칙을 지키면 AI 위임의 실패율을 크게 낮출 수 있습니다.</p>
+</div></div><div class="takeaway">
+<div class="ta-icon">💡</div>
+<div>
+<div class="ta-label">Key Takeaway</div>
+<div class="ta-text">복잡한 작업은 **입출력이 명확한 단계로 분해**하고, **각 단계마다 검수**하고, **중간 결과를 파일로 보존**하는 세 원칙을 지키면 AI 위임의 실패율을 크게 낮출 수 있습니다.</div>
+</div>
 </div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

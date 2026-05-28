@@ -409,14 +409,28 @@ cursor.execute(query, (user_input,))</pre>
 <p>20번 대화 후 AI가 httpx 대신 requests를 다시 사용, print()를 다시 사용, 폴더 구조를 바꿔버림.</p>
 </div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🔄</div>
-<div class="icon-card-title" style="color: var(--text);">🔄재정향 프롬프트
-&quot;[SKILL.md 재첨부]
-방금 코드에서 SKILL.md 위반:
-① requests 사용 → httpx로 교체 (규칙 §3)
-② print() → logging으로 교체 (규칙 §3)
-③ 타입 힌트 없음 → 모든 함수에 추가 (규칙 §2)
-세 가지를 수정한 버전으로 다시 작성해줘.&quot;</div>
-<p></p>
+<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">🔄재정향 프롬프트</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">&quot;[SKILL.md 재첨부]</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">방금 코드에서 SKILL.md 위반:</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">① requests 사용 → httpx로 교체 (규칙 §3)</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">② print() → logging으로 교체 (규칙 §3)</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">③ 타입 힌트 없음 → 모든 함수에 추가 (규칙 §2)</span>
+</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">세 가지를 수정한 버전으로 다시 작성해줘.&quot;</span>
+</div></div></div>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
@@ -482,7 +496,10 @@ git reset --hard HEAD~1 # 마지막 커밋 되돌리기</pre>
 <span class="feature-tag" >비용 관리 방법</span>
 <div class="icon-card-icon" style="color: var(--brand);"></div>
 <div class="icon-card-title" style="color: var(--text);"></div>
-<p>• Anthropic Console → Usage → 일별 비용 모니터링• 월 예산 설정 → 초과 시 알림• n8n 워크플로우에 실행 횟수 제한 노드 추가• 개발 시 소형 샘플 파일 사용• Claude Code: /cost 명령으로 현재 세션 비용 확인</p>
+<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align: left;">Anthropic Console → Usage → 일별 비용 모니터링• 월 예산 설정 → 초과 시 알림• n8n 워크플로우에 실행 횟수 제한 노드 추가• 개발 시 소형 샘플 파일 사용• Claude Code: /cost 명령으로 현재 세션 비용 확인</span>
+</div></div>
 </div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>올바른 AI 협업 마인드셋</h2></div><div class="card"><p>AI는 강력한 도구입니다. 망치가 강력할수록 잘못 쓰면 더 큰 피해를 줍니다. 그러나 올바르게 사용하면 누구도 혼자서는 할 수 없는 일을 해냅니다.</p>
 <div class="icon-grid" ><div class="icon-card" >
 <span class="feature-tag" >AI의 역할</span>
@@ -521,7 +538,7 @@ git reset --hard HEAD~1 # 마지막 커밋 되돌리기</pre>
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

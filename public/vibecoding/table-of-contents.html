@@ -325,7 +325,7 @@
     </div>
   </header>
   <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>목차</h2></div><div class="card"><p>바이브코딩과 에이전트 코딩 완전 입문 가이드의 단원별 주제 및 챕터별 세부 요약 목차 리스트입니다.</p>
-<div class="part" style="--part-color: #1a3a5c;">
+</div><div class="part" style="--part-color: #1a3a5c;">
 <div class="part-header" style="background: #1a3a5c;">
 <div class="part-num-block">1부</div>
 <div class="part-title-block">
@@ -652,12 +652,12 @@
 </div><div class="summary-item">
 <span class="summary-num">10K+</span>
 <span class="summary-label">Lines Written</span>
-</div></div></div></section></main>
+</div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

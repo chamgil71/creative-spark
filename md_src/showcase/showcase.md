@@ -834,6 +834,201 @@ stats:
   desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
   tag: "개념"
 - icon: "04"
+\::: console-box
+- title: "가이드 생성 요청"
+  desc: |
+    Obsidian 가이드를 작성해줘.
+    network-box로 지식 그래프 예시를 포함하고,
+    마지막에는 faq-list를 넣어줘.
+\:::
+```
+
+::: console-box
+- title: "가이드 생성 요청"
+  desc: |
+    Obsidian 가이드를 작성해줘.
+    network-box로 지식 그래프 예시를 포함하고,
+    마지막에는 faq-list를 넣어줘.
+:::
+
+# 19. git-flow-strip
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `git-flow-strip` |
+| 구현내용 | 브랜치 라인과 커밋 라벨을 가진 Git 흐름도입니다. |
+
+숏코드 입력내용
+
+```md
+\::: git-flow-strip
+- title: "main"
+  tag: "v1.1.0"
+  meta: "쇼케이스 MD 정리|HTML/PPTX 변환 통과"
+  color: "#10B981"
+- title: "feature/restore-md"
+  tag: "Commit 701"
+  meta: "원본 콘텐츠 복원|신형 숏코드 반영"
+  color: "#3B82F6"
+\:::
+```
+
+::: git-flow-strip
+- title: "main"
+  tag: "v1.1.0"
+  meta: "쇼케이스 MD 정리|HTML/PPTX 변환 통과"
+  color: "#10B981"
+- title: "feature/restore-md"
+  tag: "Commit 701"
+  meta: "원본 콘텐츠 복원|신형 숏코드 반영"
+  color: "#3B82F6"
+:::
+
+# 20. editor-box
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `editor-box` |
+| 구현내용 | VS Code 느낌의 코드 편집기 시뮬레이션입니다. |
+
+숏코드 입력내용
+
+````md
+\::: editor-box
+- title: "build-guide.mjs"
+  tag: "javascript"
+  desc: |
+    function renderShortcode(type, body, args) {
+      const items = parseShortcodeItems(body);
+      if (!items.length) return "";
+      return renderComponent(type, items, args);
+    }
+\:::
+````
+
+::: editor-box
+- title: "build-guide.mjs"
+  tag: "javascript"
+  desc: |
+    function renderShortcode(type, body, args) {
+      const items = parseShortcodeItems(body);
+      if (!items.length) return "";
+      return renderComponent(type, items, args);
+    }
+:::
+
+# 21. network-box
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `network-box` |
+| 구현내용 | 중앙 노드와 주변 노드가 떠 있는 지식 그래프 시각화입니다. |
+
+숏코드 입력내용
+
+```md
+\::: network-box
+- title: "Creative Spark"
+  color: "#EC4899"
+- title: "HTML"
+  meta: "build-guide"
+  color: "#10B981"
+- title: "PPTX"
+  meta: "md-to-pptx"
+  color: "#3B82F6"
+- title: "Markdown"
+  meta: "shortcode"
+  color: "#F59E0B"
+\:::
+```
+
+::: network-box
+- title: "Creative Spark"
+  color: "#EC4899"
+- title: "HTML"
+  meta: "build-guide"
+  color: "#10B981"
+- title: "PPTX"
+  meta: "md-to-pptx"
+  color: "#3B82F6"
+- title: "Markdown"
+  meta: "shortcode"
+  color: "#F59E0B"
+:::
+
+# 22. part-deck
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `part-deck` |
+| 구현내용 | 시리즈 가이드북 등 목차용 대단원(부, Part)을 알리는 헤더 숏코드입니다. HSL 브랜드 컬러가 다이내믹하게 적용됩니다. |
+
+숏코드 입력내용
+
+```md
+\::: part-deck
+- icon: "1부"
+  title: "개념 이해"
+  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
+  tag: "Ch.01–03"
+  color: "#1a3a5c"
+- icon: "2부"
+  title: "AI와 대화하는 법"
+  desc: "프롬프트 설계부터 복잡한 작업 위임까지"
+  tag: "Ch.04–05"
+  color: "#1a4a3a"
+\:::
+```
+
+::: part-deck
+- icon: "1부"
+  title: "개념 이해"
+  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
+  tag: "Ch.01–03"
+  color: "#1a3a5c"
+- icon: "2부"
+  title: "AI와 대화하는 법"
+  desc: "프롬프트 설계부터 복잡한 작업 위임까지"
+  tag: "Ch.04–05"
+  color: "#1a4a3a"
+:::
+
+# 23. chapter-list
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `chapter-list` |
+| 구현내용 | 세부 목차 및 챕터 리스트 숏코드입니다. 챕터 번호와 뱃지 속성에 따라 이쁜 HSL 배지 색상이 자동 매핑됩니다. |
+
+숏코드 입력내용
+
+```md
+\::: chapter-list
+- icon: "01"
+  title: "바이브코딩이란?"
+  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
+  tag: "개념"
+- icon: "02"
+  title: "에이전트 코딩이란?"
+  desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
+  tag: "개념"
+- icon: "04"
+  title: "첫 대화: 프롬프트 설계"
+  desc: "요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시"
+  tag: "실습"
+\:::
+```
+
+::: chapter-list
+- icon: "01"
+  title: "바이브코딩이란?"
+  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
+  tag: "개념"
+- icon: "02"
+  title: "에이전트 코딩이란?"
+  desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
+  tag: "개념"
+- icon: "04"
   title: "첫 대화: 프롬프트 설계"
   desc: "요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시"
   tag: "실습"
@@ -866,4 +1061,163 @@ stats:
   title: "Parts"
 - icon: "24종"
   title: "Support Shortcodes"
+:::
+
+# 25. flow
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `flow` |
+| 구현내용 | 단계별 수행 과정 및 가로 흐름 다이어그램을 카드와 화살표 그리드로 렌더링해 줍니다. |
+
+숏코드 입력내용
+
+```md
+\::: flow
+- icon: "🧑"
+  title: "사람"
+  desc: "원하는 것 설명"
+  tag: "active"
+- icon: "→"
+  title: "→"
+- icon: "🤖"
+  title: "AI"
+  desc: "코드 생성"
+- icon: "→"
+  title: "→"
+- icon: "✅"
+  title: "완성"
+  desc: "결과물"
+  tag: "active"
+\:::
+```
+
+::: flow
+- icon: "🧑"
+  title: "사람"
+  desc: "원하는 것 설명"
+  tag: "active"
+- icon: "→"
+  title: "→"
+- icon: "🤖"
+  title: "AI"
+  desc: "코드 생성"
+- icon: "→"
+  title: "→"
+- icon: "✅"
+  title: "완성"
+  desc: "결과물"
+  tag: "active"
+:::
+
+# 26. level-grid
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `level-grid` |
+| 구현내용 | 난이도, 단계, 도메인 스펙트럼 로드맵 등을 가로형 카드 그리드로 렌더링해 줍니다. |
+
+숏코드 입력내용
+
+```md
+\::: level-grid
+- title: "LEVEL 1"
+  desc: "코드 자동완성"
+  meta: "GitHub Copilot 인라인"
+  note: "다음 줄 예측, Tab으로 수락"
+- title: "LEVEL 2"
+  desc: "대화형 생성"
+  meta: "Claude.ai, ChatGPT"
+  note: "요청 → 붙여넣기 → 실행"
+  tag: "highlight"
+\:::
+```
+
+::: level-grid
+- title: "LEVEL 1"
+  desc: "코드 자동완성"
+  meta: "GitHub Copilot 인라인"
+  note: "다음 줄 예측, Tab으로 수락"
+- title: "LEVEL 2"
+  desc: "대화형 생성"
+  meta: "Claude.ai, ChatGPT"
+  note: "요청 → 붙여넣기 → 실행"
+  tag: "highlight"
+:::
+
+# 27. checkpoint-grid
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `checkpoint-grid` |
+| 구현내용 | 중간 검수 타이밍, 주요 체크포인트를 이모지와 가로 뱃지 형식으로 나열해 줍니다. |
+
+숏코드 입력내용
+
+```md
+\::: checkpoint-grid
+- icon: "📐"
+  title: "계획 수립 후"
+  desc: "방향이 맞는지 확인"
+- icon: "1️⃣"
+  title: "1단계 완료 후"
+  desc: "입력 데이터 검증"
+\:::
+```
+
+::: checkpoint-grid
+- icon: "📐"
+  title: "계획 수립 후"
+  desc: "방향이 맞는지 확인"
+- icon: "1️⃣"
+  title: "1단계 완료 후"
+  desc: "입력 데이터 검증"
+:::
+
+# 28. compare-before-after
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `compare-before-after` |
+| 구현내용 | Bad vs Good, 변경 전후 1:1 대비를 우아한 전용 테두리 카드 레이아웃으로 렌더링해 줍니다. |
+
+숏코드 입력내용
+
+```md
+\::: compare-before-after
+- title: "나쁜 프롬프트"
+  desc: "엑셀 자동화 코드 만들어줘."
+- title: "좋은 프롬프트"
+  desc: "Python으로 A열 날짜, B열 금액 합산 summary.xlsx 만드는 Pandas 코드 작성해줘."
+\:::
+```
+
+::: compare-before-after
+- title: "나쁜 프롬프트"
+  desc: "엑셀 자동화 코드 만들어줘."
+- title: "좋은 프롬프트"
+  desc: "Python으로 A열 날짜, B열 금액 합산 summary.xlsx 만드는 Pandas 코드 작성해줘."
+:::
+
+# 29. takeaway
+
+| 항목 | 내용 |
+| --- | --- |
+| 숏코드 명 | `takeaway` |
+| 구현내용 | 핵심 요약 및 테이크어웨이 메시지를 그라데이션이 들어간 프리미엄 배너 형태로 감싸 줍니다. |
+
+숏코드 입력내용
+
+```md
+\::: takeaway
+- icon: "💡"
+  title: "Key Takeaway"
+  desc: "바이브코딩은 문법 암기가 아닌, 원하는 바를 논리적 자연어로 설명하는 역량이 본질입니다."
+\:::
+```
+
+::: takeaway
+- icon: "💡"
+  title: "Key Takeaway"
+  desc: "바이브코딩은 문법 암기가 아닌, 원하는 바를 논리적 자연어로 설명하는 역량이 본질입니다."
 :::

@@ -324,7 +324,7 @@
       <div class="hero-stats"><div class="hero-stat"><strong>4개 엔진</strong><span>기능 분석 대상</span></div><div class="hero-stat"><strong>1행 헤더</strong><span>기본 지원 범위</span></div><div class="hero-stat"><strong>Custom</strong><span>트리 추출 해결책</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>🔍 엔진별 기능 비교 분석 {#compare}</h2></div><div class="card"></div><div class="card"><h3 class="card-title">1. xl_to_json.py &amp; BudgetN convert.py</h3><p>기본적인 pandas 변환 도구와 동적 매핑 기법을 사용하는 BudgetN 스크립트의 상세 비교입니다.</p>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>🔍 엔진별 기능 비교 분석 {#compare}</h2></div><div class="card"><h3 class="card-title">1. xl_to_json.py &amp; BudgetN convert.py</h3><p>기본적인 pandas 변환 도구와 동적 매핑 기법을 사용하는 BudgetN 스크립트의 상세 비교입니다.</p>
 <div class="compare-grid" style="grid-template-columns: repeat(2, 1fr);">
 <div class="compare-card" style="border-color: #D97757; background-color: #D9775708;">
 <div class="compare-card-title" style="color: #D97757;">xl_to_json.py (simple)</div>
@@ -346,7 +346,7 @@
 <div class="compare-card-title" style="color: #EC4899;">etl_service.py (Pydantic)</div>
 <p>Pydantic 모델(CompanyRecord 등)을 데이터 스키마 검증 레이어로 선언하여 변환 정합성을 체크합니다.</p>
 <div class="compare-note" style="background:#EC489915; color:#EC4899">자동 데이터 유효성 검증 | 스키마-데이터 완벽 격리</div>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>📋 핵심 스키마 및 결론 요약</h2></div><div class="card"></div><div class="card"><h3 class="card-title">1. 기능 종합 및 현상 분석</h3><p>4대 변환 엔진들의 핵심 한계와 공통 기능 분석 요약 지표입니다.</p>
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>📋 핵심 스키마 및 결론 요약</h2></div><div class="card"><h3 class="card-title">1. 기능 종합 및 현상 분석</h3><p>4대 변환 엔진들의 핵심 한계와 공통 기능 분석 요약 지표입니다.</p>
 <div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" style="border-color: #FEF3C7; background-color: #FEF3C708;">
 <div class="card-top-bar" style="background-color:#FEF3C7"></div>
 <span class="feature-tag" style="background:#FEF3C7; color:#fff;">공통 한계</span>
@@ -372,16 +372,16 @@
 <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >Low</div>
 <div class="stat-name">xl_to_json.py</div>
-<div class="stat-note">단순 직렬화로 분리 수준이 가장 낮음</div>
+<div class="stat-note"><div>단순 직렬화로 분리 수준이 가장 낮음</div></div>
 </div><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >Medium</div>
 <div class="stat-name">orchestrator / BudgetN</div>
-<div class="stat-note">yaml 기반 변환 룰 파일 제공으로 양호</div>
+<div class="stat-note"><div>yaml 기반 변환 룰 파일 제공으로 양호</div></div>
 </div><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >High</div>
 <div class="stat-name">etl_service.py</div>
-<div class="stat-note">Pydantic 강력 유효성 검증 모델로 완전 격리</div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>💡 트리구조 자동화 설계 가이드</h2></div><div class="card"></div><div class="card"><h3 class="card-title">1. 커스텀 파서 구현 권장 사항</h3><p>병합된 셀 및 2행 이상 헤더에서 완벽한 트리구조의 schema.json과 data.json을 분리 및 동기화하기 위한 3단계 구현 로직입니다.</p>
+<div class="stat-note"><div>Pydantic 강력 유효성 검증 모델로 완전 격리</div></div>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>💡 트리구조 자동화 설계 가이드</h2></div><div class="card"><h3 class="card-title">1. 커스텀 파서 구현 권장 사항</h3><p>병합된 셀 및 2행 이상 헤더에서 완벽한 트리구조의 schema.json과 data.json을 분리 및 동기화하기 위한 3단계 구현 로직입니다.</p>
 <div class="step-list">
 <div class="step-item" style="border-color: #6366F1; background-color: #6366F108;">
 <div class="step-num" style="background:#6366F1">1</div>
@@ -412,7 +412,7 @@
   <footer><div>이 가이드는 회사 내 ETL/변환 유틸 파이프라인 정합성 분석 결과에 기반하여 제작되었습니다.</div></footer>
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

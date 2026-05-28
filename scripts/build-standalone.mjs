@@ -90,13 +90,21 @@ const collectionContents = {};
 const collectionsOut = [];
 for (const col of data.collections || []) {
   const parts = readCollectionParts(col.folder, col.indexFile);
-  // include the index itself as the first "part"
-  const indexPart = {
-    slug: col.indexFile.replace(/\.html$/, ""),
-    title: "목차",
-    file: col.indexFile,
-  };
-  const allParts = [indexPart, ...parts];
+  const indexFp = path.join(PUBLIC, col.folder, col.indexFile);
+  
+  // 목차 파일이 실제로 빌드되어 존재하는 경우에만 첫 파트로 편입 (xlsx_json만 있는 테스트 컬렉션 등에서 빈 목차 생성 방지)
+  let allParts = [];
+  if (fs.existsSync(indexFp)) {
+    const indexPart = {
+      slug: col.indexFile.replace(/\.html$/, ""),
+      title: "목차",
+      file: col.indexFile,
+    };
+    allParts = [indexPart, ...parts];
+  } else {
+    allParts = [...parts];
+  }
+  
   const contents = {};
   for (const p of allParts) {
     const c = readCollectionHtml(col.folder, p.file);

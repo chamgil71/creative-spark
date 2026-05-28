@@ -6,7 +6,7 @@
 
 AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트.  
 **Markdown → HTML**, **Markdown → PPTX** 두 출력 경로를 JSON 설정 파일 기반으로 운영한다.  
-24종 shortcode, 11가지 색상 프리셋 지원.
+29종 shortcode (26종 고유, aliases 포함), 11가지 색상 프리셋 지원.
 
 ---
 
@@ -56,14 +56,24 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 |------|------|
 | `config/styles.json` | 카테고리별 색상 프리셋 (11종) |
 | `config/pptdesign.config.json` | PPTX 레이아웃·여백·폰트 수치 설정 |
-| `md_src/showcase/showcase.md` | 다양한 단 구조 및 24종 숏코드 문법 참조 원본 |
+| `md_src/showcase/showcase.md` | 다양한 단 구조 및 29종 숏코드 문법 참조 원본 |
 
 ---
 
 ## 문서 목차
 
-- [guide-creation.md](guide-creation.md) — 가이드 제작 전체 워크플로우 (MD 작성 → 동기화 → HTML/PPTX → 배포)
-- [scripts-guide.md](scripts-guide.md) — 일괄 통합된 `scripts/` 내 도구 상세 사용법 및 프레젠테이션 빌더
+### 가이드 문서
+- [guide-creation.md](guide-creation.md) — 29종 숏코드 명세 및 가이드 작성 워크플로우
+- [guide-build.md](guide-build.md) — Frontmatter 및 스타일 프리셋 가이드
+- [scripts-guide.md](scripts-guide.md) — `scripts/` 내 도구 상세 사용법 및 프레젠테이션 빌더
 - [pipeline.md](pipeline.md) — 파이프라인 상세 + shortcode 레퍼런스
-- [standalone.md](standalone.md) — Standalone HTML 빌드 방법
-- [worklog.md](worklog.md) — 개발 현황 및 히스토리 로그
+- [standalone.md](standalone.md) — Standalone HTML 번들링 매커니즘
+- [shortcode-style-guide.md](shortcode-style-guide.md) — 숏코드별 CSS/PPTX 디자인 튜닝 가이드
+
+### 참고 문서 (서브폴더)
+- [plan/](plan/) — 기획 및 분석 문서
+- [prompt/](prompt/) — AI 가이드 생성용 프롬프트 템플릿
+- [report/](report/) — 검토 보고서 및 작업 이력
+  - [standalone-integrity-report.md](report/standalone-integrity-report.md) — Shadow DOM 정합성 검증 결과
+  - [project-review-2026-05-28.md](report/project-review-2026-05-28.md) — 프로젝트 현황 검토 보고서
+  - worklog.md — 영구 누적 작업 기록 일지

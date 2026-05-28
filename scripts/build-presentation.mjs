@@ -126,6 +126,32 @@ function parseShortcodeItems(src) {
 }
 
 // Render shortcode (same visual blocks as build-guide)
+function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
+  if (!text) return "";
+  const lines = String(text).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  
+  if (lines.length <= 1 && !lines[0]?.match(/^[-*+•✅✔️]/)) {
+    return defaultTag ? `<${defaultTag}>${escapeHtml(text)}</${defaultTag}>` : escapeHtml(text);
+  }
+
+  // 이모지 "✔️"의 색상을 완벽히 제어하기 위해 인라인 SVG 체크 기호를 기본값으로 탑재 (stroke="currentColor"로 color에 반응)
+  const defaultBullet = customBullet || `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+  let listHtml = '<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;">';
+  for (const line of lines) {
+    const match = line.match(/^[-*+•✅✔️]\s*(.*)$/);
+    let content = match ? match[1] : line;
+    if (!content.trim()) continue;
+
+    listHtml += `<div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+      <span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;">${defaultBullet}</span>
+      <span class="content" style="text-align: left;">${escapeHtml(content)}</span>
+    </div>`;
+  }
+  listHtml += '</div>';
+  return listHtml;
+}
+
 function renderShortcode(type, body, args) {
   const items = parseShortcodeItems(body);
   if (!items.length) return "";
@@ -155,7 +181,7 @@ function renderShortcode(type, body, args) {
         return `<div class="stat-card" ${it.color ? `style="border-top: 3px solid ${it.color};"` : `style="border-top: 3px solid var(--brand);"`}>
           <div class="stat-val" ${it.color ? `style="color:${it.color}"` : ""}>${escapeHtml(it.icon || it.title)}</div>
           ${it.icon ? `<div class="stat-name">${escapeHtml(it.title)}</div>` : ""}
-          ${it.desc ? `<div class="stat-note">${escapeHtml(it.desc)}</div>` : ""}
+          ${it.desc ? `<div class="stat-note">${renderMultiLineText(it.desc, "div")}</div>` : ""}
         </div>`;
       }
       return `<div class="${isFeat ? 'feature-card' : 'icon-card'}" ${renderAccent(it.color)}>
@@ -163,17 +189,16 @@ function renderShortcode(type, body, args) {
         ${it.tag ? `<span class="feature-tag" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.tag)}</span>` : ""}
         ${isFeat ? `
           <div class="feature-card-title" style="color: var(--brand-light);">
-            ${it.icon ? `<span class="fc-icon">${escapeHtml(it.icon)}</span>` : ""}${escapeHtml(it.title)}
+            ${it.icon ? `<span class="fc-icon">${escapeHtml(it.icon)}</span>` : ""}${renderMultiLineText(it.title, "")}
           </div>
         ` : `
           <div class="icon-card-icon" style="color: var(--brand);">${escapeHtml(it.icon)}</div>
-          <div class="icon-card-title" style="color: var(--text);">${escapeHtml(it.title)}</div>
+          <div class="icon-card-title" style="color: var(--text);">${renderMultiLineText(it.title, "")}</div>
         `}
-        <p>${escapeHtml(it.desc)}</p>
+        ${renderMultiLineText(it.desc, "p")}
       </div>`;
     }).join("")}</div>`;
   }
-
   if (type === "tool-box") {
     return items.map(it => {
       const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `var(--brand-gradient)`;
@@ -422,7 +447,6 @@ function renderShortcode(type, body, args) {
       </div>`;
     }).join("");
   }
-
   // 20. chapter-list (시리즈 목차용 세부 챕터 목록)
   if (type === "chapter-list") {
     const getBadgeClass = (tag) => {
@@ -437,10 +461,9 @@ function renderShortcode(type, body, args) {
           <strong>${escapeHtml(it.title)}</strong>
           ${it.desc ? `<span class="chapter-desc">${escapeHtml(it.desc)}</span>` : ""}
         </div>
-        ${it.tag ? `<span class="chapter-badge ${getBadgeClass(it.tag)}">${escapeHtml(it.tag)}</span>` : ""}
+        ${it.tag && it.tag.trim() !== "" ? `<span class="chapter-badge ${getBadgeClass(it.tag)}">${escapeHtml(it.tag)}</span>` : ""}
       </div>`).join("")}</div>`;
   }
-
   // 21. summary-bar (하단 지표 요약 수치 그리드)
   if (type === "summary-bar") {
     return `<div class="summary-bar">${items.map(it => {
@@ -454,6 +477,71 @@ function renderShortcode(type, body, args) {
         <span class="summary-label">${escapeHtml(it.title)}</span>
       </div>`;
     }).join("")}</div>`;
+  }
+
+  // 22. flow (가로/세로 흐름 시각화)
+  if (type === "flow") {
+    return `<div class="flow">${items.map(it => {
+      if (it.type === "arrow" || it.title === "→" || it.icon === "→") {
+        return `<div class="flow-arrow">${escapeHtml(it.icon || "→")}</div>`;
+      }
+      const activeClass = it.tag === "active" ? "active" : "";
+      return `<div class="flow-step ${activeClass}">
+        <div class="fs-icon">${escapeHtml(it.icon)}</div>
+        <div class="fs-title">${escapeHtml(it.title)}</div>
+        <div class="fs-sub">${escapeHtml(it.desc)}</div>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  // 23. level-grid (레벨 스펙트럼)
+  if (type === "level-grid") {
+    return `<div class="level-grid">${items.map(it => {
+      const activeClass = it.tag === "highlight" || it.featured === "true" ? "highlight" : "";
+      return `<div class="level-card ${activeClass}">
+        <div class="level-num">${escapeHtml(it.title)}</div>
+        <div class="level-name">${escapeHtml(it.desc)}</div>
+        <div class="level-tool">${escapeHtml(it.meta)}</div>
+        <div class="level-desc">${escapeHtml(it.note)}</div>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  // 24. checkpoint-grid (중간 검수 포인트)
+  if (type === "checkpoint-grid") {
+    return `<div class="checkpoint-grid">${items.map(it => `
+      <div class="checkpoint-item">
+        <div class="ci-icon">${escapeHtml(it.icon || "📐")}</div>
+        <div class="ci-text"><strong>${escapeHtml(it.title || "")}</strong><br>${escapeHtml(it.desc || "")}</div>
+      </div>`).join("")}</div>`;
+  }
+
+  // 25. compare-before-after (좌우 1:1 전후 대조)
+  if (type === "compare-before-after") {
+    const bad = items[0] || {};
+    const good = items[1] || {};
+    return `<div class="compare-before-after">
+      <div class="before-box">
+        <div class="ba-label">❌ ${escapeHtml(bad.title)}</div>
+        <div class="ba-content">${escapeHtml(bad.desc).replace(/\n/g, "<br>")}</div>
+      </div>
+      <div class="after-box">
+        <div class="ba-label">✅ ${escapeHtml(good.title)}</div>
+        <div class="ba-content">${escapeHtml(good.desc).replace(/\n/g, "<br>")}</div>
+      </div>
+    </div>`;
+  }
+
+  // 26. takeaway (Key Takeaway)
+  if (type === "takeaway") {
+    const it = items[0] || {};
+    return `<div class="takeaway">
+      <div class="ta-icon">${escapeHtml(it.icon || "💡")}</div>
+      <div>
+        <div class="ta-label">${escapeHtml(it.title || "Key Takeaway")}</div>
+        <div class="ta-text">${escapeHtml(it.desc || "")}</div>
+      </div>
+    </div>`;
   }
 
   return "";
