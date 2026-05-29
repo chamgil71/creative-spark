@@ -143,7 +143,7 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
     let content = match ? match[1] : line;
     if (!content.trim()) continue;
 
-    listHtml += `<div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
+    listHtml += `<div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 1.1rem; color: var(--text-muted); line-height: 1.5;">
       <span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;">${defaultBullet}</span>
       <span class="content" style="text-align: left;">${escapeHtml(content)}</span>
     </div>`;
@@ -158,6 +158,19 @@ function renderShortcode(type, body, args) {
 
   const renderAccent = (color) => color ? `style="border-color: ${color}; background-color: ${color}08;"` : "";
   const renderTextColor = (color) => color ? `style="color: ${color};"` : "";
+  const renderCompareNote = (activeNote, color) => {
+    if (!activeNote) return "";
+    const metaItems = splitMeta(activeNote);
+    const style = color ? `style="background:${color}15; color:${color}"` : "";
+    if (metaItems.length > 1) {
+      return `<div class="compare-note" ${style}>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
+          ${metaItems.map(f => `<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: ${color || 'var(--brand)'}; flex-shrink: 0; margin-top: 2px;">•</span><span>${escapeHtml(f)}</span></li>`).join("")}
+        </ul>
+      </div>`;
+    }
+    return `<div class="compare-note" ${style}>${escapeHtml(activeNote)}</div>`;
+  };
 
   const colsMatch = (args || "").match(/cols=(\d+)/);
   const cols = colsMatch ? colsMatch[1] : null;
@@ -244,8 +257,8 @@ function renderShortcode(type, body, args) {
       return `
       <div class="compare-card" ${renderAccent(it.color)}>
         <div class="compare-card-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        <p>${escapeHtml(it.desc)}</p>
-        ${activeNote ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(activeNote)}</div>` : ""}
+        ${renderMultiLineText(it.desc, "p")}
+        ${activeNote ? renderCompareNote(activeNote, it.color) : ""}
       </div>`;
     }).join("")}</div>`;
   }
@@ -286,8 +299,8 @@ function renderShortcode(type, body, args) {
       <div class="column-card" ${renderAccent(it.color)}>
         <div class="card-top-bar" ${it.color ? `style="background:${it.color}"` : ""}></div>
         <div class="col-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        <p>${escapeHtml(it.desc)}</p>
-        ${activeNote ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(activeNote)}</div>` : ""}
+        ${renderMultiLineText(it.desc, "p")}
+        ${activeNote ? renderCompareNote(activeNote, it.color) : ""}
       </div>`;
     }).join("")}</div>`;
   }
@@ -650,11 +663,18 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
 <style>
   :root {
     --border:     rgba(255, 255, 255, 0.1);
-    --bg:         #0b0d12;
+    --bg:         #0b0d12; /* 💡 다크모드 기본 배경색을 변경하려면 이 값을 수정하세요! */
     --text:       #f8fafc;
     --text-muted: #94a3b8;
-    --card-bg:    #11141b;
+    --card-bg:    #11141b; /* 💡 다크모드 카드 배경색을 변경하려면 이 값을 수정하세요! */
     --radius:     ${cssRadius};
+  }
+  body.light-mode {
+    --border:     rgba(15, 23, 42, 0.08);
+    --bg:         #f8fafc; /* 💡 라이트모드 기본 배경색 */
+    --text:       #0f172a;
+    --text-muted: #64748b;
+    --card-bg:    #ffffff; /* 💡 라이트모드 카드 배경색 */
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -664,6 +684,77 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     overflow: hidden;
     width: 100vw;
     height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  /* Theme Toggle Button */
+  .theme-toggle-btn {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 10000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  .theme-toggle-btn:hover {
+    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+  }
+  body.light-mode .theme-toggle-btn {
+    background: rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    color: #0f172a;
+  }
+  body.light-mode .theme-toggle-btn:hover {
+    background: rgba(15, 23, 42, 0.08);
+  }
+  body.light-mode .theme-toggle-btn .sun-icon {
+    display: block !important;
+  }
+  body.light-mode .theme-toggle-btn .moon-icon {
+    display: none !important;
+  }
+
+  /* Light Mode Component Overrides */
+  body.light-mode .slide-header h2 {
+    color: var(--brand-dark);
+  }
+  body.light-mode .icon-card-title, 
+  body.light-mode .feature-card-title, 
+  body.light-mode .compare-card-title, 
+  body.light-mode .col-title, 
+  body.light-mode .plan-title {
+    color: var(--text);
+  }
+  body.light-mode .slide-body p {
+    color: var(--text-muted);
+  }
+  body.light-mode .chapter-title strong {
+    color: var(--text);
+  }
+  body.light-mode .git-flow-container {
+    background: rgba(15, 23, 42, 0.02);
+  }
+  body.light-mode .commit-label {
+    color: #fff;
+  }
+  body.light-mode .graph-visual {
+    background: #f8fafc;
+  }
+  body.light-mode .node-main {
+    color: #fff;
   }
 
   .slides-container {
@@ -766,7 +857,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     font-weight: 800; font-size: 1.2rem; margin-bottom: 8px; color: #fff; 
   }
   .feature-tag { position: absolute; top: 12px; right: 12px; font-size: 0.75rem; font-weight: 900; padding: 4px 10px; border-radius: 100px; background: var(--brand); color: #fff; }
-  .slide-body p { color: #94a3b8; font-size: 0.95rem; }
+  .slide-body p { color: #94a3b8; font-size: 1.125rem; }
 
   /* Plan Grid details */
   .plan-card { text-align: center; padding-top: 35px; }
@@ -898,6 +989,12 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   <div class="slide-info" id="slideInfo"></div>
   <div class="progress-bar" id="progress"></div>
 
+  <!-- Theme Toggle -->
+  <button class="theme-toggle-btn" id="themeToggle" title="테마 전환 (다크/라이트)">
+    <svg class="sun-icon" style="display:none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
   <div class="controls">
     <button id="btnPrev" title="이전 슬라이드 (← / PageUp)">←</button>
     <button id="btnNext" title="다음 슬라이드 (→ / Space / PageDown)">→</button>
@@ -911,6 +1008,17 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     const btnPrev = document.getElementById('btnPrev');
     const btnNext = document.getElementById('btnNext');
     let currentIdx = 0;
+
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('themeToggle');
+    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.body.classList.add('light-mode');
+    }
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
 
     function update() {
       progress.style.width = ((currentIdx + 1) / slides.length * 100) + '%';
@@ -948,7 +1056,6 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     // Handle touch/manual mouse scroll snapping
     let scrollTimeout;
     container.addEventListener('scroll', () => {
-      clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         const width = window.innerWidth;
         const idx = Math.round(container.scrollLeft / width);

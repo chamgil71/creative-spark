@@ -185,6 +185,19 @@ function renderShortcode(type, body, args) {
 
   const renderAccent = (color) => color ? `style="border-color: ${color}; background-color: ${color}08;"` : "";
   const renderTextColor = (color) => color ? `style="color: ${color};"` : "";
+  const renderCompareNote = (activeNote, color) => {
+    if (!activeNote) return "";
+    const metaItems = splitMeta(activeNote);
+    const style = color ? `style="background:${color}15; color:${color}"` : "";
+    if (metaItems.length > 1) {
+      return `<div class="compare-note" ${style}>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
+          ${metaItems.map(f => `<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: ${color || 'var(--brand)'}; flex-shrink: 0; margin-top: 2px;">•</span><span>${escapeHtml(f)}</span></li>`).join("")}
+        </ul>
+      </div>`;
+    }
+    return `<div class="compare-note" ${style}>${escapeHtml(activeNote)}</div>`;
+  };
 
   // cols=N 파싱 로직 전격 탑재
   const colsMatch = (args || "").match(/cols=(\d+)/);
@@ -277,8 +290,8 @@ function renderShortcode(type, body, args) {
       return `
       <div class="compare-card" ${renderAccent(it.color)}>
         <div class="compare-card-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        <p>${escapeHtml(it.desc)}</p>
-        ${activeNote ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(activeNote)}</div>` : ""}
+        ${renderMultiLineText(it.desc, "p")}
+        ${activeNote ? renderCompareNote(activeNote, it.color) : ""}
       </div>`;
     }).join("")}</div>`;
   }
@@ -322,8 +335,8 @@ function renderShortcode(type, body, args) {
       <div class="column-card" ${renderAccent(it.color)}>
         <div class="card-top-bar" ${it.color ? `style="background:${it.color}"` : ""}></div>
         <div class="col-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        <p>${escapeHtml(it.desc)}</p>
-        ${activeNote ? `<div class="compare-note" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(activeNote)}</div>` : ""}
+        ${renderMultiLineText(it.desc, "p")}
+        ${activeNote ? renderCompareNote(activeNote, it.color) : ""}
       </div>`;
     }).join("")}</div>`;
   }
