@@ -1,21 +1,21 @@
 # 콘텐츠 파이프라인
 
-> 최종 업데이트: 2026-05-13 (html-to-md 전면 리팩터링, blockquote 스타일 추가)
+> 최종 업데이트: 2026-05-31 (md_src 폴더 구조 반영)
 
 ---
 
 ## 전체 흐름
 
 ```
-data/html_src1/*.html  (원본 HTML)
+storage/html_src1/*.html  (원본 HTML, gitignore)
       │
       │  templates/html-to-md.mjs  ← config/shortcode-map.json
       ▼
-data/mdresult/*.md  ←──────────── 신규 가이드 직접 작성 (권장)
+md_src/guides/*.md  ←──────────── 신규 가이드 직접 작성 (권장)
       │
       ├── templates/build-guide.mjs ──→ public/guides/*.html ──→ 웹 서비스
       │
-      └── scripts/md-to-pptx_v2.mjs ──→ dist-pptx/*.pptx
+      └── scripts/md-to-pptx.mjs ──→ dist-pptx/*.pptx
 ```
 
 ---
@@ -26,12 +26,12 @@ data/mdresult/*.md  ←──────────── 신규 가이드 직
 
 ```bash
 # 단일 파일
-node templates/html-to-md.mjs data/html_src1/CapCut.html data/mdresult/CapCut.md
+node templates/html-to-md.mjs storage/html_src1/CapCut.html md_src/guides/CapCut.md
 
 # 전체 일괄 변환 (bash)
-for f in data/html_src1/*.html; do
+for f in storage/html_src1/*.html; do
   name=$(basename "$f" .html)
-  node templates/html-to-md.mjs "$f" "data/mdresult/${name}.md"
+  node templates/html-to-md.mjs "$f" "md_src/guides/${name}.md"
 done
 ```
 
@@ -46,13 +46,13 @@ done
 
 ```bash
 # 단일 파일
-node templates/build-guide.mjs mddata/Supabase.md
+node templates/build-guide.mjs md_src/guides/Supabase.md
 
 # 출력 경로 지정
-node templates/build-guide.mjs mddata/Supabase.md public/guides/Supabase.html
+node templates/build-guide.mjs md_src/guides/Supabase.md public/guides/Supabase.html
 
 # 스타일 강제 지정
-node templates/build-guide.mjs mddata/Supabase.md --style knowledge
+node templates/build-guide.mjs md_src/guides/Supabase.md --style knowledge
 ```
 
 **설정 파일:** `config/styles.json` (색상), `config/pptdesign.config.json` (둥글기)
@@ -62,22 +62,22 @@ node templates/build-guide.mjs mddata/Supabase.md --style knowledge
 ## 3. MD → PPTX
 
 ```bash
-# 단일 파일 (v2 — Universal Schema)
-node scripts/md-to-pptx_v2.mjs mddata/Supabase.md
+# 단일 파일
+node scripts/md-to-pptx.mjs md_src/guides/Supabase.md
 
 # 옵션 지정
-node scripts/md-to-pptx_v2.mjs mddata/Supabase.md --out dist/Supabase.pptx --style ai-dev
+node scripts/md-to-pptx.mjs md_src/guides/Supabase.md --out dist/Supabase.pptx --style ai-dev
 
 # 전체 일괄 변환
-node scripts/md-to-pptx_v2.mjs --all "mddata/*.md"
+node scripts/md-to-pptx.mjs --all "md_src/guides/*.md"
 
 # 상세 로그
-node scripts/md-to-pptx_v2.mjs mddata/Supabase.md --verbose
+node scripts/md-to-pptx.mjs md_src/guides/Supabase.md --verbose
 ```
 
 **설정 파일:** `config/pptdesign.config.json`, `config/styles.json`
 
-> v1(`md-to-pptx.mjs`)도 동일한 인터페이스로 동작한다. v2는 Universal Schema(6대 표준 키) 기반으로 리팩터링된 버전.
+> `md_src/guides/` 폴더의 MD 파일을 직접 작성하거나 `scripts/html-to-md.mjs`로 변환하여 생성.
 
 ---
 

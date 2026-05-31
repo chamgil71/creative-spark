@@ -8,13 +8,15 @@
 
 ## 1. 현황 진단 요약
 
-### 1-1. mddata/ 소스 파일 현황
+### 1-1. md_src/ 소스 파일 현황
 ```
-/home/user/creative-spark/mddata/  →  존재하지 않음
+md_src/guides/      → 37개 MD 가이드 파일 존재 (현행 소스)
+md_src/showcase/    → showcase.md
+md_src/vibecoding/  → vibecoding 콘텐츠
+md_src/test/        → 테스트용 MD
 ```
-MD 소스 파일이 저장소에 없음. 기존 가이드는 모두 **컴파일된 HTML**만 존재.  
-→ 필드 변경 영향도는 "앞으로 새로 작성할 MD 파일" 기준으로만 적용됨.  
-→ 기존 39개 HTML 파일은 재생성하지 않는 한 변경 불필요.
+→ 필드 변경 시 `md_src/` 내 MD 파일도 직접 영향을 받음.  
+→ `public/guides/` 의 HTML은 `md_src/`에서 재빌드 시 변경이 적용됨.
 
 ### 1-2. 숏코드 사용 빈도 (기존 HTML 기준)
 
