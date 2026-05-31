@@ -116,23 +116,35 @@ footer:                 # 선택: 푸터 텍스트 목록
 모든 숏코드는 `:::` 펜스로 감싼다.
 
 ```
-::: shortcode-type
+::: shortcode-type [블록 인자]
 - key: value
   key2: value2
 :::
 ```
 
-### 6대 표준 키
+**블록 인자** (숏코드명 뒤 공백으로 지정, 복수 조합 가능):
+
+| 인자 | 대상 | 설명 |
+|------|------|------|
+| `cols=N` | grid 계열 5종 | CSS 컬럼 수 강제 지정 (`cols=3`) |
+| `bullet=X` | 전체 | 블록 기본 불릿 기호 지정 (`bullet=✅`) |
+
+```
+::: feature-grid cols=3 bullet=✅
+```
+
+### 표준 필드 키
 
 | 키 | 설명 | 이전 필드명 (자동 매핑) |
 |----|------|----------------------|
 | `icon` | 이모지 또는 아이콘 | `icon` |
 | `title` | 항목 제목 | `name`, `col` |
-| `desc` | 설명 텍스트 | `description`, `tagline`, `body` |
+| `desc` | 설명 텍스트 (`\n`으로 다중 불릿 목록) | `description`, `tagline`, `body` |
 | `tag` | 배지/레이블 | `badge` |
-| `meta` | 부가 데이터(도구명·파이프 구분 목록) | `tool`, `features`, `points`, `items` |
-| `note` | 하단 메모 또는 CTA | `note` |
-| `color` | 강조 색상 (Hex) | `color` |
+| `meta` | 부가 데이터(파이프`\|` 구분 목록) | `tool`, `features`, `points`, `items` |
+| `note` | 하단 배지·메모 (`\n` → ` · ` 구분) | `note` |
+| `color` | 강조 색상 (Hex) — 카드 + SVG 불릿 색 | `color` |
+| `bullet` | 아이템별 불릿 기호 오버라이드 | — |
 
 ---
 
@@ -160,10 +172,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### tool-card — 브랜드 컬러 배너
+#### tool-box — 브랜드 컬러 배너
 
 ```
-::: tool-card
+::: tool-box
 - icon: 🛠
   title: Supabase
   desc: Firebase 대체 오픈소스
@@ -188,10 +200,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### steps — 순서형 단계 목록
+#### step-list — 순서형 단계 목록
 
 ```
-::: steps
+::: step-list
 - title: 프로젝트 초기화
   desc: npm init으로 시작
 - title: 의존성 설치
@@ -228,10 +240,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### compare-2col — 좌우 2단 비교
+#### compare-split — 좌우 2단 비교
 
 ```
-::: compare-2col
+::: compare-split
 - title: 기존 방식
   meta: 복잡함|설정 많음|속도 느림
   note: 레거시
