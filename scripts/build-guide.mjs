@@ -155,6 +155,10 @@ function parseShortcodeItems(src) {
 //  2. 숏코드 렌더링 엔진 (모든 숏코드 지원)
 // ════════════════════════════════════════════════════════════════
 
+// 기본 불릿 — 여기서 한 곳만 바꾸면 전체 적용
+// 이모지 예시: "✅" "✔️" "•" "●"  |  SVG 체크 사용 시: null
+const DEFAULT_BULLET = null;   // null → SVG 체크마크
+
 // 줄 앞 이모지 감지 (단독 이모지 + 공백 + 내용) — ✅✔️ 포함
 const EMOJI_BULLET_RE = /^([\u{1F300}-\u{1FAFF}]|[\u{2600}-\u{27BF}]|[\u{2B00}-\u{2BFF}])\s+(.+)$/u;
 // 표준 텍스트 마커만 (이모지 제외)
@@ -170,6 +174,10 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
   }
 
   const svgBullet = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  // 우선순위: 호출자 지정(customBullet) → 블록 기본값(DEFAULT_BULLET) → SVG
+  const activeBullet = customBullet ?? DEFAULT_BULLET;
+  const makeBulletHtml = (sym) =>
+    sym ? `<span style="font-size:1rem;line-height:1;">${sym}</span>` : svgBullet;
 
   let listHtml = '<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;">';
   for (const line of lines) {
@@ -178,16 +186,14 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
 
     let bulletHtml, content;
     if (emojiMatch) {
-      // 줄 앞 이모지 → 해당 이모지를 불릿으로, 나머지가 내용
+      // 줄 앞 이모지 → 해당 이모지를 불릿으로
       bulletHtml = `<span style="font-size:1rem;line-height:1;">${emojiMatch[1]}</span>`;
       content    = emojiMatch[2];
     } else if (stdMatch) {
-      // 표준 불릿 기호(-,*,•,✅ 등) → SVG 또는 customBullet
-      bulletHtml = customBullet ? `<span style="font-size:1rem;line-height:1;">${customBullet}</span>` : svgBullet;
+      bulletHtml = makeBulletHtml(activeBullet);
       content    = stdMatch[1];
     } else {
-      // 마커 없는 줄 → customBullet 또는 SVG
-      bulletHtml = customBullet ? `<span style="font-size:1rem;line-height:1;">${customBullet}</span>` : svgBullet;
+      bulletHtml = makeBulletHtml(activeBullet);
       content    = line;
     }
     if (!content.trim()) continue;
