@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NotebookLM Importer 가이드</title>
+<title>NotebookLM Importer</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #6366F1;
+    --brand-dark: #4F46E5;
+    --brand-deep: #3730A3;
+    --brand-light:#EEF0FE;
+    --brand-mid:  #C7CCFB;
+    --border:     #D8DCFB;
+    --bg:         #F8F9FE;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1E1B3A 40%, #3730A3 70%, #6366F1 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #6366F155 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,60 +279,132 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">📥NLM NotebookLM Importer 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 무엇을 해결하는가?</a></li><li><a href="#sec-2">2. 설치 &amp; 사용법</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">NotebookLM Importer</a><ul class="nav-links"><li><a href="#sec-1">무엇을 해결하는가?</a></li><li><a href="#sec-2">설치 &amp; 사용법</a></li><li><a href="#sec-3">활용 시나리오</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>✅ 크롬 익스텐션 · 완전 무료</div>
-      <div class="hero-logo">📥NLM</div>
-      <h1>NotebookLM Importer 가이드</h1>
-      <p>웹 서핑 중 발견한 아티클을 클릭 한 번으로NotebookLM 지식베이스에 바로 저장</p>
+      
+      <h1>NotebookLM Importer</h1>
+      <p>NotebookLM 자료 가져오기</p>
       
       <div class="hero-stats"><div class="hero-stat"><strong>1클릭</strong><span>즉시 저장</span></div><div class="hero-stat"><strong>무료</strong><span>완전 무료</span></div><div class="hero-stat"><strong>Chrome</strong><span>익스텐션</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 무엇을 해결하는가?</h2></div><div class="card"><div class="workflow-strip">
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>무엇을 해결하는가?</h2></div><div class="card"><div class="workflow-strip">
 <div class="wf-step" >
-<div class="wf-icon" >💡</div>
-<div class="wf-name" >💡 핵심 가치:</div>
+<div class="wf-icon" ></div>
+<div class="wf-name" >🌐
+웹 서핑 중
+유용한 아티클 발견
+→</div>
 <div class="wf-tool"></div>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 설치 &amp; 사용법</h2></div><div class="card"><div class="step-list">
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" ></div>
+<div class="wf-name" >📋
+기존 방식
+URL 복사 → NotebookLM 열기 → 소스 추가 → 붙여넣기
+→</div>
+<div class="wf-tool"></div>
+<div class="wf-arrow">→</div>
+</div>
+<div class="wf-step" >
+<div class="wf-icon" ></div>
+<div class="wf-name" >⚡
+Importer 사용
+익스텐션 아이콘 클릭 → 완료!</div>
+<div class="wf-tool"></div>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 핵심 가치:</strong>
+<p>좋은 콘텐츠를 발견했을 때 \&quot;나중에 봐야지\&quot;가 아니라 즉시 지식베이스로. 컨텍스트 전환 없이 웹 서핑 흐름 유지.</p>
+</div>
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>설치 &amp; 사용법</h2></div><div class="card"><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" >리서치 수집</div>
-<p>논문·기사·보고서를 발견할 때마다 즉시 주제별 노트북에 저장.</p>
+<div class="step-title" >1Chrome 웹스토어에서 \&quot;NotebookLM Importer\&quot; 검색 후 설치또는 GitHub에서 직접 설치 (오픈소스). 완전 무료.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >2</div>
 <div class="step-content">
-<div class="step-title" >뉴스 큐레이션</div>
-<p>매일 읽는 AI·정책 뉴스를 자동 누적. 월말에 NotebookLM으로 동향 분석.</p>
+<div class="step-title" >2Google 계정으로 로그인 (NotebookLM과 동일 계정)권한: NotebookLM 접근 허용. 다른 데이터에는 접근하지 않음.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >3</div>
 <div class="step-content">
-<div class="step-title" >학습 자료 구성</div>
-<p>강의·튜토리얼 링크를 모아 NotebookLM에서 AI 요약·퀴즈 생성.</p>
+<div class="step-title" >3저장할 NotebookLM 노트북 선택 (드롭다운)여러 노트북 중 원하는 곳으로 바로 지정 가능.</div>
+<p></p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >4</div>
 <div class="step-content">
-<div class="step-title" >경쟁사 모니터링</div>
-<p>경쟁사 블로그·보도자료 발견 즉시 저장 → 통합 분석.</p>
+<div class="step-title" >4웹페이지에서 아이콘 클릭 → 자동으로 소스 추가 완료URL이 자동으로 NotebookLM 소스 목록에 추가됨. 나중에 NotebookLM에서 AI 분석 가능.</div>
+<p></p>
 </div>
-</div></div>
-</div></section></main>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>활용 시나리오</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔬</div>
+<div class="icon-card-title" style="color: var(--text);">리서치 수집</div>
+<p>논문·기사·보고서를 발견할 때마다 즉시 주제별 노트북에 저장.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📰</div>
+<div class="icon-card-title" style="color: var(--text);">뉴스 큐레이션</div>
+<p>매일 읽는 AI·정책 뉴스를 자동 누적. 월말에 NotebookLM으로 동향 분석.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">📚</div>
+<div class="icon-card-title" style="color: var(--text);">학습 자료 구성</div>
+<p>강의·튜토리얼 링크를 모아 NotebookLM에서 AI 요약·퀴즈 생성.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🏢</div>
+<div class="icon-card-title" style="color: var(--text);">경쟁사 모니터링</div>
+<p>경쟁사 블로그·보도자료 발견 즉시 저장 → 통합 분석.</p>
+</div></div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

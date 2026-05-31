@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,57 +279,91 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🐙 GitHub Copilot 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Copilot은 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 에디터에 AI 심기</a></li><li><a href="#sec-3">3. 생산성을 200% 올리는 활용 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">GitHub Copilot 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Copilot은 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 에디터에 AI 심기</a></li><li><a href="#sec-3">생산성을 200% 올리는 활용 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🤝 AI 짝 코딩 · 자동완성</div>
-      <div class="hero-logo">🐙</div>
+      
       <h1>GitHub Copilot 완전 활용 가이드</h1>
-      <p>편집기 안에서 내 코딩 스타일을 파악해 실시간으로 코드를 완성해주는 전 세계 1위 AI 짝꿍</p>
-      <a class="hero-cta" href="https://github.com/features/copilot" target="_blank" rel="noopener">Copilot 시작하기</a>
+      <p>AI 짝 코딩 &amp; 자동완성</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>$10/월</strong><span>개인 플랜</span></div><div class="hero-stat"><strong>VS Code</strong><span>최고의 궁합</span></div><div class="hero-stat"><strong>Chat</strong><span>대화형 UI</span></div><div class="hero-stat"><strong>CLI</strong><span>터미널 지원</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Copilot은 어떤 도구인가</h2></div><div class="card"><p>GitHub Copilot은 VS Code, IntelliJ 같은 코드 에디터에 확장 프로그램 형태로 설치되어, 개발자가 코드를 치는 동안 다음 줄이나 전체 함수를 실시간으로 유추하고 제안해주는 AI 어시스턴트입니다. 단순히 검색된 코드를 붙여넣는 것이 아니라, 현재 열려 있는 파일과 프로젝트의 맥락을 읽어 내 프로젝트 스타일에 딱 맞는 코드를 짜줍니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >👻</div>
-<div class="icon-card-title" >고스트 텍스트 자동완성</div>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Copilot은 어떤 도구인가</h2></div><div class="card"><p>GitHub Copilot은 VS Code, IntelliJ 같은 코드 에디터에 확장 프로그램 형태로 설치되어, 개발자가 코드를 치는 동안 다음 줄이나 전체 함수를 실시간으로 유추하고 제안해주는 AI 어시스턴트입니다. 단순히 검색된 코드를 붙여넣는 것이 아니라, 현재 열려 있는 파일과 프로젝트의 맥락을 읽어 내 프로젝트 스타일에 딱 맞는 코드를 짜줍니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">👻</div>
+<div class="icon-card-title" style="color: var(--text);">고스트 텍스트 자동완성</div>
 <p>코드를 작성하는 도중 회색 글씨(Ghost Text)로 다음 로직이 추천되며, `Tab` 키로 즉시 적용합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >💬</div>
-<div class="icon-card-title" >Copilot Chat</div>
+<div class="icon-card-icon" style="color: var(--brand);">💬</div>
+<div class="icon-card-title" style="color: var(--text);">Copilot Chat</div>
 <p>에디터 좌측 패널에서 ChatGPT처럼 대화하며 코드를 리팩토링하거나 테스트 코드를 짜달라고 요청합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🪄</div>
-<div class="icon-card-title" >인라인 에디팅</div>
+<div class="icon-card-icon" style="color: var(--brand);">🪄</div>
+<div class="icon-card-title" style="color: var(--text);">인라인 에디팅</div>
 <p>코드 중간에서 `Ctrl + I` (Mac: `Cmd + I`)를 눌러 프롬프트 창을 띄우고 특정 블록만 바로 수정합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🖥️</div>
-<div class="icon-card-title" >Copilot CLI</div>
+<div class="icon-card-icon" style="color: var(--brand);">🖥️</div>
+<div class="icon-card-title" style="color: var(--text);">Copilot CLI</div>
 <p>터미널에서 외우기 힘든 Git 요령이나 복잡한 쉘(Shell) 명령어를 자연어로 물어보고 즉시 실행합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >생산성</span>
-<div class="feature-card-title" >
-<span class="fc-icon">⚡</span>반복 작업이 지겨운 개발자
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚡</span>⚡ 반복 작업이 지겨운 개발자
 </div>
 <p>보일러플레이트 코드, DTO, 무의미한 Getter/Setter 작성에 시간을 낭비하고 싶지 않은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >풀스택</span>
-<div class="feature-card-title" >
-<span class="fc-icon">🤹</span>새로운 언어를 익히는 중인 분
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🤹</span>🤹 새로운 언어를 익히는 중인 분
 </div>
 <p>Python은 잘하지만 JS 문법이 헷갈릴 때, 검색창으로 가지 않고 에디터 안에서 바로 해결하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >클린코드</span>
-<div class="feature-card-title" >
-<span class="fc-icon">🧹</span>테스트/정규식 혐오자
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🧹</span>🧹 테스트/정규식 혐오자
 </div>
 <p>짜기 귀찮은 단위 테스트 코드나, 머리 아픈 정규표현식을 3초 만에 완벽하게 생성하고 싶은 분.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 에디터에 AI 심기</h2></div><div class="card"><p>가장 많이 사용하는 VS Code를 기준으로 한 초기 세팅입니다.</p>
-</div><div class="card"><h3 class="card-title">3분 세팅 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 에디터에 AI 심기</h2></div><div class="card"><p>가장 많이 사용하는 VS Code를 기준으로 한 초기 세팅입니다.</p>
+<h3>3분 세팅 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -320,40 +398,48 @@
 <div class="step-title" >제안 수락하기</div>
 <p>회색 코드가 나타나면 `Tab`을 눌러 수락하거나, `Alt + ]`를 눌러 다른 제안을 살펴봅니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 생산성을 200% 올리는 활용 팁</h2></div><div class="card"><p>Copilot Chat에는 에디터 환경에서만 쓸 수 있는 강력한 &#39;컨텍스트 멘션(@)&#39; 기능이 있습니다.</p>
-<div class="compare-grid">
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>생산성을 200% 올리는 활용 팁</h2></div><div class="card"><p>Copilot Chat에는 에디터 환경에서만 쓸 수 있는 강력한 &#39;컨텍스트 멘션(@)&#39; 기능이 있습니다.</p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >@workspace</div>
-<p>현재 열려있는 전체 폴더의 코드를 훑어보고 답변합니다. &quot;이 프로젝트에서 DB 라우팅은 어디서 처리해?&quot;라고 물어볼 수 있습니다.</p>
+<p>현재 열려있는 전체 폴더의 코드를 훑어보고 답변합니다. \&quot;이 프로젝트에서 DB 라우팅은 어디서 처리해?\&quot;라고 물어볼 수 있습니다.</p>
 <div class="compare-note" >전체 구조 파악</div>
 </div>
 <div class="compare-card" >
 <div class="compare-card-title" >@vscode</div>
-<p>에디터의 설정이나 단축키 등을 물어봅니다. &quot;테마를 다크 모드로 바꾸는 설정 열어줘&quot; 등의 명령이 가능합니다.</p>
+<p>에디터의 설정이나 단축키 등을 물어봅니다. \&quot;테마를 다크 모드로 바꾸는 설정 열어줘\&quot; 등의 명령이 가능합니다.</p>
 <div class="compare-note" >IDE 제어</div>
 </div>
 <div class="compare-card" >
 <div class="compare-card-title" >#file</div>
-<p>특정 파일을 지목하여 질문합니다. &quot;#app.py 와 #utils.py를 비교해서 중복 코드를 찾아줘&quot;라고 지시합니다.</p>
+<p>특정 파일을 지목하여 질문합니다. \&quot;#app.py 와 #utils.py를 비교해서 중복 코드를 찾아줘\&quot;라고 지시합니다.</p>
 <div class="compare-note" >파일 간 맥락 연결</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">실무 적용 전 확인</h3><ul>
-<li>사내 보안 규정상 소스 코드가 외부(GitHub 서버)로 전송되어도 문제가 없는지 확인했는가?</li>
-<li>추천받은 코드가 회사에서 사용하는 라이브러리 버전과 호환되는지 점검했는가?</li>
-<li>내가 단축키를 제대로 활용하고 있는가? (수락: <code>Tab</code>, 단어별 수락: <code>Ctrl + Right</code>, 거절: <code>Esc</code>)</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>실무 적용 전 확인</h3>
+<ul>
+<li><p>사내 보안 규정상 소스 코드가 외부(GitHub 서버)로 전송되어도 문제가 없는지 확인했는가?</p>
+</li>
+<li><p>추천받은 코드가 회사에서 사용하는 라이브러리 버전과 호환되는지 점검했는가?</p>
+</li>
+<li><p>내가 단축키를 제대로 활용하고 있는가? (수락:</p>
+<p>Tab</p>
+<p>, 단어별 수락:</p>
+<p>Ctrl + Right</p>
+<p>, 거절:</p>
+<p>Esc</p>
+<p>)</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: Copilot은 열려 있는 다른 탭의 파일들을 컨텍스트로 강력하게 참조합니다. 따라서 코드를 짤 때 관련 있는 파일(데이터 모델, 공통 유틸 등)의 탭을 에디터에 띄워두면 훨씬 더 맥락에 맞는 정확한 코드를 제안받을 수 있습니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">타이핑의 고통에서 해방되세요</h3><p>주석 한 줄을 적고 잠시 멈춰보세요. Copilot이 당신이 원하는 코드를 마법처럼 제안합니다.</p>
+<p>VS Code 확장 설치</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>타이핑의 고통에서 해방되세요</h2>
-    <p>주석 한 줄을 적고 잠시 멈춰보세요. Copilot이 당신이 원하는 코드를 마법처럼 제안합니다.</p>
-    <a class="done-link" href="https://marketplace.visualstudio.com/items?itemName=GitHub.copilot" target="_blank" rel="noopener">VS Code 확장 설치</a>
-  </section>
-  <footer><div>GitHub Copilot은 OpenAI의 최신 모델을 기반으로 사용자의 프로젝트 컨텍스트를 이해합니다.</div><div>공식 사이트: <a href="https://github.com/features/copilot">github.com/features/copilot</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

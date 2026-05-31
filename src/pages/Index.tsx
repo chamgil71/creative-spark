@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search, Sparkles } from "lucide-react";
-import { categories, collections } from "@/data/guides";
+import { categories, collections, showcase } from "@/data/guides";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -207,6 +207,69 @@ const Index = () => {
                   </div>
                 </Link>
               ))}
+            </div>
+          </section>
+        )}
+
+        {showcase && !query && (
+          <section className="scroll-mt-24">
+            <div className="flex items-end justify-between gap-4 mb-8 border-b border-border pb-4">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: "#8b5cf6" }} />
+                  <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                    showcase
+                  </span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">숏코드 쇼케이스</h2>
+                <p className="text-muted-foreground mt-2">v1.1 프리미엄 숏코드 및 시각화 종합 실연</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <a
+                href={`/${showcase.file}`}
+                target="_blank"
+                rel="noopener"
+                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: "#8b5cf6" }} />
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-lg truncate">{showcase.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{showcase.subtitle}</p>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground shrink-0" />
+                </div>
+              </a>
+              <a
+                href={`/${showcase.pptxFile}`}
+                download
+                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: "#10b981" }} />
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-lg truncate">📊 쇼케이스 PPTX 다운로드</h3>
+                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">발표 및 보관용 파워포인트 슬라이드 팩</p>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground shrink-0" />
+                </div>
+              </a>
+              <a
+                href="/docs/guide-creation.md"
+                target="_blank"
+                rel="noopener"
+                className="group relative overflow-hidden rounded-xl border border-border bg-card p-6 transition-all hover:border-foreground/30 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: "#ec4899" }} />
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-lg truncate">📚 숏코드 제작 가이드</h3>
+                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">Creative Spark 마크업 상세 작성 지침서</p>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground shrink-0" />
+                </div>
+              </a>
             </div>
           </section>
         )}

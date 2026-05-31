@@ -35,7 +35,12 @@
       "Bash('.prereq-grid')",
       "Bash('.faq-grid')",
       "Bash(head -30 scripts/md-to-pptx_v2.mjs)",
-      "Bash(head -30 scripts/md-to-pptx.mjs)"
+      "Bash(head -30 scripts/md-to-pptx.mjs)",
+      "Bash(sed \"s/case //g\")",
+      "Bash(sed \"s/'//g\")",
+      "Bash(sed \"s/\\\\\"//g\")",
+      "Bash(sed \"s/:$//g\")",
+      "Bash(Move-Item *)"
     ]
   }
 }

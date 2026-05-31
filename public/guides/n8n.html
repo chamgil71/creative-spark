@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #06B6D4;
-    --brand-dark: #0891B2;
-    --brand-deep: #0E7490;
-    --brand-light:#ECFEFF;
-    --brand-mid:  #A5F3FC;
-    --border:     #BCEFF5;
-    --bg:         #F4FCFD;
+    --brand:      #D97757;
+    --brand-dark: #B85F3F;
+    --brand-deep: #8B4530;
+    --brand-light:#FDF0EB;
+    --brand-mid:  #F4C5AE;
+    --border:     #F0D4C4;
+    --bg:         #FBF7F5;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #07131A 0%, #0B2230 40%, #0E7490 70%, #06B6D4 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #06B6D455 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,57 +279,91 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🔗 n8n 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. n8n은 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 나만의 자동화 구축</a></li><li><a href="#sec-3">3. 실무 효율을 높이는 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">n8n 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">n8n은 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 나만의 자동화 구축</a></li><li><a href="#sec-3">실무 효율을 높이는 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>⚙️ 워크플로우 · 자동화</div>
-      <div class="hero-logo">🔗</div>
+      
       <h1>n8n 완전 활용 가이드</h1>
-      <p>코딩과 노코드의 장점만 결합한 강력한 워크플로우 자동화 및 AI 에이전트 구축 플랫폼</p>
-      <a class="hero-cta" href="https://n8n.io" target="_blank" rel="noopener">n8n 시작하기</a>
+      <p>워크플로우 자동화 도구</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>Self-Host</strong><span>무료 운영</span></div><div class="hero-stat"><strong>Node 기반</strong><span>시각적 연결</span></div><div class="hero-stat"><strong>Python</strong><span>스크립트 지원</span></div><div class="hero-stat"><strong>Webhook</strong><span>실시간 트리거</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. n8n은 어떤 도구인가</h2></div><div class="card"><p>n8n(엔에이트엔)은 다양한 웹 서비스(텔레그램, 구글 시트, 깃허브 등)와 커스텀 스크립트를 시각적인 노드(Node) 형태로 연결해 주는 자동화 플랫폼입니다. 특히 최근에는 LLM(대규모 언어 모델)을 노드에 직접 연결하여, 스스로 생각하고 판단하는 &#39;AI 에이전트&#39;를 구축하는 기능이 매우 강력해졌습니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🔄</div>
-<div class="icon-card-title" >무제한 워크플로우</div>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>n8n은 어떤 도구인가</h2></div><div class="card"><p>n8n(엔에이트엔)은 다양한 웹 서비스(텔레그램, 구글 시트, 깃허브 등)와 커스텀 스크립트를 시각적인 노드(Node) 형태로 연결해 주는 자동화 플랫폼입니다. 특히 최근에는 LLM(대규모 언어 모델)을 노드에 직접 연결하여, 스스로 생각하고 판단하는 &#39;AI 에이전트&#39;를 구축하는 기능이 매우 강력해졌습니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🔄</div>
+<div class="icon-card-title" style="color: var(--text);">무제한 워크플로우</div>
 <p>클라우드 유료 플랜(Zapier 등)과 달리, 도커(Docker)로 직접 호스팅하면 실행 횟수 제한 없이 무료로 씁니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🐍</div>
-<div class="icon-card-title" >커스텀 코드 실행</div>
+<div class="icon-card-icon" style="color: var(--brand);">🐍</div>
+<div class="icon-card-title" style="color: var(--text);">커스텀 코드 실행</div>
 <p>파이썬이나 자바스크립트 코드를 노드 안에 직접 삽입하여 복잡한 데이터 가공 로직을 수행합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🎣</div>
-<div class="icon-card-title" >Webhook 트리거</div>
+<div class="icon-card-icon" style="color: var(--brand);">🎣</div>
+<div class="icon-card-title" style="color: var(--text);">Webhook 트리거</div>
 <p>특정 URL로 신호가 들어오면 즉시 파이프라인이 실행되도록 하여 실시간 알림 시스템을 만듭니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🤖</div>
-<div class="icon-card-title" >Advanced AI</div>
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);">Advanced AI</div>
 <p>LangChain 개념이 내장되어 있어, OpenAI나 로컬 LLM을 연결해 텍스트를 분류하고 요약하는 파이프라인을 짭니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >서버</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>🖥️ 홈 서버 / NAS 운영자
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🖥</span>🖥️ 홈 서버 / NAS 운영자
 </div>
 <p>24시간 켜져 있는 미니 PC 환경을 활용해 정기적인 크롤링이나 데이터 백업을 스케줄링하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >자동화</span>
-<div class="feature-card-title" >
-<span class="fc-icon">📈</span>데이터 파이프라인 설계자
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">📈</span>📈 데이터 파이프라인 설계자
 </div>
-<p>주식/부동산 데이터 수집 -&gt; AI 분석 -&gt; 텔레그램 알림 발송&quot;과 같은 복잡한 흐름을 한눈에 관리하고 싶은 분.</p>
+<p>주식/부동산 데이터 수집 -&gt; AI 분석 -&gt; 텔레그램 알림 발송\&quot;과 같은 복잡한 흐름을 한눈에 관리하고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >비용</span>
-<div class="feature-card-title" >
-<span class="fc-icon">💸</span>SaaS 비용 절감러
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">💸</span>💸 SaaS 비용 절감러
 </div>
 <p>단순 반복 작업 자동화에 매월 비싼 구독료를 내고 싶지 않은 실속파 개발자.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 나만의 자동화 구축</h2></div><div class="card"><p>Docker가 설치된 환경이라면 명령어 한 줄로 즉시 서버가 실행됩니다.</p>
-</div><div class="card"><h3 class="card-title">기본 워크플로우 설계 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 나만의 자동화 구축</h2></div><div class="card"><p>Docker가 설치된 환경이라면 명령어 한 줄로 즉시 서버가 실행됩니다.</p>
+<h3>기본 워크플로우 설계 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -297,7 +375,7 @@
 <div class="step-num" >2</div>
 <div class="step-content">
 <div class="step-title" >트리거(Trigger) 설정</div>
-<p>캔버스에 &#39;Schedule&#39; 노드를 올려 &quot;매일 아침 9시에 실행&quot;되도록 시작점을 만듭니다.</p>
+<p>캔버스에 &#39;Schedule&#39; 노드를 올려 \&quot;매일 아침 9시에 실행\&quot;되도록 시작점을 만듭니다.</p>
 </div>
 </div>
 <div class="step-item" >
@@ -320,7 +398,7 @@
 <div class="step-title" >최종 액션(알림)</div>
 <p>Telegram&#39; 노드를 연결해 필터링된 알짜 정보를 내 스마트폰 메신저로 전송받습니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 실무 효율을 높이는 팁</h2></div><div class="card"><div class="compare-grid">
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>실무 효율을 높이는 팁</h2></div><div class="card"><div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >Sub-Workflow (서브 워크플로우)</div>
 <p>자주 쓰는 로직(예: 텔레그램 에러 메시지 발송)은 별도의 워크플로우로 떼어내고, 메인 흐름에서 모듈처럼 호출해서 씁니다.</p>
@@ -335,24 +413,28 @@
 <div class="compare-card-title" >에러 핸들링</div>
 <p>각 노드의 설정에서 &#39;에러 발생 시 실행 계속하기(Continue On Fail)&#39;를 켜고, 분기를 태워 에러 로그만 따로 저장합니다.</p>
 <div class="compare-note" >파이프라인 안정성</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">실행 전 안정성 확인</h3><ul>
-<li>Webhook URL이나 API 키 등 민감한 정보가 하드코딩되지 않고 &#39;Credentials&#39; 메뉴에 안전하게 저장되었는가?</li>
-<li>도커 환경에서 타임존(TZ) 변수가 <code>Asia/Seoul</code>로 정확히 설정되어 스케줄러가 한국 시간에 맞춰 도는가?</li>
-<li>처리해야 할 데이터가 많을 경우 노드의 일괄 처리(Batching) 설정이 적절히 되어 있는가?</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>실행 전 안정성 확인</h3>
+<ul>
+<li><p>Webhook URL이나 API 키 등 민감한 정보가 하드코딩되지 않고 &#39;Credentials&#39; 메뉴에 안전하게 저장되었는가?</p>
+</li>
+<li><p>도커 환경에서 타임존(TZ) 변수가</p>
+<p>Asia/Seoul</p>
+<p>로 정확히 설정되어 스케줄러가 한국 시간에 맞춰 도는가?</p>
+</li>
+<li><p>처리해야 할 데이터가 많을 경우 노드의 일괄 처리(Batching) 설정이 적절히 되어 있는가?</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: 복잡한 정규표현식이나 데이터 가공 로직을 짤 때, n8n의 Code 노드를 열고 AI 비서(Cursor 등)에게 &quot;이 JSON 데이터를 n8n 형태에 맞게 필터링하는 자바스크립트 코드를 짜줘&quot;라고 하면 워크플로우 구축 속도가 비약적으로 상승합니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">나만의 24시간 자동화 비서를 구축하세요</h3><p>흩어져 있는 스크립트와 API를 시각적으로 연결하여 데이터 수집부터 알림까지 한 번에 처리하세요.</p>
+<p>공식 문서 보기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>나만의 24시간 자동화 비서를 구축하세요</h2>
-    <p>흩어져 있는 스크립트와 API를 시각적으로 연결하여 데이터 수집부터 알림까지 한 번에 처리하세요.</p>
-    <a class="done-link" href="https://docs.n8n.io" target="_blank" rel="noopener">공식 문서 보기</a>
-  </section>
-  <footer><div>n8n은 Zapier의 훌륭한 대안이며, 자체 서버(NAS 등)에 도커로 올려서 무료로 제한 없이 사용할 수 있습니다.</div><div>공식 사이트: <a href="https://n8n.io">n8n.io</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

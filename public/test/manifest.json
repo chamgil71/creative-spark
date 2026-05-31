@@ -1,0 +1,11 @@
+{
+  "id": "test",
+  "label": "test 시리즈",
+  "parts": [
+    {
+      "slug": "xlsx_json",
+      "title": "Excel to JSON 변환 파이프라인 분석",
+      "file": "xlsx_json.html"
+    }
+  ]
+}

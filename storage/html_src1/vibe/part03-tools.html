@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3부. AI 코딩 도구 — 바이브코딩 & 에이전트 코딩 완전 입문</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--brand:#7C3AED;--brand-dark:#6D28D9;--brand-deep:#4C1D95;--brand-light:#F5F3FF;--brand-mid:#C4B5FD;--text:#1A1A2E;--text-2:#4B5575;--text-3:#8892B0;--bg:#FAFAFF;--white:#FFFFFF;--border:#DDD6FE;--shadow:0 4px 24px rgba(124,58,237,0.10);--shadow-lg:0 8px 40px rgba(124,58,237,0.16);--radius:16px;--radius-sm:10px;}
+    *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+    body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;}
+    .nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--brand);text-decoration:none;}
+    .nav-logo .logo-icon{width:32px;height:32px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;}
+    .nav-part{font-size:12px;background:var(--brand-light);color:var(--brand-dark);padding:3px 10px;border-radius:100px;font-weight:600;border:1px solid var(--border);}
+    .nav-links{display:flex;gap:4px;list-style:none;}
+    .nav-links a{text-decoration:none;color:var(--text-2);font-size:13px;font-weight:500;padding:5px 10px;border-radius:8px;transition:all .2s;}
+    .nav-links a:hover{background:var(--brand-light);color:var(--brand);}
+    .hero{background:linear-gradient(135deg,#2E1065 0%,#4C1D95 40%,#6D28D9 75%,#7C3AED 100%);color:white;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(124,58,237,0.3) 0%,transparent 60%);}
+    .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:500;margin-bottom:20px;}
+    .hero-badge span{width:8px;height:8px;background:#4ade80;border-radius:50%;display:inline-block;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+    .hero-part-num{font-size:13px;opacity:.6;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+    .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:700;margin-bottom:16px;line-height:1.25;}
+    .hero p{font-size:1.05rem;opacity:.85;margin-bottom:36px;}
+    .hero-chapters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    .hero-chapter-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 12px;font-size:12px;font-family:'JetBrains Mono',monospace;}
+    main{max-width:960px;margin:0 auto;padding:60px 24px 80px;}
+    .section{margin-bottom:64px;scroll-margin-top:80px;}
+    .section-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
+    .section-num{width:44px;height:44px;background:var(--brand);color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+    .section-header h2{font-family:'Noto Serif KR',serif;font-size:1.45rem;font-weight:700;}
+    .section-lead{font-size:.97rem;color:var(--text-2);line-height:1.85;margin-bottom:24px;padding:18px 22px;background:white;border-radius:var(--radius-sm);border-left:4px solid var(--brand);box-shadow:var(--shadow);}
+    .card{background:white;border-radius:var(--radius);border:1px solid var(--border);padding:24px;box-shadow:var(--shadow);margin-bottom:14px;}
+    .card-title{font-weight:700;font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+    .card-title .icon{width:28px;height:28px;background:var(--brand-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+    .tool-card{background:white;border-radius:var(--radius);border:2px solid var(--border);padding:22px;transition:all .2s;}
+    .tool-card:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+    .tool-card.highlight{border-color:var(--brand);background:var(--brand-light);}
+    .tool-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+    .tool-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+    .tool-name{font-weight:700;font-size:1rem;}
+    .tool-maker{font-size:.78rem;color:var(--text-3);}
+    .tool-desc{font-size:.87rem;color:var(--text-2);line-height:1.75;margin-bottom:12px;}
+    .tool-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .tool-tag{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:.78rem;color:var(--text-2);}
+    .compare-table{width:100%;border-collapse:collapse;background:white;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+    .compare-table th{background:var(--brand);color:white;padding:12px 16px;text-align:left;font-weight:600;font-size:.88rem;}
+    .compare-table td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:.87rem;vertical-align:middle;}
+    .compare-table tr:last-child td{border-bottom:none;}
+    .compare-table tr:nth-child(even) td{background:var(--bg);}
+    .code-block{background:#1A1A2E;color:#E2E8F0;border-radius:var(--radius-sm);padding:18px 22px;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:1.9;margin:14px 0;overflow-x:auto;}
+    .code-block .cm{color:#6B7280;}.code-block .kw{color:#C4B5FD;}.code-block .str{color:#86EFAC;}.code-block .hl{color:#FCA5A5;}
+    .tip-box{background:linear-gradient(135deg,var(--brand-light),#fff);border-left:4px solid var(--brand);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:15px 19px;margin-top:14px;font-size:.9rem;}
+    .tip-box strong{color:var(--brand-dark);}
+    .warn-box{background:#FFF8E8;border-left:4px solid #F59E0B;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:15px 19px;margin-top:14px;font-size:.9rem;}
+    .warn-box strong{color:#92650A;}
+    .takeaway{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);color:white;border-radius:var(--radius);padding:22px 26px;margin-top:22px;display:flex;gap:14px;align-items:flex-start;}
+    .takeaway .ta-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+    .takeaway .ta-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+    .takeaway .ta-text{font-size:.94rem;line-height:1.75;font-weight:500;}
+    .chapter-divider{border:none;border-top:2px dashed var(--border);margin:48px 0;}
+    .back-top{position:fixed;bottom:32px;right:32px;width:46px;height:46px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:var(--shadow-lg);font-size:20px;transition:all .2s;}
+    .back-top:hover{background:var(--brand-dark);transform:translateY(-2px);}
+    footer{background:#1A1A2E;color:rgba(255,255,255,0.6);text-align:center;padding:32px 24px;font-size:.88rem;}
+    footer strong{color:var(--brand);}
+    .footer-nav{display:flex;justify-content:center;gap:24px;margin-bottom:16px;}
+    .footer-nav a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:.85rem;transition:color .2s;}
+    .footer-nav a:hover{color:var(--brand);}
+    .star{color:#FCD34D;}
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><div class="logo-icon">🛠️</div>바이브코딩 & 에이전트 코딩</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="nav-part">3부 · AI 코딩 도구</span>
+      <ul class="nav-links">
+        <li><a href="#ch06">06</a></li><li><a href="#ch07">07</a></li><li><a href="#ch08">08</a></li>
+        <li><a href="#ch09">09</a></li><li><a href="#ch10">10</a></li><li><a href="#ch11">11</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> 바이브코딩 & 에이전트 코딩 완전 입문 가이드</div>
+    <div class="hero-part-num">Part 03 / 08</div>
+    <h1>AI 코딩 도구</h1>
+    <p>대화형 AI부터 터미널 에이전트, AI 에디터, 앱 빌더,<br>자동화 플랫폼, 로컬 AI까지 — 도구 전체 지도</p>
+    <div class="hero-chapters">
+      <span class="hero-chapter-badge">Ch.06 대화형</span>
+      <span class="hero-chapter-badge">Ch.07 터미널 에이전트</span>
+      <span class="hero-chapter-badge">Ch.08 AI 에디터</span>
+      <span class="hero-chapter-badge">Ch.09 앱 빌더</span>
+      <span class="hero-chapter-badge">Ch.10 자동화 플랫폼</span>
+      <span class="hero-chapter-badge">Ch.11 로컬 AI</span>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <!-- CH.06 대화형 도구 -->
+  <div class="section" id="ch06">
+    <div class="section-header"><div class="section-num">06</div><h2>대화형 도구 — Claude / ChatGPT / Gemini</h2></div>
+    <div class="section-lead">설치 없이 브라우저에서 바로 사용. 레벨 2(바이브코딩) 단계의 핵심 도구들입니다.</div>
+    <div class="grid-3">
+      <div class="tool-card highlight">
+        <div class="tool-header">
+          <div class="tool-icon">🤖</div>
+          <div><div class="tool-name">Claude <span class="star">⭐ 추천</span></div><div class="tool-maker">Anthropic · claude.ai</div></div>
+        </div>
+        <div class="tool-desc">긴 문서 이해·정확한 추론·한국어 처리에서 강점. 코드와 문서를 동시에 다루는 작업에서 일관성이 높습니다.</div>
+        <div class="tool-tags"><span class="tool-tag">📄 긴 문서 분석</span><span class="tool-tag">🇰🇷 한국어 우수</span><span class="tool-tag">💻 코드+문서</span><span class="tool-tag">🔌 MCP 연동</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-icon">💬</div>
+          <div><div class="tool-name">ChatGPT</div><div class="tool-maker">OpenAI · chatgpt.com</div></div>
+        </div>
+        <div class="tool-desc">이미지 생성(DALL-E) 통합, GPT Store 커스텀 GPT 생태계, o3 모델의 고급 추론 능력이 강점입니다.</div>
+        <div class="tool-tags"><span class="tool-tag">🎨 이미지 생성</span><span class="tool-tag">🧮 고급 추론 o3</span><span class="tool-tag">🏪 GPT Store</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header">
+          <div class="tool-icon">✨</div>
+          <div><div class="tool-name">Gemini</div><div class="tool-maker">Google · gemini.google.com</div></div>
+        </div>
+        <div class="tool-desc">Google Workspace(Gmail, Docs, Sheets) 네이티브 통합, Google 검색 실시간 연동이 최대 강점입니다.</div>
+        <div class="tool-tags"><span class="tool-tag">📧 Gmail 연동</span><span class="tool-tag">📊 Sheets 연동</span><span class="tool-tag">🔍 실시간 검색</span></div>
+      </div>
+    </div>
+    <table class="compare-table" style="margin-top:4px;">
+      <thead><tr><th>항목</th><th>Claude</th><th>ChatGPT</th><th>Gemini</th></tr></thead>
+      <tbody>
+        <tr><td>한국어 처리</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>코드 생성</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>이미지 생성</td><td>❌</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td></tr>
+        <tr><td>Google 연동</td><td>MCP 경유</td><td>MCP 경유</td><td>⭐⭐⭐⭐⭐ 네이티브</td></tr>
+        <tr><td>외부 도구 연동</td><td>⭐⭐⭐⭐⭐ MCP</td><td>⭐⭐⭐⭐ GPT Store</td><td>⭐⭐⭐</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><div class="ta-icon">💡</div><div><div class="ta-label">Key Takeaway</div><div class="ta-text">Claude는 한국어·코드·문서, ChatGPT는 이미지·추론·생태계, Gemini는 Google 연동·실시간 검색에서 각각 강점 — <strong>상황에 맞게 조합</strong>하는 것이 최선입니다.</div></div></div>
+  </div>
+
+  <hr class="chapter-divider">
+
+  <!-- CH.07 터미널 에이전트 -->
+  <div class="section" id="ch07">
+    <div class="section-header"><div class="section-num">07</div><h2>터미널 에이전트 — Claude Code / Codex CLI</h2></div>
+    <div class="section-lead">AI가 직접 파일을 읽고·수정하고·실행하는 레벨 4 에이전트 도구. 브라우저를 벗어나 터미널에서 실행합니다.</div>
+    <div class="grid-2">
+      <div class="tool-card highlight">
+        <div class="tool-header"><div class="tool-icon">⌨️</div><div><div class="tool-name">Claude Code <span class="star">⭐</span></div><div class="tool-maker">Anthropic · 터미널 에이전트</div></div></div>
+        <div class="tool-desc">프로젝트 폴더에서 실행하면 AI가 전체 코드베이스를 컨텍스트로 인식. CLAUDE.md 자동 인식, Git 커밋 자동화 지원.</div>
+        <div class="code-block" style="font-size:.82rem;padding:14px 18px;">
+<span class="cm"># 설치</span><br>
+<span class="kw">npm install -g</span> <span class="str">@anthropic-ai/claude-code</span><br><br>
+<span class="cm"># 프로젝트에서 실행</span><br>
+<span class="kw">cd</span> my-project &amp;&amp; <span class="kw">claude</span><br><br>
+<span class="cm"># 자율 모드 (Git 백업 후)</span><br>
+<span class="kw">claude</span> <span class="hl">--dangerously-skip-permissions</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">🧠</div><div><div class="tool-name">Codex CLI</div><div class="tool-maker">OpenAI · 터미널 에이전트</div></div></div>
+        <div class="tool-desc">GPT-4o 기반 터미널 에이전트. 샌드박스 격리 실행으로 안전성이 높습니다.</div>
+        <div class="code-block" style="font-size:.82rem;padding:14px 18px;">
+<span class="cm"># 설치</span><br>
+<span class="kw">npm install -g</span> <span class="str">@openai/codex</span><br><br>
+<span class="cm"># 단일 작업</span><br>
+<span class="kw">codex</span> <span class="str">"budget_parser.py 버그 수정해줘"</span>
+        </div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <thead><tr><th>항목</th><th>Claude Code</th><th>Codex CLI</th></tr></thead>
+      <tbody>
+        <tr><td>기반 모델</td><td>Claude 4 (Sonnet/Opus)</td><td>GPT-4o</td></tr>
+        <tr><td>파일 접근</td><td>직접 접근</td><td>샌드박스 격리</td></tr>
+        <tr><td>한국어</td><td>매우 우수</td><td>우수</td></tr>
+        <tr><td>CLAUDE.md</td><td>자동 인식</td><td>별도 설정</td></tr>
+        <tr><td>Git 연동</td><td>자동 커밋 지원</td><td>수동</td></tr>
+      </tbody>
+    </table>
+    <div class="warn-box"><strong>⚠️ 필수 원칙:</strong> 에이전트 실행 전 반드시 <code>git add . && git commit -m "에이전트 실행 전 백업"</code>. CLAUDE.md 없이 대규모 프로젝트 작업 시 일관성 없는 코드가 생성됩니다.</div>
+  </div>
+
+  <hr class="chapter-divider">
+
+  <!-- CH.08 AI 에디터 -->
+  <div class="section" id="ch08">
+    <div class="section-header"><div class="section-num">08</div><h2>AI 에디터 — Cursor / Windsurf</h2></div>
+    <div class="section-lead">기존 코드 에디터 환경에서 벗어나지 않고 AI와 실시간 협업. VS Code 기반이라 전환 비용이 거의 없습니다.</div>
+    <div class="grid-2">
+      <div class="tool-card highlight">
+        <div class="tool-header"><div class="tool-icon">✏️</div><div><div class="tool-name">Cursor <span class="star">⭐</span></div><div class="tool-maker">cursor.com · VS Code 기반</div></div></div>
+        <div class="tool-desc">VS Code의 모든 기능 + AI가 핵심 레이어로 통합. 기존 VS Code 설정을 그대로 가져올 수 있습니다.</div>
+        <div style="background:var(--bg);border-radius:8px;padding:14px;margin-top:10px;font-size:.85rem;">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--brand);">3가지 핵심 모드</div>
+          <div style="display:grid;gap:6px;">
+            <div><code style="background:var(--brand-light);padding:2px 6px;border-radius:4px;font-size:.8rem;">Tab</code> → 다음 코드 자동 예측</div>
+            <div><code style="background:var(--brand-light);padding:2px 6px;border-radius:4px;font-size:.8rem;">Ctrl+K</code> → 인라인 수정 요청</div>
+            <div><code style="background:var(--brand-light);padding:2px 6px;border-radius:4px;font-size:.8rem;">Ctrl+L</code> → AI 채팅 (파일 자동 컨텍스트)</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">🌊</div><div><div class="tool-name">Windsurf</div><div class="tool-maker">codeium.com · 독자 에디터</div></div></div>
+        <div class="tool-desc">Cascade 에이전트가 핵심. 처음부터 에이전트 중심으로 설계되어 멀티파일 자율 수정에 강합니다.</div>
+        <div style="background:var(--bg);border-radius:8px;padding:14px;margin-top:10px;font-size:.85rem;">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--brand);">Cascade 에이전트 특징</div>
+          <div>• 파일 생성·수정·삭제 자율 실행</div>
+          <div>• 터미널 명령 자동 실행</div>
+          <div>• 변경사항 자동 추적 및 롤백</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>💡 .cursorrules 설정:</strong> 프로젝트 루트에 <code>.cursorrules</code> 파일을 만들어 팀 전체의 AI 코딩 규칙을 통일하세요. Git에 포함시키면 모든 팀원이 동일한 규칙을 적용합니다.</div>
+  </div>
+
+  <hr class="chapter-divider">
+
+  <!-- CH.09 앱 빌더 -->
+  <div class="section" id="ch09">
+    <div class="section-header"><div class="section-num">09</div><h2>앱 빌더 — Lovable / Bolt / v0</h2></div>
+    <div class="section-lead">코드 에디터도, 터미널도 필요 없습니다. 브라우저에서 원하는 앱을 설명하면 디자인·코드·DB·배포까지 자동 완성됩니다.</div>
+    <div class="grid-3">
+      <div class="tool-card highlight">
+        <div class="tool-header"><div class="tool-icon">❤️</div><div><div class="tool-name">Lovable <span class="star">⭐</span></div><div class="tool-maker">lovable.dev</div></div></div>
+        <div class="tool-desc">자연어로 설명하면 React + Supabase 풀스택 웹앱 생성. GitHub 연동으로 코드 완전 소유.</div>
+        <div class="tool-tags"><span class="tool-tag">🗄️ Supabase 자동 연결</span><span class="tool-tag">🔐 Auth 자동</span><span class="tool-tag">🐙 GitHub 연동</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">⚡</div><div><div class="tool-name">Bolt</div><div class="tool-maker">bolt.new · StackBlitz</div></div></div>
+        <div class="tool-desc">브라우저 안의 완전한 Node.js 실행 환경(WebContainers). npm 패키지 전체 활용 가능.</div>
+        <div class="tool-tags"><span class="tool-tag">🌐 브라우저 내 실행</span><span class="tool-tag">📦 npm 전체</span><span class="tool-tag">🚀 즉시 미리보기</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">✂️</div><div><div class="tool-name">v0</div><div class="tool-maker">v0.dev · Vercel</div></div></div>
+        <div class="tool-desc">UI 컴포넌트 단위 생성 특화. shadcn/ui + Tailwind 기반 고품질 컴포넌트를 즉시 생성해 기존 프로젝트에 붙여넣기.</div>
+        <div class="tool-tags"><span class="tool-tag">🧩 컴포넌트 단위</span><span class="tool-tag">🎨 shadcn/ui</span><span class="tool-tag">🚀 Vercel 배포</span></div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>💡 조합 패턴:</strong> Lovable(초안 생성) → GitHub → Cursor(세부 수정) → Vercel(배포). 앱 빌더는 프로토타입의 출발점으로 활용하고, 세부 로직은 AI 에디터에서 다듬으세요.</div>
+  </div>
+
+  <hr class="chapter-divider">
+
+  <!-- CH.10 자동화 플랫폼 -->
+  <div class="section" id="ch10">
+    <div class="section-header"><div class="section-num">10</div><h2>자동화 플랫폼 — n8n / Make / Zapier / Antigravity</h2></div>
+    <div class="section-lead">코딩 없이 "A가 발생하면 B를 해서 C에 전달"하는 자동화 흐름을 시각적으로 설계하고 자동 실행합니다.</div>
+    <div class="grid-2">
+      <div class="tool-card highlight">
+        <div class="tool-header"><div class="tool-icon">🔄</div><div><div class="tool-name">n8n <span class="star">⭐ 보안 중시</span></div><div class="tool-maker">n8n.io · 오픈소스</div></div></div>
+        <div class="tool-desc">셀프 호스팅 가능한 오픈소스. LangChain 기반 AI 노드 내장. N100 미니PC에 설치하면 월 전기세만으로 24시간 운영.</div>
+        <div class="code-block" style="font-size:.8rem;padding:12px 16px;">
+<span class="cm"># Docker로 설치</span><br>
+<span class="kw">docker run</span> -d --name n8n \<br>
+&nbsp;&nbsp;-p 5678:5678 \<br>
+&nbsp;&nbsp;-v n8n_data:/home/node/.n8n \<br>
+&nbsp;&nbsp;<span class="str">n8nio/n8n</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">🤖</div><div><div class="tool-name">Antigravity</div><div class="tool-maker">AI 에이전트 자동화</div></div></div>
+        <div class="tool-desc">목표를 말하면 AI가 워크플로우를 자동 설계·실행하는 차세대 플랫폼. n8n/Make를 AI가 직접 최적화.</div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <thead><tr><th>항목</th><th>n8n</th><th>Make</th><th>Zapier</th></tr></thead>
+      <tbody>
+        <tr><td>호스팅</td><td>셀프 / 클라우드</td><td>클라우드</td><td>클라우드</td></tr>
+        <tr><td>무료 플랜</td><td>셀프호스팅 무제한</td><td>월 1,000 작업</td><td>월 100 작업</td></tr>
+        <tr><td>AI 노드</td><td>⭐⭐⭐⭐⭐ 내장</td><td>⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+        <tr><td>데이터 보안</td><td>⭐⭐⭐⭐⭐ 셀프</td><td>⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+        <tr><td>설정 난이도</td><td>중간</td><td>쉬움</td><td>매우 쉬움</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="chapter-divider">
+
+  <!-- CH.11 로컬 AI -->
+  <div class="section" id="ch11">
+    <div class="section-header"><div class="section-num">11</div><h2>로컬 AI — Ollama / Devin / SWE-agent</h2></div>
+    <div class="section-lead">API 비용 없이, 인터넷 없이, 민감 데이터 외부 전송 없이 AI를 로컬에서 실행하는 방법입니다.</div>
+    <div class="grid-3">
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">🦙</div><div><div class="tool-name">Ollama</div><div class="tool-maker">ollama.ai · 로컬 LLM</div></div></div>
+        <div class="tool-desc">Mac/Linux/Windows에서 오픈소스 LLM을 로컬 실행. n8n AI 노드와 연동하면 API 비용 없는 자동화 구현.</div>
+        <div class="code-block" style="font-size:.8rem;padding:12px 16px;">
+<span class="kw">ollama pull</span> <span class="str">qwen2.5:14b</span>  <span class="cm"># 한국어 우수</span><br>
+<span class="kw">ollama pull</span> <span class="str">gemma3:12b</span>   <span class="cm"># Google 모델</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">🤖</div><div><div class="tool-name">Devin</div><div class="tool-maker">cognition.ai · 레벨 5</div></div></div>
+        <div class="tool-desc">완전 자율 소프트웨어 엔지니어 AI. 목표만 주면 스스로 계획·코드·테스트·배포까지 처리. (레벨 5 에이전트)</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-header"><div class="tool-icon">🔬</div><div><div class="tool-name">SWE-agent</div><div class="tool-maker">Princeton NLP · 오픈소스</div></div></div>
+        <div class="tool-desc">GitHub 이슈를 자동으로 해결하는 연구용 에이전트. 오픈소스로 자체 운영 가능.</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>💡 n8n + Ollama 조합:</strong> N100 미니PC에 n8n + Ollama를 함께 설치하면 월 전기세 3,000원으로 완전 로컬 AI 자동화 서버를 운영할 수 있습니다. 민감 데이터 처리에 특히 유용합니다.</div>
+  </div>
+
+</main>
+
+<a class="back-top" href="#top">↑</a>
+<footer>
+  <div class="footer-nav">
+    <a href="part02-conversation.html">← 2부. AI와 대화하는 법</a>
+    <a href="part04-integrations.html">4부. 연계 도구 & 조합 패턴 →</a>
+  </div>
+  <strong>바이브코딩 & 에이전트 코딩 완전 입문 가이드</strong> · 3부. AI 코딩 도구<br>
+  <span style="margin-top:6px;display:block;">Ch.06~11 · Claude · ChatGPT · Gemini · Claude Code · Cursor · Lovable · n8n · Ollama</span>
+</footer>
+</body>
+</html>

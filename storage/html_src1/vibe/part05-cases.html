@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>5부. 실전 사례 — 바이브코딩 & 에이전트 코딩 완전 입문</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--brand:#0891B2;--brand-dark:#0E7490;--brand-deep:#164E63;--brand-light:#ECFEFF;--brand-mid:#67E8F9;--text:#1A1A2E;--text-2:#4B5575;--text-3:#8892B0;--bg:#F0FDFF;--white:#FFFFFF;--border:#A5F3FC;--shadow:0 4px 24px rgba(8,145,178,0.10);--shadow-lg:0 8px 40px rgba(8,145,178,0.18);--radius:16px;--radius-sm:10px;}
+    *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+    body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;}
+    .nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--brand);text-decoration:none;}
+    .nav-logo .logo-icon{width:32px;height:32px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;}
+    .nav-part{font-size:12px;background:var(--brand-light);color:var(--brand-dark);padding:3px 10px;border-radius:100px;font-weight:600;border:1px solid var(--border);}
+    .nav-links{display:flex;gap:3px;list-style:none;}
+    .nav-links a{text-decoration:none;color:var(--text-2);font-size:12px;font-weight:500;padding:4px 8px;border-radius:6px;transition:all .2s;}
+    .nav-links a:hover{background:var(--brand-light);color:var(--brand);}
+    .hero{background:linear-gradient(135deg,#042F2E 0%,#134E4A 40%,#0E7490 75%,#0891B2 100%);color:white;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(8,145,178,0.3) 0%,transparent 60%);}
+    .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:500;margin-bottom:20px;}
+    .hero-badge span{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+    .hero-part-num{font-size:13px;opacity:.6;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+    .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:700;margin-bottom:16px;line-height:1.25;}
+    .hero p{font-size:1.05rem;opacity:.85;margin-bottom:36px;}
+    .hero-chapters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    .hero-chapter-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 12px;font-size:12px;font-family:'JetBrains Mono',monospace;}
+    main{max-width:960px;margin:0 auto;padding:60px 24px 80px;}
+    .case-card{background:white;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);margin-bottom:32px;scroll-margin-top:80px;}
+    .case-header{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:22px 28px;color:white;display:flex;align-items:flex-start;gap:16px;}
+    .case-num{width:52px;height:52px;background:rgba(255,255,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+    .case-meta .case-ch{font-size:.78rem;opacity:.7;font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
+    .case-meta .case-title{font-family:'Noto Serif KR',serif;font-size:1.15rem;font-weight:700;margin-bottom:4px;}
+    .case-meta .case-sub{font-size:.85rem;opacity:.8;}
+    .case-body{padding:24px 28px;}
+    .case-section{margin-bottom:20px;}
+    .case-section h4{font-weight:700;font-size:.95rem;margin-bottom:10px;display:flex;align-items:center;gap:6px;color:var(--brand-dark);}
+    .pipeline-flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-bottom:10px;}
+    .pf-step{background:var(--brand-light);color:var(--brand-deep);border-radius:6px;padding:5px 12px;font-size:.82rem;font-weight:600;}
+    .pf-arrow{color:var(--brand);font-size:14px;}
+    .tool-chips{display:flex;flex-wrap:wrap;gap:6px;}
+    .tool-chip{background:var(--brand-light);color:var(--brand-dark);border:1px solid var(--border);border-radius:20px;padding:3px 11px;font-size:.78rem;font-weight:600;}
+    .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+    .result-item{background:var(--bg);border-radius:8px;padding:14px;text-align:center;border:1px solid var(--border);}
+    .result-num{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--brand);line-height:1;}
+    .result-label{font-size:.76rem;color:var(--text-3);margin-top:4px;}
+    .lesson-list{list-style:none;}
+    .lesson-list li{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:.9rem;color:var(--text-2);line-height:1.7;}
+    .lesson-list li::before{content:'💡';flex-shrink:0;}
+    .code-block{background:#042F2E;color:#A5F3FC;border-radius:var(--radius-sm);padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.9;margin:10px 0;overflow-x:auto;}
+    .code-block .cm{color:#2D6E6A;}.code-block .kw{color:#67E8F9;}.code-block .str{color:#86EFAC;}
+    .chapter-divider{border:none;border-top:2px dashed var(--border);margin:8px 0 32px;}
+    .back-top{position:fixed;bottom:32px;right:32px;width:46px;height:46px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:var(--shadow-lg);font-size:20px;transition:all .2s;}
+    .back-top:hover{background:var(--brand-dark);transform:translateY(-2px);}
+    footer{background:#1A1A2E;color:rgba(255,255,255,0.6);text-align:center;padding:32px 24px;font-size:.88rem;}
+    footer strong{color:var(--brand);}
+    .footer-nav{display:flex;justify-content:center;gap:24px;margin-bottom:16px;}
+    .footer-nav a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:.85rem;transition:color .2s;}
+    .footer-nav a:hover{color:var(--brand);}
+  </style>
+</head>
+<body>
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><div class="logo-icon">🔬</div>바이브코딩 & 에이전트 코딩</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="nav-part">5부 · 실전 사례</span>
+      <ul class="nav-links">
+        <li><a href="#case1">사례1</a></li><li><a href="#case2">사례2</a></li><li><a href="#case3">사례3</a></li>
+        <li><a href="#case4">사례4</a></li><li><a href="#case5">사례5</a></li><li><a href="#case6">사례6</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> 바이브코딩 & 에이전트 코딩 완전 입문 가이드</div>
+    <div class="hero-part-num">Part 05 / 08</div>
+    <h1>실전 사례</h1>
+    <p>실제 파이프라인, 실제 코드, 실제 교훈<br>6가지 자동화 프로젝트의 전체 흐름 공개</p>
+    <div class="hero-chapters">
+      <span class="hero-chapter-badge">사례1 PDF→DB</span>
+      <span class="hero-chapter-badge">사례2 PPTX/HWPX</span>
+      <span class="hero-chapter-badge">사례3 HR 인사이동</span>
+      <span class="hero-chapter-badge">사례4 n8n 서버</span>
+      <span class="hero-chapter-badge">사례5 개인금융</span>
+      <span class="hero-chapter-badge">사례6 AI 보고서</span>
+    </div>
+  </div>
+</section>
+<main>
+
+  <!-- 사례 1 -->
+  <div class="case-card" id="case1">
+    <div class="case-header">
+      <div class="case-num">사례<br>01</div>
+      <div class="case-meta">
+        <div class="case-ch">Ch.20 · 레시피 3 (데이터 파이프라인)</div>
+        <div class="case-title">정부 예산 PDF → DB 파이프라인</div>
+        <div class="case-sub">과기부 예산서 PDF를 자동 파싱해 SQLite DB에 저장 — v15까지 간 실제 교훈</div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <h4>📋 배경</h4>
+        <p style="font-size:.9rem;color:var(--text-2);">PDF 1권(300페이지) 수작업 Excel 변환에 4~6시간 소요. 연간 30~60시간 낭비, 오류율 3~5%. 병합 셀·한국어 숫자·다단 구조가 파싱의 주요 장벽.</p>
+      </div>
+      <div class="case-section">
+        <h4>🔄 파이프라인</h4>
+        <div class="pipeline-flow">
+          <span class="pf-step">PDF 원본</span><span class="pf-arrow">→</span>
+          <span class="pf-step">pdf_to_json.py (pdfplumber)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">json_structurer.py (병합셀 처리)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">budget_parser.py (DB 저장)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">SQLite budget.db</span>
+        </div>
+        <div class="tool-chips"><span class="tool-chip">pdfplumber</span><span class="tool-chip">Pydantic</span><span class="tool-chip">SQLAlchemy</span><span class="tool-chip">Claude Code</span><span class="tool-chip">n8n 스케줄</span></div>
+      </div>
+      <div class="case-section">
+        <h4>💡 v15까지 간 핵심 교훈</h4>
+        <ul class="lesson-list">
+          <li>설계 선행: v1~v6 재작성 시간이 v1 설계 시간보다 5배 더 걸렸다</li>
+          <li>샘플 검증: 전체 실행 전 반드시 3~5페이지 샘플로 먼저 검증</li>
+          <li>체크포인트: 단계별 중간 파일 저장이 없으면 실패 시 전체 재실행</li>
+          <li>루프 탈출: 3회 반복 실패 시 "근본 원인 분석 먼저"로 전환</li>
+        </ul>
+      </div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-num">30x</div><div class="result-label">처리 속도 향상</div></div>
+        <div class="result-item"><div class="result-num">0%</div><div class="result-label">Pydantic 검증 오류율</div></div>
+        <div class="result-item"><div class="result-num">182K</div><div class="result-label">DB 적재 건수</div></div>
+        <div class="result-item"><div class="result-num">47개</div><div class="result-label">처리 PDF 파일</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사례 2 -->
+  <div class="case-card" id="case2">
+    <div class="case-header">
+      <div class="case-num">사례<br>02</div>
+      <div class="case-meta">
+        <div class="case-ch">Ch.21 · 레시피 1 (문서 자동화)</div>
+        <div class="case-title">PPTX/HWPX 보고서 자동 생성</div>
+        <div class="case-sub">반복되는 정부 보고서 양식 작업을 3단계 파이프라인으로 자동화</div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <h4>🔄 파이프라인</h4>
+        <div class="pipeline-flow">
+          <span class="pf-step">Claude 콘텐츠 생성</span><span class="pf-arrow">→</span>
+          <span class="pf-step">sentence-normalizer (□○― 구조화)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">python-pptx / hwpx 빌더</span><span class="pf-arrow">→</span>
+          <span class="pf-step">최종 파일</span>
+        </div>
+        <div class="tool-chips"><span class="tool-chip">python-pptx</span><span class="tool-chip">pptx_inspector.py</span><span class="tool-chip">hwpx SKILL.md</span><span class="tool-chip">sentence-normalizer</span></div>
+      </div>
+      <div class="case-section">
+        <h4>💡 핵심 기법</h4>
+        <ul class="lesson-list">
+          <li>pptx_inspector.py로 기존 파일 폰트·색상·위치 추출 후 재적용</li>
+          <li>XML 수준 제어로 특정 색상 RGB 직접 설정 가능</li>
+          <li>HWPX는 ZIP 형식 → 압축 해제 후 XML 수정 → 재압축</li>
+        </ul>
+      </div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-num">6x</div><div class="result-label">PPTX 속도 향상</div></div>
+        <div class="result-item"><div class="result-num">5x</div><div class="result-label">HWPX 속도 향상</div></div>
+        <div class="result-item"><div class="result-num">~0%</div><div class="result-label">수치 오류율</div></div>
+        <div class="result-item"><div class="result-num">120h+</div><div class="result-label">연간 절감 시간</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사례 3 -->
+  <div class="case-card" id="case3">
+    <div class="case-header">
+      <div class="case-num">사례<br>03</div>
+      <div class="case-meta">
+        <div class="case-ch">Ch.22 · 레시피 3+4 결합</div>
+        <div class="case-title">HR 인사이동 자동화</div>
+        <div class="case-sub">설문→배정→보고서까지, 수작업 이틀을 30분으로</div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <h4>🔄 파이프라인</h4>
+        <div class="pipeline-flow">
+          <span class="pf-step">Google Form 설문</span><span class="pf-arrow">→</span>
+          <span class="pf-step">Pydantic 검증</span><span class="pf-arrow">→</span>
+          <span class="pf-step">규칙 기반 자동 배정</span><span class="pf-arrow">→</span>
+          <span class="pf-step">Claude 예외 처리</span><span class="pf-arrow">→</span>
+          <span class="pf-step">openpyxl 보고서</span>
+        </div>
+        <div class="tool-chips"><span class="tool-chip">Pydantic</span><span class="tool-chip">Python 배정 엔진</span><span class="tool-chip">Claude API</span><span class="tool-chip">openpyxl</span><span class="tool-chip">n8n Webhook</span></div>
+      </div>
+      <div class="case-section">
+        <h4>💡 핵심 설계</h4>
+        <ul class="lesson-list">
+          <li>규칙 기반으로 먼저 처리 → 해결 안 되는 케이스만 Claude에 위임</li>
+          <li>배정 근거 자동 기록 → 이의신청 시 즉시 제시 가능</li>
+          <li>희망 반영률 정량 측정 (1순위 68%, 희망 내 89%)</li>
+        </ul>
+      </div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-num">40x</div><div class="result-label">처리 속도 향상</div></div>
+        <div class="result-item"><div class="result-num">0건</div><div class="result-label">조건 위반 (이전 1~2건)</div></div>
+        <div class="result-item"><div class="result-num">89%</div><div class="result-label">희망 내 배정률</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사례 4 -->
+  <div class="case-card" id="case4">
+    <div class="case-header">
+      <div class="case-num">사례<br>04</div>
+      <div class="case-meta">
+        <div class="case-ch">Ch.23 · 레시피 4 (업무 자동화)</div>
+        <div class="case-title">n8n 로컬 자동화 서버</div>
+        <div class="case-sub">N100 미니PC + Docker + n8n + Ollama — 월 1만원대 24시간 자동화</div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <h4>🖥️ 하드웨어 스택</h4>
+        <div class="code-block" style="font-size:.82rem;padding:14px 18px;">
+<span class="cm"># N100 미니PC (약 17만원)</span><br>
+<span class="kw">CPU:</span> <span class="str">Intel N100 · 전력 6~25W</span><br>
+<span class="kw">RAM:</span> <span class="str">16GB · SSD: 512GB</span><br>
+<span class="kw">월 전기세:</span> <span class="str">약 3,200원</span>  <span class="cm">↔  n8n Cloud: 월 ~7만원</span>
+        </div>
+      </div>
+      <div class="case-section">
+        <h4>🔄 운영 중인 워크플로우</h4>
+        <div style="display:grid;gap:8px;">
+          <div style="background:var(--brand-light);border-radius:8px;padding:12px 16px;font-size:.86rem;"><strong>공고 수집</strong> — 매일 07:50 · NIPA/NIA/IITP/MSIT · Ollama 분류 · Slack+Notion</div>
+          <div style="background:var(--brand-light);border-radius:8px;padding:12px 16px;font-size:.86rem;"><strong>AI 뉴스 요약</strong> — 매일 08:30 · RSS 5개 · 한국어 번역·요약 · Slack</div>
+          <div style="background:var(--brand-light);border-radius:8px;padding:12px 16px;font-size:.86rem;"><strong>주간 트렌드</strong> — 매주 금요일 17:00 · Claude API 분석 · Notion 리포트</div>
+          <div style="background:var(--brand-light);border-radius:8px;padding:12px 16px;font-size:.86rem;"><strong>PDF 파이프라인 트리거</strong> — 파일 감지 → 자동 실행 → Slack 알림</div>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-num">2,400</div><div class="result-label">3개월 총 실행</div></div>
+        <div class="result-item"><div class="result-num">3,800</div><div class="result-label">처리 공고 건수</div></div>
+        <div class="result-item"><div class="result-num">1.2%</div><div class="result-label">오류 발생률</div></div>
+        <div class="result-item"><div class="result-num">₩12K</div><div class="result-label">월 운영 비용</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사례 5 -->
+  <div class="case-card" id="case5">
+    <div class="case-header">
+      <div class="case-num">사례<br>05</div>
+      <div class="case-meta">
+        <div class="case-ch">Ch.24 · 레시피 3 (데이터 파이프라인)</div>
+        <div class="case-title">개인금융 데이터 파이프라인 + Streamlit</div>
+        <div class="case-sub">뱅크샐러드 CSV → 3단계 Excel 체인 → pykrx/yfinance → 대시보드</div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <h4>🔄 파이프라인</h4>
+        <div class="pipeline-flow">
+          <span class="pf-step">뱅크샐러드 CSV</span><span class="pf-arrow">→</span>
+          <span class="pf-step">DATA.xlsx (정제)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">SUMMARY.xlsx (집계)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">DASHBOARD.xlsx (주가연동)</span><span class="pf-arrow">→</span>
+          <span class="pf-step">Streamlit 대시보드</span>
+        </div>
+        <div class="tool-chips"><span class="tool-chip">pandas</span><span class="tool-chip">openpyxl</span><span class="tool-chip">pykrx (국내주가)</span><span class="tool-chip">yfinance (해외주가)</span><span class="tool-chip">Streamlit</span><span class="tool-chip">Plotly</span></div>
+      </div>
+      <div class="case-section">
+        <h4>📊 대시보드 구성</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;font-size:.84rem;">
+          <div style="background:var(--brand-light);border-radius:8px;padding:10px;text-align:center;"><strong>수입/지출 KPI</strong><br><span style="color:var(--text-3);">전월 대비 delta</span></div>
+          <div style="background:var(--brand-light);border-radius:8px;padding:10px;text-align:center;"><strong>카테고리 도넛</strong><br><span style="color:var(--text-3);">이번 달 지출 구성</span></div>
+          <div style="background:var(--brand-light);border-radius:8px;padding:10px;text-align:center;"><strong>저축률 트렌드</strong><br><span style="color:var(--text-3);">월별 추이</span></div>
+          <div style="background:var(--brand-light);border-radius:8px;padding:10px;text-align:center;"><strong>포트폴리오</strong><br><span style="color:var(--text-3);">국내+해외 수익률</span></div>
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-num">10분</div><div class="result-label">월 가계부 정리 시간</div></div>
+        <div class="result-item"><div class="result-num">1화면</div><div class="result-label">금융 통합 뷰</div></div>
+        <div class="result-item"><div class="result-num">실시간</div><div class="result-label">주가 연동</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사례 6 -->
+  <div class="case-card" id="case6">
+    <div class="case-header">
+      <div class="case-num">사례<br>06</div>
+      <div class="case-meta">
+        <div class="case-ch">Ch.25 · 레시피 1+5 결합</div>
+        <div class="case-title">AI 전략 보고서 자동화</div>
+        <div class="case-sub">Magnificent 7 분석 — Tier 출처 시스템 + Phase 분리 + SKILL.md v3.0</div>
+      </div>
+    </div>
+    <div class="case-body">
+      <div class="case-section">
+        <h4>📋 ai-strategy-report SKILL.md v3.0 핵심</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px;">
+          <div style="background:var(--brand-light);border-radius:8px;padding:14px;">
+            <div style="font-weight:700;font-size:.88rem;margin-bottom:6px;color:var(--brand-dark);">Tier 1 — 최고 신뢰</div>
+            <div style="font-size:.82rem;color:var(--text-2);">SEC 공시, 기업 IR, 정부 공문서, 학술 논문, 공식 뉴스룸</div>
+          </div>
+          <div style="background:#F0FDF4;border-radius:8px;padding:14px;border:1px solid #BBF7D0;">
+            <div style="font-weight:700;font-size:.88rem;margin-bottom:6px;color:#166534;">Tier 2 — 높은 신뢰</div>
+            <div style="font-size:.82rem;color:var(--text-2);">주요 언론, 산업 분석 보고서, 기관 연구 보고서</div>
+          </div>
+          <div style="background:#FFF8E8;border-radius:8px;padding:14px;border:1px solid #FDE68A;">
+            <div style="font-weight:700;font-size:.88rem;margin-bottom:6px;color:#92650A;">Tier 3 — 참고 수준</div>
+            <div style="font-size:.82rem;color:var(--text-2);">블로그, 개인 미디어 — 단독 인용 금지</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-section">
+        <h4>🔄 Phase 분리 워크플로우</h4>
+        <div class="pipeline-flow">
+          <span class="pf-step">Phase 1: 웹검색 10회+ 리서치</span><span class="pf-arrow">→</span>
+          <span class="pf-step">사용자 확인</span><span class="pf-arrow">→</span>
+          <span class="pf-step">Phase 2: 보고서 작성</span><span class="pf-arrow">→</span>
+          <span class="pf-step">출처 목록 자동 생성</span>
+        </div>
+      </div>
+      <div class="case-section">
+        <h4>⚠️ 실제 오류 수정 사례</h4>
+        <div style="background:#FFF1F2;border-radius:8px;padding:14px;font-size:.87rem;color:var(--text-2);border-left:3px solid #EF4444;">
+          <strong>AI 오류:</strong> "테슬라는 자체 LLM 'Grok'을 출시하여..."<br>
+          <strong>사실:</strong> Grok은 테슬라가 아닌 xAI(별도 회사)의 제품<br>
+          <strong>교훈:</strong> AI 보고서에서 기업 관계, 제품 귀속, 날짜는 반드시 사람이 검토
+        </div>
+      </div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-num">5~6x</div><div class="result-label">작성 시간 단축</div></div>
+        <div class="result-item"><div class="result-num">60%+</div><div class="result-label">Tier 1 출처 비율</div></div>
+        <div class="result-item"><div class="result-num">0~1건</div><div class="result-label">수치 오류/보고서</div></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+<a class="back-top" href="#top">↑</a>
+<footer>
+  <div class="footer-nav"><a href="part04-integrations.html">← 4부. 연계 도구 & 조합 패턴</a><a href="part06-quality.html">6부. 품질과 운영 →</a></div>
+  <strong>바이브코딩 & 에이전트 코딩 완전 입문 가이드</strong> · 5부. 실전 사례<br>
+  <span style="margin-top:6px;display:block;">Ch.20~25 · PDF 파이프라인 · 보고서 자동화 · HR 자동화 · n8n 서버 · 개인금융 · AI 보고서</span>
+</footer>
+</body>
+</html>

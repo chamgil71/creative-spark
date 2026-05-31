@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>디자인 & 시각화 도구 가이드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand:      #00C4CC;
+      --brand-dark: #009BA0;
+      --brand-light:#E0FAFA;
+      --canva:     #7C4DFF;
+      --figma:     #F24E1E;
+      --gamma:     #6366F1;
+      --text:      #1A1A2E;
+      --text-2:    #4B5575;
+      --text-3:    #8892B0;
+      --bg:        #F5FFFE;
+      --white:     #FFFFFF;
+      --border:    #C0EFEE;
+      --shadow:    0 4px 24px rgba(0,196,204,0.10);
+      --shadow-lg: 0 8px 40px rgba(0,196,204,0.16);
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .nav-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--brand-dark); text-decoration: none; }
+    .nav-logo .logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, #7C4DFF, #F24E1E, #6366F1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .nav-links { display: flex; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 8px; transition: all .2s; }
+    .nav-links a:hover { background: var(--brand-light); color: var(--brand-dark); }
+
+    .hero { background: linear-gradient(135deg, #0D1B3E 0%, #1A237E 35%, #4527A0 65%, #00C4CC 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 50%, rgba(124,77,255,0.35) 0%, transparent 55%), radial-gradient(ellipse at 75% 25%, rgba(0,196,204,0.3) 0%, transparent 50%); }
+    .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+    .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+    .tool-icons { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+    .tool-icon-pill { background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; padding: 10px 20px; font-weight: 700; font-size: 1rem; }
+    .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+    .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+    .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+    .hero-stat span { font-size: .8rem; opacity: .7; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+    .section { margin-bottom: 72px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+    .section-num { width: 40px; height: 40px; color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+    .num-canva { background: var(--canva); }
+    .num-figma { background: var(--figma); }
+    .num-gamma { background: var(--gamma); }
+    .num-compare { background: linear-gradient(135deg, var(--canva), var(--gamma)); }
+    .section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+
+    .card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+
+    .tool-block { background: white; border-radius: var(--radius); border: 2px solid var(--border); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 32px; }
+    .tool-header { padding: 24px 28px; display: flex; align-items: center; gap: 16px; color: white; }
+    .tool-logo { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
+    .tool-name { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 700; }
+    .tool-tagline { font-size: .88rem; opacity: .85; margin-top: 2px; }
+    .tool-badge { margin-left:auto; background: rgba(255,255,255,0.25); padding: 5px 14px; border-radius: 100px; font-size: .82rem; font-weight: 700; white-space: nowrap; }
+    .tool-body { padding: 24px 28px; }
+
+    .canva-header { background: linear-gradient(135deg, #7C4DFF, #3D00C8); }
+    .figma-header { background: linear-gradient(135deg, #F24E1E, #A3290C); }
+    .gamma-header { background: linear-gradient(135deg, #6366F1, #3730A3); }
+
+    .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .feat-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+    .feat-icon { font-size: 1.8rem; margin-bottom: 8px; }
+    .feat-title { font-weight: 700; font-size: .92rem; margin-bottom: 4px; }
+    .feat-desc { font-size: .82rem; color: var(--text-2); line-height: 1.6; }
+
+    .use-case-list { display: flex; flex-direction: column; gap: 10px; }
+    .uc-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); font-size: .9rem; }
+    .uc-emoji { font-size: 1.3rem; flex-shrink: 0; }
+
+    .tip-box { border-left: 4px solid; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 14px 18px; margin-top: 14px; font-size: .88rem; }
+    .tip-canva { background: #F3EEFF; border-color: var(--canva); }
+    .tip-canva strong { color: var(--canva); }
+    .tip-figma { background: #FFF0EC; border-color: var(--figma); }
+    .tip-figma strong { color: var(--figma); }
+    .tip-gamma { background: #EEEEFF; border-color: var(--gamma); }
+    .tip-gamma strong { color: var(--gamma); }
+
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table th { background: #1A1A2E; color: white; padding: 12px 16px; text-align: left; font-weight: 600; font-size: .88rem; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: .87rem; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) td { background: #F8FFFE; }
+    .dot-c { color: var(--canva); font-weight: 700; }
+    .dot-f { color: var(--figma); font-weight: 700; }
+    .dot-g { color: var(--gamma); font-weight: 700; }
+
+    .workflow-strip { display: flex; gap: 0; margin: 20px 0; overflow-x: auto; }
+    .wf-step { flex: 1; min-width: 130px; padding: 16px 12px; text-align: center; background: white; border: 1px solid var(--border); position: relative; }
+    .wf-step:not(:last-child)::after { content: '→'; position: absolute; right: -12px; top: 50%; transform: translateY(-50%); font-size: 1.2rem; color: var(--text-3); z-index: 1; }
+    .wf-step:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+    .wf-step:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+    .wf-icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .wf-name { font-size: .82rem; font-weight: 700; }
+    .wf-tool { font-size: .75rem; color: var(--text-3); }
+
+    .back-top { position: fixed; bottom: 32px; right: 32px; width: 46px; height: 46px; background: linear-gradient(135deg, var(--canva), var(--gamma)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: var(--shadow-lg); font-size: 20px; transition: all .2s; }
+    .back-top:hover { transform: translateY(-2px); opacity: .9; }
+
+    footer { background: #0D1B3E; color: rgba(255,255,255,0.6); text-align: center; padding: 32px 24px; font-size: .88rem; }
+    footer strong { color: var(--brand); }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">
+      <div class="logo-icon">✨</div>
+      디자인 & 시각화
+    </a>
+    <ul class="nav-links">
+      <li><a href="#canva">Canva</a></li>
+      <li><a href="#figma">Figma</a></li>
+      <li><a href="#gamma">Gamma</a></li>
+      <li><a href="#compare">비교</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> Design & Visualization · 2025</div>
+    <div class="tool-icons">
+      <div class="tool-icon-pill" style="background:rgba(124,77,255,0.3);">🎨 Canva</div>
+      <div class="tool-icon-pill" style="background:rgba(242,78,30,0.3);">🖌️ Figma</div>
+      <div class="tool-icon-pill" style="background:rgba(99,102,241,0.3);">⚡ Gamma</div>
+    </div>
+    <h1>디자인 & 시각화<br>도구 가이드</h1>
+    <p>Canva · Figma · Gamma — 누구나 전문가처럼 만드는 시각 콘텐츠의 모든 것</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>Canva</strong><span>빠른 디자인</span></div>
+      <div class="hero-stat"><strong>Figma</strong><span>협업 UI/UX</span></div>
+      <div class="hero-stat"><strong>Gamma</strong><span>AI 프레젠테이션</span></div>
+      <div class="hero-stat"><strong>모두</strong><span>무료 시작 가능</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <!-- Canva -->
+  <div class="section" id="canva">
+    <div class="section-header">
+      <div class="section-num num-canva">C</div>
+      <h2>Canva — 누구나 디자이너</h2>
+    </div>
+    <div class="tool-block">
+      <div class="tool-header canva-header">
+        <div class="tool-logo">🎨</div>
+        <div>
+          <div class="tool-name">Canva</div>
+          <div class="tool-tagline">canva.com · 브라우저 기반 디자인 플랫폼</div>
+        </div>
+        <div class="tool-badge">무료 / Pro $15/월</div>
+      </div>
+      <div class="tool-body">
+        <div class="feat-grid">
+          <div class="feat-item">
+            <div class="feat-icon">📐</div>
+            <div class="feat-title">수천 가지 템플릿</div>
+            <div class="feat-desc">PPT·포스터·SNS·명함·로고·유튜브 썸네일 등 카테고리별 전문 템플릿. 선택 후 텍스트·색상만 바꾸면 완성.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">🤖</div>
+            <div class="feat-title">AI 기능 (Magic Studio)</div>
+            <div class="feat-desc">텍스트로 이미지 생성, 배경 제거, 사진 품질 향상, 텍스트 자동 생성. 디자인 초보도 전문가 수준 결과물.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">👥</div>
+            <div class="feat-title">실시간 협업</div>
+            <div class="feat-desc">링크 공유로 여러 명이 동시 편집. 댓글·버전 관리·승인 기능으로 팀 디자인 작업 효율화.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">📤</div>
+            <div class="feat-title">다양한 출력 형식</div>
+            <div class="feat-desc">PDF·PNG·MP4·GIF·PPT·SVG 등으로 즉시 내보내기. 인쇄 주문도 Canva 내에서 바로 가능.</div>
+          </div>
+        </div>
+        <div class="use-case-list">
+          <div class="uc-item"><span class="uc-emoji">📊</span> 보고서·발표 자료 빠르게 제작 (템플릿 → 내용만 교체)</div>
+          <div class="uc-item"><span class="uc-emoji">📱</span> SNS 콘텐츠 자동 크기 조절 (인스타·유튜브·블로그 동시 제작)</div>
+          <div class="uc-item"><span class="uc-emoji">🎤</span> 행사 홍보물·배너·현수막 제작</div>
+          <div class="uc-item"><span class="uc-emoji">✂️</span> 이미지 배경 제거 후 투명 PNG 다운로드</div>
+        </div>
+        <div class="tip-box tip-canva" style="margin-top:14px;">
+          <strong>💡 꿀팁:</strong> Canva에서 "Presentation" 선택 후 "AI로 프레젠테이션 생성" 클릭 → 주제 입력만 하면 자동으로 구성된 PPT 초안 완성. ChatGPT와 함께 사용하면 내용도 자동 채워짐.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Figma -->
+  <div class="section" id="figma">
+    <div class="section-header">
+      <div class="section-num num-figma">F</div>
+      <h2>Figma — 협업 UI/UX 디자인</h2>
+    </div>
+    <div class="tool-block">
+      <div class="tool-header figma-header">
+        <div class="tool-logo">🖌️</div>
+        <div>
+          <div class="tool-name">Figma</div>
+          <div class="tool-tagline">figma.com · 클라우드 기반 UI/UX 디자인 & 프로토타이핑</div>
+        </div>
+        <div class="tool-badge">무료 / Pro $15/월</div>
+      </div>
+      <div class="tool-body">
+        <div class="feat-grid">
+          <div class="feat-item">
+            <div class="feat-icon">🔗</div>
+            <div class="feat-title">실시간 동시 편집</div>
+            <div class="feat-desc">개발자·기획자·디자이너가 같은 파일에서 동시 작업. 변경사항 즉시 반영. 버전 히스토리 무제한.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">📱</div>
+            <div class="feat-title">프로토타이핑</div>
+            <div class="feat-desc">화면 전환 애니메이션, 클릭 인터랙션 설정. 코딩 없이 앱/웹 동작 시뮬레이션 제작.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">🧩</div>
+            <div class="feat-title">컴포넌트 시스템</div>
+            <div class="feat-desc">버튼·아이콘·카드를 컴포넌트로 만들어 전체 디자인 시스템 구축. 수정 시 전체 자동 반영.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">💻</div>
+            <div class="feat-title">개발자 핸드오프</div>
+            <div class="feat-desc">CSS 값, 여백, 색상 코드 자동 추출. 개발자가 디자인 파일에서 바로 스펙 확인 가능.</div>
+          </div>
+        </div>
+        <div class="use-case-list">
+          <div class="uc-item"><span class="uc-emoji">🖥️</span> 웹/앱 UI 디자인 및 와이어프레임 제작</div>
+          <div class="uc-item"><span class="uc-emoji">🎯</span> 클릭 가능한 프로토타입으로 사용자 테스트</div>
+          <div class="uc-item"><span class="uc-emoji">🏢</span> 팀 디자인 시스템 구축 (컬러·타이포·컴포넌트)</div>
+          <div class="uc-item"><span class="uc-emoji">🤝</span> 개발팀에 정확한 스펙 전달 (핸드오프)</div>
+        </div>
+        <div class="tip-box tip-figma" style="margin-top:14px;">
+          <strong>💡 Figma AI (Dev Mode):</strong> 선택한 디자인 요소의 코드를 React·CSS·SwiftUI로 자동 생성. 디자이너가 직접 개발 코드를 추출할 수 있어 개발자와 소통 비용 대폭 절감.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gamma -->
+  <div class="section" id="gamma">
+    <div class="section-header">
+      <div class="section-num num-gamma">G</div>
+      <h2>Gamma — AI 프레젠테이션</h2>
+    </div>
+    <div class="tool-block">
+      <div class="tool-header gamma-header">
+        <div class="tool-logo">⚡</div>
+        <div>
+          <div class="tool-name">Gamma</div>
+          <div class="tool-tagline">gamma.app · AI 기반 프레젠테이션·문서·웹페이지 생성</div>
+        </div>
+        <div class="tool-badge">무료 / Plus $10/월</div>
+      </div>
+      <div class="tool-body">
+        <div class="feat-grid">
+          <div class="feat-item">
+            <div class="feat-icon">⚡</div>
+            <div class="feat-title">AI 즉시 생성</div>
+            <div class="feat-desc">주제 한 줄 입력 → 10초 내 완성된 프레젠테이션 생성. 슬라이드 구성·내용·디자인 모두 자동.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">🎨</div>
+            <div class="feat-title">아름다운 기본 디자인</div>
+            <div class="feat-desc">전문 디자이너가 만든 테마를 AI가 자동 적용. 파워포인트 없이도 세련된 결과물.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">🌐</div>
+            <div class="feat-title">웹 공유 & 임베드</div>
+            <div class="feat-desc">링크만으로 공유. 방문자 수·클릭 분석. 노션·슬랙·이메일에 바로 임베드 가능.</div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">📄</div>
+            <div class="feat-title">PPT/PDF 변환</div>
+            <div class="feat-desc">완성된 Gamma 문서를 PPT·PDF로 내보내기. 기존 PPT 업로드 후 AI로 재디자인도 가능.</div>
+          </div>
+        </div>
+
+        <div class="prompt-box" style="background:#1E1B4B;border-radius:var(--radius);padding:20px;color:white;margin-bottom:14px;">
+          <div style="font-size:.78rem;color:#A5B4FC;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Gamma AI 생성 프롬프트 예시</div>
+          <div style="font-family:monospace;font-size:.9rem;line-height:1.8;color:#E2E8F0;">
+            <span style="color:#818CF8;font-weight:700;">주제:</span> <span style="color:#6EE7B7;">2025년 AI 도구 활용 전략 — 공공기관 업무 혁신</span><br>
+            <span style="color:#818CF8;font-weight:700;">청중:</span> <span style="color:#6EE7B7;">비개발자 공무원</span><br>
+            <span style="color:#818CF8;font-weight:700;">분량:</span> <span style="color:#6EE7B7;">10슬라이드</span><br>
+            <span style="color:#818CF8;font-weight:700;">톤:</span> <span style="color:#6EE7B7;">전문적이면서 이해하기 쉽게</span>
+          </div>
+        </div>
+
+        <div class="use-case-list">
+          <div class="uc-item"><span class="uc-emoji">📊</span> 보고·업무 발표 자료 10분 만에 제작</div>
+          <div class="uc-item"><span class="uc-emoji">📚</span> 교육 자료·강의 슬라이드 AI 자동 구성</div>
+          <div class="uc-item"><span class="uc-emoji">🏢</span> 제안서·기획서를 웹 페이지 형태로 공유</div>
+          <div class="uc-item"><span class="uc-emoji">🔄</span> 기존 PPT를 업로드해서 AI 리디자인</div>
+        </div>
+        <div class="tip-box tip-gamma" style="margin-top:14px;">
+          <strong>💡 Claude + Gamma 조합:</strong> Claude로 발표 내용 초안 작성 → 복사 → Gamma "텍스트 붙여넣기로 생성" 선택 → 자동 슬라이드화. 30분 만에 완성도 높은 발표 자료 완성.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 비교 & 워크플로우 -->
+  <div class="section" id="compare">
+    <div class="section-header">
+      <div class="section-num num-compare">4</div>
+      <h2>도구 선택 & 조합 가이드</h2>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-weight:700;margin-bottom:16px;">📊 목적별 도구 선택</div>
+      <table class="compare-table">
+        <thead><tr><th>작업 유형</th><th class="dot-c">Canva</th><th class="dot-f">Figma</th><th class="dot-g">Gamma</th></tr></thead>
+        <tbody>
+          <tr><td>발표 자료 빠르게</td><td class="dot-c">✓ 추천</td><td>△</td><td class="dot-g">✓ 추천</td></tr>
+          <tr><td>SNS 이미지·포스터</td><td class="dot-c">✓ 최적</td><td>△</td><td>✗</td></tr>
+          <tr><td>웹/앱 UI 디자인</td><td>△</td><td class="dot-f">✓ 전문</td><td>✗</td></tr>
+          <tr><td>팀 협업 디자인</td><td>△</td><td class="dot-f">✓ 최적</td><td>△</td></tr>
+          <tr><td>AI 자동 생성</td><td class="dot-c">✓</td><td>△</td><td class="dot-g">✓ 최강</td></tr>
+          <tr><td>무료 사용 범위</td><td>충분</td><td>충분</td><td>제한적</td></tr>
+          <tr><td>난이도</td><td>🟢 쉬움</td><td>🔴 어려움</td><td>🟢 매우 쉬움</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:700;margin-bottom:16px;">🔄 추천 조합 워크플로우</div>
+      <div class="workflow-strip">
+        <div class="wf-step">
+          <div class="wf-icon">💡</div>
+          <div class="wf-name">아이디어</div>
+          <div class="wf-tool">Claude AI</div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-icon">⚡</div>
+          <div class="wf-name">초안 생성</div>
+          <div class="wf-tool">Gamma</div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-icon">🎨</div>
+          <div class="wf-name">디자인 보정</div>
+          <div class="wf-tool">Canva</div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-icon">🖌️</div>
+          <div class="wf-name">UI 프로토타입</div>
+          <div class="wf-tool">Figma</div>
+        </div>
+        <div class="wf-step">
+          <div class="wf-icon">📤</div>
+          <div class="wf-name">공유·배포</div>
+          <div class="wf-tool">링크/PDF</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<a class="back-top" href="#top" title="맨 위로">↑</a>
+
+<footer>
+  <strong>디자인 & 시각화 도구 가이드</strong> · Canva · Figma · Gamma · 2025<br>
+  <span style="margin-top:6px;display:block;">AI 도구 활용 교육 자료 — 내부 배포용</span>
+</footer>
+
+</body>
+</html>

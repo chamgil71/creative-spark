@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #D97757;
-    --brand-dark: #B85F3F;
-    --brand-deep: #8B4530;
-    --brand-light:#FDF0EB;
-    --brand-mid:  #F4C5AE;
-    --border:     #F0D4C4;
-    --bg:         #FBF7F5;
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,62 +279,96 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">⬛ v0.dev 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. v0.dev는 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 3단계로 끝내는 UI 생성</a></li><li><a href="#sec-3">3. AI 도구별 역할 비교 가이드</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">v0.dev 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">v0.dev는 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 3단계로 끝내는 UI 생성</a></li><li><a href="#sec-3">AI 도구별 역할 비교 가이드</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🎨 AI 프론트엔드 · UI/UX</div>
-      <div class="hero-logo">⬛</div>
+      
       <h1>v0.dev 완전 활용 가이드</h1>
-      <p>프롬프트 한 줄로 아름다운 React 기반 UI 컴포넌트를 즉시 구워내는 생성형 UI 도구</p>
-      <a class="hero-cta" href="https://v0.dev" target="_blank" rel="noopener">v0 시작하기</a>
+      <p>AI 프론트엔드 UI 생성기</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>React</strong><span>기본 출력</span></div><div class="hero-stat"><strong>Tailwind</strong><span>자동 스타일링</span></div><div class="hero-stat"><strong>shadcn/ui</strong><span>고품질 컴포넌트</span></div><div class="hero-stat"><strong>Vercel</strong><span>공식 제작사</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. v0.dev는 어떤 도구인가</h2></div><div class="card"><p>v0(브이제로)는 &quot;구글 애널리틱스 느낌의 깔끔한 재무 대시보드 화면 짜줘&quot;라고 입력하면, 텍스트가 아닌 실제 작동하는 웹 화면(React + Tailwind CSS 기반)을 렌더링해서 보여주는 도구입니다. 디자인 감각이나 번거로운 마크업 작업 없이도 프로 수준의 UI 컴포넌트를 단 몇 초 만에 얻을 수 있습니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🗣️</div>
-<div class="icon-card-title" >텍스트 to UI</div>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>v0.dev는 어떤 도구인가</h2></div><div class="card"><p>v0(브이제로)는 &quot;구글 애널리틱스 느낌의 깔끔한 재무 대시보드 화면 짜줘&quot;라고 입력하면, 텍스트가 아닌 실제 작동하는 웹 화면(React + Tailwind CSS 기반)을 렌더링해서 보여주는 도구입니다. 디자인 감각이나 번거로운 마크업 작업 없이도 프로 수준의 UI 컴포넌트를 단 몇 초 만에 얻을 수 있습니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🗣️</div>
+<div class="icon-card-title" style="color: var(--text);">텍스트 to UI</div>
 <p>머릿속에 있는 화면 레이아웃을 한글/영어로 설명하면 즉각적으로 세련된 웹 화면으로 만들어줍니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🖼️</div>
-<div class="icon-card-title" >이미지 to UI (스케치 인식)</div>
+<div class="icon-card-icon" style="color: var(--brand);">🖼️</div>
+<div class="icon-card-title" style="color: var(--text);">이미지 to UI (스케치 인식)</div>
 <p>다른 사이트의 캡처 화면이나 손으로 그린 와이어프레임을 업로드하면 똑같이 코드로 구현해냅니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >✂️</div>
-<div class="icon-card-title" >부분 수정 (Pick &amp; Edit)</div>
-<p>완성된 화면에서 버튼이나 특정 영역만 클릭하여 &quot;색상을 보라색으로 바꿔&quot;라고 디테일하게 수정합니다.</p>
+<div class="icon-card-icon" style="color: var(--brand);">✂️</div>
+<div class="icon-card-title" style="color: var(--text);">부분 수정 (Pick &amp; Edit)</div>
+<p>완성된 화면에서 버튼이나 특정 영역만 클릭하여 \&quot;색상을 보라색으로 바꿔\&quot;라고 디테일하게 수정합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📋</div>
-<div class="icon-card-title" >터미널 원클릭 복사</div>
+<div class="icon-card-icon" style="color: var(--brand);">📋</div>
+<div class="icon-card-title" style="color: var(--text);">터미널 원클릭 복사</div>
 <p>마음에 드는 디자인이 나오면 제공되는 명령어 한 줄(`npx v0 add...`)로 내 프로젝트 폴더에 쏙 넣습니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div><h3>이런 분들께 강력 추천합니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >디자인</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>🧑‍🎨 디자인이 막막한 백엔드 개발자
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🧑</span>🧑‍🎨 디자인이 막막한 백엔드 개발자
 </div>
 <p>기능은 만들 줄 알지만 CSS 맞추기가 너무 귀찮고 예쁘게 만들 자신이 없는 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >속도</span>
-<div class="feature-card-title" >
-<span class="fc-icon">⚡</span>기획자 및 프로토타이퍼
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚡</span>⚡ 기획자 및 프로토타이퍼
 </div>
 <p>피그마(Figma)로 목업을 그릴 시간에, 실제 코드로 작동하는 프로토타입을 바로 띄워보고 싶은 분.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >프론트엔드</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>⚛️ React 생태계 작업자
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚛</span>⚛️ React 생태계 작업자
 </div>
 <p>`shadcn/ui` 기반의 트렌디하고 유지보수가 쉬운 컴포넌트 코드가 필요한 분.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 3단계로 끝내는 UI 생성</h2></div><div class="card"><p>복잡한 설치 없이 웹 브라우저에서 모든 것이 끝납니다.</p>
-</div><div class="card"><h3 class="card-title">기본 사용 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 3단계로 끝내는 UI 생성</h2></div><div class="card"><p>복잡한 설치 없이 웹 브라우저에서 모든 것이 끝납니다.</p>
+<h3>기본 사용 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
 <div class="step-title" >프롬프트 입력</div>
-<p>검색창에 &quot;로그인과 비밀번호 찾기 기능이 있는 깔끔한 모달 창을 만들어줘&quot;라고 입력합니다.</p>
+<p>검색창에 \&quot;로그인과 비밀번호 찾기 기능이 있는 깔끔한 모달 창을 만들어줘\&quot;라고 입력합니다.</p>
 </div>
 </div>
 <div class="step-item" >
@@ -304,7 +382,7 @@
 <div class="step-num" >3</div>
 <div class="step-content">
 <div class="step-title" >대화형 수정</div>
-<p>버튼을 좀 더 크게 하고, 우측에 설명 이미지를 넣는 2단 구조로 바꿔줘&quot;라고 추가 지시를 내립니다.</p>
+<p>버튼을 좀 더 크게 하고, 우측에 설명 이미지를 넣는 2단 구조로 바꿔줘\&quot;라고 추가 지시를 내립니다.</p>
 </div>
 </div>
 <div class="step-item" >
@@ -320,8 +398,8 @@
 <div class="step-title" >내 프로젝트 적용</div>
 <p>복사한 코드를 내 로컬 React/Next.js 프로젝트의 `components` 폴더에 그대로 붙여넣습니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. AI 도구별 역할 비교 가이드</h2></div><div class="card"><p>유사한 AI 도구들과의 명확한 용도 차이입니다.</p>
-<div class="compare-grid">
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>AI 도구별 역할 비교 가이드</h2></div><div class="card"><p>유사한 AI 도구들과의 명확한 용도 차이입니다.</p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >v0.dev (부분 집중)</div>
 <p>앱 전체가 아니라 &#39;결제 폼&#39;, &#39;차트 화면&#39;, &#39;네비게이션 바&#39; 같은 특정 UI 조각(컴포넌트)을 찍어낼 때 최강입니다.</p>
@@ -336,24 +414,27 @@
 <div class="compare-card-title" >Cursor (직접 수정)</div>
 <p>v0나 Lovable이 짜준 코드를 가져와 내 입맛에 맞게 세밀하게 수정하고 디버깅할 때 사용합니다.</p>
 <div class="compare-note" >마감 및 디테일 장인</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">내 프로젝트에 붙여넣기 전 점검</h3><ul>
-<li>로컬 프로젝트에 Tailwind CSS 설정이 완벽하게 되어 있는가? (v0의 코드는 Tailwind 기반입니다)</li>
-<li><code>lucide-react</code> 같은 기본 아이콘 라이브러리가 프로젝트에 설치되어 있는가?</li>
-<li>복사한 코드에 포함된 상태(State) 관리 로직이 내 앱의 데이터 흐름과 잘 맞는지 검토했는가?</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>내 프로젝트에 붙여넣기 전 점검</h3>
+<ul>
+<li><p>로컬 프로젝트에 Tailwind CSS 설정이 완벽하게 되어 있는가? (v0의 코드는 Tailwind 기반입니다)</p>
+</li>
+<li><p>lucide-react</p>
+<p>같은 기본 아이콘 라이브러리가 프로젝트에 설치되어 있는가?</p>
+</li>
+<li><p>복사한 코드에 포함된 상태(State) 관리 로직이 내 앱의 데이터 흐름과 잘 맞는지 검토했는가?</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: 처음부터 완벽하고 긴 프롬프트를 작성하려고 애쓰지 마세요. &quot;대시보드 레이아웃 짜줘&quot;처럼 뼈대만 먼저 요청한 뒤, 생성된 화면을 보면서 특정 영역을 클릭해 &quot;이 버튼 색상을 바꿔줘&quot;, &quot;여기에 데이터 표를 추가해줘&quot;처럼 대화하듯 살을 붙여나가는 방식이 훨씬 빠르고 정확한 결과물을 만들어냅니다.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">프론트엔드 퍼블리싱 시간을 0으로 만드세요</h3><p>머릿속에 있는 대시보드나 랜딩 페이지를 자연어로 설명하고 결과물 코드를 바로 복사해가세요.</p>
+<p>v0 열기</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>프론트엔드 퍼블리싱 시간을 0으로 만드세요</h2>
-    <p>머릿속에 있는 대시보드나 랜딩 페이지를 자연어로 설명하고 결과물 코드를 바로 복사해가세요.</p>
-    <a class="done-link" href="https://v0.dev" target="_blank" rel="noopener">v0 열기</a>
-  </section>
-  <footer><div>v0.dev는 배포 플랫폼 Vercel에서 직접 개발하여 Next.js 및 React 생태계에 완벽히 최적화되어 있습니다.</div><div>공식 사이트: <a href="https://v0.dev">v0.dev</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

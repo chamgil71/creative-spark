@@ -150,6 +150,50 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
@@ -235,6 +279,37 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -249,93 +324,79 @@
       <div class="hero-stats"><div class="hero-stat"><strong>3대 도구</strong><span>터미널 에이전트</span></div><div class="hero-stat"><strong>100% 자율</strong><span>셸 명령 실행력</span></div><div class="hero-stat"><strong>실무 적용</strong><span>생산성 극대화</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 도입 (Introduction)</h2></div><div class="card"></div><div class="card"><h3 class="card-title">터미널 기반 AI 에이전트의 등장 배경</h3><p>기존의 GUI 기반 웹 채팅(Chat)이나 단순 인라인 자동완성(Autocomplete)의 한계를 극복하기 위해 터미널 에이전트가 등장했습니다. 개발자가 마우스를 손에 쥐지 않고, 터미널 환경을 떠나지 않은 채 자연어로 개발 프로세스 전체를 제어하는 워크플로우가 대세로 자리 잡았습니다. 단순 코드 추천을 넘어 파일 읽기/쓰기, 셸 명령어 실행, 테스트 런, Git 커밋 및 PR 생성까지 스스로 수행하는 에이전틱(Agentic) 환경을 제공합니다.</p>
-</div><div class="card"><h3 class="card-title">현재 활용 중인 3대 도구 개요</h3><div class="badge-grid"><div class="badge-item" style="border-color: #D97757; background-color: #D9775708;">
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 도입 (Introduction)</h2></div><div class="card"><h3 class="card-title">터미널 기반 AI 에이전트의 등장 배경</h3><p>기존의 GUI 기반 웹 채팅(Chat)이나 단순 인라인 자동완성(Autocomplete)의 한계를 극복하기 위해 터미널 에이전트가 등장했습니다. 개발자가 마우스를 손에 쥐지 않고, 터미널 환경을 떠나지 않은 채 자연어로 개발 프로세스 전체를 제어하는 워크플로우가 대세로 자리 잡았습니다. 단순 코드 추천을 넘어 파일 읽기/쓰기, 셸 명령어 실행, 테스트 런, Git 커밋 및 PR 생성까지 스스로 수행하는 에이전틱(Agentic) 환경을 제공합니다.</p>
+</div><div class="card"><h3 class="card-title">현재 활용 중인 3대 도구 개요</h3><div class="badge-grid" ><div class="badge-item" style="border-color: #D97757; background-color: #D9775708;">
 <div class="badge-icon">🔸</div>
-<div class="badge-title" style="color: #D97757;">Claude Code</div>
+<div class="badge-title" style="color: var(--text);">Claude Code</div>
 <div class="badge-tag">Anthropic</div>
 </div><div class="badge-item" style="border-color: #6366F1; background-color: #6366F108;">
 <div class="badge-icon">🔹</div>
-<div class="badge-title" style="color: #6366F1;">Antigravity 2.0</div>
+<div class="badge-title" style="color: var(--text);">Antigravity 2.0</div>
 <div class="badge-tag">Google Gemini</div>
-</div><div class="badge-item" >
+</div><div class="badge-item" style="border-color: #10A37F; background-color: #10A37F08;">
 <div class="badge-icon">🟩</div>
-<div class="badge-title" >Codex Agent</div>
+<div class="badge-title" style="color: var(--text);">Codex Agent</div>
 <div class="badge-tag">OpenAI</div>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. Claude Code: CLI의 정석과 정밀 제어</h2></div><div class="card"></div><div class="card"><h3 class="card-title">방식 개요 및 실행 예시</h3><p>Anthropic이 CLI 환경에 최적화하여 내놓은 도구로, 개발자의 의도를 가장 정교하게 파악하고 로컬 파일 시스템을 안전하게 제어합니다. 의도 분석 후 관련 파일을 탐색 및 읽고, 리팩토링 계획 수립, 파일 일괄 수정, 터미널 테스트 실행까지 유기적으로 이어집니다.</p>
-</div><div class="card"><h3 class="card-title">나의 실무 활용 경험 공유</h3><div class="feature-grid"><div class="feature-card" style="border-color: #D97757; background-color: #D9775708;">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. Claude Code: CLI의 정석과 정밀 제어</h2></div><div class="card"><h3 class="card-title">방식 개요 및 실행 예시</h3><p>Anthropic이 CLI 환경에 최적화하여 내놓은 도구로, 개발자의 의도를 가장 정교하게 파악하고 로컬 파일 시스템을 안전하게 제어합니다. 의도 분석 후 관련 파일을 탐색 및 읽고, 리팩토링 계획 수립, 파일 일괄 수정, 터미널 테스트 실행까지 유기적으로 이어집니다.</p>
+</div><div class="card"><h3 class="card-title">나의 실무 활용 경험 공유</h3><div class="feature-grid" ><div class="feature-card" style="border-color: #D97757; background-color: #D9775708;">
 <div class="card-top-bar" style="background-color:#D97757"></div>
 <span class="feature-tag" style="background:#D97757; color:#fff;">정밀 추론</span>
-<div class="feature-card-title" style="color: #D97757;">
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🛠️</span>레거시 전역 리팩토링
 </div>
 <p>수십 개의 파일에 분산되어 있는 공통 로직(로깅, 예외 처리)을 단 하나의 명령으로 휴먼 에러 없이 일괄 전환함.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >CLI 친화</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🌿</span>Git 워크플로우 자동화
 </div>
 <p>대대적인 수정 후 요약 문구를 conventional commit 규칙에 맞게 자동으로 커밋하고 푸시하는 단계를 자연스럽게 처리함.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >자체 기능</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🛡️</span>/audit 취약점 검사
 </div>
-<p></p>
-</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. Antigravity 2.0: 대규모 컨텍스트와 멀티 에이전트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">방식 개요 및 실행 예시</h3><p>Google Gemini 계열의 초거대 컨텍스트 윈도우를 무기로 삼아, 프로젝트 전체 구조를 통째로 컨텍스트에 올린 채 작업하는 멀티 에이전트 오케스트레이터입니다. 대형 목표(Goal)를 접수하면 백엔드 에이전트와 프론트엔드 에이전트로 태스크를 분할하여 병렬 처리합니다.</p>
-</div><div class="card"><h3 class="card-title">나의 실무 활용 경험 공유</h3><div class="feature-grid"><div class="feature-card" style="border-color: #6366F1; background-color: #6366F108;">
+<p>내장된 감사 명령어를 통해 보안 취약점이나 성능 병목을 빠르게 모니터링하고 즉각적인 패치 코드를 프로젝트에 적용함.</p>
+</div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. Antigravity 2.0: 대규모 컨텍스트와 멀티 에이전트</h2></div><div class="card"><h3 class="card-title">방식 개요 및 실행 예시</h3><p>Google Gemini 계열의 초거대 컨텍스트 윈도우를 무기로 삼아, 프로젝트 전체 구조를 통째로 컨텍스트에 올린 채 작업하는 멀티 에이전트 오케스트레이터입니다. 대형 목표(Goal)를 접수하면 백엔드 에이전트와 프론트엔드 에이전트로 태스크를 분할하여 병렬 처리합니다.</p>
+</div><div class="card"><h3 class="card-title">나의 실무 활용 경험 공유</h3><div class="feature-grid" ><div class="feature-card" style="border-color: #6366F1; background-color: #6366F108;">
 <div class="card-top-bar" style="background-color:#6366F1"></div>
 <span class="feature-tag" style="background:#6366F1; color:#fff;">100만+ 토큰</span>
-<div class="feature-card-title" style="color: #6366F1;">
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🧠</span>대규모 모노레포 분석
 </div>
 <p>수만 줄에 달하는 거대한 코드베이스 안에서 특정 도메인 로직의 얽힘을 질문했을 때 누락 없이 종합적인 답변 제공.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >/goal 활용</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🚀</span>자율적 장기 태스크 위임
 </div>
 <p>컨텍스트가 워낙 크다 보니 중간에 길을 잃지 않고 백엔드 API 수정부터 프론트엔드 타입 정의 연동까지 한 번에 완수.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >인프라 친화</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📈</span>인프라 및 로그 연동
 </div>
-<p></p>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. Codex: 실행 효율과 엔지니어링 자동화</h2></div><div class="card"></div><div class="card"><h3 class="card-title">방식 개요 및 실행 예시</h3><p>OpenAI의 진화된 엔지니어링 에이전트로, 철저하게 &#39;목표 달성&#39;과 &#39;비용/토큰 효율성&#39;에 초점이 맞춰져 있습니다. 스스로 가상 샌드박스를 구축하거나 CI/CD 파이프라인과 완벽하게 맞물려 독립된 이슈를 해결하는 데 특화되어 있습니다.</p>
-</div><div class="card"><h3 class="card-title">나의 실무 활용 경험 공유</h3><div class="feature-grid"><div class="feature-card" style="border-color: #10A37F; background-color: #10A37F08;">
+<p>출근 직후 터미널에서 전날의 Stage/Production 서버 덤프 로그를 통째로 읽혀 에러 패턴을 분석시키는 용도로 최고 효율을 냄.</p>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. Codex: 실행 효율과 엔지니어링 자동화</h2></div><div class="card"><h3 class="card-title">방식 개요 및 실행 예시</h3><p>OpenAI의 진화된 엔지니어링 에이전트로, 철저하게 &#39;목표 달성&#39;과 &#39;비용/토큰 효율성&#39;에 초점이 맞춰져 있습니다. 스스로 가상 샌드박스를 구축하거나 CI/CD 파이프라인과 완벽하게 맞물려 독립된 이슈를 해결하는 데 특화되어 있습니다.</p>
+</div><div class="card"><h3 class="card-title">나의 실무 활용 경험 공유</h3><div class="feature-grid" ><div class="feature-card" style="border-color: #10A37F; background-color: #10A37F08;">
 <div class="card-top-bar" style="background-color:#10A37F"></div>
 <span class="feature-tag" style="background:#10A37F; color:#fff;">자동화 위임</span>
-<div class="feature-card-title" style="color: #10A37F;">
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">📦</span>완성형 PR 생성기
 </div>
 <p>단순히 코드만 고치는 게 아니라 변경 로그, 영향도 평가, 테스트 결과 텍스트까지 포함된 고품질의 Pull Request를 알아서 생성.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >가성비 우수</span>
-<div class="feature-card-title" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
 <span class="fc-icon">🔄</span>정형화된 작업 처리
 </div>
-<p></p>
-</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 도구별 장단점 분석 (Pros &amp; Cons)</h2></div><div class="card"></div><div class="card"><h3 class="card-title">핵심 도구별 장단점 입체 비교</h3><div class="compare-2col"><div class="c2-card c2-left">
-<div class="card-top-bar"></div>
-<div class="c2-title">🟥 Claude Code (Anthropic)</div>
-<ul class="c2-list">
-<li>인간 개발자와 대화하는 듯한 극상의 추론 능력 및 코드 가독성</li><li>세밀하고 꼼꼼한 로컬 파일 제어와 높은 테스트 통과율</li><li>Git 및 CLI 환경과의 직관적이고 편리한 통합</li>
-</ul>
-<div class="c2-note">단점: 대용량 코드를 반복 처리할 때 토큰 소모 속도가 매우 빠름 (비용 부담), 거대한 멀티 에이전트 병렬 작업 시 간혹 컨텍스트 경계가 모호해짐</div>
-</div><div class="c2-card c2-right">
-<div class="card-top-bar"></div>
-<div class="c2-title">🟨 Antigravity 2.0 (Google)</div>
-<ul class="c2-list">
-<li>압도적인 컨텍스트 크기로 대규모 프로젝트 구조 분석에 독보적</li><li>여러 서브 에이전트를 조율하는 능력이 뛰어나 복합적인 풀스택 태스크 처리에 유리</li><li>클라우드 및 인프라 도구들과의 우수한 연동성</li>
-</ul>
-<div class="c2-note">단점: 소규모 코드 수정이나 미세한 린팅 작업에서는 응답 속도가 다소 무겁고 로컬 제어 디테일이 부족할 때가 있음</div>
-</div></div><div class="compare-grid">
-<div class="compare-card" >
-<div class="compare-card-title" >🟦 Codex (OpenAI)</div>
+<p>패키지 의존성 버전 업그레이드 및 하위 호환성 테스트, DB 마이그레이션 스크립트 작성 등 명확한 규칙 기반 태스크에서 완벽한 안정성.</p>
+</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 도구별 장단점 분석 (Pros &amp; Cons)</h2></div><div class="card"><h3 class="card-title">핵심 도구별 장단점 입체 비교</h3><div class="compare-grid" >
+<div class="compare-card" style="border-color: #10A37F; background-color: #10A37F08;">
+<div class="compare-card-title" style="color: #10A37F;">🟦 Codex (OpenAI)</div>
 <p>태스크 완료 및 PR 생성까지의 전체 자동화 파이프라인 안정성이 매우 높으며 가상 샌드박스 검증 능력이 뛰어납니다. 실행 비용 및 토큰 활용 효율성이 최적화되어 있어 가성비가 우수합니다.</p>
-<div class="compare-note" >단점: 복잡한 논리적 추론이나 설계 변경 시 결과물이 정형화되며 CLI 상호작용 피드백이 상대적으로 낮음</div>
-</div></div></div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>6. 최종 종합 비교표 (Summary)</h2></div><div class="card"></div><div class="card"><h3 class="card-title">한눈에 보는 에이전트 스펙 비교</h3><table>
+<div class="compare-note" style="background:#10A37F15; color:#10A37F">단점: 복잡한 논리적 추론이나 설계 변경 시 결과물이 정형화되며 CLI 상호작용 피드백이 상대적으로 낮음</div>
+</div></div></div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>6. 최종 종합 비교표 (Summary)</h2></div><div class="card"><h3 class="card-title">한눈에 보는 에이전트 스펙 비교</h3><table>
 <thead>
 <tr>
 <th align="left">평가 항목</th>
@@ -375,7 +436,7 @@
 <td align="center">높음 (아웃풋 최적화)</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-7"><div class="section-header"><div class="section-num">7</div><h2>7. 결론 및 추천 워크플로우</h2></div><div class="card"></div><div class="card"><h3 class="card-title">상황별 최적의 도구 매칭 시스템</h3><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+</div></section><section class="section" id="sec-7"><div class="section-header"><div class="section-num">7</div><h2>7. 결론 및 추천 워크플로우</h2></div><div class="card"><h3 class="card-title">상황별 최적의 도구 매칭 시스템</h3><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
 <div class="alert-body">
 <strong>1단계: 미시적 문제 해결 및 리팩토링</strong>
@@ -391,6 +452,7 @@
 <div class="alert-icon">🚀</div>
 <div class="alert-body">
 <strong>3단계: 독립 태스크 완결 및 CI/CD 위임</strong>
+<p>명확한 버그 리포트(Issue)를 해결하고, 테스트 코드를 붙여 자동으로 깃허브에 고품질 PR까지 올려 손을 털고 싶을 때는 Codex에게 태스크를 위임하세요.</p>
 </div>
 </div>
 </div></section></main>
@@ -402,7 +464,7 @@
   <footer><div>ⓒ 2026 Terminal AI Revolution Guide. All rights reserved.</div><div>본 문서는 6대 표준 키 및 숏코드 스펙을 준수하여 작성되었습니다.</div></footer>
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

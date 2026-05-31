@@ -1,233 +1,263 @@
-# 가이드 제작 가이드
+# 가이드 제작 및 숏코드 표준 규격 지침서 (Creative Spark)
 
-마크다운(.md)으로 콘텐츠를 작성하면 카테고리별 디자인이 적용된 HTML·PPTX로 변환됩니다.
-
----
-
-## 전체 워크플로우
-
-```
-1. mddata/MyGuide.md 작성
-        ↓
-2. build-guide.mjs 실행 → public/guides/MyGuide.html 생성
-        ↓ (선택)
-   md-to-pptx.mjs 실행 → dist-pptx/MyGuide.pptx 생성
-        ↓
-3. src/data/guides.json 에 slug/title/file 등록
-        ↓
-4. npm run build:standalone  (standalone.html 갱신)
-        ↓
-5. npm run build             (배포 빌드)
-```
+본 지침서는 마크다운(.md) 기반 콘텐츠를 미려한 반응형 HTML 가이드 및 발표용 PPTX 슬라이드로 자동 변환하는 파이프라인의 **신형 컴포넌트형 숏코드 표준 규격, 가변 컬럼(`cols=N`) 제어 규칙 및 비주얼 세부 튜닝 가이드**를 다룹니다.
 
 ---
 
-## 1단계. MD 파일 작성
+## 1. 기본 개념 및 빌드 워크플로우
 
-`data/templates/template.md`를 복사해 `mddata/` 에 새 파일을 만듭니다.
-
-```bash
-cp data/templates/template.md mddata/MyGuide.md
-```
-
-### frontmatter 필수 항목
-
-```yaml
----
-title: 도구 이름
-subtitle: 한 줄 설명
-style: ai-dev        # ← styles.json 키 (아래 표 참고)
-logo: 🤖             # 선택
-stats:               # 선택: 표지 통계
-  - value: "무료"
-    label: "시작 가능"
-done:                # 선택: 마지막 슬라이드/섹션
-  title: 마무리 문구
-  subtitle: 짧은 설명
-  ctaLabel: 바로 시작하기
----
-```
-
-### 마크다운 → HTML/PPTX 매핑 규칙
-
-| 마크다운 | 변환 결과 |
-|----------|----------|
-| `# 1. 제목` | 섹션 (번호 박스 + 제목) |
-| `## 소제목` | 카드 박스 + 카드 제목 |
-| `### 작은 제목` | 카드 내부 소제목 |
-| `> 인용문` | 브랜드 색 팁 박스 |
-| ` ```코드``` ` | 다크 코드 블록 |
-| `\| 표 \|` | 브랜드 색 헤더 표 |
-| `---` | 섹션 구분 |
+1. **마크다운 작성**: `md_src/guides/` 폴더 하위에 `.md` 가이드 파일을 작성합니다.
+2. **목록 동기화**: `npm run sync:guides`를 실행하여 마크다운 정보와 `style` 구성을 인덱스 파일(`src/data/guides.json`)에 자동 정렬 반영합니다. (수동 정렬 순서 보존)
+3. **HTML 및 리소스 컴파일**: `npm run build:publish`를 실행하여 고품질 반응형 HTML 가이드를 빌드하고 쇼케이스용 PPTX 프레젠테이션 파일을 생성합니다.
+4. **PPTX 개별 슬라이드 변환**: 필요한 경우 `node scripts/md-to-pptx.mjs <파일명.md>` 또는 `--all`을 실행하여 발표용 PPTX 파일을 개별 빌드합니다.
+5. **통합 빌드 및 허브 병합**: `npm run build`를 일괄 실행하여 목록 갱신, HTML 컴파일, React 빌드 및 오프라인 통합 단일 구동 파일인 `dist/standalone.html` 빌드를 한 번에 수행합니다.
 
 ---
 
-## 2단계. Shortcode 블록
+## 2. 6대 표준 키 (Universal Schema)
 
-모든 숏코드는 `:::` 펜스로 감싼다.
+모든 숏코드의 데이터 아이템은 아래 정의된 **6대 표준 키**에 맞추어 마크다운 리스트 형태로 선언하는 것이 원칙입니다.
 
-```
-::: shortcode-type
-- key: value
-  key2: value2
-:::
-```
+* `icon`: 이모지 아이콘 (예: `💬`, `⚡`) 또는 수치형 하이라이트 문구
+* `title`: 항목의 주요 대제목 / 명령어 라벨 / 주요 명칭
+* `desc`: 상세 설명 본문 / 예시 코드 / 멀티라인 설명 본문
+* `tag`: 우측 상단 강조 배지 라벨 / 특징 칩 텍스트 (예: `Best`, `추천`)
+* `meta`: 부가 속성 또는 파이프(`|`) 기호로 구분된 리스트 상세 항목
+* `color`: 카드 개별 테두리 및 뱃지 테마 강조용 헥스 컬러 (예: `"#D97757"`)
 
-### 6대 표준 키
+---
 
-| 키 | 용도 |
-|----|------|
-| `icon` | 이모지 아이콘 |
-| `title` | 항목 제목 |
-| `desc` | 설명 텍스트 |
-| `tag` | 배지/레이블 |
-| `meta` | 부가 데이터 (도구명·파이프`\|` 구분 목록) |
-| `note` | 하단 메모 또는 CTA 버튼 텍스트 |
-| `color` | 강조 색상 (Hex, 예: `"#6366F1"`) |
+## 3. 신형 컴포넌트 숏코드 규격 & 작성 규칙
 
-### 숏코드 목록
+### 1) 가로 다단 격자형 및 특화 숏코드 비교분석
+작성자는 콘텐츠 성격에 맞게 최적의 컴포넌트를 선택해야 합니다. (총 24종 지원)
 
-| 타입 | 용도 | 주요 필드 |
-|------|------|-----------|
-| `icon-grid` | 아이콘 카드 격자 | `icon`, `title`, `desc` |
-| `feature-grid` | 기능 소개 카드 | `icon`, `title`, `desc`, `tag` |
-| `tool-card` | 브랜드 컬러 배너 | `icon`, `title`, `desc`, `tag`, `color` |
-| `workflow` | 프로세스 흐름도 | `icon`, `title`, `meta`(도구명) |
-| `steps` | 번호형 단계 목록 | `title`, `desc` |
-| `compare-grid` | 비교 카드 | `title`, `desc`, `note` |
-| `plan-grid` | 요금제/플랜 비교 | `title`, `tag`, `meta`(기능 `\|` 구분), `note`, `featured` |
-| `compare-2col` | 좌우 2단 비교 | `title`, `meta`(항목 `\|` 구분), `note` |
-| `bottom-list` | 요점 칩 목록 | `title`, `desc`, `meta`(칩 `\|` 구분) |
-| `alert-box` | 알림/팁 박스 | `type`(tip·warn·success·danger), `icon`, `title`, `desc` |
-| `command-block` | 터미널 명령어 블록 | `label`(창 제목), `meta`(언어), `desc`(명령어) |
-| `tabs` | 탭 전환 UI | `id`, `label`(탭명), `desc`(탭 내용) |
-| `faq-accordion` | 아코디언 FAQ | `title`(질문), `desc`(답변) |
-| `prompt-example` | AI 프롬프트 예시 | `title`(레이블), `desc`(프롬프트 내용) |
-| `stat-highlight` | 수치 강조 카드 | `icon`(수치/이모지), `title`, `desc`, `color` |
+| 숏코드 표준명 | 권장 핵심 용도 | 비주얼적 특이점 | 주요 매핑 필드 |
+| :--- | :--- | :--- | :--- |
+| **`plan-grid`** | 플랜 선택 및 요금제 비교 | `featured="true"` 또는 `color` 지정 시 카드 테두리가 밝게 빛나며 살짝 위로 호버링하는 강조 디자인 작렬. | `title`, `tag`, `desc`, `meta` (목록), `note`, `featured` |
+| **`feature-grid`** | 대표적인 시스템 특징, 주요 강점 기술 | 이모지 아이콘이 제목 좌측에 인라인으로 앙증맞게 밀착되며, 우측 상단에 태그 배지가 고정되는 우아한 구조. | `icon`, `tag`, `title`, `desc`, `color` |
+| **`compare-grid`** | 다각도 항목별 비교 분석, 대안 비교 | 카드 최하단에 옅은 강조색의 전용 `compare-note` 메모 공간이 자동으로 성형되어 추가 코멘트 기재 가능. | `title`, `desc`, `meta` (메모 영역), `color` |
+| **`columns-grid`** | 범용 다단 본문 배치, 텍스트 단 구성 | 데코 레이아웃을 최대한 절제하고 카드 상단에 얇은 라인만 덧댄 채 마크다운 본문의 가독성을 최대로 높임. | `title`, `desc`, `meta` |
+| **`stat-grid`** | 수치 지표, 소요 시간, 단계 요약 | `icon` 영역에 거대하고 우아한 Serif 폰트로 핵심 지표가 중앙 정렬 표기되는 데이터 특화 레이아웃. | `icon` (빅텍스트), `title` (라벨), `desc` |
+| **`part-deck`** | 시리즈 목차의 대단원(부, Part) 헤더 | 좌측에 고유 번호(icon)가 붙고 우측에 부 제목과 설명, 챕터 범위가 나열되며, HSL 브랜드 컬러가 다이내믹하게 동기화. | `icon` (부 번호), `title`, `desc` (태그라인), `tag` (범위), `color` |
+| **`chapter-list`** | 세부 단원 및 챕터 상세 목록 | 챕터별 고유 번호(icon)와 태그 뱃지 속성을 읽어 '개념', '실습', '도구', '사례' 등 전용 HSL 뱃지 컬러 자동 매핑. | `icon` (챕터 번호), `title`, `desc`, `tag` (뱃지 종류) |
+| **`summary-bar`** | 본문 하단 요약 지표 수치 그리드 | 하단 통계 지표 영역에 어두운 검정 바탕으로 숫자와 단위(예: "30장", "20+")를 자동 분리 포맷하여 요약 전시. | `icon` (숫자+단위), `title` (라벨) |
 
-**예시:**
+### 2) 가변 컬럼 제어 기능 (`cols=N`)
+격자형 숏코드 5종은 본래 반응형 `minmax(180px, 1fr)`로 한 줄 단수가 자동 설정되나, 912px 본문 가로폭에서 작성자가 격자 컬럼 단수를 칼각으로 통제하고자 할 때 숏코드 뒤에 **`cols=N` 인수**를 지정할 수 있습니다.
 
 ```md
-::: icon-grid
-- icon: 🚀
-  title: 빠른 시작
-  desc: 5분 안에 완료
-  color: "#6366F1"
-:::
-
-::: workflow
-- icon: 📝
-  title: 작성
-  meta: VS Code
-- icon: 🔄
-  title: 변환
-  meta: build-guide.mjs
-:::
-
-::: plan-grid
-- title: Free
-  tag: 무료
-  meta: 기능A|기능B|기능C
-  note: 지금 시작
-- title: Pro
-  tag: 추천
-  meta: 기능A|기능B|기능C|기능D
-  note: 업그레이드
-  featured: "true"
+::: feature-grid cols=3
+- icon: "⚡"
+  title: "속도"
+  desc: "실시간 로딩 속도 보장"
+- icon: "🔒"
+  title: "보안"
+  desc: "엔드투엔드 암호화"
+- icon: "🌐"
+  title: "글로벌"
+  desc: "전 세계 서버 분산망"
 :::
 ```
+* *동작 원리*: `build-guide.mjs` 렌더러가 `cols=3` 인수를 감지하면 CSS Grid 스타일인 `grid-template-columns: repeat(3, 1fr);`를 인라인으로 강제 주입하여, 균형 잡힌 다단 배열 레이아웃을 절대 무너지지 않게 고정합니다.
 
 ---
 
-## 3단계. HTML 생성
+## 4. 독창적 비주얼 3대 특화 시각화 숏코드
 
-```bash
-# 기본 (public/guides/<파일명>.html 자동 저장)
-node templates/build-guide.mjs mddata/MyGuide.md
+오리지널의 아름답고 독창적인 4대 그래픽 요소를 마크다운 만으로 간결하게 포용하기 위해 신설된 프리미엄 숏코드 스펙입니다.
 
-# 출력 경로 지정
-node templates/build-guide.mjs mddata/MyGuide.md public/guides/MyGuide.html
-
-# 스타일 강제 지정
-node templates/build-guide.mjs mddata/MyGuide.md --style knowledge
+### 1) `git-flow-strip` (깃 플로우 흐름도)
+GitHub 브랜치와 커밋 트리를 어두운 터미널 다이어그램 형식으로 입체적으로 표현합니다.
+* *작성 스펙*:
+```md
+::: git-flow-strip
+- title: "main"
+  tag: "v1.0.0"
+  meta: "초기 배포 패키지 빌드|기본 구조 설계 완료"
+  color: "#10B981"
+- title: "develop"
+  tag: "Commit 482"
+  meta: "신규 컴포넌트 숏코드 설계 탑재|Grid cols 가변 폭 파서 구현"
+  color: "#3B82F6"
+:::
 ```
+* *특이 비주얼*: 마우스를 동그란 `commit` 노드 위에 가져가면(Hover), 우측/하단으로 몽환적인 다차원 커밋 상세 목록 팝오버가 부드럽게 튀어나옵니다.
 
-### PPTX 생성 (선택)
-
-```bash
-node scripts/md-to-pptx.mjs mddata/MyGuide.md
-node scripts/md-to-pptx.mjs mddata/MyGuide.md --style ai-dev --verbose
-node scripts/md-to-pptx.mjs --all "mddata/*.md"
+### 2) `editor-box` (가상 에디터 시뮬레이터)
+VS Code 모양의 어두운 가상 코드 편집 창을 구성합니다.
+* *작성 스펙*:
+```md
+::: editor-box
+- title: "app.js"
+  tag: "javascript"
+  desc: |
+    const app = require('express')();
+    app.get('/', (req, res) => {
+      res.send('Creative Spark Start!');
+    });
+:::
 ```
+* *특이 비주얼*: 상단의 신호등 버튼(빨강/노랑/초록) 및 파일 활성 탭이 VS Code UI를 재현하고, 코드 좌측에 `.line-nums` 행 번호가 자동 카운팅되어 정렬됩니다.
+
+### 3) `network-box` (지식 그래프 성단)
+Obsidian의 노드 성단 뷰어를 모방한 3D 은하수 그래프 비주얼입니다.
+* *작성 스펙*:
+```md
+::: network-box
+- title: "클로드 코드"
+  color: "#E879F9"
+- title: "인증 모듈"
+  meta: "Auth Flow"
+- title: "빌더 코어"
+  meta: "Builder"
+- title: "로컬 DB"
+  meta: "SQLite"
+:::
+```
+* *특이 비주얼*: 첫 번째 노드가 중앙의 거대한 메인 코어 노드가 되며, 그 주위로 서브 노드들이 마치 우주를 부유하듯 부드럽게 넘실넘실 흘러 다니는(drift 애니메이션) 환상적인 비주얼 광원 효과가 연출됩니다.
+
+### 4) `part-deck` (시리즈 대단원 부/Part 헤더) [NEW]
+시리즈 문서나 장편 입문서의 대단원(부, Part) 타이틀 영역을 미려하게 연출합니다.
+* *작성 스펙*:
+```md
+::: part-deck
+- icon: "1부"
+  title: "개념 이해"
+  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
+  tag: "Ch.01–03"
+  color: "#1A3A5C"
+:::
+```
+* *특이 비주얼*: 주입한 `color` 헥스 코드에 맞추어 카드의 테마 컬러가 동적으로 주입되어 아름답게 출력됩니다.
+
+### 5) `chapter-list` (세부 챕터 목록) [NEW]
+대단원 하위에 종속되는 세부 챕터 리스트와 설명 및 구분 뱃지를 칼각 정렬하여 리스트업합니다.
+* *작성 스펙*:
+```md
+::: chapter-list
+- icon: "01"
+  title: "바이브코딩이란?"
+  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
+  tag: "개념"
+- icon: "04"
+  title: "첫 대화: 프롬프트 설계"
+  desc: "요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md"
+  tag: "실습"
+:::
+```
+* *특이 비주얼*: 챕터 항목 위에 마우스를 호버링하면 왼쪽 경계 라인에 활성 강조 컬러 바가 등장합니다. `tag` 배지 텍스트를 읽어 HSL 전용 뱃지 스타일을 실시간 분기 적용합니다.
+
+### 6) `summary-bar` (하단 요약 수치 바) [NEW]
+문서 맨 하단이나 핵심 분석 끝부분에 요약 통계나 수치 하이라이트를 격자 형태로 노출해 줍니다.
+* *작성 스펙*:
+```md
+::: summary-bar
+- icon: "29장"
+  title: "Total Chapters"
+- icon: "8부"
+  title: "Parts"
+- icon: "24종"
+  title: "Support Shortcodes"
+:::
+```
+* *특이 비주얼*: 수치에 함께 주입된 단위("장", "부")를 정규식이 분리 판정하여 요약 인디케이터 텍스트의 크기 밸런스를 맞춰줍니다.
 
 ---
 
-## 4단계. guides.json 등록
+## 5. ★ 숏코드 비주얼 세부 영역 수정 위치 (CSS/HTML 클래스 매핑)
 
-`src/data/guides.json`의 적합한 카테고리 `guides` 배열에 항목 추가.
+가이드 컴파일러가 조립하는 HTML의 폰트, 여백, 색상 등을 미세 조정하고자 할 때 수정해야 하는 **`scripts/build-guide.mjs` 파일 내의 정확한 클래스 및 스타일 수정 포인트 매핑 가이드**입니다.
 
-```json
-{ "slug": "myguide", "title": "My Guide", "subtitle": "한 줄 설명", "file": "MyGuide.html" }
-```
+### 1) 카드 사이의 여백 및 마진 조절
+* **전체 Grid 컴포넌트 갭**: `build-guide.mjs` -> CSS 클래스 `.icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid`
+  * *수정 내용*: `gap: 20px; margin: 25px 0;` 부분의 `gap`과 `margin` 수치를 수정하여 카드 간격 조절.
+* **카드 자체 패딩**: `build-guide.mjs` -> CSS 클래스 `.icon-card, .feature-card, .compare-card, .column-card, .plan-card, .bottom-list-card, .badge-item`
+  * *수정 내용*: `padding: 25px;` 속성의 내부 수치를 변경하여 카드 내 여백 조절.
 
-| 필드 | 설명 |
-|------|------|
-| `slug` | URL 고유 ID (영문 소문자·하이픈, 전체 중복 불가) |
-| `title` | 메뉴/카드 표시 이름 |
-| `subtitle` | 카드 아래 짧은 설명 |
-| `file` | `public/guides/` 안의 HTML 파일명 (대소문자 정확히) |
+### 2) `plan-grid` (플랜 선택 카드) 세부 간격 조절
+* **카드 제목과 부가 속성 목록(ul) 간격**: `build-guide.mjs` -> CSS 클래스 `.plan-title`
+  * *수정 내용*: `margin-bottom: 20px;` 수치를 미세 조절하여 제목과 기능 목록 리스트 사이의 여백을 좁히거나 넓힘.
+* **목록 아이템(li) 행 간격**: `build-guide.mjs` -> CSS 클래스 `.plan-features li`
+  * *수정 내용*: `padding: 8px 0;` 및 `font-size: 0.95rem;` 속성을 수정하여 목록의 폰트 크기 및 줄 간격을 조절.
+* **체크 표시(✓)의 색상**: `build-guide.mjs` -> CSS 클래스 `.plan-features li:before`
+  * *수정 내용*: `color: var(--brand);` 색상을 변경하여 체크 마크 디자인 수정.
 
-### 카테고리 선택 기준
+### 3) `alert-box` (팁/알림 박스) 아이콘 및 본문 간격 조절
+* **아이콘과 텍스트 영역 사이 간격**: `build-guide.mjs` -> CSS 클래스 `.alert-box`
+  * *수정 내용*: `gap: 14px; padding: 16px 20px;` 속성을 수정하여 왼쪽 아이콘과 오른쪽 본문 영역 사이의 간격을 조절.
+* **알림 박스 대제목 마진**: `build-guide.mjs` -> CSS 클래스 `.alert-body strong`
+  * *수정 내용*: `margin-bottom: 4px; font-weight: 800;` 부분의 마진 값을 조정하여 제목과 상세 본문 사이의 줄 간격 조절.
 
-| 카테고리 id | 대상 도구 유형 |
-|------------|--------------|
-| `ai-chat` | ChatGPT, Claude, Grok 등 대화형 AI |
-| `ai-dev` | VS Code, Claude Code, Copilot, Codex 등 AI 코딩 도구 |
-| `webdev` | GitHub, Vercel, Supabase, Lovable 등 개발·배포 플랫폼 |
-| `knowledge` | Notion, Obsidian, Quartz 등 노트·지식 관리 |
-| `productivity` | Everything, Snipaste 등 PC 유틸리티 |
-| `creative` | CapCut, 이미지·영상 AI 등 크리에이티브 도구 |
+### 4) `workflow-strip` (가로 순서도) 화살표 및 스텝 조절
+* **스텝별 화살표 위치**: `build-guide.mjs` -> CSS 클래스 `.wf-arrow`
+  * *수정 내용*: `right: -15px; top: 50%; font-size: 1.2rem;` 부분을 수정하여 스텝을 가리키는 화살표(`→`)의 상대적 위치 및 크기 조절.
+* **스텝 아이콘 배경색 크기**: `build-guide.mjs` -> CSS 클래스 `.wf-icon`
+  * *수정 내용*: `width: 45px; height: 45px; border-radius: 50%;` 수치를 조절하여 동그란 스텝 아이콘의 지름 조절.
 
----
-
-## 5단계. 빌드
-
-```bash
-npm run build:standalone   # standalone.html 갱신 (guides.json 변경 후 필수)
-npm run build              # 배포 빌드
-```
-
----
-
-## 스타일 프리셋 (config/styles.json)
-
-| 키 | 카테고리 | 메인 색 |
-|------|---------|--------|
-| `ai-chat` | AI 챗봇 & 어시스턴트 | 그린 `#10A37F` |
-| `ai-dev` | AI 개발 도구 | 오렌지 `#D97757` |
-| `knowledge` | 노트 & 지식 관리 | 퍼플 `#6366F1` |
-| `productivity` | 생산성 유틸리티 | 블루 `#1565C0` |
-| `creative` | 크리에이티브 AI | 마젠타 `#9B59B6` |
-| `security` | 보안 & 인프라 | 사이언 `#06B6D4` |
-| `finance` | 재테크 & 금융 | 골드 `#D4A017` |
-| `future` | 퓨처 AI | 네온 라임 `#84CC16` |
-| `enterprise` | 엔터프라이즈 | 슬레이트 `#475569` |
-| `media` | 미디어 & 콘텐츠 | 로즈 `#E11D48` |
+### 5) 3대 시각화 특화 숏코드 세부 수정 위치
+* **`git-flow-strip` 브랜치 이름 너비**: `build-guide.mjs` -> CSS 클래스 `.branch-row`
+  * *수정 내용*: `grid-template-columns: 160px 1fr;` 부분의 `160px` 고정 값을 수정하여 좌측 브랜치 라벨이 차지하는 가로폭 조절.
+* **`editor-box` 가상 에디터 폰트 크기**: `build-guide.mjs` -> CSS 클래스 `.editor-body`
+  * *수정 내용*: `font-size: 0.9rem; line-height: 1.8; color: #D4D4D4;` 속성을 조절하여 행 번호 및 소스 코드의 기본 크기와 줄 간격을 고침.
+* **`network-box` 지식 그래프 부유 범위**: `build-guide.mjs` -> CSS 애니메이션 `@keyframes driftOne` ~ `@keyframes driftFour`
+  * *수정 내용*: `transform: translate(X, Y)` 의 X, Y 픽셀 변위 값을 조절하여 위성 노드들이 둥둥 떠다니는 진폭 범위 및 펄스 반경 조정.
 
 ---
 
-## 기존 HTML을 MD로 역변환
+## 6. ★ `desc`, `note`, `meta` 필드의 작성법 및 여러 줄 인식 규칙
 
-```bash
-node templates/html-to-md.mjs public/guides/Supabase.html mddata/Supabase.md
-# → 검수 후 build-guide.mjs 로 재빌드
-```
+각 필드의 정체성 및 렌더링 방식의 차이점을 명확히 인지하고 가이드를 작성해야 합니다.
 
-| HTML 요소 | 복원 결과 |
-|-----------|----------|
-| `.hero` 영역 | frontmatter (title, subtitle, logo, stats) |
-| CSS `--brand` 변수 | `styles.json` 키 자동 감지 |
-| `section.section` | `# N. 제목` 섹션 |
-| `.card` | `## 카드제목` + 내부 내용 |
-| `.icon-grid` / `.feature-grid` / `.step-list` / `.compare-grid` | shortcode 복원 |
-| `<blockquote>`, `<pre>`, `<ul>`, `<table>` | 마크다운 표준 문법 |
+### 1) `desc` (상세 설명 / 본문)
+* **정체성**: 항목의 주요 상세 묘사나 예시 본문을 기재하는 필드입니다.
+* **표현법**:
+  * **한 줄 기재**: `desc: "무료 플랜과 기본 템플릿으로 시작합니다."`
+  * **여러 줄 기재 (멀티라인 리터럴 `|`)**: 줄바꿈(`\n`)이 그대로 보존되어 출력됩니다.
+    ```yaml
+    desc: |
+      - 첫 번째 상세 항목
+      - 두 번째 상세 항목
+      - 세 번째 상세 항목
+    ```
+
+### 2) `note` (하단 메모 / 추가 가이드라인)
+* **정체성**: 카드 하단에 옅은 색조 배경으로 구성되는 별도의 가이드라인/팁박스 영역입니다.
+* **표현법**:
+  * **한 줄 기재**: `note: "💡 권장 사항: 기본 온보딩 워크플로우 숙지"`
+  * **여러 줄 기재 (멀티라인 리터럴 `|`)**:
+    ```yaml
+    note: |
+      💡 [Tip] 사내 인프라 관리 조직 및 DevOps 기술팀 보유 시 적극 추천
+      추가적인 로컬 DB 커스텀 빌드도 자유롭게 가능합니다.
+    ```
+    * *동작 비주얼*: HTML 렌더러에서는 텍스트 줄바꿈이 정상 유지되며, PPTX 슬라이드에서는 가로 배치 상황을 고려하여 각각의 줄이 ` · ` (가운데 점)으로 자동 연결되어 미려하게 출력됩니다.
+
+### 3) `meta` (개별 칩박스 뱃지 / 불렛 리스트)
+* **정체성**: 파이프 기호(`|`) 또는 개행 기호(`\n`)로 나누어진 **개별 뱃지 형태의 칩 목록** 또는 **불렛 리스트**를 구성하는 필드입니다.
+* **표현법**:
+  * **한 줄 파이프 표현법 (Badge Chips)**:
+    ```yaml
+    meta: "가입 즉시 사용 가능 | 자동 최신 업데이트 | SLA 보장"
+    ```
+    각각 `가입 즉시 사용 가능`, `자동 최신 업데이트`, `SLA 보장` 이라는 **개별 단칩 박스 뱃지**들로 자동 분할되어 렌더링됩니다.
+  * **멀티라인 리터럴 표현법 (`|` 스칼라)**:
+    ```yaml
+    meta: |
+      가입 즉시 사용 가능
+      자동 최신 업데이트
+      SLA 보장
+    ```
+    이 경우에도 줄 단위로 쪼개어져 개별 단칩 박스들로 정상 분할 렌더링됩니다.
+  * **하이픈 리스트 표현법**:
+    ```yaml
+    meta:
+      - 가입 즉시 사용 가능
+      - 자동 최신 업데이트
+      - SLA 보장
+    ```
+    마찬가지로 칩 목록으로 자동 번역됩니다.
+
+> [!IMPORTANT]
+> **필드 독립 정합성 준수**
+> `desc`, `note`, `meta`는 마크다운 컴파일러 단에서 고유의 독립된 변수로 엄격히 격리 관리됩니다. 따라서 `meta`에 작성한 칩 리스트가 `note` 팁박스를 침범하거나 그 반대의 오작동을 유발하지 않도록 규격에 맞춰 분리 작성해야 합니다.

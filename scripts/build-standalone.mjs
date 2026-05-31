@@ -25,7 +25,7 @@ const OUT = process.argv[2] || path.join(PUBLIC, "standalone.html");
 
 // ---------- helpers ----------
 function readGuideHtml(file) {
-  const fp = path.join(PUBLIC, "guides", file);
+  const fp = file.includes("/") ? path.join(PUBLIC, file) : path.join(PUBLIC, "guides", file);
   if (!fs.existsSync(fp)) {
     console.warn(`  ⚠️  missing: ${fp}`);
     return null;
@@ -90,13 +90,21 @@ const collectionContents = {};
 const collectionsOut = [];
 for (const col of data.collections || []) {
   const parts = readCollectionParts(col.folder, col.indexFile);
-  // include the index itself as the first "part"
-  const indexPart = {
-    slug: col.indexFile.replace(/\.html$/, ""),
-    title: "목차",
-    file: col.indexFile,
-  };
-  const allParts = [indexPart, ...parts];
+  const indexFp = path.join(PUBLIC, col.folder, col.indexFile);
+  
+  // 목차 파일이 실제로 빌드되어 존재하는 경우에만 첫 파트로 편입 (xlsx_json만 있는 테스트 컬렉션 등에서 빈 목차 생성 방지)
+  let allParts = [];
+  if (fs.existsSync(indexFp)) {
+    const indexPart = {
+      slug: col.indexFile.replace(/\.html$/, ""),
+      title: "목차",
+      file: col.indexFile,
+    };
+    allParts = [indexPart, ...parts];
+  } else {
+    allParts = [...parts];
+  }
+  
   const contents = {};
   for (const p of allParts) {
     const c = readCollectionHtml(col.folder, p.file);
@@ -108,11 +116,20 @@ for (const col of data.collections || []) {
   // Emit a manifest.json next to the collection so the React runtime
   // can list parts without having to parse the index page.
   const manifestPath = path.join(PUBLIC, col.folder, "manifest.json");
-  fs.writeFileSync(
-    manifestPath,
-    JSON.stringify({ id: col.id, label: col.label, parts: allParts }, null, 2),
-    "utf8",
-  );
+  try {
+    if (fs.existsSync(manifestPath)) {
+      fs.unlinkSync(manifestPath);
+    }
+  } catch (e) {}
+  try {
+    fs.writeFileSync(
+      manifestPath,
+      JSON.stringify({ id: col.id, label: col.label, parts: allParts }, null, 2),
+      "utf8",
+    );
+  } catch (err) {
+    console.warn(`  ⚠️ Failed to write manifest for ${col.id}: ${err.message}`);
+  }
 }
 
 const APP_DATA = {
@@ -366,5 +383,14 @@ if(initial) showContent(initial); else showHome();
 
 const out = SHELL.replace("__APP_DATA__", JSON.stringify(APP_DATA).replace(/</g, "\\u003c"));
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
-fs.writeFileSync(OUT, out, "utf8");
-console.log(`✅ ${path.relative(ROOT, OUT)}  (${(out.length/1024).toFixed(1)} KB)`);
+try {
+  if (fs.existsSync(OUT)) {
+    fs.unlinkSync(OUT);
+  }
+} catch (e) {}
+try {
+  fs.writeFileSync(OUT, out, "utf8");
+  console.log(`✅ ${path.relative(ROOT, OUT)}  (${(out.length/1024).toFixed(1)} KB)`);
+} catch (err) {
+  console.error(`❌ Failed to write standalone: ${err.message}`);
+}

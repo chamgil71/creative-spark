@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Everything (에브리띵) 가이드</title>
+<title>Everything(에브리띵)</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -35,7 +35,7 @@
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,24 +279,63 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">🔍Everything Everything (에브리띵) 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 왜 Everything인가?</a></li><li><a href="#sec-2">2. 검색 문법 &amp; 고급 쿼리</a></li><li><a href="#sec-3">3. 주요 기능</a></li><li><a href="#sec-4">4. 설치 &amp; 설정</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Everything(에브리띵)</a><ul class="nav-links"><li><a href="#sec-1">왜 Everything인가?</a></li><li><a href="#sec-2">검색 문법 &amp; 고급 쿼리</a></li><li><a href="#sec-3">주요 기능</a></li><li><a href="#sec-4">설치 &amp; 설정</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🔍 Windows 전용 · 완전 무료 · 오픈소스</div>
-      <div class="hero-logo">🔍Everything</div>
-      <h1>Everything (에브리띵) 가이드</h1>
-      <p>Windows 파일 검색을 완전히 바꾸는 도구수백만 개의 파일을 0.1초 안에 찾아내는 인덱싱 검색</p>
+      
+      <h1>Everything(에브리띵)</h1>
+      <p>초고속 파일 검색</p>
       
       <div class="hero-stats"><div class="hero-stat"><strong>&lt;1초</strong><span>전체 드라이브 검색</span></div><div class="hero-stat"><strong>0MB</strong><span>RAM 점유율</span></div><div class="hero-stat"><strong>무료</strong><span>완전 무료</span></div><div class="hero-stat"><strong>실시간</strong><span>파일 변경 반영</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 왜 Everything인가?</h2></div><div class="card"><p>검색 속도 비교 — &quot;2024 예산보고서.xlsx&quot; 찾기</p>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>왜 Everything인가?</h2></div><div class="card"><p>검색 속도 비교 — &quot;2024 예산보고서.xlsx&quot; 찾기</p>
 <p>🐌 Windows 기본 검색</p>
+<p>인덱스 없는 폴더: 탐색기에서 검색</p>
+<p>드라이브 전체 스캔</p>
+<p>로딩 인디케이터 돌아가는 중...</p>
+<p>파일 하나씩 순차 검색</p>
 <p>30초 ~ 5분</p>
 <p>⚡ Everything</p>
+<p>Win+Alt+E로 실행</p>
+<p>파일명 타이핑 시작</p>
+<p>입력과 동시에 결과 표시</p>
+<p>전체 드라이브 즉시 완료</p>
 <p>0.1초</p>
 <div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
@@ -260,55 +343,100 @@
 <strong>💡 동작 원리:</strong>
 <p>Windows NTFS의 MFT(Master File Table)를 직접 읽어 모든 파일 정보를 메모리에 인덱싱. 설치 직후 빠르게 인덱스 구축 후 실시간 업데이트.</p>
 </div>
-</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 검색 문법 &amp; 고급 쿼리</h2></div><div class="card"><p>*.xlsx</p>
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>검색 문법 &amp; 고급 쿼리</h2></div><div class="card"><div class="columns-grid" style="grid-template-columns: repeat(3, 1fr);">
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >*.xlsx</div>
 <p>특정 확장자 파일 전체 검색</p>
-<p>예: *.pptx, *.pdf, *.py</p>
-<p>보고서 2025</p>
+<div class="compare-note" >예: *.pptx, *.pdf, *.py</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >보고서 2025</div>
 <p>두 단어 모두 포함 (AND)</p>
-<p>띄어쓰기 = AND 조건</p>
-<p>ext:xlsx dm:today</p>
+<div class="compare-note" >띄어쓰기 = AND 조건</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >ext:xlsx dm:today</div>
 <p>오늘 수정된 Excel 파일</p>
-<p>dm:yesterday / dm:thisweek</p>
-<p>path:C:\Projects *.py</p>
+<div class="compare-note" >dm:yesterday / dm:thisweek</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >path:C:\\Projects *.py</div>
 <p>특정 폴더 내에서만 검색</p>
-<p>경로 + 파일명 조합</p>
-<p>size:&gt;10mb *.mp4</p>
+<div class="compare-note" >경로 + 파일명 조합</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >size:&gt;10mb *.mp4</div>
 <p>10MB 초과 MP4 파일</p>
-<p>size:&lt;1mb, size:1mb..100mb</p>
-<p>regex:2025\d{4}</p>
+<div class="compare-note" >size:&lt;1mb, size:1mb..100mb</div>
+</div>
+<div class="column-card" >
+<div class="card-top-bar" ></div>
+<div class="col-title" >regex:2025\\d{4}</div>
 <p>정규식 패턴 검색</p>
-<p>고급 사용자 패턴 매칭</p>
-<p><strong>⭐ 자주 쓰는 쿼리 저장:</strong></p>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 주요 기능</h2></div><div class="card"><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >⚡</div>
-<div class="icon-card-title" >실시간 인덱스</div>
+<div class="compare-note" >고급 사용자 패턴 매칭</div>
+</div></div><p>⭐ 자주 쓰는 쿼리 저장:</p>
+<p>자주 사용하는 검색식은 Bookmarks로 저장 가능. 예: &quot;*.pptx dm:thismonth&quot; → &quot;이달 PPT 파일&quot;로 즐겨찾기.</p>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>주요 기능</h2></div><div class="card"><div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">⚡</div>
+<div class="icon-card-title" style="color: var(--text);">실시간 인덱스</div>
 <p>파일 생성·삭제·이동 즉시 반영. 항상 최신 상태 유지.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🖱️</div>
-<div class="icon-card-title" >우클릭 메뉴 통합</div>
+<div class="icon-card-icon" style="color: var(--brand);">🖱️</div>
+<div class="icon-card-title" style="color: var(--text);">우클릭 메뉴 통합</div>
 <p>결과에서 우클릭 → 열기·경로 복사·폴더 열기 즉시 실행.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🌐</div>
-<div class="icon-card-title" >HTTP 서버</div>
+<div class="icon-card-icon" style="color: var(--brand);">🌐</div>
+<div class="icon-card-title" style="color: var(--text);">HTTP 서버</div>
 <p>내부망에서 Everything을 웹 서버로 실행. 다른 PC에서 검색 가능.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >⌨️</div>
-<div class="icon-card-title" >글로벌 단축키</div>
+<div class="icon-card-icon" style="color: var(--brand);">⌨️</div>
+<div class="icon-card-title" style="color: var(--text);">글로벌 단축키</div>
 <p>어떤 창에서도 Win+Alt+E로 즉시 검색창 호출 (설정 가능).</p>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 설치 &amp; 설정</h2></div><div class="card"><div class="step-list">
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>설치 &amp; 설정</h2></div><div class="card"><div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" >💡 PowerToys Run 연동:</div>
+<div class="step-title" >1voidtools.com 접속 → Everything 다운로드 및 설치 (무료)32/64비트 선택. 설치 파일 크기 2MB 이하로 매우 가벼움.</div>
+<p></p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >2최초 실행 시 자동 인덱싱 시작 (수십 초 ~ 수 분)SSD 환경에서는 100만 파일도 1분 이내 완료. 이후 실시간 업데이트.</div>
+<p></p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >3Tools → Options → 글로벌 단축키 설정Win+Alt+E 또는 원하는 단축키로 변경. 시작 프로그램에 등록 권장.</div>
+<p></p>
+</div>
+</div>
+<div class="step-item" >
+<div class="step-num" >4</div>
+<div class="step-content">
+<div class="step-title" >4시스템 트레이에 상주하며 백그라운드 실행CPU·RAM 점유율 거의 0%. 항상 켜두어도 성능 영향 없음.</div>
+<p></p>
+</div>
+</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
+<div class="alert-icon">💡</div>
+<div class="alert-body">
+<strong>💡 PowerToys Run 연동:</strong>
 <p>Microsoft PowerToys 설치 후 Alt+Space → Everything 플러그인 활성화. PowerToys Run 검색창에서 Everything 검색 동시 사용 가능.</p>
 </div>
-</div></div>
-</div></section></main>
+</div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

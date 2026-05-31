@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quartz 완전 활용 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --brand: #6366F1;
+  --brand-dark: #4F46E5;
+  --brand-deep: #3730A3;
+  --brand-light: #EEF0FE;
+  --brand-mid: #C7CCFB;
+  --text: #1A1A2E;
+  --text-2: #4B5575;
+  --text-3: #8892B0;
+  --bg: #F8F9FE;
+  --white: #FFFFFF;
+  --border: #D8DCFB;
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
+  --radius: 16px;
+  --radius-sm: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+.hero { background: linear-gradient(135deg, #0A0F1E 0%, #1E1B3A 40%, #3730A3 70%, #6366F1 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+.hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
+.hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
+.hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
+.hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat strong { display: block; font-size: 1.6rem; font-weight: 700; }
+.hero-stat span { font-size: .8rem; opacity: .7; }
+main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+.section { margin-bottom: 72px; }
+.section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+.section-num { width: 40px; height: 40px; background: var(--brand); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+.section-header h2 { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 700; }
+.card { background: white; border-radius: var(--radius); border: 1px solid var(--border); padding: 28px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.card-title { font-family: 'Noto Serif KR', serif; font-size: 1.2rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 14px; }
+.card h4 { font-size: 1rem; font-weight: 700; margin: 18px 0 8px; color: var(--text); }
+.card p { margin-bottom: 12px; color: var(--text-2); }
+.card ul, .card ol { margin: 8px 0 14px 22px; color: var(--text-2); }
+.card li { margin-bottom: 6px; }
+.card a { color: var(--brand); text-decoration: none; border-bottom: 1px solid var(--brand-mid); }
+.card a:hover { color: var(--brand-dark); }
+.card strong { color: var(--text); font-weight: 700; }
+.card blockquote { background: var(--brand-light); border-left: 4px solid var(--brand); border-radius: var(--radius-sm); padding: 14px 18px; margin: 14px 0; color: var(--brand-deep); }
+.card blockquote p { margin: 0; color: var(--brand-deep); }
+.card code { background: var(--brand-light); color: var(--brand-dark); padding: 2px 6px; border-radius: 4px; font-size: .9em; font-family: 'JetBrains Mono', monospace; }
+.card pre { background: #0A0F1E; color: #E2E8F0; border-radius: var(--radius-sm); padding: 18px 20px; overflow-x: auto; margin: 14px 0; font-size: .88rem; line-height: 1.6; }
+.card pre code { background: transparent; color: #E2E8F0; padding: 0; }
+.card table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .92rem; }
+.card th { background: var(--brand-light); color: var(--brand-dark); text-align: left; padding: 10px 12px; font-weight: 700; border-bottom: 2px solid var(--brand-mid); }
+.card td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.card tr:hover td { background: var(--brand-light); }
+.card hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 18px 0; }
+.icon-card { background: linear-gradient(180deg, white, var(--brand-light)); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; text-align: center; min-height: 150px; display: flex; flex-direction: column; justify-content: center; }
+.icon-card-icon { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 12px; border-radius: 14px; background: white; box-shadow: var(--shadow); font-size: 26px; }
+.icon-card-title { font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.icon-card p { margin: 0; font-size: .88rem; color: var(--text-2); }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 18px 0; }
+.feature-card { background: white; border: 2px solid var(--border); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+.feature-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--brand); }
+.feature-tag { display: inline-flex; margin-bottom: 12px; background: var(--brand-light); color: var(--brand-dark); border: 1px solid var(--border); border-radius: 100px; padding: 3px 10px; font-size: .76rem; font-weight: 800; }
+.feature-card-title { font-weight: 800; color: var(--text); font-size: 1.03rem; margin-bottom: 8px; }
+.feature-card p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.step-list { display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
+.step-item { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; box-shadow: var(--shadow); }
+.step-num { width: 44px; height: 44px; border-radius: 14px; background: var(--brand); color: white; display: flex; align-items: center; justify-content: center; font-weight: 900; }
+.step-title { font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.step-item p { margin: 0; color: var(--text-2); }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin: 18px 0; }
+.compare-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.compare-card-title { font-weight: 800; color: var(--brand-dark); margin-bottom: 8px; }
+.compare-card p { margin: 0 0 10px; color: var(--text-2); }
+.compare-note { background: var(--brand-light); color: var(--brand-deep); border-radius: 8px; padding: 8px 10px; font-size: .84rem; font-weight: 700; }
+.done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
+.done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
+.done-section p { opacity: .86; margin-bottom: 24px; }
+.done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
+footer { text-align: center; padding: 40px 24px; color: var(--text-3); font-size: .85rem; border-top: 1px solid var(--border); margin-top: 40px; }
+footer a { color: var(--brand); text-decoration: none; }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>🪴 디지털 정원 · 지식 관리</div>
+    <div class="hero-logo">💎</div>
+    <h1>Quartz 완전 활용 가이드</h1>
+    <p>마크다운 노트를 가장 빠르고 아름다운 웹사이트로 변환해주는 정적 사이트 생성기(SSG)</p>
+    <a class="hero-cta" href="https://quartz.jzhao.xyz" target="_blank" rel="noopener">Quartz 시작하기</a>
+    <div class="hero-stats"><div class="hero-stat"><strong>무료</strong><span>오픈소스</span></div><div class="hero-stat"><strong>Obsidian</strong><span>완벽 호환</span></div><div class="hero-stat"><strong>SSG</strong><span>초고속 로딩</span></div><div class="hero-stat"><strong>GitHub</strong><span>자동화 배포</span></div></div>
+  </div>
+</header>
+<main>
+<section class="section"><div class="section-header"><div class="section-num">1</div><h2>Quartz는 어떤 도구인가</h2></div><div class="card"><p>Quartz는 개발 지식이 깊지 않아도 개인의 마크다운 노트를 블로그나 위키 형태의 웹사이트로 퍼블리싱할 수 있게 해주는 도구입니다. 특히 옵시디언(Obsidian)의 문법(위키링크, 태그, 프론트매터 등)을 완벽하게 지원하여, 로컬 지식 저장소를 그대로 웹으로 옮기는 &#39;디지털 정원(Digital Garden)&#39; 구축에 최적화되어 있습니다.</p>
+</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid">
+      <div class="icon-card">
+        <div class="icon-card-icon">🔗</div>
+        <div class="icon-card-title">위키링크 완벽 지원</div>
+        <p>`[[문서명]]` 형태의 내부 링크를 웹사이트의 라우팅으로 완벽하게 변환합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🕸️</div>
+        <div class="icon-card-title">인터랙티브 그래프 뷰</div>
+        <p>문서 간의 연결 관계를 보여주는 노드 그래프를 우측 화면에 자동으로 생성합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">🔍</div>
+        <div class="icon-card-title">강력한 로컬 검색</div>
+        <p>서버 통신 없이 브라우저 내에서 즉각적으로 작동하는 초고속 전체 텍스트 검색을 지원합니다.</p>
+      </div>
+      <div class="icon-card">
+        <div class="icon-card-icon">⚡</div>
+        <div class="icon-card-title">극강의 퍼포먼스</div>
+        <p>불필요한 자바스크립트를 배제하고 순수 HTML/CSS 위주로 빌드되어 로딩이 매우 빠릅니다.</p>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">이런 분들께 강력 추천합니다</h3><div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-tag">기록</span>
+        <div class="feature-card-title">📝 옵시디언 헤비 유저</div>
+        <p>로컬에 쌓인 수백 개의 노트를 깨진 링크 없이 웹으로 퍼블리싱하고 싶은 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">브랜딩</span>
+        <div class="feature-card-title">🪴 디지털 정원사</div>
+        <p>완벽하게 정제된 글(블로그)보다, 생각의 연결과 발전 과정을 공유하고 싶은 분.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-tag">개발</span>
+        <div class="feature-card-title">🛠️ 커스텀 위키 구축자</div>
+        <p>노션(Notion)의 느린 속도와 제한된 커스텀에 지쳐 나만의 빠르고 예쁜 위키가 필요한 분.</p>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 로컬 노트에서 웹사이트까지</h2></div><div class="card"><p>Node.js 환경만 준비되어 있다면 명령어 몇 줄로 초기 세팅이 완료됩니다.</p>
+</div><div class="card"><h3 class="card-title">기본 배포 파이프라인 흐름</h3><div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">초기화 및 설치</div>
+          <p>터미널에서 `npm create quartz@latest`를 입력하여 기본 프로젝트 구조를 생성합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">마크다운 파일 동기화</div>
+          <p>작성한 `.md` 파일과 이미지/에셋들을 Quartz 폴더 안의 `content/` 폴더로 복사합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">로컬 프리뷰</div>
+          <p>`npx quartz build --serve` 명령어로 로컬(localhost:8080)에서 빌드된 화면을 미리 봅니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">GitHub Push</div>
+          <p>변경된 내용을 GitHub 원격 저장소로 커밋하고 푸시합니다.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <div class="step-title">클라우드 자동 배포</div>
+          <p>연결된 Vercel, GitHub Pages 등을 통해 푸시된 내용이 자동으로 빌드 및 웹 배포됩니다.</p>
+        </div>
+      </div>
+    </div></div><div class="card"><h3 class="card-title">타 퍼블리싱 도구와의 비교</h3><table>
+<thead>
+<tr>
+<th>기능</th>
+<th>Quartz 4</th>
+<th>Obsidian Publish</th>
+<th>일반 블로그 (Jekyll 등)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>비용</strong></td>
+<td>완전 무료</td>
+<td>월 $8</td>
+<td>무료 (서버 비용 별도)</td>
+</tr>
+<tr>
+<td><strong>위키링크</strong></td>
+<td>완벽 지원</td>
+<td>완벽 지원</td>
+<td>깨지거나 복잡한 플러그인 필요</td>
+</tr>
+<tr>
+<td><strong>디자인 커스텀</strong></td>
+<td>TypeScript/CSS로 자유로움</td>
+<td>제공되는 테마 내 제한</td>
+<td>테마에 따라 다름</td>
+</tr>
+<tr>
+<td><strong>구축 난이도</strong></td>
+<td>중간 (초기 세팅 필요)</td>
+<td>매우 쉬움 (클릭 1번)</td>
+<td>높음 (마크다운 파싱 설정 복잡)</td>
+</tr>
+</tbody></table>
+</div></section><section class="section"><div class="section-header"><div class="section-num">3</div><h2>실전 커스터마이징 팁</h2></div><div class="card"><p>Quartz 4버전부터는 TypeScript 기반으로 구조가 개편되어 더욱 강력한 수정이 가능합니다.</p>
+</div><div class="card"><h3 class="card-title">핵심 설정 파일 가이드</h3><div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-card-title">색상 및 테마 변경 (`quartz.config.ts`)</div>
+        <p>라이트/다크 모드의 메인 컬러, 배경색, 폰트(Google Fonts)를 직관적으로 변경할 수 있습니다.</p>
+        <div class="compare-note">디자인 아이덴티티 결정</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">레이아웃 수정 (`quartz.layout.ts`)</div>
+        <p>사이드바에 목차(TOC)를 넣거나, 뒤로 가기 버튼, 최근 수정일 위치 등 컴포넌트 배치를 변경합니다.</p>
+        <div class="compare-note">화면 구성의 핵심</div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-card-title">무시할 파일 설정 (`quartz.config.ts`)</div>
+        <p>초안 노트나 개인적인 폴더는 빌드 시 제외하도록 정규식으로 필터링할 수 있습니다.</p>
+        <div class="compare-note">프라이빗 데이터 보호</div>
+      </div>
+    </div></div></section><section class="section"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">퍼블리싱 전 필수 확인 사항</h3><ul>
+<li><input disabled="" type="checkbox"> <code>content/</code> 폴더 내의 첨부파일(PDF, HTML 등)이 빌드 시 올바르게 연결되는지 확인했는가?</li>
+<li><input disabled="" type="checkbox"> 프론트매터(Frontmatter)에 <code>publish: false</code> 처리가 필요한 비공개 노트가 있는가?</li>
+<li><input disabled="" type="checkbox"> Vercel 배포 시 Build Command가 <code>npx quartz build</code>로 올바르게 설정되었는가?</li>
+<li><input disabled="" type="checkbox"> <code>.md</code> 파일 제목에 특수문자가 들어가서 라우팅 에러가 발생하지 않는가?</li>
+</ul>
+<blockquote>
+<p>💡 <strong>TIP</strong>: 옵시디언 볼트(Vault)와 Quartz의 <code>content</code> 폴더를 분리하여 운영 중이라면, GitHub Actions를 활용해 <code>publish: true</code>인 파일만 자동으로 선별하여 넘겨주는 파이썬 스크립트 파이프라인을 구축하면 수동 복사의 번거로움을 100% 없앨 수 있습니다.</p>
+</blockquote>
+</div></section>
+</main>
+<section class="done-section"><h2>나만의 디지털 정원을 가꿔보세요</h2><p>로컬에 머물던 지식을 웹으로 연결하여 누구나 볼 수 있는 훌륭한 위키로 배포해보세요.</p><a class="done-link" href="https://quartz.jzhao.xyz" target="_blank" rel="noopener">공식 문서 보기</a></section>
+<footer><div>Quartz는 마크다운 파일 간의 연결(위키링크)을 웹에서도 그대로 구현해줍니다.</div><div>공식 사이트: <a href="https://quartz.jzhao.xyz">quartz.jzhao.xyz</a></div></footer>
+</body>
+</html>

@@ -31,20 +31,38 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 //  1. Universal Schema — 6대 표준 키값
 // ════════════════════════════════════════════════════════════════
 
+function splitMeta(meta) {
+  if (!meta) return [];
+  return String(meta)
+    .split(/[|\n]/)
+    .map(s => s.trim().replace(/^["']|["']$/g, "").trim())
+    .filter(Boolean);
+}
+
 function standardizeItem(item) {
   const rawName = item.name || item.title || "";
-  const iconMatch = rawName.match(/^([✀-➿]|[-]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[‑-⛿]|\uD83E[\uDD10-\uDDFF])\s*(.*)$/);
+  const iconMatch = rawName.match(/^([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])\s*(.*)$/);
+
+  const icon =     item.icon || (iconMatch ? iconMatch[1] : "") || "";
+  const title =    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "";
+  const desc =     item.desc || item.description || item.tagline || item.body || "";
+  const tag =      item.tag || item.badge || "";
+  const color =    item.color || "";
+  const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
+
+  // meta와 note를 뭉개지 않고 각각의 고유값을 완벽하게 보존합니다.
+  const meta = item.meta || item.features || item.items || item.points || item.tool || "";
+  const note = item.note || "";
 
   return {
-    type:     item.type     || "",
-    featured: item.featured || "",
-    icon:     item.icon || (iconMatch ? iconMatch[1] : "") || "•",
-    title:    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "",
-    desc:     item.desc || item.description || item.tagline || item.body || "",
-    tag:      item.tag || item.badge || "",
-    meta:     item.meta || item.features || item.points || item.items || item.tool || "",
-    note:     item.note || "",
-    color:    item.color || "",
+    icon,
+    title,
+    desc,
+    tag,
+    meta,
+    note,
+    color,
+    featured
   };
 }
 
@@ -52,15 +70,34 @@ function parseShortcodeItems(src) {
   const items = [];
   let current = null;
   let currentKey = null;
+  let inLiteralBlock = false;
 
   for (const line of src.split(/\r?\n/)) {
-    if (!line.trim()) continue;  // 빈 줄 무시
+    const trimmed = line.trim();
+    if (!trimmed) continue;  // 빈 줄 무시
+
+    // 멀티라인 리터럴 블록 내부 파싱 보장 (공백 4칸 들여쓰기 유지 시)
+    if (inLiteralBlock && line.startsWith("    ")) {
+      const val = line.slice(4);
+      const sep = currentKey === 'meta' ? ' | ' : '\n';
+      const existing = current[currentKey];
+      current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
+      continue;
+    } else {
+      inLiteralBlock = false;
+    }
 
     // 1. 새 아이템 시작: - key: value
     const firstMatch = line.match(/^\s*-\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (firstMatch) {
       currentKey = firstMatch[1];
-      current = { [currentKey]: firstMatch[2].trim() };
+      let val = cleanValue(firstMatch[2]);
+      if (val === "|") {
+        inLiteralBlock = true;
+        current = { [currentKey]: "" };
+      } else {
+        current = { [currentKey]: val };
+      }
       items.push(current);
       continue;
     }
@@ -69,7 +106,13 @@ function parseShortcodeItems(src) {
     const nextMatch = line.match(/^\s+([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (nextMatch && current) {
       currentKey = nextMatch[1];
-      current[currentKey] = nextMatch[2].trim();
+      let val = cleanValue(nextMatch[2]);
+      if (val === "|") {
+        inLiteralBlock = true;
+        current[currentKey] = "";
+      } else {
+        current[currentKey] = val;
+      }
       continue;
     }
 
@@ -88,7 +131,10 @@ function parseShortcodeItems(src) {
     //    반드시 인덴트가 있어야 캡처됨 → 새 아이템 오인 방지
     if (line.match(/^\s+\S/) && current && currentKey) {
       const val = line.trim();
-      if (val === '|') continue;  // YAML 블록 스칼라 표시자 무시
+      if (val === '|') {
+        inLiteralBlock = true;
+        continue;
+      }
       const existing = current[currentKey];
       const sep = currentKey === 'meta' ? ' | ' : '\n';
       current[currentKey] = (!existing || existing === '|') ? val : existing + sep + val;
@@ -96,6 +142,10 @@ function parseShortcodeItems(src) {
   }
 
   return items.map(standardizeItem);
+}
+
+function cleanValue(v) {
+  return String(v ?? "").trim().replace(/^["']|["']$/g, "");
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -175,14 +225,14 @@ function estimateLines(text, widthInch, fontSize) {
 
 function parseContentParts(content) {
   const parts = [];
-  const re = /^:::\s*([A-Za-z0-9_-]+)\s*\n([\s\S]*?)\n:::$/gm;
+  const re = /^:::\s*([A-Za-z0-9_-]+)(?:[ \t]+([^\r\n]+))?[ \t]*\r?\n([\s\S]*?)(?:\r?\n|^):::[ \t]*$/gm;
   let lastIndex = 0;
   let match;
   while ((match = re.exec(content)) !== null) {
     if (match.index > lastIndex) {
       parts.push({ kind: "md", src: content.slice(lastIndex, match.index) });
     }
-    parts.push({ kind: "shortcode", scType: match[1], items: parseShortcodeItems(match[2]) });
+    parts.push({ kind: "shortcode", scType: match[1], args: match[2] || "", items: parseShortcodeItems(match[3]) });
     lastIndex = match.index + match[0].length;
   }
   if (lastIndex < content.length) {
@@ -248,7 +298,7 @@ function buildSlideData(mdPath, styleOverride) {
     if (part.kind === "shortcode") {
       if (!currentSection) { sectionNum++; currentSection = { num: sectionNum, title: "", items: [] }; }
       closeCard();
-      currentSection.items.push({ type: part.scType, items: part.items });
+      currentSection.items.push({ type: part.scType, args: part.args || "", items: part.items });
       continue;
     }
     const tokens = marked.lexer(part.src);
@@ -312,16 +362,33 @@ function itemH(item, w) {
   if (item.type === "card")         return cardH(item, w);
   if (item.type === "icon-grid")    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / g.iconCardMinW))) * (1.4 + g.gap);
   if (item.type === "feature-grid") return Math.ceil(item.items.length / Math.max(1, Math.floor(w / g.featureCardMinW))) * (1.5 + g.gap);
-  if (item.type === "steps")        return item.items.length * (g.stepItemH + c.gap);
-  if (item.type === "compare-grid") return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
-  if (item.type === "workflow")     return D.workflow.stepH + c.gap;
-  if (item.type === "tool-card")    return item.items.length * (D.toolCard.h + c.gap);
+  
+  // 신형 표준 숏코드 및 3대 특화 숏코드 높이 매핑
+  if (item.type === "step-list" || item.type === "steps") {
+    return item.items.length * (g.stepItemH + c.gap);
+  }
+  if (item.type === "compare-grid" || item.type === "network-box") {
+    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
+  }
+  if (item.type === "columns-grid" || item.type === "columns") {
+    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
+  }
+  if (item.type === "workflow-strip" || item.type === "workflow" || item.type === "git-flow-strip") {
+    return D.workflow.stepH + c.gap;
+  }
+  if (item.type === "tool-box" || item.type === "tool-card") {
+    return item.items.reduce((sum, it) => {
+      const metaLines = splitMeta(it.meta).length;
+      const h = D.toolCard.h + (metaLines > 0 ? 0.3 + metaLines * 0.24 : 0);
+      return sum + h + c.gap;
+    }, 0);
+  }
   if (item.type === "plan-grid") {
-    const maxFeat = Math.max(0, ...item.items.map(it => (it.meta || "").split("|").filter(Boolean).length));
+    const maxFeat = Math.max(0, ...item.items.map(it => splitMeta(it.meta).length));
     return c.padY + 0.26 + 0.32 + maxFeat * D.planGrid.featureLineH + 0.28 + c.padY + c.gap;
   }
   if (item.type === "bottom-list")  return 1.2 + c.gap + D.bottomList.chipH + c.gap;
-  if (item.type === "compare-2col") {
+  if (item.type === "compare-split" || item.type === "compare-2col") {
     if (item.items.length < 2) return 1.5 + c.gap;
     const cc = D.compare2col;
     const colW = (w - cc.colGap) / 2;
@@ -332,7 +399,7 @@ function itemH(item, w) {
       const descH = descSegs.reduce((sum, seg) =>
         sum + lh * Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize)) + 0.05, 0);
       // meta: | 구분 불릿 수
-      const metaLines = (it.meta || "").split("|").filter(Boolean).length;
+      const metaLines = splitMeta(it.meta).length;
       return c.padY
         + (c.titleSize / 72) * 1.7 + c.gap
         + (descSegs.length > 0 ? descH + c.gap : 0)
@@ -359,6 +426,23 @@ function itemH(item, w) {
       const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize - 1);
       return sum + c.padY + (c.titleSize / 72) * 1.7 + c.gap * 0.5 + (c.bodySize - 1) / 72 * 1.7 * lines + c.padY + c.gap;
     }, 0);
+  }
+  if (item.type === "command-block") {
+    return item.items.reduce((sum, it) => {
+      const codeLines = (it.desc || "").split("\n");
+      const h = Math.max(0.4, (c.codeSize / 72) * 1.7 * codeLines.length + 0.2) + 0.38;
+      return sum + h + c.gap;
+    }, 0);
+  }
+  if (item.type === "tabs") {
+    return item.items.reduce((sum, it) => {
+      const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize);
+      return sum + 0.4 + (c.bodySize / 72) * 1.7 * lines + c.gap;
+    }, 0);
+  }
+  if (item.type === "stat-highlight") {
+    const cols = Math.max(1, Math.min(item.items.length, 4));
+    return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
   }
   return 0;
 }
@@ -493,10 +577,10 @@ function renderIconGrid(slide, item, x, y, w, pal) {
     const col = idx % cols; const row = Math.floor(idx / cols);
     const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
     const ac = it.color ? hexClean(it.color) : null;
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: ac ? ac + "08" : pal.white }, line: { color: ac || pal.border, width: 0.75 } });
+    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: ac ? { color: ac, transparency: 95 } : { color: pal.white }, line: { color: ac || pal.border, width: 0.75 } });
     if (ac) slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac } });
     if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx + 0.1, y: cy + 0.1, w: cardW - 0.2, h: 0.42, fontSize: 20, align: "center", valign: "middle" });
-    slide.addText(it.title, { x: cx + 0.1, y: cy + 0.58, w: cardW - 0.2, h: 0.28, fontSize: c.bodySize, bold: true, color: ac || pal.text, fontFace: font, align: "center" });
+    slide.addText(it.title, { x: cx + 0.1, y: cy + 0.58, w: cardW - 0.2, h: 0.28, fontSize: c.bodySize, bold: true, color: pal.text, fontFace: font, align: "center" });
     if (it.desc) slide.addText(it.desc, { x: cx + 0.1, y: cy + 0.88, w: cardW - 0.2, h: cardH2 - 0.94, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, align: "center", wrap: true, valign: "top" });
   });
   return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
@@ -529,7 +613,7 @@ function renderSteps(slide, item, x, y, w, pal) {
   item.items.forEach((it, idx) => {
     const ac = hexClean(it.color) || pal.brand;
     const cy = y + idx * (stepH + c.gap);
-    slide.addShape("roundRect", { x, y: cy, w, h: stepH, rectRadius: r, fill: { color: it.color ? ac + "10" : pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
+    slide.addShape("roundRect", { x, y: cy, w: stepH, h: stepH, rectRadius: r, fill: it.color ? { color: ac, transparency: 90 } : { color: pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
     const numSz = 0.42; const ny = cy + (stepH - numSz) / 2;
     slide.addShape("roundRect", { x: x + 0.1, y: ny, w: numSz, h: numSz, rectRadius: 0.1, fill: { color: ac }, line: { color: ac } });
     slide.addText(String(idx + 1), { x: x + 0.1, y: ny, w: numSz, h: numSz, fontSize: 13, bold: true, color: pal.white, fontFace: font, align: "center", valign: "middle" });
@@ -549,13 +633,14 @@ function renderCompareGrid(slide, item, x, y, w, pal) {
     const col = idx % cols; const row = Math.floor(idx / cols);
     const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
     const ac = hexClean(it.color) || pal.brand;
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: it.color ? ac + "0D" : pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
+    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: it.color ? { color: ac, transparency: 95 } : { color: pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
     slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
     slide.addText(it.title, { x: cx + 0.12, y: cy + 0.1, w: cardW - 0.24, h: 0.3, fontSize: c.titleSize, bold: true, color: it.color ? ac : pal.brandDark, fontFace: font });
     if (it.desc) slide.addText(it.desc, { x: cx + 0.12, y: cy + 0.42, w: cardW - 0.24, h: 0.6, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, wrap: true, valign: "top" });
-    if (it.note) {
-      slide.addShape("roundRect", { x: cx + 0.12, y: cy + 1.05, w: cardW - 0.24, h: 0.28, rectRadius: 0.06, fill: { color: it.color ? ac + "25" : pal.brandLight }, line: { color: ac } });
-      slide.addText(it.note, { x: cx + 0.12, y: cy + 1.05, w: cardW - 0.24, h: 0.28, fontSize: 8, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
+    const activeNote = it.note || it.meta;
+    if (activeNote) {
+      slide.addShape("roundRect", { x: cx + 0.12, y: cy + 1.05, w: cardW - 0.24, h: 0.28, rectRadius: 0.06, fill: it.color ? { color: ac, transparency: 85 } : { color: pal.brandLight }, line: { color: ac } });
+      slide.addText(activeNote, { x: cx + 0.12, y: cy + 1.05, w: cardW - 0.24, h: 0.28, fontSize: 8, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
     }
   });
   return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
@@ -568,8 +653,8 @@ function renderWorkflow(slide, item, x, y, w, pal) {
   const stepW = (w - (n - 1) * arrowW) / n;
   item.items.forEach((it, idx) => {
     const cx = x + idx * (stepW + arrowW);
-    const stepBg = it.color ? hexClean(it.color) + "15" : pal.brandLight;
-    slide.addShape("roundRect", { x: cx, y, w: stepW, h: stepH, rectRadius: r, fill: { color: stepBg }, line: { color: it.color ? hexClean(it.color) : pal.border, width: 0.75 } });
+    const stepBg = it.color ? { color: hexClean(it.color), transparency: 90 } : { color: pal.brandLight };
+    slide.addShape("roundRect", { x: cx, y, w: stepW, h: stepH, rectRadius: r, fill: stepBg, line: { color: it.color ? hexClean(it.color) : pal.border, width: 0.75 } });
     if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx, y: y + 0.08, w: stepW, h: 0.3, fontSize: 16, align: "center", valign: "middle" });
     slide.addText(it.title, { x: cx + 0.06, y: y + 0.42, w: stepW - 0.12, h: 0.26, fontSize: c.bodySize, bold: true, color: pal.text, fontFace: font, align: "center" });
     if (it.meta) slide.addText(it.meta, { x: cx + 0.06, y: y + 0.68, w: stepW - 0.12, h: 0.18, fontSize: c.bodySize - 2, color: pal.text2, fontFace: font, align: "center" });
@@ -580,35 +665,58 @@ function renderWorkflow(slide, item, x, y, w, pal) {
 
 function renderToolCard(slide, item, x, y, w, pal) {
   const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const tcH = D.toolCard.h; let cy = y;
+  const tcH = D.toolCard.h || 0.85;
+  let cy = y;
   for (const it of item.items) {
     const bgColor = hexClean(it.color) || pal.brand;
+    const metaList = (it.meta || "").split("|").filter(Boolean).map(f => f.trim());
+    const hasMeta = metaList.length > 0;
+    const cardH = tcH + (hasMeta ? 0.3 + metaList.length * 0.24 : 0);
+    
+    // Draw outer round rect wrapper
+    slide.addShape("roundRect", { x, y: cy, w, h: cardH, rectRadius: r / 2, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
+    
+    // Draw top banner header
     slide.addShape("roundRect", { x, y: cy, w, h: tcH, rectRadius: r / 2, fill: { color: bgColor }, line: { color: bgColor } });
+    // Cover the bottom rounding of top banner with a flat rect to make it merge cleanly if there is a meta list
+    if (hasMeta) {
+      slide.addShape("rect", { x, y: cy + tcH - 0.1, w, h: 0.1, fill: { color: bgColor }, line: { color: bgColor } });
+    }
+    
     let cx = x + 0.16;
     if (it.icon && it.icon !== "•") { slide.addText(it.icon, { x: cx, y: cy, w: 0.52, h: tcH, fontSize: 20, align: "center", valign: "middle" }); cx += 0.58; }
     const badgeW = it.tag ? 1.1 : 0; const tw = w - (cx - x) - badgeW - 0.14;
     slide.addText(it.title, { x: cx, y: cy + 0.1, w: tw, h: 0.28, fontSize: c.titleSize, bold: true, color: D.palette.white, fontFace: font });
     if (it.desc) slide.addText(it.desc, { x: cx, y: cy + 0.4, w: tw, h: 0.22, fontSize: c.bodySize - 2, color: pal.mutedLight, fontFace: font });
     if (it.tag) slide.addText(it.tag, { x: x + w - badgeW - 0.08, y: cy + (tcH - 0.22) / 2, w: badgeW, h: 0.22, fontSize: 9, bold: true, color: D.palette.white, fontFace: font, align: "right" });
-    cy += tcH + c.gap;
+    
+    if (hasMeta) {
+      let my = cy + tcH + 0.12;
+      metaList.forEach(m => {
+        slide.addText("• " + m, { x: x + 0.3, y: my, w: w - 0.6, h: 0.22, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font });
+        my += 0.24;
+      });
+    }
+    
+    cy += cardH + c.gap;
   }
-  return item.items.length * (tcH + c.gap);
+  return cy - y;
 }
 
 function renderPlanGrid(slide, item, x, y, w, pal) {
   const g = D.grid; const c = D.card; const pg = D.planGrid; const font = D.slide.font; const r = D.slide.globalRadius;
   const cols = Math.max(1, Math.min(item.items.length, pg.maxCols));
   const cardW = (w - (cols - 1) * g.gap) / cols;
-  const maxFeat = Math.max(0, ...item.items.map(it => (it.meta || "").split("|").filter(Boolean).length));
+  const maxFeat = Math.max(0, ...item.items.map(it => splitMeta(it.meta).length));
   const cardH2 = c.padY + 0.26 + 0.32 + maxFeat * pg.featureLineH + 0.28 + c.padY;
   item.items.forEach((it, idx) => {
     if (idx >= cols) return;
     const cx = x + idx * (cardW + g.gap); const isFeatured = it.featured === "true";
     const ac = hexClean(it.color) || (isFeatured ? pal.brand : pal.brand);
     const usedColor = hexClean(it.color);
-    const cardFill = usedColor ? usedColor + "0D" : (isFeatured ? pal.brandLight : D.palette.white);
+    const cardFill = usedColor ? { color: usedColor, transparency: 95 } : { color: isFeatured ? pal.brandLight : D.palette.white };
     const cardLine = usedColor || (isFeatured ? pal.brand : pal.border);
-    slide.addShape("roundRect", { x: cx, y, w: cardW, h: cardH2, rectRadius: r, fill: { color: cardFill }, line: { color: cardLine, width: (usedColor || isFeatured) ? 1.5 : 0.75 } });
+    slide.addShape("roundRect", { x: cx, y, w: cardW, h: cardH2, rectRadius: r, fill: cardFill, line: { color: cardLine, width: (usedColor || isFeatured) ? 1.5 : 0.75 } });
     slide.addShape("rect", { x: cx, y, w: cardW, h: 0.05, fill: { color: ac }, line: { color: ac } });
     let ty = y + c.padY;
     if (it.tag) {
@@ -619,7 +727,7 @@ function renderPlanGrid(slide, item, x, y, w, pal) {
     }
     slide.addText(it.title, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: 0.28, fontSize: c.titleSize, bold: true, color: pal.text, fontFace: font, valign: "top" });
     ty += 0.32;
-    for (const feat of (it.meta || "").split("|").map(f => f.trim()).filter(Boolean)) {
+    for (const feat of splitMeta(it.meta)) {
       slide.addText("• " + feat, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: pg.featureLineH, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, valign: "top" });
       ty += pg.featureLineH;
     }
@@ -637,10 +745,10 @@ function renderBottomList(slide, item, x, y, w, pal) {
   if (!item.items.length) return 0;
   const it = item.items[0];
   const ac = hexClean(it.color) || pal.brand;
-  const points = (it.meta || "").split("|").map(p => p.trim()).filter(Boolean);
+  const points = splitMeta(it.meta);
   const bodyLines = it.desc ? estimateLines(it.desc, w - c.padX * 2, c.bodySize) : 0;
   const topH = Math.max(0.8, c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap : 0) + (bodyLines > 0 ? (c.bodySize / 72) * 1.7 * bodyLines + c.gap : 0));
-  slide.addShape("roundRect", { x, y, w, h: topH, rectRadius: r, fill: { color: it.color ? ac + "0D" : pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
+  slide.addShape("roundRect", { x, y, w: topH, rectRadius: r, fill: it.color ? { color: ac, transparency: 95 } : { color: pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
   let ty = y + c.padY;
   if (it.title) {
     const th = (c.titleSize / 72) * 1.7;
@@ -652,7 +760,7 @@ function renderBottomList(slide, item, x, y, w, pal) {
     const chipBY = y + topH + c.gap; const chipW = (w - (points.length - 1) * bl.chipGap) / points.length;
     points.forEach((pt, i) => {
       const cx = x + i * (chipW + bl.chipGap);
-      slide.addShape("roundRect", { x: cx, y: chipBY, w: chipW, h: bl.chipH, rectRadius: bl.chipRadius, fill: { color: it.color ? ac + "20" : pal.brandLight }, line: { color: ac, width: 0.75 } });
+      slide.addShape("roundRect", { x: cx, y: chipBY, w: chipW, h: bl.chipH, rectRadius: bl.chipRadius, fill: it.color ? { color: ac, transparency: 88 } : { color: pal.brandLight }, line: { color: ac, width: 0.75 } });
       slide.addText(pt, { x: cx + 0.08, y: chipBY, w: chipW - 0.16, h: bl.chipH, fontSize: bl.fontSize, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
     });
     return topH + c.gap + bl.chipH + c.gap;
@@ -672,9 +780,9 @@ function renderCompare2Col(slide, item, x, y, w, pal) {
   item.items.slice(0, 2).forEach((it, idx) => {
     const cx = x + idx * (colW + cc.colGap); const isLeft = idx === 0;
     const ac = hexClean(it.color) || (isLeft ? pal.brand : pal.text2);
-    const cardFill = it.color ? (hexClean(it.color) + "0D") : (isLeft ? pal.brandLight : D.palette.white);
+    const cardFill = it.color ? { color: hexClean(it.color), transparency: 95 } : { color: isLeft ? pal.brandLight : D.palette.white };
 
-    slide.addShape("roundRect", { x: cx, y, w: colW, h: maxH, rectRadius: r, fill: { color: cardFill }, line: { color: ac, width: (it.color || isLeft) ? 1.5 : 0.75 } });
+    slide.addShape("roundRect", { x: cx, y, w: colW, h: maxH, rectRadius: r, fill: cardFill, line: { color: ac, width: (it.color || isLeft) ? 1.5 : 0.75 } });
     slide.addShape("rect", { x: cx, y, w: colW, h: 0.05, fill: { color: ac }, line: { color: ac } });
 
     let ty = y + c.padY;
@@ -696,7 +804,7 @@ function renderCompare2Col(slide, item, x, y, w, pal) {
     }
 
     // meta: | 구분 불릿 (ty 누적으로 겹침 방지)
-    for (const bullet of (it.meta || "").split("|").map(s => s.trim()).filter(Boolean)) {
+    for (const bullet of splitMeta(it.meta)) {
       slide.addText("• " + bullet, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: lh + 0.05, fontSize: c.bodySize, color: it.color ? ac : (isLeft ? (pal.brandDeep || pal.brandDark) : pal.text2), fontFace: font });
       ty += lh + 0.05;
     }
@@ -724,20 +832,37 @@ function renderAlertBox(slide, item, x, y, w, pal) {
   const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
   let cy = y;
   for (const it of item.items) {
-    const ac = ALERT_COLORS[it.type] || ALERT_COLORS.tip;
-    const lines = estimateLines(it.desc || "", w - c.padX * 2 - 0.12, c.bodySize);
+    const t = String(item.args || it.type || "tip").trim().toLowerCase();
+    const ac = ALERT_COLORS[t] || ALERT_COLORS.tip;
+    
+    // Adjust width for icon if present
+    const hasIcon = !!it.icon;
+    const barW = 0.08;
+    let tx = x + barW + 0.1;
+    let tw = w - barW - 0.14;
+    
+    const lines = estimateLines(it.desc || "", hasIcon ? tw - 0.38 : tw, c.bodySize);
     const titleH = it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0;
     const descH  = (c.bodySize / 72) * 1.7 * Math.max(1, lines);
     const boxH   = c.padY * 2 + titleH + descH;
-    const barW   = 0.08;
+    
     slide.addShape("roundRect", { x, y: cy, w, h: boxH, rectRadius: r, fill: { color: ac.bg }, line: { color: ac.bar, width: 1.5 } });
     slide.addShape("rect",      { x, y: cy, w: barW, h: boxH, fill: { color: ac.bar }, line: { color: ac.bar } });
+    
     let ty = cy + c.padY;
+    if (hasIcon) {
+      slide.addText(it.icon, { x: tx, y: ty, w: 0.35, h: 0.35, fontSize: 14, valign: "middle" });
+      tx += 0.38;
+      tw -= 0.38;
+    }
+    
     if (it.title) {
-      slide.addText(it.title, { x: x + barW + 0.1, y: ty, w: w - barW - 0.14, h: titleH, fontSize: c.titleSize, bold: true, color: ac.title, fontFace: font, valign: "top" });
+      slide.addText(it.title, { x: tx, y: ty, w: tw, h: titleH, fontSize: c.titleSize, bold: true, color: ac.title, fontFace: font, valign: "top" });
       ty += titleH;
     }
-    if (it.desc) slide.addText(it.desc, { x: x + barW + 0.1, y: ty, w: w - barW - 0.14, h: descH + 0.05, fontSize: c.bodySize, color: ac.text, fontFace: font, valign: "top", wrap: true });
+    if (it.desc) {
+      slide.addText(it.desc, { x: tx, y: ty, w: tw, h: descH + 0.05, fontSize: c.bodySize, color: ac.text, fontFace: font, valign: "top", wrap: true });
+    }
     cy += boxH + c.gap;
   }
   return cy - y;
@@ -753,8 +878,8 @@ function renderFaqAccordion(slide, item, x, y, w, pal) {
     const aH  = (c.bodySize / 72) * 1.7 * Math.max(1, lines);
     const rowH = qH + aH + c.gap * 0.5;
     const isEven = idx % 2 === 0;
-    const rowFill = it.color ? hexClean(it.color) + "12" : (isEven ? pal.brandLight : D.palette.white);
-    slide.addShape("roundRect", { x, y: cy, w, h: rowH, rectRadius: r, fill: { color: rowFill }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
+    const rowFill = it.color ? { color: hexClean(it.color), transparency: 90 } : { color: isEven ? pal.brandLight : D.palette.white };
+    slide.addShape("roundRect", { x, y: cy, w, h: rowH, rectRadius: r, fill: rowFill, line: { color: it.color ? ac : pal.border, width: 0.75 } });
     slide.addShape("rect", { x, y: cy, w: 0.06, h: rowH, fill: { color: ac }, line: { color: ac } });
     slide.addText("Q  " + (it.title || ""), { x: x + 0.12, y: cy + 0.06, w: w - 0.16, h: qH, fontSize: c.titleSize, bold: true, color: it.color ? ac : pal.brandDark, fontFace: font, valign: "top" });
     if (it.desc) slide.addText("A  " + it.desc, { x: x + 0.12, y: cy + 0.06 + qH, w: w - 0.16, h: aH + 0.05, fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
@@ -785,20 +910,128 @@ function renderPromptExample(slide, item, x, y, w, pal) {
   return cy - y;
 }
 
+function renderCommandBlock(slide, item, x, y, w, pal) {
+  const c = D.card; const font = D.slide.font; const mono = D.slide.fontMono; const r = D.slide.globalRadius;
+  let cy = y;
+  for (const it of item.items) {
+    const label = it.title || it.tag || "Terminal";
+    const lang = it.meta || "bash";
+    const codeLines = (it.desc || "").split("\n");
+    const codeH = Math.max(0.4, (c.codeSize / 72) * 1.7 * codeLines.length + 0.2);
+    const totalH = codeH + 0.38;
+    
+    slide.addShape("roundRect", { x, y: cy, w, h: totalH, rectRadius: r, fill: { color: "0F172A" }, line: { color: pal.border, width: 0.75 } });
+    slide.addShape("rect", { x, y: cy, w, h: 0.35, fill: { color: "1E293B" }, line: { color: "1E293B" } });
+    slide.addText(label, { x: x + 0.12, y: cy, w: w * 0.7, h: 0.35, fontSize: 9, bold: true, color: pal.muted || "8892B0", fontFace: mono || font, valign: "middle" });
+    slide.addText(lang, { x: x + w - 1.2, y: cy, w: 1.0, h: 0.35, fontSize: 9, color: pal.brand, fontFace: mono || font, align: "right", valign: "middle" });
+    
+    slide.addText(it.desc || "", { x: x + 0.12, y: cy + 0.38, w: w - 0.24, h: codeH - 0.05, fontSize: c.codeSize, color: pal.codeText || "CDD5E1", fontFace: mono || font, valign: "top", wrap: true });
+    cy += totalH + c.gap;
+  }
+  return cy - y;
+}
+
+function renderTabs(slide, item, x, y, w, pal) {
+  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
+  let cy = y;
+  item.items.forEach((it, idx) => {
+    const tabTitle = it.title || it.tag || `Tab ${idx + 1}`;
+    const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize);
+    const descH = (c.bodySize / 72) * 1.7 * lines;
+    const totalH = 0.35 + descH + 0.2;
+    
+    slide.addShape("roundRect", { x, y: cy, w, h: totalH, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
+    slide.addShape("rect", { x, y: cy, w, h: 0.35, fill: { color: pal.brandLight }, line: { color: pal.brandLight } });
+    slide.addShape("rect", { x, y: cy + 0.31, w, h: 0.04, fill: { color: pal.brand }, line: { color: pal.brand } });
+    slide.addText(tabTitle, { x: x + 0.15, y: cy, w: w - 0.3, h: 0.31, fontSize: 10, bold: true, color: pal.brandDark, fontFace: font, valign: "middle" });
+    
+    slide.addText(it.desc || "", { x: x + c.padX, y: cy + 0.45, w: w - c.padX * 2, h: descH, fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
+    cy += totalH + c.gap;
+  });
+  return cy - y;
+}
+
+function renderStatHighlight(slide, item, x, y, w, pal) {
+  const g = D.grid; const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
+  const cols = Math.max(1, Math.min(item.items.length, 4));
+  const cardW = (w - (cols - 1) * g.gap) / cols;
+  const cardH2 = 1.2;
+  item.items.forEach((it, idx) => {
+    const col = idx % cols; const row = Math.floor(idx / cols);
+    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
+    const ac = it.color ? hexClean(it.color) : pal.brand;
+    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
+    slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
+    
+    const val = it.icon || it.title;
+    slide.addText(val, { x: cx + 0.1, y: cy + 0.1, w: cardW - 0.2, h: 0.45, fontSize: 22, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
+    if (it.icon) {
+      slide.addText(it.title, { x: cx + 0.1, y: cy + 0.6, w: cardW - 0.2, h: 0.24, fontSize: 9, bold: true, color: pal.text, fontFace: font, align: "center" });
+    }
+    if (it.desc) {
+      slide.addText(it.desc, { x: cx + 0.1, y: cy + 0.88, w: cardW - 0.2, h: cardH2 - 0.94, fontSize: 8, color: pal.muted || "8892B0", fontFace: font, align: "center" });
+    }
+  });
+  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
+}
+
+function renderColumns(slide, item, x, y, w, pal) {
+  const g = D.grid; const font = D.slide.font; const r = D.slide.globalRadius || 0.08;
+  const cols = Math.max(1, Math.floor(w / 2.4));
+  const cardW = (w - g.gap * (cols - 1)) / cols;
+  const cardH2 = 1.4;
+  
+  item.items.forEach((it, idx) => {
+    const col = idx % cols; const row = Math.floor(idx / cols);
+    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
+    const ac = it.color ? hexClean(it.color) : pal.brand;
+    
+    // 카드 외곽선 그리기
+    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
+    // 카드 상단 바 그리기
+    slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
+    
+    // 타이틀(문법) - 연한 브랜드 배경에 monospaced 느낌으로
+    slide.addShape("roundRect", { x: cx + 0.12, y: cy + 0.12, w: cardW - 0.24, h: 0.32, rectRadius: 0.06, fill: { color: ac, transparency: 93 } });
+    slide.addText(it.title || "", { x: cx + 0.12, y: cy + 0.12, w: cardW - 0.24, h: 0.32, fontSize: 10, bold: true, color: ac, fontFace: "Courier New", align: "center", valign: "middle" });
+    
+    // 설명 (desc)
+    if (it.desc) {
+      slide.addText(it.desc, { x: cx + 0.12, y: cy + 0.52, w: cardW - 0.24, h: 0.35, fontSize: 8.5, color: pal.text, fontFace: font, align: "center", valign: "top" });
+    }
+    // 예시 (meta/note)
+    const example = it.meta || it.note;
+    if (example) {
+      slide.addShape("roundRect", { x: cx + 0.12, y: cy + 0.94, w: cardW - 0.24, h: 0.34, rectRadius: 0.04, fill: { color: ac, transparency: 96 } });
+      slide.addText(example, { x: cx + 0.16, y: cy + 0.94, w: cardW - 0.32, h: 0.34, fontSize: 7.5, color: pal.muted || "8892B0", fontFace: "Courier New", align: "center", valign: "middle" });
+    }
+  });
+  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
+}
+
 function renderItem(slide, item, x, y, w, pal) {
-  if (item.type === "card")            return renderCard(slide, item, x, y, w, pal);
-  if (item.type === "icon-grid")       return renderIconGrid(slide, item, x, y, w, pal);
-  if (item.type === "feature-grid")    return renderFeatureGrid(slide, item, x, y, w, pal);
-  if (item.type === "steps")           return renderSteps(slide, item, x, y, w, pal);
-  if (item.type === "compare-grid")    return renderCompareGrid(slide, item, x, y, w, pal);
-  if (item.type === "workflow")        return renderWorkflow(slide, item, x, y, w, pal);
-  if (item.type === "tool-card")       return renderToolCard(slide, item, x, y, w, pal);
-  if (item.type === "plan-grid")       return renderPlanGrid(slide, item, x, y, w, pal);
-  if (item.type === "bottom-list")     return renderBottomList(slide, item, x, y, w, pal);
-  if (item.type === "compare-2col")    return renderCompare2Col(slide, item, x, y, w, pal);
-  if (item.type === "alert-box")       return renderAlertBox(slide, item, x, y, w, pal);
-  if (item.type === "faq-accordion")   return renderFaqAccordion(slide, item, x, y, w, pal);
-  if (item.type === "prompt-example")  return renderPromptExample(slide, item, x, y, w, pal);
+  if (item.type === "card")                                                      return renderCard(slide, item, x, y, w, pal);
+  if (item.type === "icon-grid")                                                 return renderIconGrid(slide, item, x, y, w, pal);
+  if (item.type === "feature-grid")                                              return renderFeatureGrid(slide, item, x, y, w, pal);
+  if (item.type === "step-list" || item.type === "steps")                        return renderSteps(slide, item, x, y, w, pal);
+  if (item.type === "compare-grid")                                              return renderCompareGrid(slide, item, x, y, w, pal);
+  if (item.type === "columns-grid" || item.type === "columns")                   return renderColumns(slide, item, x, y, w, pal);
+  if (item.type === "workflow-strip" || item.type === "workflow")                return renderWorkflow(slide, item, x, y, w, pal);
+  if (item.type === "tool-box" || item.type === "tool-card")                     return renderToolCard(slide, item, x, y, w, pal);
+  if (item.type === "plan-grid")                                                 return renderPlanGrid(slide, item, x, y, w, pal);
+  if (item.type === "bottom-list")                                               return renderBottomList(slide, item, x, y, w, pal);
+  if (item.type === "compare-split" || item.type === "compare-2col")             return renderCompare2Col(slide, item, x, y, w, pal);
+  if (item.type === "alert-box")                                                 return renderAlertBox(slide, item, x, y, w, pal);
+  if (item.type === "faq-list" || item.type === "faq-accordion")                 return renderFaqAccordion(slide, item, x, y, w, pal);
+  if (item.type === "console-box" || item.type === "prompt-example")             return renderPromptExample(slide, item, x, y, w, pal);
+  if (item.type === "cmd-box" || item.type === "command-block")                  return renderCommandBlock(slide, item, x, y, w, pal);
+  if (item.type === "os-tabs" || item.type === "tabs")                           return renderTabs(slide, item, x, y, w, pal);
+  if (item.type === "stat-grid" || item.type === "stat-highlight")               return renderStatHighlight(slide, item, x, y, w, pal);
+  
+  // 3대 신규 특화 숏코드 우회 매핑
+  if (item.type === "git-flow-strip")                                            return renderWorkflow(slide, item, x, y, w, pal);
+  if (item.type === "editor-box")                                                return renderCommandBlock(slide, item, x, y, w, pal);
+  if (item.type === "network-box")                                               return renderCompareGrid(slide, item, x, y, w, pal);
   return 0;
 }
 

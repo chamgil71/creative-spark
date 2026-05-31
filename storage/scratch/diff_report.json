@@ -1,0 +1,366 @@
+[
+  {
+    "key": "antigravity",
+    "baseName": "Antigravity",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 231 vs 596)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 231 vs 3046)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 596 vs 3046)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "capcut",
+    "baseName": "CapCut",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3443 vs 3445)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3443 vs 3405)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3445 vs 3405)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "chatgpt",
+    "baseName": "chatGPT",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3615 vs 1282)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3615 vs 2663)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1282 vs 2663)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "claude",
+    "baseName": "Claude",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 590 vs 4562)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 590 vs 3345)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 4562 vs 3345)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "claudecode",
+    "baseName": "ClaudeCode",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 242 vs 725)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 242 vs 5151)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 725 vs 5151)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "cloudflare",
+    "baseName": "Cloudflare",
+    "diffs": {
+      "mddata_vs_md_temp": "IDENTICAL",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3173 vs 3113)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3173 vs 3113)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "codex",
+    "baseName": "Codex",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 2963 vs 3002)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 2963 vs 2948)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3002 vs 2948)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "copilot",
+    "baseName": "Copilot",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3108 vs 3149)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3108 vs 3093)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3149 vs 3093)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "cursor",
+    "baseName": "Cursor",
+    "diffs": {},
+    "hasHtml": false
+  },
+  {
+    "key": "gemini",
+    "baseName": "Gemini",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 252 vs 1067)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 252 vs 2350)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1067 vs 2350)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "genspark",
+    "baseName": "Genspark",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 416 vs 669)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 416 vs 1724)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 669 vs 1724)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "github",
+    "baseName": "Github",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 282 vs 743)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 282 vs 3080)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 743 vs 3080)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "grabit",
+    "baseName": "Grabit",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 218 vs 1025)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 218 vs 889)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1025 vs 889)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "grok",
+    "baseName": "Grok",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 305 vs 1013)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 305 vs 1760)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1013 vs 1760)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "lovable",
+    "baseName": "Lovable",
+    "diffs": {
+      "mddata_vs_md_temp": "IDENTICAL",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 2937 vs 2879)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 2937 vs 2879)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "manus",
+    "baseName": "Manus",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 191 vs 574)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 191 vs 1502)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 574 vs 1502)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "n8n",
+    "baseName": "n8n",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 2963 vs 3000)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 2963 vs 2944)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3000 vs 2944)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "notebooklm importer",
+    "baseName": "NotebookLM Importer",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 231 vs 723)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 231 vs 784)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 723 vs 784)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "notebooklm",
+    "baseName": "NotebookLM",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 259 vs 767)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 259 vs 2772)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 767 vs 2772)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "notion",
+    "baseName": "notion",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 250 vs 710)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 250 vs 3456)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 710 vs 3456)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "obsidian",
+    "baseName": "obsidian",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 245 vs 727)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 245 vs 3660)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 727 vs 3660)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "ollama",
+    "baseName": "Ollama",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3091 vs 3131)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3091 vs 3073)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3131 vs 3073)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "perplexity",
+    "baseName": "perplexity",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 669 vs 1055)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 669 vs 2139)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1055 vs 2139)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "playwright",
+    "baseName": "Playwright",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3145 vs 3186)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3145 vs 3128)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3186 vs 3128)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "quartz",
+    "baseName": "Quartz",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3352 vs 3376)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3352 vs 3300)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3376 vs 3300)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "resend",
+    "baseName": "Resend",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3282 vs 3312)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3282 vs 3244)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3312 vs 3244)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "snipaste",
+    "baseName": "Snipaste",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 352 vs 1214)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 352 vs 1179)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1214 vs 1179)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "supabase",
+    "baseName": "Supabase",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 3606 vs 3636)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 3606 vs 3564)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 3636 vs 3564)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "v0.dev",
+    "baseName": "v0.dev",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 2911 vs 2951)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 2911 vs 2903)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 2951 vs 2903)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "vercel",
+    "baseName": "Vercel",
+    "diffs": {
+      "mddata_vs_md_temp": "IDENTICAL"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "vscode",
+    "baseName": "Vscode",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 236 vs 805)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 236 vs 3285)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 805 vs 3285)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "디자인및시각화",
+    "baseName": "디자인및시각화",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 718 vs 1279)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 718 vs 1276)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1279 vs 1276)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "영상음악ai",
+    "baseName": "영상음악AI",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 1101 vs 1563)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 1101 vs 1446)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1563 vs 1446)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "이미지생성ai",
+    "baseName": "이미지생성ai",
+    "diffs": {
+      "mddata_vs_md_temp": "DIFFERENT (Sizes: 542 vs 1159)",
+      "mddata_vs_mdresult": "DIFFERENT (Sizes: 542 vs 1341)",
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1159 vs 1341)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "everything(에브리띵)",
+    "baseName": "Everything(에브리띵)",
+    "diffs": {
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1145 vs 1466)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "everything",
+    "baseName": "Everything",
+    "diffs": {
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 1145 vs 1466)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "gemini-code-1778632757537",
+    "baseName": "gemini-code-1778632757537",
+    "diffs": {
+      "md_temp_vs_mdresult": "DIFFERENT (Sizes: 2146 vs 1968)"
+    },
+    "hasHtml": true
+  },
+  {
+    "key": "terminal-ai-tools",
+    "baseName": "terminal-ai-tools",
+    "diffs": {},
+    "hasHtml": false
+  }
+]

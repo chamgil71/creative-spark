@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>6부. 품질과 운영 — 바이브코딩 & 에이전트 코딩 완전 입문</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--brand:#DC2626;--brand-dark:#B91C1C;--brand-deep:#7F1D1D;--brand-light:#FEF2F2;--brand-mid:#FCA5A5;--text:#1A1A2E;--text-2:#4B5575;--text-3:#8892B0;--bg:#FFF8F8;--white:#FFFFFF;--border:#FECACA;--shadow:0 4px 24px rgba(220,38,38,0.08);--shadow-lg:0 8px 40px rgba(220,38,38,0.14);--radius:16px;--radius-sm:10px;}
+    *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+    body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
+    .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;}
+    .nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+    .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--brand);text-decoration:none;}
+    .nav-logo .logo-icon{width:32px;height:32px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;}
+    .nav-part{font-size:12px;background:var(--brand-light);color:var(--brand-dark);padding:3px 10px;border-radius:100px;font-weight:600;border:1px solid var(--border);}
+    .nav-links{display:flex;gap:4px;list-style:none;}
+    .nav-links a{text-decoration:none;color:var(--text-2);font-size:13px;font-weight:500;padding:5px 10px;border-radius:8px;transition:all .2s;}
+    .nav-links a:hover{background:var(--brand-light);color:var(--brand);}
+    .hero{background:linear-gradient(135deg,#1C0A0A 0%,#450A0A 40%,#7F1D1D 75%,#DC2626 100%);color:white;padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(220,38,38,0.3) 0%,transparent 60%);}
+    .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:500;margin-bottom:20px;}
+    .hero-badge span{width:8px;height:8px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+    .hero-part-num{font-size:13px;opacity:.6;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+    .hero h1{font-family:'Noto Serif KR',serif;font-size:clamp(1.8rem,5vw,2.8rem);font-weight:700;margin-bottom:16px;line-height:1.25;}
+    .hero p{font-size:1.05rem;opacity:.85;margin-bottom:36px;}
+    .hero-chapters{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+    .hero-chapter-badge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 12px;font-size:12px;font-family:'JetBrains Mono',monospace;}
+    main{max-width:960px;margin:0 auto;padding:60px 24px 80px;}
+    .section{margin-bottom:64px;scroll-margin-top:80px;}
+    .section-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;}
+    .section-num{width:44px;height:44px;background:var(--brand);color:white;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:'JetBrains Mono',monospace;flex-shrink:0;}
+    .section-header h2{font-family:'Noto Serif KR',serif;font-size:1.45rem;font-weight:700;}
+    .section-lead{font-size:.97rem;color:var(--text-2);line-height:1.85;margin-bottom:24px;padding:18px 22px;background:white;border-radius:var(--radius-sm);border-left:4px solid var(--brand);box-shadow:var(--shadow);}
+    .card{background:white;border-radius:var(--radius);border:1px solid var(--border);padding:24px;box-shadow:var(--shadow);margin-bottom:14px;}
+    .card-title{font-weight:700;font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+    .card-title .icon{width:28px;height:28px;background:var(--brand-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+    .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;}
+    .error-type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:24px;}
+    .error-type{background:white;border-radius:var(--radius-sm);border:2px solid var(--border);padding:18px;transition:all .2s;}
+    .error-type:hover{border-color:var(--brand);box-shadow:var(--shadow-lg);}
+    .error-type .et-badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:.75rem;font-weight:700;margin-bottom:8px;}
+    .et-easy{background:#DCFCE7;color:#166534;}.et-hard{background:#FEF2F2;color:#991B1B;}.et-mid{background:#FFF7ED;color:#9A3412;}
+    .error-type .et-title{font-weight:700;font-size:.92rem;margin-bottom:6px;}
+    .error-type .et-desc{font-size:.82rem;color:var(--text-2);line-height:1.65;}
+    .fix-pattern{background:#1A0000;color:#FCA5A5;border-radius:var(--radius);padding:22px 26px;font-family:'JetBrains Mono',monospace;font-size:.84rem;line-height:2;margin:14px 0;}
+    .fix-pattern .fp-label{color:#6B7280;}.fix-pattern .fp-bad{color:#FCA5A5;}.fix-pattern .fp-good{color:#86EFAC;}
+    .compare-table{width:100%;border-collapse:collapse;background:white;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+    .compare-table th{background:var(--brand);color:white;padding:12px 16px;text-align:left;font-weight:600;font-size:.88rem;}
+    .compare-table td{padding:11px 16px;border-bottom:1px solid var(--border);font-size:.87rem;vertical-align:middle;}
+    .compare-table tr:last-child td{border-bottom:none;}
+    .compare-table tr:nth-child(even) td{background:var(--bg);}
+    .asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;}
+    .asset-item{background:white;border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px;text-align:center;transition:all .2s;}
+    .asset-item:hover{border-color:var(--brand);transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+    .asset-icon{font-size:28px;margin-bottom:8px;}
+    .asset-name{font-weight:700;font-size:.9rem;margin-bottom:4px;}
+    .asset-desc{font-size:.78rem;color:var(--text-3);line-height:1.5;}
+    .retro-template{background:white;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
+    .retro-header{background:linear-gradient(135deg,var(--brand),var(--brand-dark));padding:16px 22px;color:white;font-weight:700;}
+    .retro-body{padding:20px 22px;font-family:'JetBrains Mono',monospace;font-size:.85rem;line-height:2;color:var(--text-2);}
+    .retro-body .rh{color:var(--brand-dark);font-weight:700;}
+    .retro-body .ri{color:var(--text-3);}
+    .tip-box{background:linear-gradient(135deg,var(--brand-light),#fff);border-left:4px solid var(--brand);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:15px 19px;margin-top:14px;font-size:.9rem;}
+    .tip-box strong{color:var(--brand-dark);}
+    .warn-box{background:#FFF8E8;border-left:4px solid #F59E0B;border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:15px 19px;margin-top:14px;font-size:.9rem;}
+    .warn-box strong{color:#92650A;}
+    .takeaway{background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);color:white;border-radius:var(--radius);padding:22px 26px;margin-top:22px;display:flex;gap:14px;align-items:flex-start;}
+    .takeaway .ta-icon{font-size:22px;flex-shrink:0;}
+    .takeaway .ta-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+    .takeaway .ta-text{font-size:.94rem;line-height:1.75;font-weight:500;}
+    .chapter-divider{border:none;border-top:2px dashed var(--border);margin:48px 0;}
+    .back-top{position:fixed;bottom:32px;right:32px;width:46px;height:46px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:var(--shadow-lg);font-size:20px;transition:all .2s;}
+    .back-top:hover{background:var(--brand-dark);transform:translateY(-2px);}
+    footer{background:#1A1A2E;color:rgba(255,255,255,0.6);text-align:center;padding:32px 24px;font-size:.88rem;}
+    footer strong{color:var(--brand);}
+    .footer-nav{display:flex;justify-content:center;gap:24px;margin-bottom:16px;}
+    .footer-nav a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:.85rem;transition:color .2s;}
+    .footer-nav a:hover{color:var(--brand);}
+  </style>
+</head>
+<body>
+<nav class="nav" id="top">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><div class="logo-icon">🔧</div>바이브코딩 & 에이전트 코딩</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="nav-part">6부 · 품질과 운영</span>
+      <ul class="nav-links">
+        <li><a href="#ch26">Ch.26</a></li>
+        <li><a href="#ch27">Ch.27</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span> 바이브코딩 & 에이전트 코딩 완전 입문 가이드</div>
+    <div class="hero-part-num">Part 06 / 08</div>
+    <h1>품질과 운영</h1>
+    <p>오류 처리·디버깅 협업과 재사용 가능한 자산 구축<br>AI 협업을 지속 가능하게 만드는 방법</p>
+    <div class="hero-chapters">
+      <span class="hero-chapter-badge">Ch.26 오류 처리 & 디버깅</span>
+      <span class="hero-chapter-badge">Ch.27 재사용 가능한 자산</span>
+    </div>
+  </div>
+</section>
+<main>
+
+  <!-- CH.26 -->
+  <div class="section" id="ch26">
+    <div class="section-header"><div class="section-num">26</div><h2>오류 처리와 디버깅 협업</h2></div>
+    <div class="section-lead">AI가 틀렸을 때가 진짜 실력이 드러나는 순간입니다. 오류를 빠르게 해결하는 것은 기술이 아니라 <strong>피드백 루프를 잘 설계하는 것</strong>입니다.</div>
+
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">오류 4가지 유형</h3>
+    <div class="error-type-grid">
+      <div class="error-type">
+        <span class="et-badge et-easy">해결 쉬움</span>
+        <div class="et-title">유형 1 — 문법·실행 오류</div>
+        <div class="et-desc">코드가 즉시 멈추고 오류 메시지 출력. 오류 메시지 전체를 AI에게 붙여넣으면 대부분 해결.</div>
+      </div>
+      <div class="error-type">
+        <span class="et-badge et-hard">해결 어려움</span>
+        <div class="et-title">유형 2 — 논리 오류</div>
+        <div class="et-desc">코드는 실행되지만 결과가 잘못됨. 예상값과 실제값을 함께 제시해야 AI가 원인을 파악.</div>
+      </div>
+      <div class="error-type">
+        <span class="et-badge et-mid">예방 가능</span>
+        <div class="et-title">유형 3 — AI 환각 오류</div>
+        <div class="et-desc">존재하지 않는 함수·라이브러리 사용. 실행 전 "이 메서드가 실제로 있는지 확인해줘"로 예방.</div>
+      </div>
+      <div class="error-type">
+        <span class="et-badge et-easy">SKILL.md 해결</span>
+        <div class="et-title">유형 4 — 컨텍스트 소실</div>
+        <div class="et-desc">AI가 이전 결정을 무시하고 다른 방식 사용. SKILL.md 재첨부 + 구체적 위반 항목 명시로 해결.</div>
+      </div>
+    </div>
+
+    <div class="fix-pattern">
+<span class="fp-label">❌ 잘못된 오류 보고:</span><br>
+<span class="fp-bad">"실행이 안 돼요. 오류가 났어요."</span><br><br>
+<span class="fp-label">✅ 올바른 오류 보고:</span><br>
+<span class="fp-good">"다음 오류가 발생했어. 수정해줘:</span><br>
+<span class="fp-good">Traceback (most recent call last):</span><br>
+<span class="fp-good">&nbsp;&nbsp;File "json_structurer.py", line 847, in fill_merged_cells</span><br>
+<span class="fp-good">&nbsp;&nbsp;&nbsp;&nbsp;prev_value = prev_row[col_idx]</span><br>
+<span class="fp-good">IndexError: list index out of range</span><br><br>
+<span class="fp-good">실행 환경: Python 3.11</span><br>
+<span class="fp-good">입력: /output/raw/budget_2026_p042.json"</span>
+    </div>
+
+    <h3 style="font-size:1.1rem;font-weight:700;margin:24px 0 16px;">반복 실패 루프 탈출 — 3단계</h3>
+    <div style="display:grid;gap:12px;margin-bottom:24px;">
+      <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:36px;height:36px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">1</div>
+        <div><strong style="display:block;margin-bottom:4px;">현재 상태 요약 요청</strong><div style="font-size:.88rem;color:var(--text-2);">"지금까지 시도한 방법과 결과를 요약해줘. 아직 시도하지 않은 접근법 3가지를 제안해줘."</div></div>
+      </div>
+      <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:36px;height:36px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">2</div>
+        <div><strong style="display:block;margin-bottom:4px;">문제 재정의</strong><div style="font-size:.88rem;color:var(--text-2);">"처음부터 다시 생각해보자. 현재 방식 말고 완전히 다른 방법으로 접근한다면?"</div></div>
+      </div>
+      <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:36px;height:36px;background:var(--brand);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;">3</div>
+        <div><strong style="display:block;margin-bottom:4px;">단순화 (최소 동작 버전)</strong><div style="font-size:.88rem;color:var(--text-2);">"현재 코드를 버리고, 병합 셀 처리 없이 단순 표만 처리하는 최소 버전부터 만들어줘."</div></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">예방적 디버깅 — 방어 코드 요청 패턴</h3>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><div class="icon">🛡️</div>방어 코드 요청 프롬프트</div>
+        <div style="font-size:.88rem;color:var(--text-2);line-height:1.8;">
+          "parse_table() 함수 작성 시 포함할 것:<br>
+          ① 입력이 None이거나 빈 리스트면 빈 리스트 반환<br>
+          ② 행의 열 수가 다를 수 있음을 고려<br>
+          ③ 금액 파싱 실패 시 None 저장 (예외 전파 금지)<br>
+          ④ 오류 행은 로그 기록 후 건너뜀 (전체 실패 금지)"
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><div class="icon">🧪</div>TDD — 테스트 먼저 작성</div>
+        <div style="font-size:.88rem;color:var(--text-2);line-height:1.8;">
+          "parse_amount() 테스트 케이스 먼저:<br>
+          '1,234,567' → 1234567<br>
+          '(△123,456)' → -123456<br>
+          '-' → None<br>
+          '' → None<br>
+          pytest 형식으로 작성 후 통과하는 함수 구현해줘."
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box"><strong>⚠️ 3중 안전망:</strong> Git 커밋 (AI 작업 전 항상) → 원본 파일 불변 (chmod 444) → DB 스냅샷 (cp budget.db budget.db.backup.YYYYMMDD). 이 세 가지만 지켜도 모든 상황에서 복구 가능합니다.</div>
+
+    <div class="takeaway"><div class="ta-icon">💡</div><div><div class="ta-label">Key Takeaway</div><div class="ta-text">AI 디버깅의 핵심은 <strong>오류 메시지 전체 붙여넣기, 예상값과 실제값 동시 제시, 3회 반복 실패 시 루프 탈출 질문</strong>이며, Git 커밋과 원본 파일 불변 원칙이 모든 상황의 안전망입니다.</div></div></div>
+  </div>
+
+  <hr class="chapter-divider">
+
+  <!-- CH.27 -->
+  <div class="section" id="ch27">
+    <div class="section-header"><div class="section-num">27</div><h2>재사용 가능한 자산 만들기</h2></div>
+    <div class="section-lead">좋은 자산은 한 번 만들고 열 번 씁니다. AI 협업에서 쌓인 경험을 <strong>다음 프로젝트의 시작점을 높이는 영구 자산</strong>으로 만드는 방법입니다.</div>
+
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">5가지 자산 유형</h3>
+    <div class="asset-grid">
+      <div class="asset-item"><div class="asset-icon">📝</div><div class="asset-name">SKILL.md</div><div class="asset-desc">AI 지시서<br>프로젝트별 규칙</div></div>
+      <div class="asset-item"><div class="asset-icon">💬</div><div class="asset-name">프롬프트 템플릿</div><div class="asset-desc">검증된 프롬프트<br>Obsidian 아카이브</div></div>
+      <div class="asset-item"><div class="asset-icon">🧩</div><div class="asset-name">코드 스니펫</div><div class="asset-desc">재사용 함수<br>GitHub snippets/</div></div>
+      <div class="asset-item"><div class="asset-icon">🔄</div><div class="asset-name">n8n 워크플로우</div><div class="asset-desc">템플릿 JSON<br>내보내기/가져오기</div></div>
+      <div class="asset-item"><div class="asset-icon">🚀</div><div class="asset-name">프로젝트 스타터</div><div class="asset-desc">GitHub Template<br>즉시 시작 가능</div></div>
+    </div>
+
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">자산 업데이트 트리거 — 언제 업데이트하나</h3>
+    <table class="compare-table" style="margin-bottom:24px;">
+      <thead><tr><th>신호</th><th>행동</th></tr></thead>
+      <tbody>
+        <tr><td>같은 버그를 두 번째 만났을 때</td><td>SKILL.md "금지 사항"에 추가</td></tr>
+        <tr><td>"이 코드 어디서 보지 않았나?"</td><td>snippets/에 저장</td></tr>
+        <tr><td>새 팀원이 같은 질문을 할 때</td><td>Notion 팀 위키에 답변 추가</td></tr>
+        <tr><td>AI가 같은 잘못된 패턴을 반복</td><td>SKILL.md 금지 사항에 추가</td></tr>
+        <tr><td>프로젝트 완료</td><td>회고 문서 + 핵심 자산 아카이빙</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">프로젝트 완료 회고 템플릿 (30분)</h3>
+    <div class="retro-template">
+      <div class="retro-header">📋 [프로젝트명] 완료 회고</div>
+      <div class="retro-body">
+<span class="rh">## 잘 된 것</span>  <span class="ri">← 어떤 도구·프롬프트가 효과적이었나?</span><br>
+<span class="rh">## 어려웠던 것</span>  <span class="ri">← 가장 많은 시간이 걸린 문제는?</span><br>
+<span class="rh">## 다음에 처음부터 할 일</span>  <span class="ri">← 알았더라면 하지 않았을 삽질</span><br><br>
+<span class="rh">## 재사용 자산 체크리스트</span><br>
+□ SKILL.md 최종 버전 GitHub 커밋<br>
+□ 핵심 프롬프트 Obsidian에 저장<br>
+□ 재사용 가능한 함수 snippets/에 추가<br>
+□ n8n 워크플로우 JSON 내보내기<br>
+□ README 업데이트 (다음 사람이 실행 가능하게)<br><br>
+<span class="rh">## 다음 프로젝트에 전달할 한 문장</span><br>
+"이 프로젝트에서 가장 중요한 교훈은 _____ 이다."
+      </div>
+    </div>
+
+    <div class="tip-box"><strong>💡 자산 품질 기준:</strong> "처음 보는 사람도 5분 안에 사용할 수 있는가?"를 기준으로 판단하세요. README.md에 사용법·예시·주의사항이 포함되어야 ⭐⭐⭐ 등급 자산입니다.</div>
+
+    <div class="takeaway"><div class="ta-icon">💡</div><div><div class="ta-label">Key Takeaway</div><div class="ta-text">재사용 자산은 저절로 쌓이지 않습니다. <strong>프로젝트 완료 시 30분의 회고·정리 루틴</strong>이 다음 프로젝트의 시작점을 높이고, 팀의 AI 협업 역량을 개인 경험에서 조직 자산으로 전환시킵니다.</div></div></div>
+  </div>
+
+</main>
+<a class="back-top" href="#top">↑</a>
+<footer>
+  <div class="footer-nav"><a href="part05-cases.html">← 5부. 실전 사례</a>
+  <a href="part07-start-guide.html">7부. 시작과 심화 →</a>
+  </div>
+  <strong>바이브코딩 & 에이전트 코딩 완전 입문 가이드</strong> · 6부. 품질과 운영<br>
+  <span style="margin-top:6px;display:block;">Ch.26 오류 처리 & 디버깅 · Ch.27 재사용 자산 만들기</span>
+</footer>
+</body>
+</html>

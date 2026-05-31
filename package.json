@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/build-standalone.mjs && vite build && node scripts/build-standalone.mjs dist/standalone.html",
+    "build": "node scripts/build-publish.mjs && vite build && node scripts/build-standalone.mjs dist/standalone.html",
     "build:dev": "vite build --mode development && node scripts/build-standalone.mjs dist/standalone.html",
     "build:standalone": "node scripts/build-standalone.mjs",
+    "build:publish": "node scripts/build-publish.mjs",
+    "sync:guides": "node scripts/sync-guides-index.mjs",
+    "build:slide": "node scripts/build-presentation.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

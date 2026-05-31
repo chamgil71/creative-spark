@@ -22,7 +22,7 @@ import { resolve, dirname, basename, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { glob } from "node:fs/promises";
 
-import { htmlToMdString } from "../templates/html-to-md.mjs";
+import { htmlToMdString } from "./html-to-md.mjs";
 import { convertMdToPptx } from "./md-to-pptx.mjs";
 
 // ════════════════════════════════════════════════════════════════

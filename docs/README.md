@@ -1,12 +1,12 @@
 # Creative Spark — 프로젝트 문서
 
-> 최종 업데이트: 2026-05-13
+> 최종 업데이트: 2026-05-28
 
 ## 개요
 
 AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트.  
 **Markdown → HTML**, **Markdown → PPTX** 두 출력 경로를 JSON 설정 파일 기반으로 운영한다.  
-18종 shortcode, 10가지 색상 프리셋 지원.
+29종 shortcode (26종 고유, aliases 포함), 11가지 색상 프리셋 지원.
 
 ---
 
@@ -15,15 +15,17 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 ```
 [HTML 기존 가이드]
       │
-      │ templates/html-to-md.mjs  (HTML → MD 역변환)
+      │ scripts/html-to-md.mjs  (HTML → MD 역변환)
       ▼
-[mddata/*.md]  ←──── 콘텐츠 원본 (표준 작성 위치)
+[md_src/guides/*.md]  ←──── 콘텐츠 원본 (표준 작성 위치)
       │
-      ├─── templates/build-guide.mjs ──→ public/guides/*.html
-      │                                        │
-      │                                        └─→ (브라우저 뷰어 / 배포)
+      ├─── scripts/sync-guides-index.mjs  ──→ (guides.json 자동 업데이트)
       │
-      └─── scripts/md-to-pptx.mjs ──→ dist-pptx/*.pptx
+      ├─── scripts/build-publish.mjs
+      │         ├─── scripts/build-guide.mjs ──→ public/guides/*.html
+      │         └─── (PPTX 슬라이드 자동 생성)
+      │
+      └─── scripts/build-standalone.mjs   ──→ dist/standalone.html (오프라인 1파일)
 ```
 
 ---
@@ -33,16 +35,18 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 | 경로 | 역할 |
 |------|------|
 | `config/` | **공통 설정 JSON** (styles, shortcode-map, pptdesign) |
-| `data/mddata/` | 가이드 Markdown 원본 (콘텐츠 작업 위치) |
-| `data/templates/` | 새 가이드 작성용 MD 템플릿 (template.md, showcase.md) |
-| `data/test/` | 변환 테스트용 HTML 원본 |
-| `templates/` | HTML 파이프라인 스크립트 (build-guide, html-to-md) |
-| `scripts/` | PPTX/빌드 파이프라인 스크립트 |
-| `public/guides/` | 서비스용 HTML (빌드 산출물) |
-| `dist-pptx/` | PPTX 변환 산출물 |
-| `src/` | React 웹앱 소스 |
-| `docs/` | 프로젝트 문서 (이 폴더) |
-| `data/temp/` | 미완성·미사용 스크립트 보관 |
+| `md_src/guides/` | 가이드 Markdown 원본 (콘텐츠 작성 위치) |
+| `md_src/vibecoding/` | 시리즈 컬렉션 Markdown 원본 |
+| `md_src/showcase/` | 쇼케이스 문서 및 PPTX 생성 소스 |
+| `scripts/` | 핵심 변환기(build-guide, build-presentation 등), Standalone, 동기화 스크립트 일체 |
+| `public/guides/` | 빌드된 HTML 가이드 저장 위치 (배포 소스) |
+| `public/presentation/` | 빌드된 PPT형 횡 슬라이드 HTML 저장 위치 [NEW] |
+| `public/standalone.html` | 로컬 빌드용 단일 파일 standalone.html |
+| `dist/` | React 앱 빌드 및 최종 배포용 `standalone.html` |
+| `dist-pptx/` | 개별 MD → PPTX 변환 산출물 |
+| `src/` | React 웹앱 소스 (메인 페이지 등) |
+| `storage/` | 각종 코드/PPT 백업, 임시 리소스 및 `scratch/` 보관함 [NEW] |
+| `docs/` | 프로젝트 가이드 및 지침 문서 (이 폴더) |
 
 ---
 
@@ -50,16 +54,26 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 
 | 파일 | 용도 |
 |------|------|
-| `config/styles.json` | 카테고리별 색상 프리셋 (10종) |
+| `config/styles.json` | 카테고리별 색상 프리셋 (11종) |
 | `config/pptdesign.config.json` | PPTX 레이아웃·여백·폰트 수치 설정 |
-| `data/templates/template.md` | 새 가이드 작성 템플릿 |
+| `md_src/showcase/showcase.md` | 다양한 단 구조 및 29종 숏코드 문법 참조 원본 |
 
 ---
 
 ## 문서 목차
 
-- [guide-creation.md](guide-creation.md) — 가이드 제작 전체 워크플로우 (MD 작성 → HTML/PPTX → 배포)
+### 가이드 문서
+- [guide-creation.md](guide-creation.md) — 29종 숏코드 명세 및 가이드 작성 워크플로우
+- [guide-build.md](guide-build.md) — Frontmatter 및 스타일 프리셋 가이드
+- [scripts-guide.md](scripts-guide.md) — `scripts/` 내 도구 상세 사용법 및 프레젠테이션 빌더
 - [pipeline.md](pipeline.md) — 파이프라인 상세 + shortcode 레퍼런스
-- [scripts-guide.md](scripts-guide.md) — 각 스크립트 사용법
-- [standalone.md](standalone.md) — Standalone HTML 빌드 방법
-- [test-html-analysis.md](test-html-analysis.md) — test/ HTML 분석: 기존 shortcode 치환 목록 & 신규 shortcode 설계
+- [standalone.md](standalone.md) — Standalone HTML 번들링 매커니즘
+- [shortcode-style-guide.md](shortcode-style-guide.md) — 숏코드별 CSS/PPTX 디자인 튜닝 가이드
+
+### 참고 문서 (서브폴더)
+- [plan/](plan/) — 기획 및 분석 문서
+- [prompt/](prompt/) — AI 가이드 생성용 프롬프트 템플릿
+- [report/](report/) — 검토 보고서 및 작업 이력
+  - [standalone-integrity-report.md](report/standalone-integrity-report.md) — Shadow DOM 정합성 검증 결과
+  - [project-review-2026-05-28.md](report/project-review-2026-05-28.md) — 프로젝트 현황 검토 보고서
+  - worklog.md — 영구 누적 작업 기록 일지

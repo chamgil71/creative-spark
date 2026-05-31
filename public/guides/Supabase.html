@@ -6,13 +6,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #D97757;
-    --brand-dark: #B85F3F;
-    --brand-deep: #8B4530;
-    --brand-light:#FDF0EB;
-    --brand-mid:  #F4C5AE;
-    --border:     #F0D4C4;
-    --bg:         #FBF7F5;
+    --brand:      #10A37F;
+    --brand-dark: #0D8065;
+    --brand-deep: #085C4A;
+    --brand-light:#E6F4F0;
+    --brand-mid:  #A8DDD0;
+    --border:     #C8E6DF;
+    --bg:         #F7FBF9;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #D9775755 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,57 +279,91 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">⚡ Supabase 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. Supabase는 어떤 도구인가</a></li><li><a href="#sec-2">2. 시작하기: 프론트엔드와 연결하기</a></li><li><a href="#sec-3">3. 실무 구축 시 주의/활용 팁</a></li><li><a href="#sec-4">4. 마무리 체크리스트</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Supabase 완전 활용 가이드</a><ul class="nav-links"><li><a href="#sec-1">Supabase는 어떤 도구인가</a></li><li><a href="#sec-2">시작하기: 프론트엔드와 연결하기</a></li><li><a href="#sec-3">실무 구축 시 주의/활용 팁</a></li><li><a href="#sec-4">마무리 체크리스트</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>🗄️ 백엔드 서비스 · PostgreSQL</div>
-      <div class="hero-logo">⚡</div>
+      
       <h1>Supabase 완전 활용 가이드</h1>
-      <p>프론트엔드 개발자도 백엔드를 완벽하게 다룰 수 있게 해주는 오픈소스 Firebase 대안</p>
-      <a class="hero-cta" href="https://supabase.com" target="_blank" rel="noopener">Supabase 시작하기</a>
+      <p>오픈소스 Firebase 대안 BaaS</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>PostgreSQL</strong><span>기본 엔진</span></div><div class="hero-stat"><strong>Auth</strong><span>인증 기본제공</span></div><div class="hero-stat"><strong>API</strong><span>자동 생성</span></div><div class="hero-stat"><strong>Realtime</strong><span>웹소켓 지원</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. Supabase는 어떤 도구인가</h2></div><div class="card"><p>Supabase는 데이터베이스 연동, 사용자 인증(회원가입/로그인), 스토리지(파일 저장), 실시간 데이터 업데이트 등 백엔드 개발에 필요한 모든 기능을 하나의 대시보드와 클라이언트 라이브러리로 제공하는 BaaS(Backend as a Service)입니다. Firebase와 비슷하지만, 관계형 데이터베이스인 PostgreSQL을 사용하여 복잡한 데이터 분석과 쿼리에 훨씬 강력합니다.</p>
-</div><div class="card"><h3 class="card-title">한눈에 보는 핵심 기능</h3><div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >🗃️</div>
-<div class="icon-card-title" >자동 API 및 Database</div>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Supabase는 어떤 도구인가</h2></div><div class="card"><p>Supabase는 데이터베이스 연동, 사용자 인증(회원가입/로그인), 스토리지(파일 저장), 실시간 데이터 업데이트 등 백엔드 개발에 필요한 모든 기능을 하나의 대시보드와 클라이언트 라이브러리로 제공하는 BaaS(Backend as a Service)입니다. Firebase와 비슷하지만, 관계형 데이터베이스인 PostgreSQL을 사용하여 복잡한 데이터 분석과 쿼리에 훨씬 강력합니다.</p>
+<h3>한눈에 보는 핵심 기능</h3>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🗃️</div>
+<div class="icon-card-title" style="color: var(--text);">자동 API 및 Database</div>
 <p>대시보드에서 테이블(엑셀 시트 형태)을 만들면 CRUD 조작이 가능한 REST 및 GraphQL API가 즉시 생성됩니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🔐</div>
-<div class="icon-card-title" >강력한 Auth (인증)</div>
+<div class="icon-card-icon" style="color: var(--brand);">🔐</div>
+<div class="icon-card-title" style="color: var(--text);">강력한 Auth (인증)</div>
 <p>이메일/비밀번호 로그인은 물론, 구글, 깃허브 등 소셜 OAuth 로그인을 클릭 몇 번으로 구현합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >🛡️</div>
-<div class="icon-card-title" >RLS (Row Level Security)</div>
-<p>데이터베이스 레벨에서 &quot;본인이 쓴 글만 지울 수 있다&quot; 같은 정교한 보안 정책을 설정합니다.</p>
+<div class="icon-card-icon" style="color: var(--brand);">🛡️</div>
+<div class="icon-card-title" style="color: var(--text);">RLS (Row Level Security)</div>
+<p>데이터베이스 레벨에서 \&quot;본인이 쓴 글만 지울 수 있다\&quot; 같은 정교한 보안 정책을 설정합니다.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >📂</div>
-<div class="icon-card-title" >Storage</div>
+<div class="icon-card-icon" style="color: var(--brand);">📂</div>
+<div class="icon-card-title" style="color: var(--text);">Storage</div>
 <p>프로필 이미지나 문서를 저장하고 최적화하여 서빙하는 S3 호환 클라우드 스토리지를 제공합니다.</p>
-</div></div></div><div class="card"><h3 class="card-title">이런 프레임워크와 찰떡궁합입니다</h3><div class="feature-grid"><div class="feature-card" >
+</div></div><h3>이런 프레임워크와 찰떡궁합입니다</h3>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
 <span class="feature-tag" >프론트엔드</span>
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>⚛️ React + Vite 생태계
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚛</span>⚛️ React + Vite 생태계
 </div>
 <p>Vite로 빌드한 React 앱(대시보드 등)에 SDK를 붙여 즉각적으로 데이터를 불러오고 인증을 유지합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >풀스택</span>
-<div class="feature-card-title" >
-<span class="fc-icon">▲</span>Next.js
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">▲</span>▲ Next.js
 </div>
 <p>서버 사이드 렌더링(SSR) 환경에서도 안전하게 쿠키 기반으로 사용자 세션을 유지할 수 있는 툴킷을 제공합니다.</p>
 </div><div class="feature-card" >
 <span class="feature-tag" >모바일</span>
-<div class="feature-card-title" >
-<span class="fc-icon">📱</span>Flutter / React Native
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">📱</span>📱 Flutter / React Native
 </div>
 <p>웹뿐만 아니라 모바일 환경에서도 동일한 백엔드 인프라를 완벽하게 공유하여 사용합니다.</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 시작하기: 프론트엔드와 연결하기</h2></div><div class="card"><p>복잡한 서버 프레임워크(Spring, Express 등) 없이 프론트엔드에서 직접 DB를 제어합니다.</p>
-</div><div class="card"><h3 class="card-title">React(Vite) 앱 연결 흐름</h3><div class="step-list">
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>시작하기: 프론트엔드와 연결하기</h2></div><div class="card"><p>복잡한 서버 프레임워크(Spring, Express 등) 없이 프론트엔드에서 직접 DB를 제어합니다.</p>
+<h3>React(Vite) 앱 연결 흐름</h3>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
@@ -320,7 +398,8 @@
 <div class="step-title" >데이터 쿼리</div>
 <p>`const { data, error } = await supabase.from(&#39;budgets&#39;).select(&#39;*&#39;)` 처럼 직관적으로 데이터를 불러옵니다.</p>
 </div>
-</div></div></div><div class="card"><h3 class="card-title">Firebase vs Supabase 핵심 비교</h3><table>
+</div></div><h3>Firebase vs Supabase 핵심 비교</h3>
+<table>
 <thead>
 <tr>
 <th>구분</th>
@@ -329,31 +408,31 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>DB 종류</td>
+<td><strong>DB 종류</strong></td>
 <td>RDBMS (PostgreSQL) - 구조적 데이터</td>
 <td>NoSQL - 비정형/계층적 데이터</td>
 </tr>
 <tr>
-<td>데이터 결합(JOIN)</td>
+<td><strong>데이터 결합(JOIN)</strong></td>
 <td>매우 쉬움 (외래키 활용)</td>
 <td>구조상 어렵거나 불가능</td>
 </tr>
 <tr>
-<td>마이그레이션</td>
+<td><strong>마이그레이션</strong></td>
 <td>순수 SQL이라 타 서버로 이전 쉬움</td>
 <td>구글 생태계 종속성 높음</td>
 </tr>
 <tr>
-<td>러닝 커브</td>
+<td><strong>러닝 커브</strong></td>
 <td>SQL 지식이 약간 필요함</td>
 <td>JSON 다루듯 직관적</td>
 </tr>
 </tbody></table>
-</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. 실무 구축 시 주의/활용 팁</h2></div><div class="card"><p>특히 예산 분석 대시보드처럼 데이터를 정밀하게 다루는 앱에서 중요한 포인트입니다.</p>
-<div class="compare-grid">
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>실무 구축 시 주의/활용 팁</h2></div><div class="card"><p>특히 예산 분석 대시보드처럼 데이터를 정밀하게 다루는 앱에서 중요한 포인트입니다.</p>
+<div class="compare-grid" style="grid-template-columns: repeat(3, 1fr);">
 <div class="compare-card" >
 <div class="compare-card-title" >Row Level Security (RLS) 활성화</div>
-<p>테이블을 만들면 기본적으로 모든 접근이 차단됩니다. 반드시 &quot;인증된 사용자는 자신의 데이터만 Select/Insert 할 수 있다&quot;는 RLS 정책을 설정해야 합니다.</p>
+<p>테이블을 만들면 기본적으로 모든 접근이 차단됩니다. 반드시 \&quot;인증된 사용자는 자신의 데이터만 Select/Insert 할 수 있다\&quot;는 RLS 정책을 설정해야 합니다.</p>
 <div class="compare-note" >데이터 유출 방지 1순위</div>
 </div>
 <div class="compare-card" >
@@ -365,24 +444,31 @@
 <div class="compare-card-title" >Edge Functions</div>
 <p>결제 처리나 외부 API 통신처럼 프론트엔드에서 노출되면 안 되는 보안 로직은 Deno 기반의 Edge Function에 작성하여 실행합니다.</p>
 <div class="compare-note" >백엔드 로직 분리</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 마무리 체크리스트</h2></div><div class="card"></div><div class="card"><h3 class="card-title">배포 전 필수 보안 점검</h3><ul>
-<li><code>.env</code> 파일에 <code>service_role</code> 키(모든 권한을 가진 마스터 키)가 노출되지 않았는가? (반드시 <code>anon_key</code>만 사용)</li>
-<li>예산, 금융 데이터 등이 저장된 민감한 테이블에 RLS(행 수준 보안)가 정확히 켜져 있는가?</li>
-<li>이메일 회원가입 시 인증 메일 템플릿과 리다이렉트 URL이 실제 배포된 사이트(예: Vercel 도메인)로 설정되었는가?</li>
+</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>마무리 체크리스트</h2></div><div class="card"><h3>배포 전 필수 보안 점검</h3>
+<ul>
+<li><p>.env</p>
+<p>파일에</p>
+<p>service_role</p>
+<p>키(모든 권한을 가진 마스터 키)가 노출되지 않았는가? (반드시</p>
+<p>anon_key</p>
+<p>만 사용)</p>
+</li>
+<li><p>예산, 금융 데이터 등이 저장된 민감한 테이블에 RLS(행 수준 보안)가 정확히 켜져 있는가?</p>
+</li>
+<li><p>이메일 회원가입 시 인증 메일 템플릿과 리다이렉트 URL이 실제 배포된 사이트(예: Vercel 도메인)로 설정되었는가?</p>
+</li>
 </ul>
 <blockquote>
 <p>💡 TIP: React + Vite로 &#39;BudgetN&#39; 같은 프로젝트를 구성할 때, 로그인 세션이 리프레시될 때 깜빡임(Flicker) 현상이 생길 수 있습니다. 이를 방지하려면 Supabase의 onAuthStateChange 리스너를 앱 최상단에 배치하여 유저 상태를 전역 상태(Zustand 등)에 동기화하는 패턴을 사용하세요.</p>
 </blockquote>
+</div><div class="card"><h3 class="card-title">서버리스 백엔드의 강력함을 경험하세요</h3><p>테이블을 만들면 즉시 REST API가 생성되고, 몇 줄의 코드로 소셜 로그인을 구현할 수 있습니다.</p>
+<p>프로젝트 생성</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>서버리스 백엔드의 강력함을 경험하세요</h2>
-    <p>테이블을 만들면 즉시 REST API가 생성되고, 몇 줄의 코드로 소셜 로그인을 구현할 수 있습니다.</p>
-    <a class="done-link" href="https://supabase.com/dashboard" target="_blank" rel="noopener">프로젝트 생성</a>
-  </section>
-  <footer><div>Supabase는 확장성과 안정성이 검증된 순수 PostgreSQL을 기반으로 작동합니다.</div><div>공식 사이트: <a href="https://supabase.com">supabase.com</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

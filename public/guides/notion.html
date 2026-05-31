@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>노션(Notion) 완전 정복 가이드</title>
+<title>모든 작업을 한 곳에서,노션으로 정리하세요</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #6366F1;
+    --brand-dark: #4F46E5;
+    --brand-deep: #3730A3;
+    --brand-light:#EEF0FE;
+    --brand-mid:  #C7CCFB;
+    --border:     #D8DCFB;
+    --bg:         #F8F9FE;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1E1B3A 40%, #3730A3 70%, #6366F1 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #6366F155 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,70 +279,101 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">N 노션(Notion) 완전 정복 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. 노션의 기본 단위: 블록</a></li><li><a href="#sec-2">2. 노션의 핵심: 데이터베이스</a></li><li><a href="#sec-3">3. Notion AI — 내장 AI 어시스턴트</a></li><li><a href="#sec-4">4. 필수 단축키</a></li><li><a href="#sec-5">5. 실전 노션 활용 팁</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">모든 작업을 한 곳에서,노션으로 정리하세요</a><ul class="nav-links"><li><a href="#sec-1">노션의 기본 단위: 블록</a></li><li><a href="#sec-2">노션의 핵심: 데이터베이스</a></li><li><a href="#sec-3">Notion AI — 내장 AI 어시스턴트</a></li><li><a href="#sec-4">필수 단축키</a></li><li><a href="#sec-5">실전 노션 활용 팁</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>📝 올인원 워크스페이스</div>
-      <div class="hero-logo">N</div>
-      <h1>노션(Notion) 완전 정복 가이드</h1>
-      <p>노트, 문서, 데이터베이스, 프로젝트 관리를 하나의 플랫폼에서. 개인부터 팀까지 유연하게 활용할 수 있는 올인원 생산성 도구입니다.</p>
-      <a class="hero-cta" href="https://notion.so" target="_blank" rel="noopener">📝 노션 시작하기 (무료)</a>
+      
+      <h1>모든 작업을 한 곳에서,노션으로 정리하세요</h1>
+      <p>올인원 워크스페이스</p>
+      
       <div class="hero-stats"><div class="hero-stat"><strong>무료</strong><span>기본 플랜</span></div><div class="hero-stat"><strong>1억+</strong><span>사용자</span></div><div class="hero-stat"><strong>Notion AI</strong><span>내장 AI</span></div><div class="hero-stat"><strong>멀티플랫폼</strong><span>웹·앱 지원</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. 노션의 기본 단위: 블록</h2></div><div class="card"><p>노션의 모든 콘텐츠는 &#39;블록&#39;으로 구성됩니다. <code>/</code>를 입력하면 블록 메뉴가 열립니다.</p>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >텍스트기본 텍스트 입력</div>
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>노션의 기본 단위: 블록</h2></div><div class="card"><p>노션의 모든 콘텐츠는 &#39;블록&#39;으로 구성됩니다. <code>/</code>를 입력하면 블록 메뉴가 열립니다.</p>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">텍스트기본 텍스트 입력</div>
 <p>기본 텍스트 입력</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >제목 H1/H2/H3계층별 제목 구조</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">제목 H1/H2/H3계층별 제목 구조</div>
 <p>계층별 제목 구조</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >할 일 목록체크박스 할 일</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">할 일 목록체크박스 할 일</div>
 <p>체크박스 할 일</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >글머리 / 번호리스트 및 순서 목록</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">글머리 / 번호리스트 및 순서 목록</div>
 <p>리스트 및 순서 목록</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >콜아웃강조 블록</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">콜아웃강조 블록</div>
 <p>강조 블록</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >인용인용구 블록</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">인용인용구 블록</div>
 <p>인용구 블록</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >데이터베이스테이블/칸반/갤러리</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">데이터베이스테이블/칸반/갤러리</div>
 <p>테이블/칸반/갤러리</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >이미지/영상미디어 삽입</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">이미지/영상미디어 삽입</div>
 <p>미디어 삽입</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >북마크URL 링크 카드</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">북마크URL 링크 카드</div>
 <p>URL 링크 카드</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >코드 블록신택스 하이라이팅</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">코드 블록신택스 하이라이팅</div>
 <p>신택스 하이라이팅</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >수식 (LaTeX)수학 수식 표현</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">수식 (LaTeX)수학 수식 표현</div>
 <p>수학 수식 표현</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" >페이지 삽입하위 페이지 생성</div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">페이지 삽입하위 페이지 생성</div>
 <p>하위 페이지 생성</p>
-</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. 노션의 핵심: 데이터베이스</h2></div><div class="card"><p>스프레드시트처럼 정보를 구조화하고, 다양한 뷰로 시각화할 수 있습니다.</p>
+</div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>노션의 핵심: 데이터베이스</h2></div><div class="card"><p>스프레드시트처럼 정보를 구조화하고, 다양한 뷰로 시각화할 수 있습니다.</p>
 <p>📋 테이블 뷰</p>
 <p>👁️ 뷰 종류</p>
 <table>
@@ -340,29 +415,29 @@
 <td>🟢 낮음</td>
 </tr>
 </tbody></table>
-<div class="icon-grid"><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
+<div class="icon-grid" ><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">테이블</div>
 <p>스프레드시트 형식의 기본 뷰</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">칸반 보드</div>
 <p>상태별 카드 보드. 프로젝트 관리 최적</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">캘린더</div>
 <p>날짜 속성 기반 일정 뷰</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">갤러리</div>
 <p>썸네일 이미지 카드 뷰</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">타임라인</div>
 <p>간트 차트식 일정 관리</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" >•</div>
-<div class="icon-card-title" ></div>
+<div class="icon-card-icon" style="color: var(--brand);"></div>
+<div class="icon-card-title" style="color: var(--text);">리스트</div>
 <p>간결한 목록 형식</p>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
@@ -370,21 +445,46 @@
 <strong>💡 데이터베이스 속성(프로퍼티) 종류</strong>
 <p>텍스트, 숫자, 선택/다중선택, 날짜, 담당자, 체크박스, URL, 이메일, 전화번호, 수식, 관계(Relation), 롤업(Rollup) — 다양한 속성으로 원하는 데이터 구조를 만들 수 있습니다.</p>
 </div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. Notion AI — 내장 AI 어시스턴트</h2></div><div class="card"><p>별도 앱 없이 노션 안에서 AI를 바로 활용합니다. 스페이스바를 누르면 AI 메뉴가 열립니다.</p>
+</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>Notion AI — 내장 AI 어시스턴트</h2></div><div class="card"><p>별도 앱 없이 노션 안에서 AI를 바로 활용합니다. 스페이스바를 누르면 AI 메뉴가 열립니다.</p>
 <h3>✨ Notion AI로 할 수 있는 것</h3>
 <p>문서 작성, 요약, 번역, 개선부터 Q&amp;A(Ask AI), 자동화까지 — 글쓰기의 모든 과정을 AI가 도와줍니다.</p>
-<div class="feature-grid"><div class="feature-card" >
-<div class="feature-card-title" >
-<span class="fc-icon">•</span>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">✍</span>✍️ 글쓰기 도움
 </div>
 <p>브레인스토밍, 초안 작성, 문체 개선, 길이 조절</p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">📝</span>📝 요약 &amp; 번역
+</div>
+<p>긴 문서를 한 줄로, 다국어 번역 즉시 처리</p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">💬</span>💬 Ask AI (Q&amp;A)
+</div>
+<p>워크스페이스의 내용을 기반으로 질문에 답변</p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">⚡</span>⚡ 자동 채우기
+</div>
+<p>DB 속성을 AI로 자동 분류·태깅·요약</p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🔧</span>🔧 액션 아이템 추출
+</div>
+<p>회의록에서 할 일 목록 자동 추출</p>
+</div><div class="feature-card" >
+<div class="feature-card-title" style="color: var(--brand-dark);">
+<span class="fc-icon">🌐</span>🌐 웹 검색 연동
+</div>
+<p>최신 정보를 검색하여 문서에 통합</p>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💰</div>
 <div class="alert-body">
 <strong>💰 Notion AI 요금</strong>
 <p>Notion AI는 별도 추가 요금($10/월 per user)이 있습니다. Free 플랜에서도 제한적으로 체험 가능합니다. 팀 플랜($15/월)에는 AI가 포함되어 있습니다.</p>
 </div>
-</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 필수 단축키</h2></div><div class="card"><p>노션을 빠르게 쓰기 위한 핵심 단축키 모음입니다.</p>
+</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>필수 단축키</h2></div><div class="card"><p>노션을 빠르게 쓰기 위한 핵심 단축키 모음입니다.</p>
 <h4>📝 편집</h4>
 <p>굵게</p>
 <p>Ctrl</p>
@@ -432,7 +532,7 @@
 <p>Esc</p>
 <p>들여쓰기</p>
 <p>Tab</p>
-</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 실전 노션 활용 팁</h2></div><div class="card"><p>노션을 더 잘 쓰기 위한 노하우를 정리했습니다.</p>
+</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>실전 노션 활용 팁</h2></div><div class="card"><p>노션을 더 잘 쓰기 위한 노하우를 정리했습니다.</p>
 <div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">🏗</div>
 <div class="alert-body">
@@ -457,17 +557,14 @@
 <strong>📤 공유 &amp; 웹 퍼블리시</strong>
 <p>모든 페이지를 URL로 공유하거나 웹사이트로 공개할 수 있습니다. 포트폴리오, 이력서, 팀 위키로 활용됩니다.</p>
 </div>
-</div>
+</div></div><div class="card"><h3 class="card-title">📝 노션으로 나만의 워크스페이스를 만들어보세요</h3><p>무료로 시작하고, 필요에 따라 확장하세요.</p>
+<p>📝 노션 무료 시작</p>
 </div></section></main>
-  <section class="done-section">
-    <h2>📝 노션으로 나만의 워크스페이스를 만들어보세요</h2>
-    <p>무료로 시작하고, 필요에 따라 확장하세요.</p>
-    <a class="done-link" href="https://notion.so" target="_blank" rel="noopener">📝 노션 무료 시작</a>
-  </section>
-  <footer><div>Notion은 Notion Labs Inc.에서 개발한 생산성 도구입니다.</div><div>공식 사이트: <a href="https://notion.so">notion.so</a> | 템플릿: <a href="https://notion.so/templates">notion.so/templates</a></div></footer>
+  
+  
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>

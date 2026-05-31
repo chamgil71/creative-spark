@@ -2,17 +2,17 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>디자인 & 시각화 도구 가이드</title>
+<title>디자인 & 시각화도구 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #9B59B6;
+    --brand-dark: #7D3C98;
+    --brand-deep: #5B2C6F;
+    --brand-light:#F4ECF7;
+    --brand-mid:  #D7BDE2;
+    --border:     #E0CCEA;
+    --bg:         #FBF7FC;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -28,14 +28,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #2A1A3E 40%, #5B2C6F 70%, #9B59B6 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #9B59B655 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: 13px; font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: 44px; }
   .hero h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: 1.1rem; opacity: .85; margin-bottom: 40px; }
+  .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.92); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: 16px; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -150,10 +150,54 @@
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
+  /* [NEW] Git Flow Strip */
+  .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
+  .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
+  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-label { padding: 8px 16px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; text-align: center; }
+  .branch-line { height: 4px; position: relative; border-radius: 2px; }
+  .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; }
+  .commit:hover { transform: translate(-50%, -50%) scale(1.35); }
+  .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+  .commit-line { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); background: #1E293B; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 16px; list-style: none; font-size: 0.78rem; color: #94A3B8; display: none; z-index: 10; min-width: 140px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); text-align: left; }
+  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .commit-line li:last-child { border-bottom: none; }
+  .commit:hover .commit-line { display: block; }
+
+  /* [NEW] Editor Box */
+  .editor-sim { background: #1E1E1E; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin: 25px 0; }
+  .editor-titlebar { background: #2D2D2D; height: 38px; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid #252526; }
+  .editor-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dot.red { background: #FF5F56; }
+  .editor-dot.yellow { background: #FFBD2E; }
+  .editor-dot.green { background: #27C93F; }
+  .editor-tab { background: #1E1E1E; color: #8F8F8F; height: 100%; display: flex; align-items: center; padding: 0 20px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; border-right: 1px solid #252526; margin-left: 12px; border-top: 2px solid transparent; }
+  .editor-tab.active { color: #fff; border-top-color: var(--brand); }
+  .editor-body { display: grid; grid-template-columns: 48px 1fr; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.8; color: #D4D4D4; min-height: 150px; }
+  .line-nums { background: #1E1E1E; color: #858585; text-align: right; padding: 18px 12px 18px 0; border-right: 1px solid #3c3c3c; user-select: none; display: flex; flex-direction: column; }
+  .code-area { padding: 18px 24px; overflow-x: auto; background: #1E1E1E; }
+  .code-area pre { margin: 0; padding: 0; background: transparent; }
+
+  /* [NEW] Network Box */
+  .graph-visual { background: #0A0F1E; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.06); height: 280px; position: relative; margin: 25px 0; overflow: hidden; }
+  .graph-nodes { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .node { position: absolute; border-radius: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Noto Sans KR', sans-serif; font-size: 0.82rem; font-weight: 700; transition: all 0.3s ease; text-align: center; }
+  .node-main { width: 90px; height: 90px; color: #fff; font-size: 1rem; z-index: 5; animation: pulseGlow 3s infinite ease-in-out; }
+  .node-1 { width: 75px; height: 75px; transform: translate(-150px, -50px); animation: driftOne 8s infinite ease-in-out; }
+  .node-2 { width: 70px; height: 70px; transform: translate(150px, 60px); animation: driftTwo 9s infinite ease-in-out; }
+  .node-3 { width: 70px; height: 70px; transform: translate(-100px, 90px); animation: driftThree 10s infinite ease-in-out; }
+  .node-4 { width: 75px; height: 75px; transform: translate(110px, -80px); animation: driftFour 11s infinite ease-in-out; }
+  .node:hover { transform: scale(1.15) !important; z-index: 10; cursor: pointer; box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.06); opacity: 1; } }
+  @keyframes driftOne { 0%, 100% { transform: translate(-150px, -50px); } 50% { transform: translate(-145px, -42px); } }
+  @keyframes driftTwo { 0%, 100% { transform: translate(150px, 60px); } 50% { transform: translate(142px, 68px); } }
+  @keyframes driftThree { 0%, 100% { transform: translate(-100px, 90px); } 50% { transform: translate(-106px, 84px); } }
+  @keyframes driftFour { 0%, 100% { transform: translate(110px, -80px); } 50% { transform: translate(116px, -74px); } }
+
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 10px; }
-  .done-section p { opacity: .86; margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -235,48 +279,82 @@
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
   td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+
+  /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
+  .part { margin-bottom: 30px; }
+  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+
+  .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
+  .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
+  .chapter-item:last-child { border-bottom: none; }
+  .chapter-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); min-width: 38px; flex-shrink: 0; }
+  .chapter-title { font-size: 14px; color: var(--text-2); flex: 1; line-height: 1.45; }
+  .chapter-title strong { font-weight: 600; color: var(--text); }
+  .chapter-desc { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; font-weight: 300; }
+  .chapter-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; font-weight: 500; }
+
+  .badge-concept   { background: #e8f0fe; color: #1a3a8c; }
+  .badge-tool      { background: #f0fce8; color: #1a5c20; }
+  .badge-case      { background: #fef3e8; color: #7c3a00; }
+  .badge-guide     { background: #f8e8fe; color: #5c007c; }
+  .badge-practice  { background: #e8fef3; color: #007c3a; }
+  .badge-warn      { background: #fee8e8; color: #7c0000; }
+
+  .summary-bar { margin-top: 40px; padding: 24px; background: var(--text); border-radius: var(--radius); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; box-shadow: var(--shadow); }
+  .summary-item { display: flex; flex-direction: column; gap: 4px; }
+  .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--bg); line-height: 1; }
+  .summary-num .unit { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); margin-left: 2px; }
+  .summary-label { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">✨ 디자인 & 시각화 도구 가이드</a><ul class="nav-links"><li><a href="#sec-1">C. Canva — 누구나 디자이너</a></li><li><a href="#sec-2">F. Figma — 협업 UI/UX 디자인</a></li><li><a href="#sec-3">G. Gamma — AI 프레젠테이션</a></li><li><a href="#sec-4">4. 도구 선택 &amp; 조합 가이드</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">디자인 & 시각화도구 가이드</a><ul class="nav-links"><li><a href="#sec-1">Canva — 누구나 디자이너</a></li><li><a href="#sec-2">Figma — 협업 UI/UX 디자인</a></li><li><a href="#sec-3">Gamma — AI 프레젠테이션</a></li><li><a href="#sec-4">도구 선택 &amp; 조합 가이드</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>Design &amp; Visualization · 2025</div>
-      <div class="hero-logo">✨</div>
-      <h1>디자인 &amp; 시각화 도구 가이드</h1>
-      <p>Canva · Figma · Gamma — 누구나 전문가처럼 만드는 시각 콘텐츠의 모든 것</p>
+      
+      <h1>디자인 &amp; 시각화도구 가이드</h1>
+      <p>디자인 자동화와 데이터 시각화</p>
       
       <div class="hero-stats"><div class="hero-stat"><strong>Canva</strong><span>빠른 디자인</span></div><div class="hero-stat"><strong>Figma</strong><span>협업 UI/UX</span></div><div class="hero-stat"><strong>Gamma</strong><span>AI 프레젠테이션</span></div><div class="hero-stat"><strong>모두</strong><span>무료 시작 가능</span></div></div>
     </div>
   </header>
-  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>C. Canva — 누구나 디자이너</h2></div><div class="card"><div class="tool-card">
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>Canva — 누구나 디자이너</h2></div><div class="card"><div class="tool-card">
 <div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
-<div class="tc-icon">•</div>
+<div class="tc-icon"></div>
 <div class="tc-content">
 <div class="tc-name">Canva</div>
 <div class="tc-sub">canva.com · 브라우저 기반 디자인 플랫폼</div>
 </div>
 <div class="tc-badge">무료 / Pro $15/월</div>
 </div>
-</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>F. Figma — 협업 UI/UX 디자인</h2></div><div class="card"><div class="tool-card">
+<ul class="tc-list"><li>수천 가지 템플릿: PPT·포스터·SNS·명함·로고·유튜브 썸네일 등 카테고리별 전문 템플릿. 선택 후 텍스트·색상만 바꾸면 완성.</li><li>AI 기능 (Magic Studio): 텍스트로 이미지 생성, 배경 제거, 사진 품질 향상, 텍스트 자동 생성. 디자인 초보도 전문가 수준 결과물.</li><li>실시간 협업: 링크 공유로 여러 명이 동시 편집. 댓글·버전 관리·승인 기능으로 팀 디자인 작업 효율화.</li><li>다양한 출력 형식: PDF·PNG·MP4·GIF·PPT·SVG 등으로 즉시 내보내기. 인쇄 주문도 Canva 내에서 바로 가능.</li><li>📊 보고서·발표 자료 빠르게 제작 (템플릿 → 내용만 교체)</li><li>📱 SNS 콘텐츠 자동 크기 조절 (인스타·유튜브·블로그 동시 제작)</li><li>🎤 행사 홍보물·배너·현수막 제작</li><li>✂️ 이미지 배경 제거 후 투명 PNG 다운로드</li></ul>
+</div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>Figma — 협업 UI/UX 디자인</h2></div><div class="card"><div class="tool-card">
 <div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
-<div class="tc-icon">•</div>
+<div class="tc-icon"></div>
 <div class="tc-content">
 <div class="tc-name">Figma</div>
 <div class="tc-sub">figma.com · 클라우드 기반 UI/UX 디자인 &amp; 프로토타이핑</div>
 </div>
 <div class="tc-badge">무료 / Pro $15/월</div>
 </div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>G. Gamma — AI 프레젠테이션</h2></div><div class="card"><div class="tool-card">
+<ul class="tc-list"><li>실시간 동시 편집: 개발자·기획자·디자이너가 같은 파일에서 동시 작업. 변경사항 즉시 반영. 버전 히스토리 무제한.</li><li>프로토타이핑: 화면 전환 애니메이션, 클릭 인터랙션 설정. 코딩 없이 앱/웹 동작 시뮬레이션 제작.</li><li>컴포넌트 시스템: 버튼·아이콘·카드를 컴포넌트로 만들어 전체 디자인 시스템 구축. 수정 시 전체 자동 반영.</li><li>개발자 핸드오프: CSS 값, 여백, 색상 코드 자동 추출. 개발자가 디자인 파일에서 바로 스펙 확인 가능.</li><li>🖥️ 웹/앱 UI 디자인 및 와이어프레임 제작</li><li>🎯 클릭 가능한 프로토타입으로 사용자 테스트</li><li>🏢 팀 디자인 시스템 구축 (컬러·타이포·컴포넌트)</li><li>🤝 개발팀에 정확한 스펙 전달 (핸드오프)</li></ul>
+</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>Gamma — AI 프레젠테이션</h2></div><div class="card"><div class="tool-card">
 <div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
-<div class="tc-icon">•</div>
+<div class="tc-icon"></div>
 <div class="tc-content">
 <div class="tc-name">Gamma</div>
 <div class="tc-sub">gamma.app · AI 기반 프레젠테이션·문서·웹페이지 생성</div>
 </div>
 <div class="tc-badge">무료 / Plus $10/월</div>
 </div>
-</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. 도구 선택 &amp; 조합 가이드</h2></div><div class="card"><p>📊 목적별 도구 선택</p>
+<ul class="tc-list"><li>AI 즉시 생성: 주제 한 줄 입력 → 10초 내 완성된 프레젠테이션 생성. 슬라이드 구성·내용·디자인 모두 자동.</li><li>아름다운 기본 디자인: 전문 디자이너가 만든 테마를 AI가 자동 적용. 파워포인트 없이도 세련된 결과물.</li><li>웹 공유 &amp; 임베드: 링크만으로 공유. 방문자 수·클릭 분석. 노션·슬랙·이메일에 바로 임베드 가능.</li><li>PPT/PDF 변환: 완성된 Gamma 문서를 PPT·PDF로 내보내기. 기존 PPT 업로드 후 AI로 재디자인도 가능.</li><li>📊 보고·업무 발표 자료 10분 만에 제작</li><li>📚 교육 자료·강의 슬라이드 AI 자동 구성</li><li>🏢 제안서·기획서를 웹 페이지 형태로 공유</li><li>🔄 기존 PPT를 업로드해서 AI 리디자인</li></ul>
+</div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>도구 선택 &amp; 조합 가이드</h2></div><div class="card"><p>📊 목적별 도구 선택</p>
 <table>
 <thead>
 <tr>
@@ -334,38 +412,37 @@
 <div class="wf-step" >
 <div class="wf-icon" >💡</div>
 <div class="wf-name" >아이디어</div>
-<div class="wf-tool">Claude AI</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >⚡</div>
 <div class="wf-name" >초안 생성</div>
-<div class="wf-tool">Gamma</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >🎨</div>
 <div class="wf-name" >디자인 보정</div>
-<div class="wf-tool">Canva</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >🖌️</div>
 <div class="wf-name" >UI 프로토타입</div>
-<div class="wf-tool">Figma</div>
+<div class="wf-tool"></div>
 <div class="wf-arrow">→</div>
 </div>
 <div class="wf-step" >
 <div class="wf-icon" >📤</div>
 <div class="wf-name" >공유·배포</div>
-<div class="wf-tool">링크/PDF</div>
-</div></div>
-</div></section></main>
+<div class="wf-tool"></div>
+</div></div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
-function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');document.getElementById(id).classList.add('active');}
+function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
 </script>
 </body>
 </html>
