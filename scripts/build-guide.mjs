@@ -164,7 +164,7 @@ const EMOJI_BULLET_RE = /^([\u{1F300}-\u{1FAFF}]|[\u{2600}-\u{27BF}]|[\u{2B00}-\
 // 표준 텍스트 마커만 (이모지 제외)
 const STD_BULLET_RE   = /^[-*+•]\s*(.*)$/;
 
-function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
+function renderMultiLineText(text, defaultTag = "p", customBullet = null, bulletColor = null) {
   if (!text) return "";
   const lines = String(text).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
@@ -174,10 +174,12 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
   }
 
   const svgBullet = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-  // 우선순위: 호출자 지정(customBullet) → 블록 기본값(DEFAULT_BULLET) → SVG
+  // 우선순위: 호출자 지정(customBullet) → DEFAULT_BULLET → SVG
   const activeBullet = customBullet ?? DEFAULT_BULLET;
   const makeBulletHtml = (sym) =>
     sym ? `<span style="font-size:1rem;line-height:1;">${sym}</span>` : svgBullet;
+  // 불릿 색: it.color → var(--brand)
+  const bulletColorStyle = bulletColor ? `color:${bulletColor};` : "color:var(--brand);";
 
   let listHtml = '<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;">';
   for (const line of lines) {
@@ -186,7 +188,6 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
 
     let bulletHtml, content;
     if (emojiMatch) {
-      // 줄 앞 이모지 → 해당 이모지를 불릿으로
       bulletHtml = `<span style="font-size:1rem;line-height:1;">${emojiMatch[1]}</span>`;
       content    = emojiMatch[2];
     } else if (stdMatch) {
@@ -199,7 +200,7 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
     if (!content.trim()) continue;
 
     listHtml += `<div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-      <span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;">${bulletHtml}</span>
+      <span class="bullet" style="${bulletColorStyle}flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;">${bulletHtml}</span>
       <span class="content" style="text-align:left;">${escapeHtml(content)}</span>
     </div>`;
   }
@@ -208,8 +209,8 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
 }
 
 // 텍스트성 desc/note 통일 렌더러 (코드블록 제외 모든 숏코드에 사용)
-function renderDesc(text, bullet) {
-  return renderMultiLineText(text, "p", bullet || null);
+function renderDesc(text, bullet, color) {
+  return renderMultiLineText(text, "p", bullet || null, color || null);
 }
 
 // note는 배지 맥락이지만 \n → · 구분으로 렌더
@@ -267,7 +268,7 @@ function renderShortcode(type, body, args) {
         return `<div class="stat-card" ${it.color ? `style="border-top: 3px solid ${it.color};"` : `style="border-top: 3px solid var(--brand);"`}>
           <div class="stat-val" ${it.color ? `style="color:${it.color}"` : ""}>${escapeHtml(it.icon || it.title)}</div>
           ${it.icon ? `<div class="stat-name">${escapeHtml(it.title)}</div>` : ""}
-          ${it.desc ? `<div class="stat-note">${renderDesc(it.desc, itemBullet(it))}</div>` : ""}
+          ${it.desc ? `<div class="stat-note">${renderDesc(it.desc, itemBullet(it), it.color)}</div>` : ""}
         </div>`;
       }
       return `<div class="${isFeat ? 'feature-card' : 'icon-card'}" ${renderAccent(it.color)}>
@@ -281,7 +282,7 @@ function renderShortcode(type, body, args) {
           <div class="icon-card-icon" style="color: var(--brand);">${escapeHtml(it.icon)}</div>
           <div class="icon-card-title" style="color: var(--text);">${renderMultiLineText(it.title, "")}</div>
         `}
-        ${renderDesc(it.desc, itemBullet(it))}
+        ${renderDesc(it.desc, itemBullet(it), it.color)}
       </div>`;
     }).join("")}</div>`;
   }
@@ -322,7 +323,7 @@ function renderShortcode(type, body, args) {
         <div class="step-num" ${it.color ? `style="background:${it.color}"` : ""}>${idx + 1}</div>
         <div class="step-content">
           <div class="step-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-          ${renderDesc(it.desc, itemBullet(it))}
+          ${renderDesc(it.desc, itemBullet(it), it.color)}
         </div>
       </div>`).join("")}</div>`;
   }
@@ -334,7 +335,7 @@ function renderShortcode(type, body, args) {
       return `
       <div class="compare-card" ${renderAccent(it.color)}>
         <div class="compare-card-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        ${renderDesc(it.desc, itemBullet(it))}
+        ${renderDesc(it.desc, itemBullet(it), it.color)}
         ${activeNote ? renderCompareNote(activeNote, it.color) : ""}
       </div>`;
     }).join("")}</div>`;
@@ -367,7 +368,7 @@ function renderShortcode(type, body, args) {
       <div class="skill-item" ${renderAccent(it.color)}>
         <div class="skill-icon" ${it.color ? `style="background:${it.color}22; color:${it.color};"` : ""}>${escapeHtml(it.icon)}</div>
         <div class="skill-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        <div class="skill-desc">${renderDesc(it.desc, itemBullet(it))}</div>
+        <div class="skill-desc">${renderDesc(it.desc, itemBullet(it), it.color)}</div>
       </div>`).join("")}</div>`;
   }
 
@@ -379,7 +380,7 @@ function renderShortcode(type, body, args) {
       <div class="column-card" ${renderAccent(it.color)}>
         <div class="card-top-bar" ${it.color ? `style="background:${it.color}"` : ""}></div>
         <div class="col-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        ${renderDesc(it.desc, itemBullet(it))}
+        ${renderDesc(it.desc, itemBullet(it), it.color)}
         ${activeNote ? renderCompareNote(activeNote, it.color) : ""}
       </div>`;
     }).join("")}</div>`;
@@ -391,7 +392,7 @@ function renderShortcode(type, body, args) {
     const chips = splitMeta(it.meta);
     return `<div class="bottom-list-card" ${renderAccent(it.color)}>
       <div class="bl-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-      ${renderDesc(it.desc, itemBullet(it))}
+      ${renderDesc(it.desc, itemBullet(it), it.color)}
       ${chips.length ? `<div class="bl-chips">${chips.map(c => `<span class="bl-chip" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(c)}</span>`).join('')}</div>` : ""}
     </div>`;
   }
@@ -404,7 +405,7 @@ function renderShortcode(type, body, args) {
       const classes = isLeft ? "c2-card c2-left" : "c2-card c2-right";
       const metaItems = splitMeta(it.meta);
       const metaHtml = metaItems.length ? `<ul class="c2-list">${metaItems.map(f => `<li>${escapeHtml(f)}</li>`).join('')}</ul>` : "";
-      const descHtml = it.desc ? `<div class="c2-desc">${renderDesc(it.desc, itemBullet(it))}</div>` : "";
+      const descHtml = it.desc ? `<div class="c2-desc">${renderDesc(it.desc, itemBullet(it), it.color)}</div>` : "";
       return `<div class="${classes}">
         <div class="card-top-bar"></div>
         <div class="c2-title">${escapeHtml(it.title)}</div>
@@ -425,7 +426,7 @@ function renderShortcode(type, body, args) {
         ${it.icon ? `<div class="alert-icon">${escapeHtml(it.icon)}</div>` : ""}
         <div class="alert-body">
           ${it.title ? `<strong>${escapeHtml(it.title)}</strong>` : ""}
-          ${renderDesc(it.desc, itemBullet(it))}
+          ${renderDesc(it.desc, itemBullet(it), it.color)}
         </div>
       </div>`;
     }).join("");
@@ -466,7 +467,7 @@ function renderShortcode(type, body, args) {
           <span>${escapeHtml(it.title)}</span>
           <span class="faq-arrow">▼</span>
         </button>
-        <div class="faq-a">${renderDesc(it.desc, itemBullet(it))}</div>
+        <div class="faq-a">${renderDesc(it.desc, itemBullet(it), it.color)}</div>
       </div>`).join("")}</div>`;
   }
 
@@ -604,7 +605,7 @@ function renderShortcode(type, body, args) {
       return `<div class="flow-step ${activeClass}">
         <div class="fs-icon">${escapeHtml(it.icon)}</div>
         <div class="fs-title">${escapeHtml(it.title)}</div>
-        <div class="fs-sub">${renderDesc(it.desc, itemBullet(it))}</div>
+        <div class="fs-sub">${renderDesc(it.desc, itemBullet(it), it.color)}</div>
       </div>`;
     }).join("")}</div>`;
   }
@@ -615,7 +616,7 @@ function renderShortcode(type, body, args) {
       const activeClass = it.tag === "highlight" || it.featured === "true" ? "highlight" : "";
       return `<div class="level-card ${activeClass}">
         <div class="level-num">${escapeHtml(it.title)}</div>
-        <div class="level-name">${renderDesc(it.desc, itemBullet(it))}</div>
+        <div class="level-name">${renderDesc(it.desc, itemBullet(it), it.color)}</div>
         <div class="level-tool">${escapeHtml(it.meta)}</div>
         <div class="level-desc">${renderNote(it.note)}</div>
       </div>`;
@@ -654,7 +655,7 @@ function renderShortcode(type, body, args) {
       <div class="ta-icon">${escapeHtml(it.icon || "💡")}</div>
       <div>
         <div class="ta-label">${escapeHtml(it.title || "Key Takeaway")}</div>
-        <div class="ta-text">${renderDesc(it.desc, itemBullet(it))}</div>
+        <div class="ta-text">${renderDesc(it.desc, itemBullet(it), it.color)}</div>
       </div>
     </div>`;
   }
