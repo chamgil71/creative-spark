@@ -1,322 +1,336 @@
 # 숏코드 시스템 리팩터링 계획
 
-> 작성일: 2026-05-31  
-> 목적: 네이밍 혼용·필드 역할 불일치·HTML↔PPTX 구현 격차 해소  
-> 우선순위: 1) 필드 역할 재정립 → 2) 네이밍 정리 → 3) HTML/PPTX 동기화
+> 작성일: 2026-05-31 (md_src/ 실분석 기반 전면 개정)  
+> 분석 범위: 네이밍 통일 / 필드 역할 재정립 / HTML↔PPTX 정합 / 디자인 파괴 여부 / MD 파일 영향도
 
 ---
 
-## 1. 현황 진단 요약
+## 전체 상태 요약
 
-### 1-1. md_src/ 소스 파일 현황
-```
-md_src/guides/      → 37개 MD 가이드 파일 존재 (현행 소스)
-md_src/showcase/    → showcase.md
-md_src/vibecoding/  → vibecoding 콘텐츠
-md_src/test/        → 테스트용 MD
-```
-→ 필드 변경 시 `md_src/` 내 MD 파일도 직접 영향을 받음.  
-→ `public/guides/` 의 HTML은 `md_src/`에서 재빌드 시 변경이 적용됨.
+| 항목 | 상태 | 설명 |
+|------|:----:|------|
+| 숏코드 네이밍 통일 | ✅ 완료 | md_src/ 파일들이 이미 현행 이름 사용 중. devtools.md 1개 예외 |
+| 필드 역할 재정립 | ⚠️ 1건 잔여 | `plan-grid` HTML/PPTX 불일치만 남음. 나머지는 정합 |
+| HTML↔PPTX 클래스 일치 | 🔶 부분 해소 | 타입명↔CSS 클래스명 9건 불일치 (의도적 유지 결정) |
+| HTML↔PPTX 구현 격차 | 🔶 부분 해소 | 10종 HTML 전용 숏코드 — PPTX silent drop 상태 |
+| 기존 디자인 파괴 여부 | ✅ 없음 | 컴파일된 HTML은 영향 없음. 재빌드 시만 적용 |
+| MD 파일 개별 영향도 | ⚠️ 4개 파일 | devtools.md(구문) + plan-grid 3개 파일(필드명) |
 
-### 1-2. 숏코드 사용 빈도 (기존 HTML 기준)
-
-| 숏코드 | 파일 수 | 중요도 |
-|--------|---------|--------|
-| icon-grid | 25 | 🔴 핵심 |
-| feature-grid | 22 | 🔴 핵심 |
-| steps | 21 | 🔴 핵심 |
-| alert-box | 17 | 🔴 핵심 |
-| compare-grid | 16 | 🟠 주요 |
-| compare-2col | 39 (전 파일) | 🔴 핵심 |
-| prompt-example | 5 | 🟡 보통 |
-| tool-card | 6 | 🟡 보통 |
-| workflow | 7 | 🟡 보통 |
-| plan-grid | 4 | 🟡 보통 |
-| faq-accordion | 2 | 🟢 낮음 |
-| tabs | 1 | 🟢 낮음 |
-| badge-grid | 1 | 🟢 낮음 |
-| bottom-list | 1 | 🟢 낮음 |
-| skill-list | 0 | ⬜ 미사용 |
-| columns | 0 | ⬜ 미사용 |
-| command-block | 0 | ⬜ 미사용 |
-| stat-highlight | 0 | ⬜ 미사용 |
+**코드 변경이 필요한 작업: 3개 Phase**
 
 ---
 
-## 2. 핵심 문제: 필드 역할 불일치
+## 1. 숏코드 네이밍 Before → After 전체 비교
 
-### 2-1. `desc`가 숏코드마다 다른 역할
+> 이전에 사용하던 이름(구 pipeline.md / 구 HTML 기준) → 현행 이름(현재 build-guide.mjs 기준)
 
-| 숏코드 | HTML에서 `desc` 역할 | PPTX에서 `desc` 역할 | 올바른 역할 |
-|--------|---------------------|---------------------|------------|
-| icon-grid | 설명 텍스트 `<p>` | 설명 텍스트 | ✅ 일관 |
-| feature-grid | 설명 텍스트 | 설명 텍스트 | ✅ 일관 |
-| steps | 설명 텍스트 | 설명 텍스트 | ✅ 일관 |
-| compare-grid | 설명 텍스트 | 설명 텍스트 | ✅ 일관 |
-| tool-card | 부제목 | 부제목 | ✅ 일관 |
-| **compare-2col** | **하단 배지 (`c2-note`)** | **단락 텍스트** | ❌ **불일치** |
-| **plan-grid** | **하단 배지 (`plan-note`)** | **미사용** | ❌ **불일치** |
-| command-block | 코드 본문 | 미구현 | ⚠️ 예외 |
+| 이전 이름 | 현행 이름 | 변경 이유 | md_src 사용 수 | 상태 |
+|-----------|----------|---------|:---:|:----:|
+| `steps` | `step-list` | `-list` 접미사 일관성 | 23 | ✅ 전환 완료 |
+| `compare-2col` | `compare-split` | 기능 설명적 이름 | 2 | ✅ 전환 완료 |
+| `tool-card` | `tool-box` | `-box` 접미사 일관성 | 7 | ✅ 전환 완료 |
+| `workflow` | `workflow-strip` | HTML 클래스명 정합 | 7 | ✅ 전환 완료 |
+| `prompt-example` | `console-box` | 기능 설명적 이름 | 8 | ✅ 전환 완료 |
+| `stat-highlight` | `stat-grid` | `-grid` 접미사 일관성 | 2 | ✅ 전환 완료 |
+| `command-block` | `cmd-box` | `-box` 접미사 일관성 | 3 (+ devtools 오류) | ⚠️ devtools.md 수정 필요 |
+| `tabs` | `os-tabs` | 플랫폼 명시 | 2 | ✅ 전환 완료 |
+| `faq-accordion` | `faq-list` | `-list` 접미사 일관성 | 2 | ✅ 전환 완료 |
+| `columns` | `columns-grid` | `-grid` 접미사 일관성 | 3 | ✅ 전환 완료 |
+| `badge-grid` | `badge-grid` | 변경 없음 | 2 | ✅ 유지 |
+| `skill-list` | `skill-list` | 변경 없음 | 1 | ✅ 유지 |
+| `bottom-list` | `bottom-list` | 변경 없음 | 1 | ✅ 유지 |
+| `alert-box` | `alert-box` | 변경 없음 | 25 | ✅ 유지 |
+| `icon-grid` | `icon-grid` | 변경 없음 | 36 | ✅ 유지 |
+| `feature-grid` | `feature-grid` | 변경 없음 | 25 | ✅ 유지 |
+| `compare-grid` | `compare-grid` | 변경 없음 | 19 | ✅ 유지 |
+| `plan-grid` | `plan-grid` | 변경 없음 | 4 | ✅ 유지 |
 
-**핵심 충돌:** `compare-2col`에서 HTML은 `desc`를 하단 배지로, PPTX는 `desc`를 단락 텍스트로 사용.  
-→ 같은 MD를 HTML·PPTX로 각각 변환하면 결과가 달라짐.
+**신규 추가된 숏코드** (이전 pipeline.md에 없던 것들):
 
-### 2-2. `note`·`desc`·`meta` 역할 표준 정의 (Before → After)
+| 이름 | md_src 사용 수 | PPTX 지원 |
+|------|:---:|:---:|
+| `flow` | 8 | ❌ |
+| `part-deck` | 2 | ❌ |
+| `chapter-list` | 2 | ❌ |
+| `editor-box` | 3 | ✅ |
+| `network-box` | 2 | ⚠️ 우회 |
+| `git-flow-strip` | 1 | ⚠️ 우회 |
+| `level-grid` | 2 | ❌ |
+| `checkpoint-grid` | 2 | ❌ |
+| `compare-before-after` | 2 | ❌ |
+| `takeaway` | 3 | ❌ |
+| `summary-bar` | 2 | ❌ |
 
-#### Before (현재 상태)
-
-| 필드 | 의도된 역할 | 실제 동작 (숏코드별 다름) |
-|------|------------|------------------------|
-| `desc` | 설명 텍스트 | 대부분 설명, compare-2col·plan-grid에서는 하단 배지 |
-| `note` | 하단 배지/메모 | PPTX compare-2col에서만 하단 배지, HTML compare-2col에서는 미사용 |
-| `meta` | 파이프(`\|`) 구분 목록 | 대부분 불릿, plan-grid/compare-2col에서는 기능 목록 |
-
-#### After (목표 상태)
-
-| 필드 | 고정 역할 | 예외 없음 |
-|------|----------|----------|
-| `icon` | 이모지/아이콘 | - |
-| `title` | 카드 제목 | - |
-| `desc` | 설명 문단 (줄바꿈 `\n` 지원) | - |
-| `tag` | 상단 배지/레이블 | - |
-| `meta` | `\|` 구분 불릿 목록 | - |
-| `note` | 하단 배지/요약 메모 | - |
-| `color` | 강조 색상 Hex | - |
-
----
-
-## 3. 숏코드 네이밍 규칙 통일
-
-### 3-1. 접미사 규칙 제안
-
-| 접미사 | 의미 | 해당 숏코드 |
-|--------|------|------------|
-| `-grid` | 격자형 다중 카드 | icon-grid, feature-grid, compare-grid, plan-grid, stat-grid |
-| `-list` | 세로 목록 | steps(→step-list), skill-list |
-| `-card` | 단일/소수 카드 | tool-card |
-| `-box` | 단일 강조 박스 | alert-box, prompt-box |
-| `-block` | 코드/고정폭 블록 | command-block |
-| 단독 명사 | UI 컴포넌트 | workflow, tabs, faq-accordion, compare-2col, bottom-list |
-
-### 3-2. 숏코드 이름 Before → After
-
-| 현재 이름 | 제안 이름 | 변경 이유 | 영향 파일 수 |
-|-----------|-----------|-----------|-------------|
-| `icon-grid` | **유지** | 명확하고 일관성 있음 | 25개 |
-| `feature-grid` | **유지** | 명확 | 22개 |
-| `badge-grid` | **유지 또는 icon-grid 흡수** | 사용 1개, 구조 동일 | 1개 |
-| `tool-card` | **유지** | 명확 | 6개 |
-| `workflow` | **유지** | 단독 컴포넌트, 직관적 | 7개 |
-| `steps` | **유지** | 직관적 | 21개 |
-| `compare-grid` | **유지** | 명확 | 16개 |
-| `compare-2col` | **유지** | 구조 설명적 | 39개 |
-| `plan-grid` | **유지** | 명확 | 4개 |
-| `skill-list` | **유지** | 미사용 → 리네임 낮은 우선순위 | 0개 |
-| `columns` | `col-grid` | CSS 클래스명 `columns-grid`와 정합 | 0개 |
-| `bottom-list` | `chip-list` | 실제 모양(칩 태그 묶음)을 반영 | 1개 |
-| `alert-box` | **유지** | 명확 | 17개 |
-| `command-block` | **유지** | 명확 | 0개 |
-| `tabs` | **유지** | 직관적 | 1개 |
-| `faq-accordion` | **유지** | 명확 | 2개 |
-| `prompt-example` | `prompt-box` | CSS 클래스명 `.prompt-box`와 정합 | 5개 |
-| `stat-highlight` | `stat-grid` | CSS 클래스명 `.stat-grid`와 정합 | 0개 |
-
-**실질적 변경:** `columns→col-grid`, `bottom-list→chip-list`, `prompt-example→prompt-box`, `stat-highlight→stat-grid` — 이 중 기존 HTML 파일 영향은 `prompt-example` 5개뿐.
+> PPTX alias는 양방향 지원: 구 이름(`compare-2col`, `steps` 등)도 여전히 PPTX에서 동작함.  
+> HTML 렌더러는 현행 이름만 처리함.
 
 ---
 
-## 4. HTML ↔ PPTX 구현 격차
+## 2. 필드 역할 Before → After 전체 비교
 
-### 4-1. PPTX 미구현 숏코드 (HTML 전용)
+### 2-1. 표준 6대 필드 역할 정의
 
-| 숏코드 | 기존 HTML 파일 수 | PPTX 구현 여부 | 우선순위 |
-|--------|-----------------|----------------|---------|
-| `stat-grid` (stat-highlight) | 0 | ❌ | 낮음 |
-| `command-block` | 0 | ❌ | 낮음 |
-| `tabs` | 1 | ❌ | 낮음 |
-| `skill-list` | 0 | ❌ | 낮음 |
-| `col-grid` (columns) | 0 | ❌ | 낮음 |
-| `badge-grid` | 1 | ❌ | 낮음 |
+| 필드 | Before (혼용 상태) | After (통일 규칙) | 비고 |
+|------|-------------------|-------------------|------|
+| `icon` | 이모지/아이콘 | 이모지/아이콘 | 변경 없음 |
+| `title` | 카드 제목 | 카드 제목 | 변경 없음 |
+| `desc` | 설명 OR 하단 배지 (숏코드마다 다름) | **항상 설명 문단** (`\n` 줄바꿈 지원) | plan-grid만 수정 필요 |
+| `tag` | 상단 배지/레이블 | 상단 배지/레이블 | 변경 없음 |
+| `meta` | `\|` 구분 목록 | `\|` 구분 불릿 목록 | 변경 없음 |
+| `note` | 하단 배지 (일부 숏코드만) | **하단 배지/요약 메모** | plan-grid에서 새로 사용 |
+| `color` | 강조 색상 Hex | 강조 색상 Hex | 변경 없음 |
+| `featured` | plan-grid 전용 | plan-grid 전용 | 변경 없음 |
 
-→ 모두 사용 빈도가 0~1개. PPTX 구현 급하지 않음. 단, 렌더 시 **silent drop 아닌 fallback 처리** 권장.
+### 2-2. 숏코드별 필드 역할 Before → After
 
-### 4-2. HTML ↔ PPTX 클래스명 불일치 목록
-
-| 숏코드 | HTML 컨테이너 클래스 | PPTX 렌더함수 | 비고 |
-|--------|---------------------|--------------|------|
-| `icon-grid` | `.icon-grid` | `renderIconGrid` | ✅ 일관 |
-| `feature-grid` | `.feature-grid` | `renderFeatureGrid` | ✅ 일관 |
-| `workflow` | `.workflow-strip` | `renderWorkflow` | HTML 클래스에 `-strip` 접미사 |
-| `steps` | `.step-list` | `renderSteps` | HTML 클래스가 복수→단수 |
-| `faq-accordion` | `.faq-list` | `renderFaqAccordion` | HTML 클래스명이 숏코드명과 다름 |
-| `stat-highlight` | `.stat-grid` | 미구현 | HTML 클래스명이 숏코드명과 다름 |
-| `bottom-list` | `.bottom-list-card` | `renderBottomList` | HTML에 `-card` 접미사 |
-
----
-
-## 5. 변경별 영향도 분석
-
-### 5-1. 【핵심】 `compare-2col` 필드 역할 수정
-
-**문제:** `desc`가 HTML에서는 하단 배지(`c2-note`), PPTX에서는 단락 텍스트로 다르게 처리됨.
-
-```
-현재 HTML: title + meta(불릿) + desc(하단배지)
-현재 PPTX: title + desc(단락) + meta(불릿) + note(하단배지)
-목표:      title + desc(단락) + meta(불릿) + note(하단배지)  — 둘 다 동일
-```
-
-**HTML 수정 내용 (`build-guide.mjs` line 210-225):**
-```javascript
-// BEFORE: desc → c2-note (하단 배지)
-${it.desc ? `<div class="c2-note">${escapeHtml(it.desc)}</div>` : ""}
-
-// AFTER: desc → 단락 텍스트, note → c2-note (하단 배지)
-${it.desc ? `<div class="c2-desc">${escapeHtml(it.desc)}</div>` : ""}
-${it.note ? `<div class="c2-note">${escapeHtml(it.note)}</div>` : ""}
-```
-
-**영향 파일:**
-- 기존 HTML 39개: 이미 컴파일됨 → **영향 없음** (재생성 시에만 적용)
-- 새 MD → HTML 변환: `desc` 위치가 하단배지 → 단락으로 변경됨
-- 새 MD → PPTX 변환: 이미 desc=단락, note=배지로 구현됨 → **이미 정합**
-
-### 5-2. 【핵심】 `plan-grid` 필드 역할 수정
-
-**문제:** HTML에서 `desc`가 하단 배지(`plan-note`) 역할.
-
-```
-현재 HTML: tag + title + meta(기능목록) + desc(하단배지)
-목표:      tag + title + meta(기능목록) + note(하단배지)
-```
-
-**HTML 수정 내용 (`build-guide.mjs` line 174):**
-```javascript
-// BEFORE
-${it.desc ? `<div class="plan-note" ${topBarStyle}>${escapeHtml(it.desc)}</div>` : ""}
-
-// AFTER
-${it.note ? `<div class="plan-note" ${topBarStyle}>${escapeHtml(it.note)}</div>` : ""}
-```
-
-**영향 파일:**
-- 기존 HTML 4개(plan-grid 사용): 이미 컴파일됨 → **영향 없음**
-- 새 MD 작성 시: `note` 필드에 하단 배지 텍스트 입력 필요
-
-### 5-3. 네이밍 변경 영향
-
-| 변경 | 수정 파일 | 기존 HTML 영향 |
-|------|---------|----------------|
-| `prompt-example` → `prompt-box` | build-guide.mjs, md-to-pptx.mjs | 5개 재생성 시 |
-| `stat-highlight` → `stat-grid` | build-guide.mjs, md-to-pptx.mjs | 0개 |
-| `bottom-list` → `chip-list` | build-guide.mjs, md-to-pptx.mjs | 1개 재생성 시 |
-| `columns` → `col-grid` | build-guide.mjs | 0개 |
-
-→ 기존 숏코드명 alias 지원(`if (type === "prompt-example" || type === "prompt-box")`)으로 하위 호환 가능.
+| 숏코드 | 필드 | Before | After | 변경 필요 |
+|--------|------|--------|-------|:--------:|
+| `icon-grid` | desc | 설명 `<p>` | 설명 `<p>` | ✅ 없음 |
+| `feature-grid` | desc | 설명 `<p>` | 설명 `<p>` | ✅ 없음 |
+| `step-list` | desc | 설명 `<p>` | 설명 `<p>` | ✅ 없음 |
+| `compare-grid` | desc / note | desc=설명, note=하단 메모 | desc=설명, note=하단 메모 | ✅ 없음 |
+| `tool-box` | desc / meta | desc=부제목, meta=기능목록 | desc=부제목, meta=기능목록 | ✅ 없음 |
+| `compare-split` | desc / note / meta | HTML: desc=단락, note=footer, meta=목록 / PPTX: 동일 | HTML: desc=단락, note=배지, meta=목록 / PPTX: 동일 | ✅ 없음 (이미 정합) |
+| `columns-grid` | desc / note | desc=설명, note=하단 메모 | desc=설명, note=하단 메모 | ✅ 없음 |
+| `faq-list` | desc | desc=답변 | desc=답변 | ✅ 없음 |
+| `alert-box` | desc | desc=설명 | desc=설명 | ✅ 없음 |
+| `console-box` | desc | desc=프롬프트 본문 | desc=프롬프트 본문 | ✅ 없음 |
+| `cmd-box` | desc | desc=코드 본문 (예외적 사용) | desc=코드 본문 | ✅ 없음 |
+| `editor-box` | desc | desc=코드 본문 | desc=코드 본문 | ✅ 없음 |
+| `stat-grid` | icon | icon=수치값 (이모지 아님) | icon=수치값 | ✅ 없음 (의도적 예외) |
+| **`plan-grid`** | **desc / note** | **HTML: desc=하단 배지 / PPTX: note=하단 배지** | **HTML+PPTX 모두: desc=미사용, note=하단 배지** | ❌ **수정 필요** |
 
 ---
 
-## 6. 실행 계획 (단계별)
+## 3. HTML ↔ PPTX 타입명·클래스명 불일치 현황
 
-### Phase 1: 필드 역할 수정 (가장 중요, 기존 파일 영향 없음)
+### 3-1. 타입명과 HTML CSS 클래스명 불일치 (의도적 유지)
 
-**수정 대상:** `templates/build-guide.mjs`
+| 숏코드 타입명 | HTML 클래스명 | 불일치 이유 | 조치 |
+|-------------|-------------|-----------|------|
+| `compare-split` | `.compare-2col` | 구 이름이 클래스로 고착 | 유지 (변경 시 CSS 파급 큼) |
+| `cmd-box` | `.cmd-block` | `-box` vs `-block` | 유지 |
+| `console-box` | `.prompt-box` | 의미 다름 | 유지 |
+| `editor-box` | `.editor-sim` | `-box` vs `-sim` | 유지 |
+| `network-box` | `.graph-visual` | 의미 다름 | 유지 |
+| `part-deck` | `.part` | 축약 | 유지 |
+| `bottom-list` | `.bottom-list-card` | `-card` 과잉 | 유지 |
+| `os-tabs` | `.tabs-wrap` | `os-` 불필요 | 유지 |
+| `git-flow-strip` | `.git-flow-container` | `-strip` vs `-container` | 유지 |
 
-1. `compare-2col`: `desc` → 단락 텍스트(`.c2-desc`), `note` → 하단 배지(`.c2-note`)
-   - CSS에 `.c2-desc { ... }` 추가
-   - line 222 수정
-   
-2. `plan-grid`: `desc` → 제거, `note` → 하단 배지(`.plan-note`)
-   - line 174 수정
+> CSS 클래스명 변경은 기존 컴파일된 HTML 파일을 파괴하므로 변경하지 않음.  
+> 내부 불일치는 이 문서로 대체.
 
-**검증:** `node templates/build-guide.mjs test.md` 후 브라우저 확인
+### 3-2. PPTX 미구현 숏코드 (HTML 전용)
+
+| 숏코드 | md_src 사용 수 | PPTX 현재 동작 | 조치 |
+|--------|:---:|--------|------|
+| `flow` | 8 | silent drop | Phase 3: fallback 로그 / Phase 4: 구현 |
+| `takeaway` | 3 | silent drop | Phase 3: fallback 로그 / Phase 4: 구현 |
+| `part-deck` | 2 | silent drop | Phase 3: fallback 로그 |
+| `level-grid` | 2 | silent drop | Phase 3: fallback 로그 |
+| `compare-before-after` | 2 | silent drop | Phase 3: fallback 로그 |
+| `checkpoint-grid` | 2 | silent drop | Phase 3: fallback 로그 |
+| `chapter-list` | 2 | silent drop | Phase 3: fallback 로그 |
+| `badge-grid` | 2 | silent drop | Phase 3: fallback 로그 |
+| `summary-bar` | 2 | silent drop | Phase 3: fallback 로그 |
+| `skill-list` | 1 | silent drop | Phase 3: fallback 로그 |
 
 ---
 
-### Phase 2: HTML ↔ PPTX 필드 정합 확인
+## 4. 기존 디자인 파괴 여부
 
-`compare-2col` 수정 후 두 파일의 동작이 일치하는지 검증:
+| 변경 항목 | `public/guides/` 기존 HTML | MD 재빌드 시 | 새 MD 파일 |
+|-----------|:---:|:---:|:---:|
+| devtools.md 구문 수정 | **파괴 없음** | devtools.html 숏코드 정상 출력 | - |
+| plan-grid HTML `desc→note` | **파괴 없음** | plan-grid 사용 3개 파일 재빌드 시 `note` 필드 필요 | 새 규칙 따름 |
+| plan-grid MD 파일 `desc→note` | **파괴 없음** | 동일 내용, 필드명만 변경 | - |
+| PPTX fallback 로그 추가 | **파괴 없음** | 경고 로그만 추가, 출력 동일 | - |
+| PPTX `flow`/`takeaway` 구현 | **파괴 없음** | PPTX에 슬라이드 추가됨 | - |
+
+**결론: 어떤 변경도 기존 컴파일된 HTML을 파괴하지 않음.**
+
+---
+
+## 5. MD 파일 개별 수정 영향도
+
+### 5-1. devtools.md — 구문 오류 수정 (Phase 1)
+
+**파일:** `md_src/guides/devtools.md`
+
+| 현재 (오류) | 수정 후 |
+|------------|--------|
+| `:::badge-grid` | `::: badge-grid` |
+| `:::command-block` | `::: cmd-box` |
+| `:::feature-grid` | `::: feature-grid` |
+| `:::compare-2col` | `::: compare-split` |
+| `:::compare-grid` | `::: compare-grid` |
+| `:::alert-box` | `::: alert-box` |
+
+> 총 10개 라인 수정 (스페이스 추가 + 구 이름 2개 교체)
+
+---
+
+### 5-2. plan-grid 사용 파일 — 필드명 수정 (Phase 2)
+
+**영향 파일 3개** (showcase.md는 이미 `note` 사용 중 → 수정 불필요)
+
+#### `md_src/guides/perplexity.md`
+```yaml
+# BEFORE
+- title: "무료"
+  tag: "Free"
+  desc: "₩0"           ← 하단 배지 용도
+  meta: "..."
+
+# AFTER
+- title: "무료"
+  tag: "Free"
+  note: "₩0"           ← note로 교체
+  meta: "..."
+```
+변경 항목 수: `desc:` → `note:` 3곳
+
+#### `md_src/guides/Grok.md`
+```yaml
+# BEFORE
+- title: "무료"
+  tag: "Free"
+  desc: "₩0"
+  meta: "..."
+
+# AFTER
+- title: "무료"
+  tag: "Free"
+  note: "₩0"
+  meta: "..."
+```
+변경 항목 수: `desc:` → `note:` 3곳
+
+#### `md_src/guides/chatGPT.md`
+```yaml
+# BEFORE
+- title: "무료 플랜"
+  tag: "Free"
+  desc: "₩0 / 월"
+  meta: "..."
+
+# AFTER
+- title: "무료 플랜"
+  tag: "Free"
+  note: "₩0 / 월"
+  meta: "..."
+```
+변경 항목 수: `desc:` → `note:` 4곳
+
+---
+
+### 5-3. 영향 없는 파일
+
+| 대상 | 이유 |
+|------|------|
+| 나머지 37개 MD 파일 | plan-grid 미사용 + 현행 이름 이미 사용 중 |
+| `md_src/showcase/showcase.md` | plan-grid에서 이미 `note` 사용 중 (정상) |
+
+---
+
+## 6. 숏코드별 필드 역할 레퍼런스 (After 기준)
+
+| 숏코드 | icon | title | desc | tag | meta | note | color |
+|--------|:----:|:-----:|:----:|:---:|:----:|:----:|:-----:|
+| `icon-grid` | 이모지 | 카드 제목 | 설명 | - | - | - | 강조색 |
+| `feature-grid` | 이모지 | 카드 제목 | 설명 | 상단 레이블 | - | - | 강조색 |
+| `badge-grid` | 이모지 | 카드 제목 | - | 배지 텍스트 | - | - | 강조색 |
+| `stat-grid` | **수치값** | 지표명 | 설명 | - | - | - | 강조색 |
+| `tool-box` | 이모지 | 도구명 | 부제목 | 버전/레이블 | `\|`기능 목록 | - | 배경색 |
+| `workflow-strip` | 이모지 | 단계명 | - | - | 도구/부연 | - | 강조색 |
+| `step-list` | - | 단계 제목 | 단계 설명 | - | - | - | 강조색 |
+| `compare-grid` | - | 항목명 | 설명 | - | - | 하단 메모 | 강조색 |
+| `compare-split` | - | 제목 | 단락 텍스트 | - | `\|`불릿 목록 | 하단 배지 | 강조색 |
+| `plan-grid` ✏️ | - | 플랜명 | **-** | 배지 레이블 | `\|`기능 목록 | **하단 배지** | 강조색 |
+| `columns-grid` | - | 칼럼 제목 | 설명 | - | - | 하단 메모 | 강조색 |
+| `bottom-list` | - | 섹션 제목 | 설명 | - | `\|`칩 항목 | - | 강조색 |
+| `alert-box` | 이모지 | 제목 | 설명 | 타입(tip/warn) | - | - | - |
+| `cmd-box` | - | 라벨 | **코드 본문** | - | 언어(bash 등) | - | - |
+| `editor-box` | - | 파일명 | **코드 본문** | 언어 | - | - | - |
+| `os-tabs` | - | 탭 라벨 | 탭 내용(md) | OS | - | - | - |
+| `faq-list` | - | 질문 | 답변 | - | - | - | 강조색 |
+| `console-box` | - | 제목 | 프롬프트 본문 | - | - | - | 강조색 |
+| `flow` | 이모지 | 단계명 | 설명 | 레이블 | - | - | 강조색 |
+| `level-grid` | - | 레벨명 | 레벨 설명 | - | 도구명 | 부연 | 강조색 |
+| `takeaway` | 이모지 | 제목 | 설명 | - | - | - | 강조색 |
+| `network-box` | - | 노드명 | - | - | **자식 노드** | - | 강조색 |
+| `git-flow-strip` | - | 브랜치명 | - | 타입 | `\|`커밋 목록 | - | 강조색 |
+| `compare-before-after` | - | 상태 제목 | 설명 | - | - | - | 강조색 |
+| `checkpoint-grid` | 이모지 | 체크포인트 | 설명 | - | - | - | 강조색 |
+| `summary-bar` | 번호 | 요약 제목 | - | - | - | - | - |
+| `skill-list` | 이모지 | 스킬명 | 설명 | - | - | - | 강조색 |
+| `part-deck` | 이모지 | 파트 제목 | 태그라인 | 번호 | - | - | 강조색 |
+| `chapter-list` | 이모지 | 챕터 제목 | 설명 | 번호 | - | - | 강조색 |
+
+> ✏️ = 이번 리팩터링에서 변경되는 항목
+
+---
+
+## 7. 실행 계획 (단계별)
+
+### Phase 1: devtools.md 구문 오류 수정
+
+**수정 대상:** `md_src/guides/devtools.md`  
+**내용:** 스페이스 누락 수정 + `command-block` → `cmd-box`, `compare-2col` → `compare-split`
+
 ```bash
-node templates/build-guide.mjs test.md    # HTML 확인
-node scripts/md-to-pptx.mjs test.md      # PPTX 확인
+node scripts/build-guide.mjs md_src/guides/devtools.md
+# → public/guides/devtools.html 정상 렌더 확인
 ```
 
 ---
 
-### Phase 3: 네이밍 정리 (alias 병행 지원으로 무중단)
+### Phase 2: plan-grid 필드 역할 통일
 
-**수정 대상:** `templates/build-guide.mjs`, `scripts/md-to-pptx.mjs`
+**수정 대상:**
+1. `scripts/build-guide.mjs` — plan-grid 렌더링 섹션에서 `it.desc` → `it.note`
+2. `md_src/guides/perplexity.md` — `desc:` → `note:` 3곳
+3. `md_src/guides/Grok.md` — `desc:` → `note:` 3곳
+4. `md_src/guides/chatGPT.md` — `desc:` → `note:` 4곳
 
-```javascript
-// alias 패턴 예시 (기존 이름도 동작)
-if (type === "prompt-example" || type === "prompt-box") { ... }
-if (type === "stat-highlight"  || type === "stat-grid")  { ... }
-if (type === "bottom-list"     || type === "chip-list")  { ... }
-if (type === "columns"         || type === "col-grid")   { ... }
+```bash
+node scripts/build-guide.mjs md_src/guides/Grok.md
+node scripts/build-guide.mjs md_src/guides/perplexity.md
+node scripts/build-guide.mjs md_src/guides/chatGPT.md
+# → plan-grid에서 요금(₩0, $20 등)이 하단에 배지로 출력되는지 확인
 ```
 
 ---
 
-### Phase 4: PPTX 미구현 숏코드 fallback 처리
+### Phase 3: PPTX silent drop → fallback 로그
 
-현재 미구현 숏코드는 PPTX 변환 시 아무것도 출력 안 됨 (silent drop).  
-최소한 경고 로그라도 출력하도록 `renderItem()` 수정:
+**수정 대상:** `scripts/md-to-pptx.mjs` `renderItem()` 마지막 줄
 
 ```javascript
-// md-to-pptx.mjs renderItem() 마지막 줄
-// return 0;
-console.warn(`  ⚠️  PPTX 미구현 숏코드: ${item.type}`);
+console.warn(`  ⚠️  PPTX 미구현 숏코드: "${item.type}" — 슬라이드에서 제외됨`);
 return 0;
 ```
 
 ---
 
-## 7. 필드 역할 최종 레퍼런스 (After)
+### Phase 4 (선택): 고빈도 PPTX 미구현 숏코드 구현
 
-| 숏코드 | icon | title | desc | tag | meta | note | color |
-|--------|------|-------|------|-----|------|------|-------|
-| icon-grid | 이모지 | 카드 제목 | 설명 | - | - | - | 강조색 |
-| feature-grid | 이모지 | 카드 제목 | 설명 | 상단 레이블 | - | - | 강조색 |
-| badge-grid | 이모지 | 카드 제목 | - | 배지 텍스트 | - | - | 강조색 |
-| tool-card | 이모지 | 도구명 | 부제목 | 버전/레이블 | `\|`기능 목록 | - | 배경색 |
-| workflow | 이모지 | 단계명 | - | - | 도구/부연 | - | 강조색 |
-| steps | - | 단계 제목 | 단계 설명 | - | - | - | 강조색 |
-| compare-grid | - | 항목명 | 설명 | - | 요약 메모 | - | 강조색 |
-| **compare-2col** | - | 제목 | **단락 텍스트** | - | `\|`불릿 목록 | **하단 배지** | 강조색 |
-| **plan-grid** | - | 플랜명 | - | 배지 레이블 | `\|`기능 목록 | **하단 배지** | 강조색 |
-| skill-list | 이모지 | 스킬명 | 설명 | - | - | - | 강조색 |
-| col-grid (columns) | - | 칼럼 제목 | 설명 | - | - | - | 강조색 |
-| chip-list (bottom-list) | - | 섹션 제목 | 설명 | - | `\|`칩 항목 | - | 강조색 |
-| alert-box | 이모지 | 제목 | 설명 | 타입(tip/warn) | - | - | - |
-| command-block | - | 라벨 | **코드 본문** | - | 언어(bash 등) | - | - |
-| tabs | - | 탭 라벨 | 탭 내용(md) | - | - | - | - |
-| faq-accordion | - | 질문 | 답변 | - | - | - | 강조색 |
-| prompt-box (prompt-example) | - | 프롬프트 제목 | 프롬프트 본문 | - | - | - | - |
-| stat-grid (stat-highlight) | **수치값** | 지표명 | 설명 | - | - | - | 강조색 |
-
-> **굵게** 표시 = 이번 변경으로 역할이 명확해지는 필드  
-> `command-block`의 `desc` = 코드 본문 역할은 예외적이나, "desc = 이 숏코드의 주 내용"이라는 원칙에는 부합함
+| 우선순위 | 숏코드 | 기반 함수 |
+|:---:|--------|---------|
+| 1 | `flow` | `renderWorkflow()` 구조 확장 |
+| 2 | `takeaway` | `renderAlertBox()` 구조 확장 |
+| 3 | `compare-before-after` | `renderCompare2Col()` 2열 구조 활용 |
 
 ---
 
-## 8. 기존 디자인 파괴 여부
-
-| 변경 항목 | 기존 HTML 39개 | 재생성 시 | 새 MD 파일 |
-|-----------|--------------|----------|-----------|
-| compare-2col `desc`→단락 / `note`→배지 | **파괴 없음** (이미 컴파일) | desc 내용이 배지→단락으로 이동 | 새 필드 규칙 따름 |
-| plan-grid `note`→배지 | **파괴 없음** | desc→note로 필드 이동 필요 | 새 필드 규칙 따름 |
-| 숏코드 alias 추가 | **파괴 없음** | - | 구·신 이름 둘 다 사용 가능 |
-| PPTX fallback 로그 | **파괴 없음** | 경고 로그 추가됨 | - |
-
-**결론: 기존 컴파일된 HTML 파일은 어떤 변경에도 영향 없음. 변경은 앞으로 MD → HTML/PPTX 변환 시에만 적용됨.**
-
----
-
-## 9. 변경 파일 목록
+## 8. 변경 파일 목록
 
 | 파일 | Phase | 변경 내용 |
-|------|-------|---------|
-| `templates/build-guide.mjs` | 1,3 | compare-2col/plan-grid 필드 수정, alias 추가, CSS `.c2-desc` 추가 |
-| `scripts/md-to-pptx.mjs` | 2,3,4 | alias 추가, fallback 로그 추가 (compare-2col은 이미 올바름) |
-| `config/shortcode-map.json` | 3 | tabs `tabs-wrap` 클래스 추가, alias 이름 등록 |
-| `docs/pipeline.md` | 4 | 필드 역할 레퍼런스 업데이트 |
+|------|:-----:|---------|
+| `md_src/guides/devtools.md` | 1 | 구문 오류 수정, `command-block→cmd-box`, `compare-2col→compare-split` |
+| `scripts/build-guide.mjs` | 2 | plan-grid: `it.desc` → `it.note` (1줄) |
+| `md_src/guides/perplexity.md` | 2 | `desc:` → `note:` 3곳 |
+| `md_src/guides/Grok.md` | 2 | `desc:` → `note:` 3곳 |
+| `md_src/guides/chatGPT.md` | 2 | `desc:` → `note:` 4곳 |
+| `scripts/md-to-pptx.mjs` | 3,4 | fallback 로그, flow/takeaway/compare-before-after 구현 |

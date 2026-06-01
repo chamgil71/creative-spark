@@ -142,7 +142,7 @@
 ### html 숏코드 디자인
 * **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 210 ~ 226)
 * **해당 CSS 클래스 및 조정 방법**:
-  * `.tool-card`: 카드 전체 외곽선 섀도우 조율.
+  * `.tool-card` (숏코드명: `tool-box`): 카드 전체 외곽선 섀도우 조율.
   * `.tc-header`: 헤더 그라데이션 및 색상 융합 제어.
   * `.tc-list`: 하단의 기능 목록(`meta` 파이프 분할 영역) 여백 및 리스트 불렛 폰트 튜닝.
 * **조정 포인트 예시**: 목록 텍스트의 크기가 너무 커서 뭉쳐 보인다면, `.tc-list li` 의 `font-size` 값을 `0.85rem`으로 조금 줄이고 `padding`을 콤팩트하게 압축합니다.
@@ -269,7 +269,7 @@
 ### html 숏코드 디자인
 * **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 315 ~ 331)
 * **해당 CSS 클래스 및 조정 방법**:
-  * `.compare-2col`: 2분할 레이아웃 조율 (`grid-template-columns: 1fr 1fr; gap: 24px;`).
+  * `.compare-2col` (숏코드명: `compare-split`): 2분할 레이아웃 조율 (`grid-template-columns: 1fr 1fr; gap: 24px;`).
   * `.c2-card.c2-left`:  강조 디자인 세팅.
   * `.c2-list li`: `meta` 리스트가 개별 칩박스 뱃지(Badge) 형태로 쪼개져 렌더링되게 튜닝.
   * `.c2-note`: 하단 여러 줄 지원 메모란 조율.

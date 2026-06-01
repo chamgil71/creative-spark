@@ -1,17 +1,17 @@
 ---
 title: "Creative Spark 숏코드 쇼케이스"
-subtitle: "현재 등록된 숏코드의 입력 문법과 HTML/PPTX 구현 결과를 함께 확인하는 레퍼런스"
-badge: "Shortcode Reference · v1.3"
+subtitle: "현재 등록된 숏코드의 입력 문법과 HTML 구현 결과를 함께 확인하는 레퍼런스"
+badge: "Shortcode Reference · v2.0"
 style: "ai-chat"
 stats:
-  - value: "24종"
+  - value: "29종"
     label: "지원 숏코드"
-  - value: "7대"
+  - value: "8개"
     label: "표준 입력 키"
   - value: "HTML/PPTX"
     label: "동시 변환"
-  - value: "cols=N"
-    label: "그리드 단수 제어"
+  - value: "cols/bullet"
+    label: "블록 인자 제어"
 ---
 
 # 현재 지원 숏코드 목록
@@ -25,6 +25,9 @@ stats:
 | 알림/명령/콘솔 | `alert-box`, `cmd-box`, `console-box` |
 | 인터랙션/목록 | `os-tabs`, `faq-list` |
 | 특화 시각화 | `editor-box`, `network-box` |
+| 목차/구성 | `part-deck`, `chapter-list`, `summary-bar` |
+| 분석/로드맵 | `flow`, `level-grid`, `checkpoint-grid` |
+| 하이라이트 | `compare-before-after`, `takeaway` |
 
 # 숏코드 표준 입력 키
 
@@ -32,13 +35,29 @@ stats:
 | --- | --- | --- |
 | `icon` | 아이콘, 수치, 짧은 시각 라벨 | 이모지 또는 짧은 문자열 |
 | `title` | 카드/항목 제목 | 필수에 가까운 기본 키 |
-| `desc` | 본문 설명 또는 코드 | 여러 줄은 `desc: |` 사용 |
+| `desc` | 본문 설명 또는 코드 | `\n`으로 구분하면 불릿 목록 |
 | `tag` | 배지, 상태, 언어 라벨 | 플랜명, 추천, OS명 등에 사용 |
-| `meta` | 추가 목록, 칩, 피처 리스트 | `|`로 여러 항목 구분 |
-| `color` | 개별 강조색 | Hex 색상 권장 |
-| `note` | 하단 노트, 결론, CTA 배지 | `compare-grid`, `columns-grid`, `compare-split`, `plan-grid`에서 특히 유효 |
+| `meta` | 추가 목록, 칩, 피처 리스트 | `\|`로 여러 항목 구분 |
+| `note` | 하단 배지·메모 | `\n` → ` · ` 구분; `plan-grid`에서 가격 배지로 사용 |
+| `color` | 개별 강조색 + SVG 불릿 색 | Hex 색상 권장 |
+| `bullet` | 아이템별 불릿 기호 오버라이드 | `bullet: "✅"` — color보다 우선 |
 
-숏코드별 예약 키도 일부 존재합니다. `featured`는 `plan-grid`의 추천 플랜 강조에 사용하고, `alert-box`는 선언부의 `tip`, `warn`, `success`, `danger` 타입을 읽습니다.
+숏코드별 예약 키: `featured`는 `plan-grid` 추천 플랜 강조, `alert-box`는 선언부 `tip·warn·success·danger` 타입을 읽습니다.
+
+# 블록 인자
+
+숏코드명 뒤에 공백으로 지정하며 복수 조합이 가능합니다.
+
+| 인자 | 대상 | 설명 |
+| --- | --- | --- |
+| `cols=N` | grid 계열 5종 | CSS 컬럼 수 강제 지정 |
+| `bullet=X` | 전체 | 블록 기본 불릿 기호 지정 |
+
+```
+::: feature-grid cols=3 bullet=✅
+```
+
+---
 
 # 1. icon-grid
 
@@ -174,28 +193,28 @@ stats:
 
 ```md
 \::: stat-grid cols=3
-- icon: "21종"
+- icon: "29종"
   title: "숏코드"
   desc: "현재 빌더가 렌더링하는 컴포넌트 수"
 - icon: "2종"
   title: "출력"
   desc: "HTML과 PPTX를 같은 MD에서 생성"
-- icon: "6개"
+- icon: "8개"
   title: "표준 키"
-  desc: "icon, title, desc, tag, meta, color"
+  desc: "icon·title·desc·tag·meta·note·color·bullet"
 \:::
 ```
 
 ::: stat-grid cols=3
-- icon: "21종"
+- icon: "29종"
   title: "숏코드"
   desc: "현재 빌더가 렌더링하는 컴포넌트 수"
 - icon: "2종"
   title: "출력"
   desc: "HTML과 PPTX를 같은 MD에서 생성"
-- icon: "6개"
+- icon: "8개"
   title: "표준 키"
-  desc: "icon, title, desc, tag, meta, color"
+  desc: "icon·title·desc·tag·meta·note·color·bullet"
 :::
 
 # 5. tool-box
@@ -285,7 +304,7 @@ stats:
 | 항목 | 내용 |
 | --- | --- |
 | 숏코드 명 | `step-list` |
-| 구현내용 | 번호가 붙는 세로 단계 리스트입니다. |
+| 구현내용 | 번호가 붙는 세로 단계 리스트입니다. `desc`에 `\n`을 쓰면 불릿 목록이 됩니다. |
 
 숏코드 입력내용
 
@@ -347,7 +366,7 @@ stats:
 | 항목 | 내용 |
 | --- | --- |
 | 숏코드 명 | `plan-grid` |
-| 구현내용 | 요금제, 모델 등급, 옵션 비교에 쓰는 플랜 카드입니다. |
+| 구현내용 | 요금제, 모델 등급, 옵션 비교에 쓰는 플랜 카드입니다. `note`가 하단 가격 배지로 표시됩니다. |
 
 숏코드 입력내용
 
@@ -435,7 +454,7 @@ stats:
 \::: columns-grid cols=3
 - title: "HTML"
   desc: "웹 가이드로 바로 열람합니다."
-  note: "node templates/build-guide.mjs guide.md"
+  note: "node scripts/build-guide.mjs guide.md"
 - title: "PPTX"
   desc: "발표 슬라이드로 변환합니다."
   note: "node scripts/md-to-pptx.mjs guide.md"
@@ -448,7 +467,7 @@ stats:
 ::: columns-grid cols=3
 - title: "HTML"
   desc: "웹 가이드로 바로 열람합니다."
-  note: "node templates/build-guide.mjs guide.md"
+  note: "node scripts/build-guide.mjs guide.md"
 - title: "PPTX"
   desc: "발표 슬라이드로 변환합니다."
   note: "node scripts/md-to-pptx.mjs guide.md"
@@ -553,14 +572,14 @@ stats:
 \::: cmd-box
 - title: "HTML 빌드"
   tag: "bash"
-  desc: "node templates/build-guide.mjs md_src/showcase/showcase.md public/showcase/showcase.html"
+  desc: "node scripts/build-guide.mjs md_src/showcase/showcase.md"
 \:::
 ```
 
 ::: cmd-box
 - title: "HTML 빌드"
   tag: "bash"
-  desc: "node templates/build-guide.mjs md_src/showcase/showcase.md public/showcase/showcase.html"
+  desc: "node scripts/build-guide.mjs md_src/showcase/showcase.md"
 :::
 
 # 16. os-tabs
@@ -668,24 +687,24 @@ stats:
 ```md
 \::: git-flow-strip
 - title: "main"
-  tag: "v1.1.0"
-  meta: "쇼케이스 MD 정리|HTML/PPTX 변환 통과"
+  tag: "v2.0.0"
+  meta: "숏코드 29종 완비|bullet/color 개선"
   color: "#10B981"
-- title: "feature/restore-md"
-  tag: "Commit 701"
-  meta: "원본 콘텐츠 복원|신형 숏코드 반영"
+- title: "feature/shortcode-refactor"
+  tag: "Commit 812"
+  meta: "bullet 블록 인자 추가|desc 멀티라인 통일"
   color: "#3B82F6"
 \:::
 ```
 
 ::: git-flow-strip
 - title: "main"
-  tag: "v1.1.0"
-  meta: "쇼케이스 MD 정리|HTML/PPTX 변환 통과"
+  tag: "v2.0.0"
+  meta: "숏코드 29종 완비|bullet/color 개선"
   color: "#10B981"
-- title: "feature/restore-md"
-  tag: "Commit 701"
-  meta: "원본 콘텐츠 복원|신형 숏코드 반영"
+- title: "feature/shortcode-refactor"
+  tag: "Commit 812"
+  meta: "bullet 블록 인자 추가|desc 멀티라인 통일"
   color: "#3B82F6"
 :::
 
@@ -803,202 +822,7 @@ stats:
 | 항목 | 내용 |
 | --- | --- |
 | 숏코드 명 | `chapter-list` |
-| 구현내용 | 세부 목차 및 챕터 리스트 숏코드입니다. 챕터 번호와 뱃지 속성에 따라 이쁜 HSL 배지 색상이 자동 매핑됩니다. |
-
-숏코드 입력내용
-
-```md
-\::: chapter-list
-- icon: "01"
-  title: "바이브코딩이란?"
-  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
-  tag: "개념"
-- icon: "02"
-  title: "에이전트 코딩이란?"
-  desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
-  tag: "개념"
-- icon: "04"
-  title: "첫 대화: 프롬프트 설계"
-  desc: "요구사항 명세 · 컨텍스트 주입 전략 · SKILL.md 재사용 지시"
-  tag: "실습"
-\:::
-```
-
-::: chapter-list
-- icon: "01"
-  title: "바이브코딩이란?"
-  desc: "Karpathy 발언 배경 · 전통 코딩 vs 바이브코딩 · LLM 발전"
-  tag: "개념"
-- icon: "02"
-  title: "에이전트 코딩이란?"
-  desc: "계획→실행→수정 루프 · 레벨 1~5 스펙트럼 · 바이브코딩과 차이"
-  tag: "개념"
-- icon: "04"
-\::: console-box
-- title: "가이드 생성 요청"
-  desc: |
-    Obsidian 가이드를 작성해줘.
-    network-box로 지식 그래프 예시를 포함하고,
-    마지막에는 faq-list를 넣어줘.
-\:::
-```
-
-::: console-box
-- title: "가이드 생성 요청"
-  desc: |
-    Obsidian 가이드를 작성해줘.
-    network-box로 지식 그래프 예시를 포함하고,
-    마지막에는 faq-list를 넣어줘.
-:::
-
-# 19. git-flow-strip
-
-| 항목 | 내용 |
-| --- | --- |
-| 숏코드 명 | `git-flow-strip` |
-| 구현내용 | 브랜치 라인과 커밋 라벨을 가진 Git 흐름도입니다. |
-
-숏코드 입력내용
-
-```md
-\::: git-flow-strip
-- title: "main"
-  tag: "v1.1.0"
-  meta: "쇼케이스 MD 정리|HTML/PPTX 변환 통과"
-  color: "#10B981"
-- title: "feature/restore-md"
-  tag: "Commit 701"
-  meta: "원본 콘텐츠 복원|신형 숏코드 반영"
-  color: "#3B82F6"
-\:::
-```
-
-::: git-flow-strip
-- title: "main"
-  tag: "v1.1.0"
-  meta: "쇼케이스 MD 정리|HTML/PPTX 변환 통과"
-  color: "#10B981"
-- title: "feature/restore-md"
-  tag: "Commit 701"
-  meta: "원본 콘텐츠 복원|신형 숏코드 반영"
-  color: "#3B82F6"
-:::
-
-# 20. editor-box
-
-| 항목 | 내용 |
-| --- | --- |
-| 숏코드 명 | `editor-box` |
-| 구현내용 | VS Code 느낌의 코드 편집기 시뮬레이션입니다. |
-
-숏코드 입력내용
-
-````md
-\::: editor-box
-- title: "build-guide.mjs"
-  tag: "javascript"
-  desc: |
-    function renderShortcode(type, body, args) {
-      const items = parseShortcodeItems(body);
-      if (!items.length) return "";
-      return renderComponent(type, items, args);
-    }
-\:::
-````
-
-::: editor-box
-- title: "build-guide.mjs"
-  tag: "javascript"
-  desc: |
-    function renderShortcode(type, body, args) {
-      const items = parseShortcodeItems(body);
-      if (!items.length) return "";
-      return renderComponent(type, items, args);
-    }
-:::
-
-# 21. network-box
-
-| 항목 | 내용 |
-| --- | --- |
-| 숏코드 명 | `network-box` |
-| 구현내용 | 중앙 노드와 주변 노드가 떠 있는 지식 그래프 시각화입니다. |
-
-숏코드 입력내용
-
-```md
-\::: network-box
-- title: "Creative Spark"
-  color: "#EC4899"
-- title: "HTML"
-  meta: "build-guide"
-  color: "#10B981"
-- title: "PPTX"
-  meta: "md-to-pptx"
-  color: "#3B82F6"
-- title: "Markdown"
-  meta: "shortcode"
-  color: "#F59E0B"
-\:::
-```
-
-::: network-box
-- title: "Creative Spark"
-  color: "#EC4899"
-- title: "HTML"
-  meta: "build-guide"
-  color: "#10B981"
-- title: "PPTX"
-  meta: "md-to-pptx"
-  color: "#3B82F6"
-- title: "Markdown"
-  meta: "shortcode"
-  color: "#F59E0B"
-:::
-
-# 22. part-deck
-
-| 항목 | 내용 |
-| --- | --- |
-| 숏코드 명 | `part-deck` |
-| 구현내용 | 시리즈 가이드북 등 목차용 대단원(부, Part)을 알리는 헤더 숏코드입니다. HSL 브랜드 컬러가 다이내믹하게 적용됩니다. |
-
-숏코드 입력내용
-
-```md
-\::: part-deck
-- icon: "1부"
-  title: "개념 이해"
-  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
-  tag: "Ch.01–03"
-  color: "#1a3a5c"
-- icon: "2부"
-  title: "AI와 대화하는 법"
-  desc: "프롬프트 설계부터 복잡한 작업 위임까지"
-  tag: "Ch.04–05"
-  color: "#1a4a3a"
-\:::
-```
-
-::: part-deck
-- icon: "1부"
-  title: "개념 이해"
-  desc: "바이브코딩과 에이전트 코딩의 작동 원리"
-  tag: "Ch.01–03"
-  color: "#1a3a5c"
-- icon: "2부"
-  title: "AI와 대화하는 법"
-  desc: "프롬프트 설계부터 복잡한 작업 위임까지"
-  tag: "Ch.04–05"
-  color: "#1a4a3a"
-:::
-
-# 23. chapter-list
-
-| 항목 | 내용 |
-| --- | --- |
-| 숏코드 명 | `chapter-list` |
-| 구현내용 | 세부 목차 및 챕터 리스트 숏코드입니다. 챕터 번호와 뱃지 속성에 따라 이쁜 HSL 배지 색상이 자동 매핑됩니다. |
+| 구현내용 | 세부 목차 및 챕터 리스트 숏코드입니다. 챕터 번호와 뱃지 속성에 따라 HSL 배지 색상이 자동 매핑됩니다. |
 
 숏코드 입력내용
 
@@ -1039,28 +863,28 @@ stats:
 | 항목 | 내용 |
 | --- | --- |
 | 숏코드 명 | `summary-bar` |
-| 구현내용 | 숏코드 문서들의 통계, 주요 수치 등을 가로 격자 형태로 요약 노출해 주는 수치 뱃지 숏코드입니다. |
+| 구현내용 | 주요 수치를 가로 격자 형태로 요약 노출하는 수치 뱃지 숏코드입니다. |
 
 숏코드 입력내용
 
 ```md
 \::: summary-bar
-- icon: "29장"
-  title: "Total Chapters"
-- icon: "8부"
-  title: "Parts"
-- icon: "24종"
+- icon: "29종"
   title: "Support Shortcodes"
+- icon: "8개"
+  title: "Standard Keys"
+- icon: "2종"
+  title: "Output Formats"
 \:::
 ```
 
 ::: summary-bar
-- icon: "29장"
-  title: "Total Chapters"
-- icon: "8부"
-  title: "Parts"
-- icon: "24종"
+- icon: "29종"
   title: "Support Shortcodes"
+- icon: "8개"
+  title: "Standard Keys"
+- icon: "2종"
+  title: "Output Formats"
 :::
 
 # 25. flow
@@ -1179,7 +1003,7 @@ stats:
 | 항목 | 내용 |
 | --- | --- |
 | 숏코드 명 | `compare-before-after` |
-| 구현내용 | Bad vs Good, 변경 전후 1:1 대비를 우아한 전용 테두리 카드 레이아웃으로 렌더링해 줍니다. |
+| 구현내용 | Bad vs Good, 변경 전후 1:1 대비를 전용 테두리 카드 레이아웃으로 렌더링해 줍니다. |
 
 숏코드 입력내용
 
@@ -1204,7 +1028,7 @@ stats:
 | 항목 | 내용 |
 | --- | --- |
 | 숏코드 명 | `takeaway` |
-| 구현내용 | 핵심 요약 및 테이크어웨이 메시지를 그라데이션이 들어간 프리미엄 배너 형태로 감싸 줍니다. |
+| 구현내용 | 핵심 요약 및 테이크어웨이 메시지를 그라데이션 프리미엄 배너 형태로 감싸 줍니다. |
 
 숏코드 입력내용
 
@@ -1220,4 +1044,140 @@ stats:
 - icon: "💡"
   title: "Key Takeaway"
   desc: "바이브코딩은 문법 암기가 아닌, 원하는 바를 논리적 자연어로 설명하는 역량이 본질입니다."
+:::
+
+---
+
+# 부록 A. desc 다중 줄 불릿 목록
+
+`desc`에 `\n`(YAML 멀티라인 `|`)으로 줄을 나누면 자동으로 불릿 목록이 됩니다. 줄 앞에 이모지를 쓰면 그 이모지가 불릿으로 사용됩니다.
+
+숏코드 입력내용
+
+```md
+\::: step-list
+- title: "기본 불릿 (SVG 체크)"
+  desc: |
+    첫 번째 항목
+    두 번째 항목
+    세 번째 항목
+- title: "이모지 불릿"
+  desc: |
+    ✅ 완료된 항목
+    🔥 중요 항목
+    📌 참고 항목
+- title: "표준 마커 → SVG로 변환"
+  desc: |
+    - 마이너스 기호
+    • 불릿 기호
+\:::
+```
+
+::: step-list
+- title: "기본 불릿 (SVG 체크)"
+  desc: |
+    첫 번째 항목
+    두 번째 항목
+    세 번째 항목
+- title: "이모지 불릿"
+  desc: |
+    ✅ 완료된 항목
+    🔥 중요 항목
+    📌 참고 항목
+- title: "표준 마커 → SVG로 변환"
+  desc: |
+    - 마이너스 기호
+    • 불릿 기호
+:::
+
+# 부록 B. bullet 필드 — 아이템별 불릿 오버라이드
+
+아이템의 `bullet:` 필드로 해당 카드의 불릿 기호만 바꿀 수 있습니다.
+
+숏코드 입력내용
+
+```md
+\::: skill-list
+- icon: "⚡"
+  title: "고속 처리"
+  desc: "대용량 파일도 빠르게 처리\n병렬 처리 지원\n메모리 최적화"
+  bullet: "🔥"
+- icon: "🔒"
+  title: "보안 강화"
+  desc: "엔드투엔드 암호화\n접근 권한 관리\n감사 로그 제공"
+  bullet: "🔐"
+\:::
+```
+
+::: skill-list
+- icon: "⚡"
+  title: "고속 처리"
+  desc: "대용량 파일도 빠르게 처리\n병렬 처리 지원\n메모리 최적화"
+  bullet: "🔥"
+- icon: "🔒"
+  title: "보안 강화"
+  desc: "엔드투엔드 암호화\n접근 권한 관리\n감사 로그 제공"
+  bullet: "🔐"
+:::
+
+# 부록 C. bullet= 블록 인자 — 블록 전체 불릿 지정
+
+`bullet=X` 블록 인자로 블록 안 모든 아이템의 기본 불릿을 한 번에 지정합니다. 아이템 `bullet:` 필드가 있으면 그쪽이 우선합니다.
+
+숏코드 입력내용
+
+```md
+\::: icon-grid cols=3 bullet=✅
+- icon: "📄"
+  title: "문서화"
+  desc: "자동 생성\n버전 관리\n다국어 지원"
+- icon: "🔧"
+  title: "자동화"
+  desc: "CI/CD 통합\n테스트 자동화\n배포 스크립트"
+- icon: "📊"
+  title: "분석"
+  desc: "실시간 모니터링\n대시보드\n알림 설정"
+\:::
+```
+
+::: icon-grid cols=3 bullet=✅
+- icon: "📄"
+  title: "문서화"
+  desc: "자동 생성\n버전 관리\n다국어 지원"
+- icon: "🔧"
+  title: "자동화"
+  desc: "CI/CD 통합\n테스트 자동화\n배포 스크립트"
+- icon: "📊"
+  title: "분석"
+  desc: "실시간 모니터링\n대시보드\n알림 설정"
+:::
+
+# 부록 D. color — 카드 강조 + SVG 불릿 색 동시 적용
+
+`color:` 필드는 카드 테두리·배경과 함께 SVG 불릿 색상도 동시에 제어합니다.
+
+숏코드 입력내용
+
+```md
+\::: feature-grid cols=2
+- icon: "🚀"
+  title: "빠른 배포"
+  desc: "원클릭 배포\n자동 롤백\n무중단 업데이트"
+  color: "#6366F1"
+- icon: "🛡️"
+  title: "보안 우선"
+  desc: "자동 인증서\n방화벽 내장\n취약점 스캔"
+  color: "#E11D48"
+\:::
+```
+
+::: feature-grid cols=2
+- icon: "🚀"
+  title: "빠른 배포"
+  desc: "원클릭 배포\n자동 롤백\n무중단 업데이트"
+  color: "#6366F1"
+- icon: "🛡️"
+  title: "보안 우선"
+  desc: "자동 인증서\n방화벽 내장\n취약점 스캔"
+  color: "#E11D48"
 :::
