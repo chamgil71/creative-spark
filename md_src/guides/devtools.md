@@ -24,7 +24,7 @@ footer:
 기존의 GUI 기반 웹 채팅(Chat)이나 단순 인라인 자동완성(Autocomplete)의 한계를 극복하기 위해 터미널 에이전트가 등장했습니다. 개발자가 마우스를 손에 쥐지 않고, 터미널 환경을 떠나지 않은 채 자연어로 개발 프로세스 전체를 제어하는 워크플로우가 대세로 자리 잡았습니다. 단순 코드 추천을 넘어 파일 읽기/쓰기, 셸 명령어 실행, 테스트 런, Git 커밋 및 PR 생성까지 스스로 수행하는 에이전틱(Agentic) 환경을 제공합니다.
 
 ## 현재 활용 중인 3대 도구 개요
-:::badge-grid
+::: badge-grid
 - icon: 🔸
   title: Claude Code
   tag: Anthropic
@@ -57,7 +57,7 @@ desc: |
 :::
 
 ## 나의 실무 활용 경험 공유
-:::feature-grid
+::: feature-grid
 - icon: 🛠️
   title: 레거시 전역 리팩토링
   tag: 정밀 추론
@@ -86,7 +86,7 @@ desc: |
 :::
 
 ## 나의 실무 활용 경험 공유
-:::feature-grid
+::: feature-grid
 - icon: 🧠
   title: 대규모 모노레포 분석
   tag: 100만+ 토큰
@@ -115,7 +115,7 @@ desc: |
 :::
 
 ## 나의 실무 활용 경험 공유
-:::feature-grid
+::: feature-grid
 - icon: 📦
   title: 완성형 PR 생성기
   tag: 자동화 위임
@@ -141,7 +141,7 @@ desc: |
   note: 대형 아키텍처 및 대형 기능 추가 추천
 :::
 
-:::compare-grid
+::: compare-grid
 - title: 🟦 Codex (OpenAI)
   desc: 태스크 완료 및 PR 생성까지의 전체 자동화 파이프라인 안정성이 매우 높으며 가상 샌드박스 검증 능력이 뛰어납니다. 실행 비용 및 토큰 활용 효율성이 최적화되어 있어 가성비가 우수합니다.
   meta: "단점: 복잡한 논리적 추론이나 설계 변경 시 결과물이 정형화되며 CLI 상호작용 피드백이 상대적으로 낮음"
@@ -162,7 +162,7 @@ desc: |
 # 7. 결론 및 추천 워크플로우
 
 ## 상황별 최적의 도구 매칭 시스템
-:::alert-box
+::: alert-box
 - type: tip
   icon: 💡
   title: "1단계: 미시적 문제 해결 및 리팩토링"
