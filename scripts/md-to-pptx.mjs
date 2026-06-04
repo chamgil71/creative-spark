@@ -444,6 +444,26 @@ function itemH(item, w) {
     const cols = Math.max(1, Math.min(item.items.length, 4));
     return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
   }
+  // Phase 4 신규 구현
+  if (item.type === "flow") {
+    return D.workflow.stepH + 0.3 + c.gap;
+  }
+  if (item.type === "takeaway") {
+    return item.items.reduce((sum, it) => {
+      const lines = estimateLines(it.desc || "", w - c.padX * 2 - 0.5, c.bodySize + 1);
+      return sum + c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0) + (c.bodySize + 1) / 72 * 1.7 * Math.max(1, lines) + c.gap;
+    }, 0);
+  }
+  if (item.type === "compare-before-after") {
+    if (item.items.length < 2) return 1.5 + c.gap;
+    const cc = D.compare2col; const colW = (w - cc.colGap) / 2; const lh = (c.bodySize / 72) * 1.7;
+    const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
+      const descSegs = (it.desc || "").split("\n").filter(Boolean);
+      const descH = descSegs.reduce((s, seg) => s + lh * Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize)) + 0.05, 0);
+      return c.padY + (c.titleSize / 72) * 1.7 + c.gap + (descSegs.length ? descH + c.gap : 0) + c.padY;
+    }));
+    return maxH + c.gap;
+  }
   return 0;
 }
 
@@ -821,6 +841,61 @@ function renderCompare2Col(slide, item, x, y, w, pal) {
   return maxH + c.gap;
 }
 
+// ── Phase 4 신규 렌더러 ──────────────────────────────────────────
+
+function renderFlow(slide, item, x, y, w, pal) {
+  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
+  const steps = item.items.filter(it => it.title !== "→" && it.icon !== "→");
+  const n = steps.length; if (!n) return 0;
+  const arrowW = D.workflow.arrowW;
+  const stepW  = (w - (n - 1) * arrowW) / n;
+  const stepH  = D.workflow.stepH + 0.3;
+  steps.forEach((it, idx) => {
+    const cx = x + idx * (stepW + arrowW);
+    const isActive = it.tag === "active";
+    const bg = isActive
+      ? { color: hexClean(pal.brand), transparency: 10 }
+      : it.color ? { color: hexClean(it.color), transparency: 90 } : { color: pal.brandLight };
+    const border = isActive ? pal.brand : it.color ? hexClean(it.color) : pal.border;
+    slide.addShape("roundRect", { x: cx, y, w: stepW, h: stepH, rectRadius: r, fill: bg, line: { color: border, width: isActive ? 1.5 : 0.75 } });
+    if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx, y: y + 0.08, w: stepW, h: 0.3, fontSize: 16, align: "center" });
+    slide.addText(it.title, { x: cx + 0.06, y: y + 0.42, w: stepW - 0.12, h: 0.26, fontSize: c.bodySize, bold: true, color: isActive ? pal.white : pal.text, fontFace: font, align: "center" });
+    if (it.desc) slide.addText(it.desc, { x: cx + 0.06, y: y + 0.7, w: stepW - 0.12, h: 0.22, fontSize: c.bodySize - 2, color: isActive ? pal.mutedLight : pal.text2, fontFace: font, align: "center", wrap: true });
+    if (idx < steps.length - 1) slide.addText("→", { x: cx + stepW, y: y + (stepH - 0.22) / 2, w: arrowW, h: 0.22, fontSize: 14, color: D.palette.workflowArrow, align: "center", valign: "middle" });
+  });
+  return stepH + c.gap;
+}
+
+function renderTakeaway(slide, item, x, y, w, pal) {
+  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
+  let cy = y;
+  for (const it of item.items) {
+    const lines  = estimateLines(it.desc || "", w - c.padX * 2 - 0.5, c.bodySize + 1);
+    const titleH = it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0;
+    const descH  = (c.bodySize + 1) / 72 * 1.7 * Math.max(1, lines);
+    const boxH   = c.padY * 2 + titleH + descH;
+    slide.addShape("roundRect", { x, y: cy, w, h: boxH, rectRadius: r, fill: { color: hexClean(pal.brand), transparency: 12 }, line: { color: hexClean(pal.brand), width: 1.5 } });
+    let tx = x + c.padX; let tw = w - c.padX * 2; let ty = cy + c.padY;
+    if (it.icon) { slide.addText(it.icon, { x: tx, y: ty, w: 0.4, h: boxH - c.padY * 2, fontSize: 20, valign: "middle" }); tx += 0.48; tw -= 0.48; }
+    if (it.title) { slide.addText(it.title, { x: tx, y: ty, w: tw, h: titleH, fontSize: c.titleSize + 1, bold: true, color: pal.brandDark || pal.brand, fontFace: font, valign: "top" }); ty += titleH; }
+    if (it.desc)  slide.addText(it.desc, { x: tx, y: ty, w: tw, h: descH + 0.05, fontSize: c.bodySize + 1, color: pal.text, fontFace: font, valign: "top", wrap: true });
+    cy += boxH + c.gap;
+  }
+  return cy - y;
+}
+
+function renderCompareBeforeAfter(slide, item, x, y, w, pal) {
+  // Before(좌) = 붉은 계열, After(우) = 초록 계열 — 색이 없으면 기본값 주입
+  const modItem = {
+    ...item,
+    items: item.items.slice(0, 2).map((it, idx) => ({
+      ...it,
+      color: it.color || (idx === 0 ? "#EF4444" : "#10B981"),
+    })),
+  };
+  return renderCompare2Col(slide, modItem, x, y, w, pal);
+}
+
 const ALERT_COLORS = {
   tip:     { bg: "F0FDF4", bar: "22C55E", title: "15803D", text: "166534" },
   warn:    { bg: "FFFBEB", bar: "F59E0B", title: "B45309", text: "92400E" },
@@ -1028,10 +1103,15 @@ function renderItem(slide, item, x, y, w, pal) {
   if (item.type === "os-tabs" || item.type === "tabs")                           return renderTabs(slide, item, x, y, w, pal);
   if (item.type === "stat-grid" || item.type === "stat-highlight")               return renderStatHighlight(slide, item, x, y, w, pal);
   
-  // 3대 신규 특화 숏코드 우회 매핑
+  // 특화 숏코드 우회 매핑
   if (item.type === "git-flow-strip")                                            return renderWorkflow(slide, item, x, y, w, pal);
   if (item.type === "editor-box")                                                return renderCommandBlock(slide, item, x, y, w, pal);
   if (item.type === "network-box")                                               return renderCompareGrid(slide, item, x, y, w, pal);
+  // Phase 4 신규 구현
+  if (item.type === "flow")                                                      return renderFlow(slide, item, x, y, w, pal);
+  if (item.type === "takeaway")                                                  return renderTakeaway(slide, item, x, y, w, pal);
+  if (item.type === "compare-before-after")                                      return renderCompareBeforeAfter(slide, item, x, y, w, pal);
+  // Phase 3: 미구현 숏코드 경고
   console.warn(`  ⚠️  PPTX 미구현 숏코드: "${item.type}" — 슬라이드에서 제외됨`);
   return 0;
 }
