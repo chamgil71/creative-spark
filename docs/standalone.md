@@ -38,7 +38,7 @@ npm run build                   # 전체 빌드 수행 (dist/ 및 dist/standalon
 
 ## 새 단일 가이드 추가 및 Standalone 반영 흐름
 
-1. **마크다운 파일 생성**: `templates/template.md`를 복사하여 `md_src/guides/MyGuide.md`를 작성합니다.
+1. **마크다운 파일 생성**: `md_src/guides/MyGuide.md`를 새로 작성합니다. 기존 가이드를 복사해 frontmatter와 본문을 바꾸는 방식이 가장 안전합니다.
 2. **가이드 동기화 및 퍼블리시**:
    ```bash
    # 인덱스 guides.json 자동 동기화 및 갱신

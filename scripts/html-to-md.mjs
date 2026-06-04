@@ -4,7 +4,7 @@
  * HTML → Markdown 변환 (config/shortcode-map.json 기반 generic 변환 + 역변환 겸용)
  *
  * 사용법:
- *   node templates/html-to-md.mjs <input.html> [output.md]
+ *   node scripts/html-to-md.mjs <input.html> [output.md]
  *
  * Export:
  *   htmlToMdString(htmlPath) → string  (html-to-pptx.mjs 파이프라인에서 사용)
@@ -278,7 +278,7 @@ function commandBlockToMd($, el, rule) {
   
   let desc = descParts.map(s => s.trim()).filter(s => s !== null && s !== undefined).join("\n");
   
-  const lines = [`::: command-block`];
+  const lines = [`::: cmd-box`];
   lines.push(`- title: ${title}`);
   if (lang) lines.push(`  meta: ${lang}`);
   if (desc) {
@@ -596,7 +596,7 @@ if (isMain) {
   const inFile  = process.argv[2];
   const outFile = process.argv[3];
   if (!inFile) {
-    console.error("사용법: node templates/html-to-md.mjs <파일.html> [출력.md]");
+    console.error("사용법: node scripts/html-to-md.mjs <파일.html> [출력.md]");
     process.exit(1);
   }
   const md = htmlToMdString(path.resolve(inFile));

@@ -66,16 +66,16 @@ stats:
 ::: plan-grid cols=4
 - title: "무료"
   tag: "Free"
-  desc: "₩0"
+  note: "₩0"
   meta: "Grok 기본 모델|제한된 메시지 수|X 계정 필요|기본 이미지 생성"
 - title: "X 프리미엄"
   tag: "X Premium ⭐"
-  desc: "$8~16 / 월"
+  note: "$8~16 / 월"
   meta: "Grok 확장 접근|더 많은 메시지|Aurora 이미지|DeepSearch 사용"
   featured: "true"
 - title: "SuperGrok"
   tag: "SuperGrok"
-  desc: "$30 / 월"
+  note: "$30 / 월"
   meta: "무제한 Grok 사용|Think 모드 무제한|Aurora 무제한|DeepSearch 무제한|API 접근"
 :::
 

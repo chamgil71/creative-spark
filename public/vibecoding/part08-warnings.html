@@ -409,27 +409,27 @@ cursor.execute(query, (user_input,))</pre>
 <p>20번 대화 후 AI가 httpx 대신 requests를 다시 사용, print()를 다시 사용, 폴더 구조를 바꿔버림.</p>
 </div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">🔄</div>
-<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">🔄재정향 프롬프트</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">&quot;[SKILL.md 재첨부]</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">방금 코드에서 SKILL.md 위반:</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">① requests 사용 → httpx로 교체 (규칙 §3)</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">② print() → logging으로 교체 (규칙 §3)</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">③ 타입 힌트 없음 → 모든 함수에 추가 (규칙 §2)</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">세 가지를 수정한 버전으로 다시 작성해줘.&quot;</span>
+<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">🔄재정향 프롬프트</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">&quot;[SKILL.md 재첨부]</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">방금 코드에서 SKILL.md 위반:</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">① requests 사용 → httpx로 교체 (규칙 §3)</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">② print() → logging으로 교체 (규칙 §3)</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">③ 타입 힌트 없음 → 모든 함수에 추가 (규칙 §2)</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">세 가지를 수정한 버전으로 다시 작성해줘.&quot;</span>
 </div></div></div>
 </div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
 <div class="alert-icon">💡</div>
@@ -496,30 +496,42 @@ git reset --hard HEAD~1 # 마지막 커밋 되돌리기</pre>
 <span class="feature-tag" >비용 관리 방법</span>
 <div class="icon-card-icon" style="color: var(--brand);"></div>
 <div class="icon-card-title" style="color: var(--text);"></div>
-<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">Anthropic Console → Usage → 일별 비용 모니터링• 월 예산 설정 → 초과 시 알림• n8n 워크플로우에 실행 횟수 제한 노드 추가• 개발 시 소형 샘플 파일 사용• Claude Code: /cost 명령으로 현재 세션 비용 확인</span>
+<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">Anthropic Console → Usage → 일별 비용 모니터링• 월 예산 설정 → 초과 시 알림• n8n 워크플로우에 실행 횟수 제한 노드 추가• 개발 시 소형 샘플 파일 사용• Claude Code: /cost 명령으로 현재 세션 비용 확인</span>
 </div></div>
 </div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>올바른 AI 협업 마인드셋</h2></div><div class="card"><p>AI는 강력한 도구입니다. 망치가 강력할수록 잘못 쓰면 더 큰 피해를 줍니다. 그러나 올바르게 사용하면 누구도 혼자서는 할 수 없는 일을 해냅니다.</p>
 <div class="icon-grid" ><div class="icon-card" >
 <span class="feature-tag" >AI의 역할</span>
 <div class="icon-card-icon" style="color: var(--brand);">⚡</div>
-<div class="icon-card-title" style="color: var(--text);">⚡ 빠른 초안 작성자</div>
+<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><span style="font-size:1rem;line-height:1;">⚡</span></span>
+<span class="content" style="text-align:left;">빠른 초안 작성자</span>
+</div></div></div>
 <p>내가 검토하고 수정하는 것이 최종 산출물. AI가 만들었다는 이유만으로 그대로 사용하지 않는다.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >AI의 역할</span>
 <div class="icon-card-icon" style="color: var(--brand);">📚</div>
-<div class="icon-card-title" style="color: var(--text);">📚 지식 보조자</div>
+<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><span style="font-size:1rem;line-height:1;">📚</span></span>
+<span class="content" style="text-align:left;">지식 보조자</span>
+</div></div></div>
 <p>AI의 지식에는 시간 제한·오류·편향이 있음. 중요한 판단은 내 도메인 지식과 경험이 우선.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >AI의 역할</span>
 <div class="icon-card-icon" style="color: var(--brand);">🔄</div>
-<div class="icon-card-title" style="color: var(--text);">🔄 자동화 엔진</div>
+<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><span style="font-size:1rem;line-height:1;">🔄</span></span>
+<span class="content" style="text-align:left;">자동화 엔진</span>
+</div></div></div>
 <p>반복 작업을 없애주지만, 자동화된 오류도 반복된다. 검증 없는 자동화는 자동화된 실수다.</p>
 </div><div class="icon-card" >
 <span class="feature-tag" >AI의 역할</span>
 <div class="icon-card-icon" style="color: var(--brand);">🎓</div>
-<div class="icon-card-title" style="color: var(--text);">🎓 학습 파트너</div>
+<div class="icon-card-title" style="color: var(--text);"><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><span style="font-size:1rem;line-height:1;">🎓</span></span>
+<span class="content" style="text-align:left;">학습 파트너</span>
+</div></div></div>
 <p>AI가 만든 코드를 읽으면서 새로운 패턴을 배울 수 있음. 수동적으로 받기만 하면 성장이 없다.</p>
 </div></div><h3>이 책을 마치며</h3>
 <p>이 책에서 다룬 모든 도구와 기법은 빠르게 발전하고 있습니다. 특정 도구의 사용법은 6개월 후 달라질 수 있습니다. 하지만 <strong>변하지 않는 것</strong>이 있습니다.</p>

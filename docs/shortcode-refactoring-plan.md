@@ -9,14 +9,14 @@
 
 | 항목 | 상태 | 설명 |
 |------|:----:|------|
-| 숏코드 네이밍 통일 | ✅ 완료 | md_src/ 파일들이 이미 현행 이름 사용 중. devtools.md 1개 예외 |
-| 필드 역할 재정립 | ⚠️ 1건 잔여 | `plan-grid` HTML/PPTX 불일치만 남음. 나머지는 정합 |
+| 숏코드 네이밍 통일 | ✅ 완료 | md_src/ 파일들이 현행 이름 사용 중 |
+| 필드 역할 재정립 | ✅ 완료 | `plan-grid` 가격 배지 필드를 `note`로 통일 |
 | HTML↔PPTX 클래스 일치 | 🔶 부분 해소 | 타입명↔CSS 클래스명 9건 불일치 (의도적 유지 결정) |
-| HTML↔PPTX 구현 격차 | 🔶 부분 해소 | 10종 HTML 전용 숏코드 — PPTX silent drop 상태 |
+| HTML↔PPTX 구현 격차 | 🔶 부분 해소 | 10종 HTML 전용 숏코드 — PPTX 경고 로그 출력 후 제외 |
 | 기존 디자인 파괴 여부 | ✅ 없음 | 컴파일된 HTML은 영향 없음. 재빌드 시만 적용 |
-| MD 파일 개별 영향도 | ⚠️ 4개 파일 | devtools.md(구문) + plan-grid 3개 파일(필드명) |
+| MD 파일 개별 영향도 | ✅ 반영 | devtools.md(구문) + plan-grid 3개 파일(필드명) 수정 완료 |
 
-**코드 변경이 필요한 작업: 3개 Phase**
+**코드 변경 작업: Phase 1~3 완료, Phase 4는 선택 보류**
 
 ---
 
@@ -32,7 +32,7 @@
 | `workflow` | `workflow-strip` | HTML 클래스명 정합 | 7 | ✅ 전환 완료 |
 | `prompt-example` | `console-box` | 기능 설명적 이름 | 8 | ✅ 전환 완료 |
 | `stat-highlight` | `stat-grid` | `-grid` 접미사 일관성 | 2 | ✅ 전환 완료 |
-| `command-block` | `cmd-box` | `-box` 접미사 일관성 | 3 (+ devtools 오류) | ⚠️ devtools.md 수정 필요 |
+| `command-block` | `cmd-box` | `-box` 접미사 일관성 | 3 | ✅ 전환 완료 |
 | `tabs` | `os-tabs` | 플랫폼 명시 | 2 | ✅ 전환 완료 |
 | `faq-accordion` | `faq-list` | `-list` 접미사 일관성 | 2 | ✅ 전환 완료 |
 | `columns` | `columns-grid` | `-grid` 접미사 일관성 | 3 | ✅ 전환 완료 |
@@ -74,7 +74,7 @@
 |------|-------------------|-------------------|------|
 | `icon` | 이모지/아이콘 | 이모지/아이콘 | 변경 없음 |
 | `title` | 카드 제목 | 카드 제목 | 변경 없음 |
-| `desc` | 설명 OR 하단 배지 (숏코드마다 다름) | **항상 설명 문단** (`\n` 줄바꿈 지원) | plan-grid만 수정 필요 |
+| `desc` | 설명 OR 하단 배지 (숏코드마다 다름) | **항상 설명 문단** (`\n` 줄바꿈 지원) | plan-grid 정리 완료 |
 | `tag` | 상단 배지/레이블 | 상단 배지/레이블 | 변경 없음 |
 | `meta` | `\|` 구분 목록 | `\|` 구분 불릿 목록 | 변경 없음 |
 | `note` | 하단 배지 (일부 숏코드만) | **하단 배지/요약 메모** | plan-grid에서 새로 사용 |
@@ -98,7 +98,7 @@
 | `cmd-box` | desc | desc=코드 본문 (예외적 사용) | desc=코드 본문 | ✅ 없음 |
 | `editor-box` | desc | desc=코드 본문 | desc=코드 본문 | ✅ 없음 |
 | `stat-grid` | icon | icon=수치값 (이모지 아님) | icon=수치값 | ✅ 없음 (의도적 예외) |
-| **`plan-grid`** | **desc / note** | **HTML: desc=하단 배지 / PPTX: note=하단 배지** | **HTML+PPTX 모두: desc=미사용, note=하단 배지** | ❌ **수정 필요** |
+| **`plan-grid`** | **desc / note** | **HTML: desc=하단 배지 / PPTX: note=하단 배지** | **HTML+PPTX 모두: desc=미사용, note=하단 배지** | ✅ **수정 완료** |
 
 ---
 
@@ -125,16 +125,16 @@
 
 | 숏코드 | md_src 사용 수 | PPTX 현재 동작 | 조치 |
 |--------|:---:|--------|------|
-| `flow` | 8 | silent drop | Phase 3: fallback 로그 / Phase 4: 구현 |
-| `takeaway` | 3 | silent drop | Phase 3: fallback 로그 / Phase 4: 구현 |
-| `part-deck` | 2 | silent drop | Phase 3: fallback 로그 |
-| `level-grid` | 2 | silent drop | Phase 3: fallback 로그 |
-| `compare-before-after` | 2 | silent drop | Phase 3: fallback 로그 |
-| `checkpoint-grid` | 2 | silent drop | Phase 3: fallback 로그 |
-| `chapter-list` | 2 | silent drop | Phase 3: fallback 로그 |
-| `badge-grid` | 2 | silent drop | Phase 3: fallback 로그 |
-| `summary-bar` | 2 | silent drop | Phase 3: fallback 로그 |
-| `skill-list` | 1 | silent drop | Phase 3: fallback 로그 |
+| `flow` | 8 | 경고 후 제외 | Phase 4 구현 보류 |
+| `takeaway` | 3 | 경고 후 제외 | Phase 4 구현 보류 |
+| `part-deck` | 2 | 경고 후 제외 | 필요 시 구현 |
+| `level-grid` | 2 | 경고 후 제외 | 필요 시 구현 |
+| `compare-before-after` | 2 | 경고 후 제외 | Phase 4 구현 보류 |
+| `checkpoint-grid` | 2 | 경고 후 제외 | 필요 시 구현 |
+| `chapter-list` | 2 | 경고 후 제외 | 필요 시 구현 |
+| `badge-grid` | 2 | 경고 후 제외 | 필요 시 구현 |
+| `summary-bar` | 2 | 경고 후 제외 | 필요 시 구현 |
+| `skill-list` | 1 | 경고 후 제외 | 필요 시 구현 |
 
 ---
 
@@ -274,7 +274,7 @@
 
 ## 7. 실행 계획 (단계별)
 
-### Phase 1: devtools.md 구문 오류 수정
+### Phase 1: devtools.md 구문 오류 수정 — 완료
 
 **수정 대상:** `md_src/guides/devtools.md`  
 **내용:** 스페이스 누락 수정 + `command-block` → `cmd-box`, `compare-2col` → `compare-split`
@@ -286,10 +286,10 @@ node scripts/build-guide.mjs md_src/guides/devtools.md
 
 ---
 
-### Phase 2: plan-grid 필드 역할 통일
+### Phase 2: plan-grid 필드 역할 통일 — 완료
 
 **수정 대상:**
-1. `scripts/build-guide.mjs` — plan-grid 렌더링 섹션에서 `it.desc` → `it.note`
+1. `scripts/build-guide.mjs` — plan-grid 렌더링 섹션은 `it.note` 기준 유지
 2. `md_src/guides/perplexity.md` — `desc:` → `note:` 3곳
 3. `md_src/guides/Grok.md` — `desc:` → `note:` 3곳
 4. `md_src/guides/chatGPT.md` — `desc:` → `note:` 4곳
@@ -303,7 +303,7 @@ node scripts/build-guide.mjs md_src/guides/chatGPT.md
 
 ---
 
-### Phase 3: PPTX silent drop → fallback 로그
+### Phase 3: PPTX silent drop → fallback 로그 — 완료
 
 **수정 대상:** `scripts/md-to-pptx.mjs` `renderItem()` 마지막 줄
 
@@ -314,7 +314,7 @@ return 0;
 
 ---
 
-### Phase 4 (선택): 고빈도 PPTX 미구현 숏코드 구현
+### Phase 4 (선택 보류): 고빈도 PPTX 미구현 숏코드 구현
 
 | 우선순위 | 숏코드 | 기반 함수 |
 |:---:|--------|---------|
@@ -333,4 +333,4 @@ return 0;
 | `md_src/guides/perplexity.md` | 2 | `desc:` → `note:` 3곳 |
 | `md_src/guides/Grok.md` | 2 | `desc:` → `note:` 3곳 |
 | `md_src/guides/chatGPT.md` | 2 | `desc:` → `note:` 4곳 |
-| `scripts/md-to-pptx.mjs` | 3,4 | fallback 로그, flow/takeaway/compare-before-after 구현 |
+| `scripts/md-to-pptx.mjs` | 3 | fallback 로그 추가 |

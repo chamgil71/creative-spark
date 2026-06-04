@@ -1093,9 +1093,9 @@ if (isMain) {
     console.log([
       "",
       "사용법:",
-      "  node templates/build-guide.mjs <input.md> [output.html]",
-      "  node templates/build-guide.mjs <input.md> [--out path.html] [--style key]",
-      "  node templates/build-guide.mjs --all \"mddata/*.md\" [--style key]",
+      "  node scripts/build-guide.mjs <input.md> [output.html]",
+      "  node scripts/build-guide.mjs <input.md> [--out path.html] [--style key]",
+      "  node scripts/build-guide.mjs --all \"md_src/guides/*.md\" [--style key]",
       "",
       "옵션:",
       "  --out <path>   출력 HTML 경로 (기본: public/guides/<이름>.html)",
@@ -1121,7 +1121,7 @@ if (isMain) {
 
   // 인수 없으면 간단한 안내
   if (!positional.length) {
-    console.error("사용법: node templates/build-guide.mjs <input.md>  (--help 로 전체 옵션 확인)");
+    console.error("사용법: node scripts/build-guide.mjs <input.md>  (--help 로 전체 옵션 확인)");
     process.exit(1);
   }
 

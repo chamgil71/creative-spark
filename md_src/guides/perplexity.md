@@ -61,16 +61,16 @@ stats:
 ::: plan-grid cols=4
 - title: "무료"
   tag: "Free"
-  desc: "₩0"
+  note: "₩0"
   meta: "Quick Search 무제한|Pro Search 1일 5회|기본 파일 분석|이미지 생성 제한적"
 - title: "Pro 플랜"
   tag: "Pro ⭐"
-  desc: "$20 / 월"
+  note: "$20 / 월"
   meta: "Pro Search 1일 300회+|Deep Research 무제한|Claude·GPT-4o·Gemini 선택|이미지 생성 무제한|Spaces 공유 기능"
   featured: "true"
 - title: "기업용"
   tag: "Enterprise"
-  desc: "$40 / 월 / 인"
+  note: "$40 / 월 / 인"
   meta: "데이터 학습 제외|SSO·관리자 기능|내부 데이터 연동|API 접근"
 :::
 

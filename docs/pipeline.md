@@ -9,11 +9,11 @@
 ```
 storage/html_src1/*.html  (원본 HTML, gitignore)
       │
-      │  templates/html-to-md.mjs  ← config/shortcode-map.json
+      │  scripts/html-to-md.mjs  ← config/shortcode-map.json
       ▼
 md_src/guides/*.md  ←──────────── 신규 가이드 직접 작성 (권장)
       │
-      ├── templates/build-guide.mjs ──→ public/guides/*.html ──→ 웹 서비스
+      ├── scripts/build-guide.mjs ──→ public/guides/*.html ──→ 웹 서비스
       │
       └── scripts/md-to-pptx.mjs ──→ dist-pptx/*.pptx
 ```
@@ -26,12 +26,12 @@ md_src/guides/*.md  ←──────────── 신규 가이드 직
 
 ```bash
 # 단일 파일
-node templates/html-to-md.mjs storage/html_src1/CapCut.html md_src/guides/CapCut.md
+node scripts/html-to-md.mjs storage/html_src1/CapCut.html md_src/guides/CapCut.md
 
 # 전체 일괄 변환 (bash)
 for f in storage/html_src1/*.html; do
   name=$(basename "$f" .html)
-  node templates/html-to-md.mjs "$f" "md_src/guides/${name}.md"
+  node scripts/html-to-md.mjs "$f" "md_src/guides/${name}.md"
 done
 ```
 
@@ -46,13 +46,13 @@ done
 
 ```bash
 # 단일 파일
-node templates/build-guide.mjs md_src/guides/Supabase.md
+node scripts/build-guide.mjs md_src/guides/Supabase.md
 
 # 출력 경로 지정
-node templates/build-guide.mjs md_src/guides/Supabase.md public/guides/Supabase.html
+node scripts/build-guide.mjs md_src/guides/Supabase.md public/guides/Supabase.html
 
 # 스타일 강제 지정
-node templates/build-guide.mjs md_src/guides/Supabase.md --style knowledge
+node scripts/build-guide.mjs md_src/guides/Supabase.md --style knowledge
 ```
 
 **설정 파일:** `config/styles.json` (색상), `config/pptdesign.config.json` (둥글기)
@@ -184,10 +184,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### workflow — 프로세스 흐름
+#### workflow-strip — 프로세스 흐름
 
 ```
-::: workflow
+::: workflow-strip
 - icon: 📝
   title: 작성
   meta: VS Code
@@ -273,10 +273,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### faq-accordion — 자주 묻는 질문 아코디언
+#### faq-list — 자주 묻는 질문 목록
 
 ```
-::: faq-accordion
+::: faq-list
 - title: 무료로 사용할 수 있나요?
   desc: 네, 기본 기능은 무료 플랜으로 사용할 수 있습니다.
 - title: 어떤 파일 형식을 지원하나요?
@@ -284,19 +284,19 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### prompt-example — 실전 프롬프트 박스
+#### console-box — 실전 프롬프트 박스
 
 ```
-::: prompt-example
+::: console-box
 - title: 가이드 생성 프롬프트
   desc: 다음 도구에 대한 활용 가이드를 작성해 주세요. icon-grid로 핵심 기능 4가지를 포함해 주세요.
 :::
 ```
 
-#### stat-highlight — 통계 강조
+#### stat-grid — 통계 강조
 
 ```
-::: stat-highlight
+::: stat-grid
 - icon: 100+
   title: 사용자 수
   desc: 월간 활성 사용자
@@ -339,9 +339,9 @@ footer:                 # 선택: 푸터 텍스트 목록
 
 ---
 
-## 7. 미완성 항목
+## 7. 보완 예정 항목
 
 | 항목 | 상태 | 위치 |
 |------|------|------|
-| HTML → PPTX 직접 변환 | 미완성 (근사 렌더링 수준) | `temp/backup/html-to-pptx.mjs` |
-| Playwright 기반 HTML 캡처 PPTX | 미완성 | `temp/backup/html-to-pptx-hybrid.mjs` |
+| HTML → PPTX 직접 변환 | 실험적 변환기. 정밀 레이아웃 보완 필요 | `scripts/html-to-pptx.mjs` |
+| Playwright 기반 HTML 캡처 PPTX | 현재 공식 파이프라인 밖의 보류 아이디어 | 별도 구현 없음 |

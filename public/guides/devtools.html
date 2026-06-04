@@ -391,7 +391,19 @@
 <span class="fc-icon">🔄</span>정형화된 작업 처리
 </div>
 <p>패키지 의존성 버전 업그레이드 및 하위 호환성 테스트, DB 마이그레이션 스크립트 작성 등 명확한 규칙 기반 태스크에서 완벽한 안정성.</p>
-</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 도구별 장단점 분석 (Pros &amp; Cons)</h2></div><div class="card"><h3 class="card-title">핵심 도구별 장단점 입체 비교</h3><div class="compare-grid" >
+</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. 도구별 장단점 분석 (Pros &amp; Cons)</h2></div><div class="card"><h3 class="card-title">핵심 도구별 장단점 입체 비교</h3><div class="compare-2col"><div class="c2-card c2-left">
+<div class="card-top-bar"></div>
+<div class="c2-title">🟥 Claude Code (Anthropic)</div>
+<ul class="c2-list"><li>인간 개발자와 대화하는 듯한 극상의 추론 능력 및 코드 가독성</li><li>세밀하고 꼼꼼한 로컬 파일 제어와 높은 테스트 통과율</li><li>Git 및 CLI 환경과의 직관적이고 편리한 통합</li></ul>
+<div class="c2-desc"><p>단점: 대용량 코드를 반복 처리할 때 토큰 소모 속도가 매우 빠름 (비용 부담), 거대한 멀티 에이전트 병렬 작업 시 간혹 컨텍스트 경계가 모호해짐</p></div>
+<div class="c2-note">정밀 타격 및 디버깅 추천</div>
+</div><div class="c2-card c2-right">
+<div class="card-top-bar"></div>
+<div class="c2-title">🟨 Antigravity 2.0 (Google)</div>
+<ul class="c2-list"><li>압도적인 컨텍스트 크기로 대규모 프로젝트 구조 분석에 독보적</li><li>여러 서브 에이전트를 조율하는 능력이 뛰어나 복합적인 풀스택 태스크 처리에 유리</li><li>클라우드 및 인프라 도구들과의 우수한 연동성</li></ul>
+<div class="c2-desc"><p>단점: 소규모 코드 수정이나 미세한 린팅 작업에서는 응답 속도가 다소 무겁고 로컬 제어 디테일이 부족할 때가 있음</p></div>
+<div class="c2-note">대형 아키텍처 및 대형 기능 추가 추천</div>
+</div></div><div class="compare-grid" >
 <div class="compare-card" style="border-color: #10A37F; background-color: #10A37F08;">
 <div class="compare-card-title" style="color: #10A37F;">🟦 Codex (OpenAI)</div>
 <p>태스크 완료 및 PR 생성까지의 전체 자동화 파이프라인 안정성이 매우 높으며 가상 샌드박스 검증 능력이 뛰어납니다. 실행 비용 및 토큰 활용 효율성이 최적화되어 있어 가성비가 우수합니다.</p>
@@ -454,8 +466,7 @@
 <strong>3단계: 독립 태스크 완결 및 CI/CD 위임</strong>
 <p>명확한 버그 리포트(Issue)를 해결하고, 테스트 코드를 붙여 자동으로 깃허브에 고품질 PR까지 올려 손을 털고 싶을 때는 Codex에게 태스크를 위임하세요.</p>
 </div>
-</div>
-</div></section></main>
+</div></div></section></main>
   <section class="done-section">
     <h2>터미널 AI 에이전트 전환 완료</h2>
     <p>인라인 자동완성을 넘어, 이제 터미널에서 대형 목표(Goal)를 부여하고 자율 제어를 시작하세요.</p>

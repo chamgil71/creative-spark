@@ -76,4 +76,5 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 - [report/](report/) — 검토 보고서 및 작업 이력
   - [standalone-integrity-report.md](report/standalone-integrity-report.md) — Shadow DOM 정합성 검증 결과
   - [project-review-2026-05-28.md](report/project-review-2026-05-28.md) — 프로젝트 현황 검토 보고서
+  - [current-state-review-2026-06-04.md](report/current-state-review-2026-06-04.md) — 문서 현행화·계획 대비 잔여·코드 위험 분석
   - worklog.md — 영구 누적 작업 기록 일지

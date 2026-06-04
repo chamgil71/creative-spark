@@ -1,6 +1,6 @@
 # Creative Spark 숏코드 디자인 튜닝 및 미세 조정 가이드 (Shortcode Style Guide)
 
-본 지침서는 Creative Spark가 지원하는 **24종 표준 숏코드 및 특화 시각화 컴포넌트**의 HTML 변환 스타일과 PPTX 슬라이드 도식화 결과물을 직접 커스텀하고 미세 조정(마진, 패딩, 폰트 크기, HSL 컬러, 그리드 폭 등)하고자 할 때 사용하는 **클래스/스크립트 매핑 및 튜닝 가이드**입니다.
+본 지침서는 Creative Spark가 지원하는 **29종 표준 숏코드 및 특화 시각화 컴포넌트**의 HTML 변환 스타일과 PPTX 슬라이드 도식화 결과물을 직접 커스텀하고 미세 조정(마진, 패딩, 폰트 크기, HSL 컬러, 그리드 폭 등)하고자 할 때 사용하는 **클래스/스크립트 매핑 및 튜닝 가이드**입니다.
 
 ---
 
@@ -24,18 +24,18 @@
 
 ---
 
-## 2. 24종 숏코드별 상세 디자인 튜닝 매핑
+## 2. 29종 숏코드별 상세 디자인 튜닝 매핑
 
 ---
 
 ## [1] plan-grid (요금제 / 플랜 비교 격자)
 
 ### 숏코드설명
-* **사용 키**: `title` (플랜명), `tag` (추천 뱃지), `desc` (가격/월), `meta` (특징 칩 목록), `note` (하단 추가 메모), `featured` ("true" 여부), `color`
+* **사용 키**: `title` (플랜명), `tag` (추천 뱃지), `meta` (특징 칩 목록), `note` (하단 가격 배지/추가 메모), `featured` ("true" 여부), `color`
 * **주 사용처**: 서비스 요금 요약표, 등급별 멤버십 플랜 다단 대조 비교.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 259 ~ 280)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 259 ~ 280)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.plan-grid`: 다단 배열 그리드 갭 조율 (`gap: 20px;`).
   * `.plan-card`: 플랜 카드 기본 그림자 및 내부 패딩 조율 (`padding: 25px;`).
@@ -58,7 +58,7 @@
 * **주 사용처**: 시스템의 장점 나열, 핵심 아키텍처 구성 기술 목록화.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 171 ~ 207)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 171 ~ 207)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.feature-card`: 전체 테두리색 및 호버 애니메이션 조율.
   * `.feature-tag`: 우측 상단 뱃지 배경색 및 폰트 세팅 (`font-size: 0.75rem; font-weight: 900;`).
@@ -79,7 +79,7 @@
 * **주 사용처**: 다목적 3단/4단 반응형 요약 카드 구성 시 활용.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 171 ~ 207)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 171 ~ 207)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.icon-card-icon`: 중앙 정렬된 대형 이모지의 폰트 크기 조율 (`font-size: 2.5rem;`).
   * `.icon-card-title`: 중앙 정렬 대제목의 크기 및 색상 조율.
@@ -99,7 +99,7 @@
 * **주 사용처**: 기술 스택 묶음 나열, 관련 도구 리스트의 초소형 조밀 배치.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 178 ~ 185)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 178 ~ 185)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.badge-grid`: 초소형 그리드 레이아웃 조율 (`grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));`).
   * `.badge-item`: 140px 미니멀 버튼형 카드 둥글기 및 테두리선 두께 조율.
@@ -119,7 +119,7 @@
 * **주 사용처**: "33% 성능 향상", "₩0 비용", "2K 해상도" 등 거대한 세리프 서체의 지표 표현.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 186 ~ 192)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 186 ~ 192)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.stat-card`: 수치 카드 상단 3px 보더 라인 조율 (`border-top: 3px solid var(--brand);`).
   * `.stat-val`: 중앙 정렬된 거대 지표 텍스트 폰트 조율 (`font-size: 2.6rem; font-family: Georgia, serif;`).
@@ -140,7 +140,7 @@
 * **주 사용처**: 추천 툴 목록, 개발 환경별 전용 에이전트 요약 설명 카드.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 210 ~ 226)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 210 ~ 226)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.tool-card` (숏코드명: `tool-box`): 카드 전체 외곽선 섀도우 조율.
   * `.tc-header`: 헤더 그라데이션 및 색상 융합 제어.
@@ -162,7 +162,7 @@
 * **주 사용처**: 기획 -> 초안 -> 디자인 -> 검토 -> 배포 등으로 연쇄 작동하는 가로 방향 마일스톤 흐름 표현.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 229 ~ 237)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 229 ~ 237)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.workflow-strip`: 가로 정렬 플렉스박스 구조.
   * `.wf-step`: 각 단계별 개별 라운드 박스.
@@ -184,7 +184,7 @@
 * **주 사용처**: 튜토리얼 1단계, 2단계, 3단계의 수직 나열 및 가독성 세팅.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 240 ~ 249)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 240 ~ 249)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.step-list`: 수직형 목록 여백 조율.
   * `.step-num`: 좌측 동그란 3D형 숫자 원의 지름 및 글씨 세팅 (`width: 32px; height: 32px; font-weight: 800;`).
@@ -204,7 +204,7 @@
 * **주 사용처**: 장단점 대조, 사용자 유형별 최적 대안 권장 코멘트 추가 기재.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 252 ~ 260)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 252 ~ 260)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.compare-card`: 은은한 투명도를 지닌 브랜드 테마 보더 적용.
   * `.compare-note`: 최하단에 성형되는 전용 팁박스 메모 영역 (`background: var(--brand-light); color: var(--brand-dark); font-size: 0.85rem; padding: 10px 14px;`).
@@ -225,7 +225,7 @@
 * **주 사용처**: 장식 요소를 배제하고 줄글 본문 자체의 레이아웃 가독성을 최대로 높이고자 할 때 활용.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 293 ~ 302)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 293 ~ 302)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.columns-grid`: 가로 다단 배치.
   * `.column-card`: 상단에만 얇게 올려둔 포인트 탑 바 레이아웃 (`.card-top-bar { height: 4px; }`).
@@ -244,7 +244,7 @@
 * **주 사용처**: 가이드 문서 최하단에 관련 참고 자료 태그나 카테고리를 미려하게 장식하며 정리할 때 활용.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 304 ~ 312)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 304 ~ 312)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.bottom-list-card`: 보더 및 그림자 속성.
   * `.bl-chips`: 둥근 버튼 칩들의 묶음 컨테이너.
@@ -267,7 +267,7 @@
 * **주 사용처**: 클라우드 vs 자체호스팅, React vs Vue 등 주요 대안 2종을 칼각으로 양측 좌우 비교할 때 활용.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 315 ~ 331)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 315 ~ 331)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.compare-2col` (숏코드명: `compare-split`): 2분할 레이아웃 조율 (`grid-template-columns: 1fr 1fr; gap: 24px;`).
   * `.c2-card.c2-left`:  강조 디자인 세팅.
@@ -289,7 +289,7 @@
 * **주 사용처**: 본문 진행 중 돌출되는 주의사항, 추가 예외 케이스 팁 제공.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 334 ~ 347)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 334 ~ 347)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.alert-box`: 타입별 인라인 HSL 변수 `--alert-color`를 기준으로 배경 및 보더색이 조율되는 우아한 디자인.
   * `.alert-icon`: 왼쪽 고정 이모지 폰트 및 세로 정렬 제어.
@@ -309,7 +309,7 @@
 * **주 사용처**: 리눅스/윈도우 명령어 라인 실행문 기재, 터미널 로그 재현.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 350 ~ 363)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 350 ~ 363)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.cmd-block`: 다크 모드 터미널 창 기본 보더 및 투명도 세팅.
   * `.cmd-header`: 상단바 제목 배지 및 우측 정렬된 복사(Copy) 작동 버튼 UI.
@@ -330,7 +330,7 @@
 * **주 사용처**: Windows, Mac, Linux OS 환경별 실행 명령어를 사용자가 수평으로 탭 전환해가며 선택적으로 확인할 수 있도록 제어.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 366 ~ 374)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 366 ~ 374)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.tabs-wrap`: 탭 전체 컨테이너.
   * `.tabs-nav`: 수평 탭바 마진 제어.
@@ -351,7 +351,7 @@
 * **주 사용처**: FAQ 아코디언 질의응답 리스트 구성 시 활용.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 377 ~ 386)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 377 ~ 386)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.faq-item`: 클릭하면 열리는 클래스 `.open` 전환 토글.
   * `.faq-q`: 우측 정렬된 회전 화살표(`▼`) 트랜지션 및 폰트 세팅.
@@ -371,7 +371,7 @@
 * **주 사용처**: GPTs/시스템 프롬프트의 구체적인 소스 지침이나 프롬프트 질의문 나열.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 389 ~ 395)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 389 ~ 395)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.prompt-box`: 옅은 회색조의 섀도우 카드 보더 세팅.
   * `.prompt-label`: 상단 고정 라벨 헤더 크기 조율.
@@ -391,7 +391,7 @@
 * **주 사용처**: 학습 역량 마일스톤, 프로그래밍 스킬셋 등 역량 목록화.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/templates/build-guide.mjs) (라인 283 ~ 290)
+* **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 283 ~ 290)
 * **해당 CSS 클래스 및 조정 방법**:
   * `.skill-item`: 스킬 목록 둥글기 조율.
   * `.skill-icon`: 원형 이모지 뱃지 직경 및 배경색 조율 (`width: 50px; height: 50px; border-radius: 50%;`).
@@ -527,3 +527,79 @@
 ### pptx 숏코드 디자인
 * **해당 설정 및 조정 방법**:
   * 가로 전체 슬라이드 하단에 와이드 인디케이터 배너 형식으로 6대 표준 수치를 가로 등간격 슬롯 계산하여 정교하게 투사 배치합니다.
+
+---
+
+## [25] flow (프로세스 흐름 시각화)
+
+### 숏코드설명
+* **사용 키**: `icon`, `title`, `desc`, `tag`, `color`
+* **주 사용처**: 단계별 프로세스, 데이터 흐름, 진행 순서를 가로 흐름으로 설명.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `renderShortcode()`의 `flow` 분기 및 `.flow`, `.flow-step`, `.flow-arrow` CSS.
+* **조정 포인트**: 흐름 카드 간격은 `.flow`의 gap, 단계 카드 크기와 강조선은 `.flow-step`, 화살표 표현은 `.flow-arrow`를 조정합니다.
+
+### pptx 숏코드 디자인
+* 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
+
+---
+
+## [26] level-grid (레벨 스펙트럼)
+
+### 숏코드설명
+* **사용 키**: `title`, `desc`, `meta`, `note`, `color`
+* **주 사용처**: 난이도, 성숙도, 단계별 역량 구간 비교.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `level-grid` 분기 및 `.level-grid`, `.level-card` CSS.
+* **조정 포인트**: 컬럼 폭은 `.level-grid`, 카드 상단 강조와 배지는 `.level-card` 계열 클래스를 조정합니다.
+
+### pptx 숏코드 디자인
+* 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
+
+---
+
+## [27] checkpoint-grid (중간 체크포인트)
+
+### 숏코드설명
+* **사용 키**: `icon`, `title`, `desc`, `color`
+* **주 사용처**: 점검 항목, 중간 검수 포인트, 체크리스트형 요약.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `checkpoint-grid` 분기 및 `.checkpoint-grid`, `.checkpoint-card` CSS.
+* **조정 포인트**: 카드 밀도는 `.checkpoint-grid`, 아이콘 크기와 배경은 `.checkpoint-icon`을 조정합니다.
+
+### pptx 숏코드 디자인
+* 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
+
+---
+
+## [28] compare-before-after (Before / After 비교)
+
+### 숏코드설명
+* **사용 키**: `title`, `desc`, `tag`, `color`
+* **주 사용처**: 기존 방식과 개선 후 방식의 전후 차이 강조.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `compare-before-after` 분기 및 `.compare-before-after`, `.ba-card` CSS.
+* **조정 포인트**: 좌우 카드 간격은 `.compare-before-after`, 카드별 색상과 라벨은 `.ba-card` 및 하위 클래스를 조정합니다.
+
+### pptx 숏코드 디자인
+* 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
+
+---
+
+## [29] takeaway (핵심 요약 배너)
+
+### 숏코드설명
+* **사용 키**: `icon`, `title`, `desc`, `color`
+* **주 사용처**: 문서 마지막 결론, 섹션 요약, 기억해야 할 핵심 메시지.
+
+### html 숏코드 디자인
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `takeaway` 분기 및 `.takeaway` CSS.
+* **조정 포인트**: 배너 배경과 강조선은 `.takeaway`, 제목/본문 간격은 내부 heading과 paragraph 스타일을 조정합니다.
+
+### pptx 숏코드 디자인
+* 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
+

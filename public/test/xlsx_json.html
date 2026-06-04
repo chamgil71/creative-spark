@@ -329,23 +329,39 @@
 <div class="compare-card" style="border-color: #D97757; background-color: #D9775708;">
 <div class="compare-card-title" style="color: #D97757;">xl_to_json.py (simple)</div>
 <p>pandas의 to_dict(orient=&#39;records&#39;)를 사용해 첫 행(헤더)을 키로 매우 심플하게 직렬화합니다.</p>
-<div class="compare-note" style="background:#D9775715; color:#D97757">2행 이상 병합/트리 구조 미지원 | 스키마 추출 기능 없음</div>
+<div class="compare-note" style="background:#D9775715; color:#D97757">
+<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
+<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #D97757; flex-shrink: 0; margin-top: 2px;">•</span><span>2행 이상 병합/트리 구조 미지원</span></li><li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #D97757; flex-shrink: 0; margin-top: 2px;">•</span><span>스키마 추출 기능 없음</span></li>
+</ul>
+</div>
 </div>
 <div class="compare-card" style="border-color: #10B981; background-color: #10B98108;">
 <div class="compare-card-title" style="color: #10B981;">BudgetN convert.py (config)</div>
 <p>openpyxl로 데이터를 읽고 config.yaml 내 column_mapping 등을 통해 컬럼명을 동적으로 대응합니다.</p>
-<div class="compare-note" style="background:#10B98115; color:#10B981">구조적 매핑 지원 | schema(설정)와 data 분리 운영 가능</div>
+<div class="compare-note" style="background:#10B98115; color:#10B981">
+<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
+<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #10B981; flex-shrink: 0; margin-top: 2px;">•</span><span>구조적 매핑 지원</span></li><li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #10B981; flex-shrink: 0; margin-top: 2px;">•</span><span>schema(설정)와 data 분리 운영 가능</span></li>
+</ul>
+</div>
 </div></div></div><div class="card"><h3 class="card-title">2. orchestrator.py &amp; etl_service.py</h3><p>오케스트레이터 분석기와 Pydantic 검증 모델을 기반으로 작동하는 ETL 서비스 엔진의 비교입니다.</p>
 <div class="compare-grid" style="grid-template-columns: repeat(2, 1fr);">
 <div class="compare-card" style="border-color: #3B82F6; background-color: #3B82F608;">
 <div class="compare-card-title" style="color: #3B82F6;">orchestrator.py (analyzer)</div>
 <p>ExcelAnalyzer 엔진을 사용하며, export_config.yaml 설정으로 변환 규칙을 분리 관리합니다.</p>
-<div class="compare-note" style="background:#3B82F615; color:#3B82F6">스키마 설정 수동 변경 지원 | 트리 구조 자동화 미지원</div>
+<div class="compare-note" style="background:#3B82F615; color:#3B82F6">
+<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
+<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #3B82F6; flex-shrink: 0; margin-top: 2px;">•</span><span>스키마 설정 수동 변경 지원</span></li><li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #3B82F6; flex-shrink: 0; margin-top: 2px;">•</span><span>트리 구조 자동화 미지원</span></li>
+</ul>
+</div>
 </div>
 <div class="compare-card" style="border-color: #EC4899; background-color: #EC489908;">
 <div class="compare-card-title" style="color: #EC4899;">etl_service.py (Pydantic)</div>
 <p>Pydantic 모델(CompanyRecord 등)을 데이터 스키마 검증 레이어로 선언하여 변환 정합성을 체크합니다.</p>
-<div class="compare-note" style="background:#EC489915; color:#EC4899">자동 데이터 유효성 검증 | 스키마-데이터 완벽 격리</div>
+<div class="compare-note" style="background:#EC489915; color:#EC4899">
+<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
+<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #EC4899; flex-shrink: 0; margin-top: 2px;">•</span><span>자동 데이터 유효성 검증</span></li><li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: #EC4899; flex-shrink: 0; margin-top: 2px;">•</span><span>스키마-데이터 완벽 격리</span></li>
+</ul>
+</div>
 </div></div></div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>📋 핵심 스키마 및 결론 요약</h2></div><div class="card"><h3 class="card-title">1. 기능 종합 및 현상 분석</h3><p>4대 변환 엔진들의 핵심 한계와 공통 기능 분석 요약 지표입니다.</p>
 <div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" style="border-color: #FEF3C7; background-color: #FEF3C708;">
 <div class="card-top-bar" style="background-color:#FEF3C7"></div>
@@ -372,15 +388,15 @@
 <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >Low</div>
 <div class="stat-name">xl_to_json.py</div>
-<div class="stat-note"><div>단순 직렬화로 분리 수준이 가장 낮음</div></div>
+<div class="stat-note"><p>단순 직렬화로 분리 수준이 가장 낮음</p></div>
 </div><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >Medium</div>
 <div class="stat-name">orchestrator / BudgetN</div>
-<div class="stat-note"><div>yaml 기반 변환 룰 파일 제공으로 양호</div></div>
+<div class="stat-note"><p>yaml 기반 변환 룰 파일 제공으로 양호</p></div>
 </div><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >High</div>
 <div class="stat-name">etl_service.py</div>
-<div class="stat-note"><div>Pydantic 강력 유효성 검증 모델로 완전 격리</div></div>
+<div class="stat-note"><p>Pydantic 강력 유효성 검증 모델로 완전 격리</p></div>
 </div></div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>💡 트리구조 자동화 설계 가이드</h2></div><div class="card"><h3 class="card-title">1. 커스텀 파서 구현 권장 사항</h3><p>병합된 셀 및 2행 이상 헤더에서 완벽한 트리구조의 schema.json과 data.json을 분리 및 동기화하기 위한 3단계 구현 로직입니다.</p>
 <div class="step-list">
 <div class="step-item" style="border-color: #6366F1; background-color: #6366F108;">

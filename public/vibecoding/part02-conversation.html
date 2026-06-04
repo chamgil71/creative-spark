@@ -420,47 +420,47 @@
 <div class="ta-icon">💡</div>
 <div>
 <div class="ta-label">Key Takeaway</div>
-<div class="ta-text">좋은 프롬프트는 **역할·맥락·작업·조건·형식**을 갖추고, SKILL.md는 그 맥락을 **프로젝트 전체에 걸쳐 일관되게 유지**하는 핵심 도구입니다.</div>
+<div class="ta-text"><p>좋은 프롬프트는 **역할·맥락·작업·조건·형식**을 갖추고, SKILL.md는 그 맥락을 **프로젝트 전체에 걸쳐 일관되게 유지**하는 핵심 도구입니다.</p></div>
 </div>
 </div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>에이전트에게 복잡한 작업 위임하기</h2></div><div class="card"><p>AI에게 &quot;해줘&quot;가 아니라 &quot;맡길게&quot;라고 말할 수 있을 때, 진짜 자동화가 시작됩니다. 복잡한 작업을 쪼개고, 검수하고, 안전하게 완성하는 전략을 다룹니다.</p>
 <h3>작업 분해 — 2가지 핵심 기준</h3>
 <div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">1️⃣</div>
 <div class="icon-card-title" style="color: var(--text);">입출력 경계 명확히</div>
-<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">️ ❌ 나쁜 분해:</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">1단계: PDF 처리</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">2단계: 데이터 저장</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">️ ✅ 좋은 분해:</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">1단계: PDF → raw.json</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">2단계: raw.json → structured.json</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">3단계: structured.json → DB</span>
+<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">✔️ ❌ 나쁜 분해:</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">1단계: PDF 처리</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">2단계: 데이터 저장</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">✔️ ✅ 좋은 분해:</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">1단계: PDF → raw.json</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">2단계: raw.json → structured.json</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">3단계: structured.json → DB</span>
 </div></div>
 </div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">2️⃣</div>
 <div class="icon-card-title" style="color: var(--text);">검증 및 복구 가능성</div>
-<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;"><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">️ 각 단계 완료 시 **결과를 파일로 저장** (체크포인트)</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">️ 단계별 **샘플 5개**로 사람이 직접 검수 진행</span>
-</div><div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.9rem; color: var(--text-2); line-height: 1.5;">
-<span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align: left;">️ 3단계 실패해도 2단계 결과물부터 바로 재실행 가능</span>
+<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">✔️ 각 단계 완료 시 **결과를 파일로 저장** (체크포인트)</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">✔️ 단계별 **샘플 5개**로 사람이 직접 검수 진행</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">✔️ 3단계 실패해도 2단계 결과물부터 바로 재실행 가능</span>
 </div></div>
 </div></div><h3>3가지 위임 패턴</h3>
 <div class="icon-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="icon-card" >
@@ -513,7 +513,7 @@
 <div class="ta-icon">💡</div>
 <div>
 <div class="ta-label">Key Takeaway</div>
-<div class="ta-text">복잡한 작업은 **입출력이 명확한 단계로 분해**하고, **각 단계마다 검수**하고, **중간 결과를 파일로 보존**하는 세 원칙을 지키면 AI 위임의 실패율을 크게 낮출 수 있습니다.</div>
+<div class="ta-text"><p>복잡한 작업은 **입출력이 명확한 단계로 분해**하고, **각 단계마다 검수**하고, **중간 결과를 파일로 보존**하는 세 원칙을 지키면 AI 위임의 실패율을 크게 낮출 수 있습니다.</p></div>
 </div>
 </div></section></main>
   

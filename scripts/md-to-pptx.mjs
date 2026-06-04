@@ -1032,6 +1032,7 @@ function renderItem(slide, item, x, y, w, pal) {
   if (item.type === "git-flow-strip")                                            return renderWorkflow(slide, item, x, y, w, pal);
   if (item.type === "editor-box")                                                return renderCommandBlock(slide, item, x, y, w, pal);
   if (item.type === "network-box")                                               return renderCompareGrid(slide, item, x, y, w, pal);
+  console.warn(`  ⚠️  PPTX 미구현 숏코드: "${item.type}" — 슬라이드에서 제외됨`);
   return 0;
 }
 
