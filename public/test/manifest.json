@@ -3,6 +3,11 @@
   "label": "test 시리즈",
   "parts": [
     {
+      "slug": "when-ai-builds-itself",
+      "title": "When AI builds itself",
+      "file": "when-ai-builds-itself.html"
+    },
+    {
       "slug": "xlsx_json",
       "title": "Excel to JSON 변환 파이프라인 분석",
       "file": "xlsx_json.html"

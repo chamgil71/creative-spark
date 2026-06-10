@@ -24,6 +24,7 @@ function loadJsonWithComments(filePath) {
 
 const STYLES = loadJsonWithComments(path.join(CONFIG_DIR, "styles.json"));
 const CONFIG = loadJsonWithComments(path.join(CONFIG_DIR, "pptdesign.config.json"));
+const HTML_CONFIG = loadJsonWithComments(path.join(CONFIG_DIR, "htmldesign.config.json"));
 
 // Helpers
 function escapeHtml(s) {
@@ -44,12 +45,12 @@ function standardizeItem(item) {
   const iconMatch = rawName.match(/^([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])\s*(.*)$/);
   const icon =     item.icon || (iconMatch ? iconMatch[1] : "") || "";
   const title =    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "";
-  const desc =     String(item.desc || item.description || item.tagline || item.body || "").replace(/\\n/g, "\n");
+  const desc =     String(item.desc || item.description || item.tagline || item.body || "").replace(/\\n/g, "\n").replace(/\/n/g, "\n");
   const tag =      item.tag || item.badge || item.type || "";
   const color =    item.color || "";
   const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
-  const meta = item.meta || item.tool || item.features || item.items || item.points || "";
-  const note = String(item.note || "").replace(/\\n/g, "\n");
+  const meta =     String(item.meta || item.tool || item.features || item.items || item.points || "").replace(/\\n/g, "\n").replace(/\/n/g, "\n");
+  const note =     String(item.note || "").replace(/\\n/g, "\n").replace(/\/n/g, "\n");
 
   return { ...item, icon, title, desc, tag, meta, note, color, featured };
 }
@@ -128,7 +129,7 @@ function parseShortcodeItems(src) {
 // Render shortcode (same visual blocks as build-guide)
 function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
   if (!text) return "";
-  const cleanText = String(text).replace(/\\n/g, "\n");
+  const cleanText = String(text).replace(/\\n/g, "\n").replace(/\/n/g, "\n");
   const lines = cleanText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
   
   if (lines.length <= 1 && !lines[0]?.match(/^[-*+•✅✔️]/) && !customBullet) {
@@ -585,6 +586,14 @@ function renderShortcode(type, body, args) {
 }
 
 export function buildPresentationHtml(inputPaths, opts = {}) {
+  const fontConfig = HTML_CONFIG?.htmlFont || {};
+  const fontTitle = fontConfig.title || "'Noto Serif KR', serif";
+  const fontDesc  = fontConfig.desc  || "'Noto Sans KR', sans-serif";
+  const fontNote  = fontConfig.note  || "'JetBrains Mono', monospace";
+  const fontCode  = fontConfig.code  || "'JetBrains Mono', monospace";
+  const fontTag   = fontConfig.tag   || "'Noto Sans KR', sans-serif";
+  const fontScale = fontConfig.scale || 1.0;
+
   const paths = Array.isArray(inputPaths) ? inputPaths : [inputPaths];
   if (!paths.length) throw new Error("변환할 마크다운 파일 경로가 지정되지 않았습니다.");
 
@@ -605,10 +614,13 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     const style = STYLES[styleKey] || STYLES["ai-chat"];
 
     // Parse shortcodes
-    const processedContent = content.replace(/^:::\s*([A-Za-z0-9_-]+)(?:[ \t]+([^\r\n]+))?[ \t]*\r?\n([\s\S]*?)(?:\r?\n|^):::[ \t]*$/gm, (_, type, args, body) => {
+    let processedContent = content.replace(/^:::\s*([A-Za-z0-9_-]+)(?:[ \t]+([^\r\n]+))?[ \t]*\r?\n([\s\S]*?)(?:\r?\n|^):::[ \t]*$/gm, (_, type, args, body) => {
       const html = renderShortcode(type, body, args);
       return html ? `\n${html.replace(/\n\s+/g, '\n')}\n` : "";
     });
+
+    // Replace literal '\n' and '/n' (not part of URLs) with <br> inside general markdown text
+    processedContent = processedContent.replace(/(?<!https?:|[a-zA-Z0-9.\-_]+)(?:\\n|\/n)(?!\w)/g, "<br>");
 
     const tokens = marked.lexer(processedContent);
     let currentSlide = null;
@@ -661,15 +673,13 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
 
     if (s.type === "cover") {
       return `<div class="slide cover" ${styleAttr}>
-        <div class="slide-num">${sNum}</div>
         <h1>${s.title}</h1>
-        ${s.body ? `<p>${s.body}</p>` : ""}
+        ${s.body ? `<div class="cover-body">${s.body}</div>` : ""}
       </div>`;
     }
     return `<div class="slide content" ${styleAttr}>
       <header class="slide-header">
         <h2>${s.title}</h2>
-        <div class="slide-num">${sNum}</div>
       </header>
       <div class="slide-body">
         ${s.body}
@@ -692,6 +702,31 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     --text-muted: #94a3b8;
     --card-bg:    #11141b; /* 💡 다크모드 카드 배경색을 변경하려면 이 값을 수정하세요! */
     --radius:     ${cssRadius};
+
+    /* 💡 중앙통제 역할별 폰트 (설정 파일 config/htmldesign.config.json 에서 관리) */
+    --font-title: ${fontTitle};
+    --font-desc:  ${fontDesc};
+    --font-note:  ${fontNote};
+    --font-code:  ${fontCode};
+    --font-tag:   ${fontTag};
+
+    /* 💡 폰트 크기 일괄 스케일 배율 (설정 파일 config/htmldesign.config.json 에서 관리) */
+    --font-scale: ${fontScale};
+
+    /* 💡 [중앙통제] 특정 숏코드 및 컴포넌트별 폰트 크기 개별 정의 (필요 시 개별 오버라이드 가능!) */
+    --size-h1: 3rem;
+    --size-h2: 2.6rem;
+    --size-h3: 1.8rem;
+    --size-body-p: 1.3rem;
+    --size-card-title: 1.45rem;
+    --size-card-p: 1.2rem;
+    --size-stat-val: 2.6rem;
+    --size-stat-name: 1.2rem;
+    --size-stat-note: 1.1rem;
+    --size-plan-badge: 0.8rem;
+    --size-plan-features: 1.1rem;
+    --size-workflow-name: 1.15rem;
+    --size-workflow-tool: 0.95rem;
   }
   body.light-mode {
     --border:     rgba(15, 23, 42, 0.08);
@@ -702,7 +737,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: var(--font-desc), sans-serif;
     background: var(--bg);
     color: var(--text);
     overflow: hidden;
@@ -759,10 +794,22 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   body.light-mode .feature-card-title, 
   body.light-mode .compare-card-title, 
   body.light-mode .col-title, 
-  body.light-mode .plan-title {
+  body.light-mode .plan-title,
+  body.light-mode .stat-name {
     color: var(--text);
   }
   body.light-mode .slide-body p {
+    color: var(--text-muted);
+  }
+  body.light-mode .icon-card p,
+  body.light-mode .feature-card p,
+  body.light-mode .compare-card p,
+  body.light-mode .column-card p,
+  body.light-mode .plan-card p,
+  body.light-mode .summary-box p,
+  body.light-mode .stat-card p,
+  body.light-mode .stat-note p,
+  body.light-mode .multiline-item {
     color: var(--text-muted);
   }
   body.light-mode .chapter-title strong {
@@ -779,6 +826,16 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   }
   body.light-mode .node-main {
     color: #fff;
+  }
+  body.light-mode .alert-box {
+    background: rgba(15, 23, 42, 0.03);
+  }
+  body.light-mode .alert-body p {
+    color: var(--text-muted);
+  }
+  body.light-mode .compare-note {
+    background: rgba(15, 23, 42, 0.03) !important;
+    color: var(--text-muted) !important;
   }
 
   .slides-container {
@@ -815,17 +872,31 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     text-align: center;
   }
   .slide.cover h1 {
-    font-family: 'Noto Serif KR', serif;
-    font-size: clamp(2.5rem, 6vw, 4.2rem);
+    font-family: var(--font-title);
+    font-size: calc(var(--size-h1) * var(--font-scale));
     font-weight: 900;
     color: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     text-shadow: 0 4px 16px rgba(0,0,0,0.3);
   }
-  .slide.cover p {
-    font-size: 1.5rem;
+  .slide.cover > p {
+    font-family: var(--font-desc);
+    font-size: calc(1.7rem * var(--font-scale));
     color: var(--brand-light);
-    max-width: 800px;
+    max-width: 900px;
+  }
+  .cover-body {
+    max-width: 900px;
+    margin: 20px auto 0;
+    text-align: center;
+    color: var(--brand-light);
+  }
+  .cover-body p {
+    font-family: var(--font-desc);
+    font-size: calc(1.4rem * var(--font-scale));
+    line-height: 1.8;
+    margin-bottom: 24px;
+    color: var(--brand-light);
   }
   
   .slide.content {
@@ -843,54 +914,100 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     justify-content: space-between;
   }
   .slide-header h2 {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 2.2rem;
+    font-family: var(--font-title);
+    font-size: calc(var(--size-h2) * var(--font-scale));
     color: var(--brand-light);
     font-weight: 700;
   }
   .slide-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.1rem;
+    font-family: var(--font-note);
+    font-size: calc(1.2rem * var(--font-scale));
     color: var(--text-muted);
   }
 
   .slide-body {
     width: 100%;
     flex: 1;
-    font-size: 1.25rem;
+    font-size: calc(1.45rem * var(--font-scale));
     line-height: 1.8;
   }
-  .slide-body p { margin-bottom: 20px; color: #cbd5e1; }
-  .slide-body h3 { font-size: 1.5rem; color: #fff; margin: 24px 0 12px; }
+  .slide-body p { margin-bottom: 20px; color: var(--text-muted); font-size: calc(var(--size-body-p) * var(--font-scale)); }
+  .slide-body h3 { font-family: var(--font-title); font-size: calc(var(--size-h3) * var(--font-scale)); color: var(--text); margin: 24px 0 12px; }
 
   /* Standard visual components inside slides */
-  .icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid { display: grid; gap: 20px; margin: 25px 0; width: 100%; }
-  .icon-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-  .plan-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-  .compare-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-  .columns-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .icon-grid, .feature-grid, .compare-grid, .plan-grid, .columns-grid, .stat-grid { display: grid; gap: 20px; margin: 25px 0; width: 100%; }
+  .icon-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .feature-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .plan-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .compare-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .columns-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .stat-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
 
-  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .summary-box, .badge-item { 
+  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .summary-box, .badge-item, .stat-card { 
     background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; 
-    position: relative; overflow: hidden; transition: 0.2s;
+    position: relative; overflow: hidden; transition: 0.2s; color: var(--text-muted);
   }
+  .icon-card p, .feature-card p, .compare-card p, .column-card p, .plan-card p, .summary-box p, .stat-card p, .stat-note p {
+    font-family: var(--font-desc);
+    color: var(--text-muted);
+    font-size: calc(var(--size-card-p) * var(--font-scale));
+    line-height: 1.6;
+  }
+  .stat-val { font-size: calc(var(--size-stat-val) * var(--font-scale)); font-weight: 900; color: var(--brand); font-family: var(--font-title); margin-bottom: 6px; line-height: 1.1; }
+  .stat-name { font-family: var(--font-desc); font-weight: 700; font-size: calc(var(--size-stat-name) * var(--font-scale)); margin-bottom: 4px; color: var(--text); }
+  .stat-note { font-family: var(--font-desc); font-size: calc(var(--size-stat-note) * var(--font-scale)); color: var(--text-muted); }
   .card-top-bar { height: 4px; background: var(--brand); position: absolute; top: 0; left: 0; right: 0; }
-  .icon-card-icon { font-size: 2.5rem; margin-bottom: 12px; text-align: center; }
+  .icon-card-icon { font-size: 2.8rem; margin-bottom: 12px; text-align: center; }
   .icon-card-title, .feature-card-title, .compare-card-title, .col-title, .plan-title { 
-    font-weight: 800; font-size: 1.2rem; margin-bottom: 8px; color: #fff; 
+    font-family: var(--font-desc); font-weight: 800; font-size: calc(var(--size-card-title) * var(--font-scale)); margin-bottom: 8px; color: var(--text); 
   }
-  .feature-tag { position: absolute; top: 12px; right: 12px; font-size: 0.75rem; font-weight: 900; padding: 4px 10px; border-radius: 100px; background: var(--brand); color: #fff; }
-  .slide-body p { color: #94a3b8; font-size: 1.125rem; }
+  .feature-tag { position: absolute; top: 12px; right: 12px; font-size: calc(0.8rem * var(--font-scale)); font-weight: 900; padding: 4px 10px; border-radius: 100px; background: var(--brand); color: #fff; }
 
   /* Plan Grid details */
   .plan-card { text-align: center; padding-top: 35px; }
   .plan-featured { border-color: var(--brand); box-shadow: 0 8px 30px rgba(99,102,241,0.2); }
-  .plan-badge { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 100px; }
+  .plan-badge { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); background: var(--brand); color: #fff; font-size: calc(var(--size-plan-badge) * var(--font-scale)); font-weight: 900; padding: 4px 12px; border-radius: 100px; }
   .plan-features { list-style: none; margin: 0 0 15px 0; padding: 0; text-align: left; }
-  .plan-features li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: #cbd5e1; }
+  .plan-features li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: calc(var(--size-plan-features) * var(--font-scale)); color: var(--text-muted); }
   .plan-features li:before { content: '✓'; color: var(--brand); margin-right: 8px; font-weight: bold; }
-  .plan-note { margin-top: auto; padding: 6px; background: var(--brand-dark); color: #fff; font-size: 0.85rem; font-weight: bold; border-radius: 8px; }
+  .plan-note { margin-top: auto; padding: 6px; background: var(--brand-dark); color: #fff; font-size: calc(0.85rem * var(--font-scale)); font-weight: bold; border-radius: 8px; }
+
+  /* Compare Diff (Before-After / 1:1) */
+  .compare-diff {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+    margin: 25px 0;
+  }
+  .before-box, .after-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+  }
+  .before-box {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+  .ba-label {
+    font-family: var(--font-desc);
+    font-weight: 800;
+    font-size: calc(1.35rem * var(--font-scale));
+    color: var(--text);
+  }
+  .ba-content {
+    font-family: var(--font-desc);
+    font-size: calc(1.2rem * var(--font-scale));
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .slide.cover .ba-label {
+    color: #fff !important;
+  }
+  .slide.cover .ba-content {
+    color: var(--brand-light) !important;
+  }
 
   /* Alert Box */
   .alert-box { display: flex; gap: 14px; padding: 16px 20px; border-radius: var(--radius); border-left: 4px solid var(--alert-color, var(--brand)); background: rgba(255,255,255,0.02); margin: 20px 0; }
