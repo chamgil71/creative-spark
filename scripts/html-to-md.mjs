@@ -31,7 +31,7 @@ for (const [type, rule] of Object.entries(SHORTCODE_MAP)) {
 }
 
 // icon 기본값을 "•"로 채울 shortcode 타입
-const ICON_DEFAULT_TYPES = new Set(["icon-grid", "feature-grid", "tool-box"]);
+const ICON_DEFAULT_TYPES = new Set(["icon-grid", "feature-grid", "tool-list"]);
 
 // ════════════════════════════════════════════════════════════════
 //  유틸

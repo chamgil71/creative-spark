@@ -172,10 +172,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### tool-box — 브랜드 컬러 배너
+#### tool-list — 브랜드 컬러 배너
 
 ```
-::: tool-box
+::: tool-list
 - icon: 🛠
   title: Supabase
   desc: Firebase 대체 오픈소스
@@ -184,10 +184,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### workflow-strip — 프로세스 흐름
+#### workflow-flow — 프로세스 흐름
 
 ```
-::: workflow-strip
+::: workflow-flow
 - icon: 📝
   title: 작성
   meta: VS Code
@@ -253,10 +253,10 @@ footer:                 # 선택: 푸터 텍스트 목록
 :::
 ```
 
-#### bottom-list — 요점 칩 목록
+#### summary-box — 요점 칩 목록
 
 ```
-::: bottom-list
+::: summary-box
 - title: 핵심 포인트
   desc: 이 도구로 할 수 있는 것들
   meta: 자동화|협업|배포|모니터링

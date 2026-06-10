@@ -14,7 +14,7 @@ stats:
 
 # 무엇을 해결하는가?
 
-::: workflow-strip
+::: workflow-flow
 - title: |
     🌐
      웹 서핑 중

@@ -27,7 +27,7 @@
     }
   },
 
-  "tool-box": {
+  "tool-list": {
     "htmlClasses": ["tool-card", "service-block", "tool-block"],
     "itemSelector": ".tool-card,.service-block,.tool-block,.project-card",
     "fields": {
@@ -39,8 +39,8 @@
     }
   },
 
-  "workflow-strip": {
-    "htmlClasses": ["workflow-strip", "agent-flow", "actions-flow", "flow-demo",
+  "workflow-flow": {
+    "htmlClasses": ["workflow-flow", "agent-flow", "actions-flow", "flow-demo",
                     "flow-container", "workflow", "workflow-diagram"],
     "itemSelector": ".wf-step,.af-step,.flow-step,.action-step,.wf-node,.branch-row",
     "fields": {
@@ -104,9 +104,9 @@
     }
   },
 
-  "bottom-list": {
-    "htmlClasses": ["bottom-list-card"],
-    "itemSelector": ".bottom-list-card",
+  "summary-box": {
+    "htmlClasses": ["summary-box", "summary-box-card", "summary-box"],
+    "itemSelector": ".summary-box, .summary-box-card, .summary-box",
     "fields": {
       "title": ".bl-title",
       "desc":  ".bl-desc,.bl-body",
@@ -179,7 +179,7 @@
     }
   },
 
-  "git-flow-strip": {
+  "git-flow": {
     "htmlClasses": ["flow-branches", "branch-row"],
     "itemSelector": ".branch-row",
     "fields": {
@@ -208,9 +208,9 @@
     }
   },
 
-  "part-deck": {
-    "htmlClasses": ["part-header", "part-block", "part"],
-    "itemSelector": ".part-header, .part",
+  "part-banner": {
+    "htmlClasses": ["part-banner", "part-header", "part-block", "part"],
+    "itemSelector": ".part-banner, .part-header, .part",
     "fields": {
       "icon": ".part-num-block",
       "title": ".part-title-text",

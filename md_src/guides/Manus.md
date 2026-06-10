@@ -16,7 +16,7 @@ stats:
 
 # Manus란? — AI 에이전트의 패러다임
 
-::: workflow-strip
+::: workflow-flow
 - title: "⚡ Manus 작동 방식 — \"조사해서 보고서 만들어줘\" 한 마디면"
 - icon: "💬"
   title: "목표 이해"

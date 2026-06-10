@@ -25,7 +25,7 @@
 
 ## ✨ Key Features
 
-- **🧠 Markdown to Interactive Webbook** — 29종의 풍부한 시각화 숏코드(숏코드: `flow`, `level-grid`, `checkpoint-grid`, `compare-before-after`, `takeaway`, `part-deck`, `chapter-list`, `summary-bar`, `git-flow-strip`, `editor-box`, `network-box` 등)를 마크다운에 주입하여 즉시 반응형 컴포넌트로 렌더링.
+- **🧠 Markdown to Interactive Webbook** — 29종의 풍부한 시각화 숏코드(숏코드: `step-flow`, `level-grid`, `checkpoint-grid`, `compare-diff`, `takeaway-banner`, `part-banner`, `chapter-list`, `summary-bar`, `git-flow`, `editor-box`, `network-box` 등)를 마크다운에 주입하여 즉시 반응형 컴포넌트로 렌더링.
 - **📁 Dynamic Indexing Automation (`sync:guides`)** — 마크다운의 Frontmatter를 자동 수집하여 `guides.json` 인덱스 카테고리 자동 갱신. 사용자가 변경한 정렬 순서 및 커스텀 메타데이터는 100% 영구 보존.
 - **📽️ Horizontal Snap Presentation (`build:slide`)** — H1/H2 헤더 구조를 분석하여 PPT와 동일하게 가로로 한 장씩 넘겨 보는 **반응형 횡 스크롤 슬라이드 HTML 자동 생성**. 키보드 방향키, Space, PageUp/Down, Home/End 완벽 매핑.
 - **🎨 Dynamic HSL Theme Transition** — 병합 빌드된 슬라이드 내에서도 개별 마크다운의 고유 스타일 프리셋(Cursor 초록색, Claude 인디고 등)을 다이내믹하게 추적하여 슬라이드를 넘길 때마다 브랜드 컬러 변수 실시간 전환.

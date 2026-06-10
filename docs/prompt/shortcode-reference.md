@@ -53,10 +53,10 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
 :::
 ```
 
-### 3) GitHub 브랜치 커밋 로그 흐름도 (`git-flow-strip`)
+### 3) GitHub 브랜치 커밋 로그 흐름도 (`git-flow`)
 깃허브 터미널 형식의 어두운 트랙에 지선 브랜치 및 동그란 커밋 로그 트리를 그리고, 마우스 호버 시 상세 커밋 피처 리스트를 팝오버로 구현합니다.
 ```md
-::: git-flow-strip
+::: git-flow
 - title: "main"
   tag: "v1.1.0"
   meta: "배포 파이프라인 무결함 빌드 완수|guides.json 공식 통합 완료"
@@ -179,9 +179,9 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
 :::
 ```
 
-### 2) 도구 정보 및 스펙 통합 카드 (`tool-box`)
+### 2) 도구 정보 및 스펙 통합 카드 (`tool-list`)
 ```md
-::: tool-box
+::: tool-list
 - icon: "💬"
   title: "ChatGPT"
   desc: "OpenAI의 대표적인 대화형 AI 챗봇"
@@ -197,9 +197,9 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
 :::
 ```
 
-### 3) 가로 흐름 순서도 (`workflow-strip`)
+### 3) 가로 흐름 순서도 (`workflow-flow`)
 ```md
-::: workflow-strip
+::: workflow-flow
 - icon: "⌨"
   title: "입력 가동"
   meta: "claude 실행"
@@ -269,9 +269,9 @@ VS Code 모양의 어두운 개발 환경 UI, 활성 파일 탭 및 좌측 `.lin
 :::
 ```
 
-### 8) 요점 정리 칩 카드 (`bottom-list`)
+### 8) 요점 정리 칩 카드 (`summary-box`)
 ```md
-::: bottom-list
+::: summary-box
 - title: "이 숏코드 시스템의 차별점"
   desc: "단순히 지저분한 인라인 HTML을 하드코딩하지 않고, 의미 있는 6대 표준 키만 리스트로 적어주면 알아서 미려한 프리미엄 UI 카드로 전환해 준다는 강력한 아키텍처적 우위를 지닙니다."
   meta: "생산성 극대화|아름다운 프리미엄 HSL 테마|스탠드얼론 자동 병합|PPTX 발표 슬라이드 동시 추출"

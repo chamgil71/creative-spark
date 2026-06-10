@@ -125,14 +125,14 @@ stats:
 
 # 프로젝트 (Projects) 설정
 
-::: tool-box
+::: tool-list
 - icon: "📋"
   title: "업무 자동화 프로젝트"
   desc: "반복 문서 작업 제거"
   meta: "시스템 프롬프트로 역할과 출력 형식 고정|SKILL.md 파일 업로드로 전문 기능 추가|참고 문서(예시 보고서) 컨텍스트에 유지|대화 히스토리로 맥락 지속 유지"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "💻"
   title: "개발 지원 프로젝트"
   desc: "코딩 생산성 극대화"

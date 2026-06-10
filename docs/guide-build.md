@@ -135,7 +135,7 @@ npm run build
 
 - [ ] Markdown 원본이 `md_src/guides/` 또는 시리즈별 `md_src/<series>/`에 있는가
 - [ ] frontmatter의 `title`, `subtitle`, `style`이 의도대로 작성됐는가
-- [ ] 숏코드는 현행 이름(`cmd-box`, `compare-split`, `workflow-strip`, `faq-list`, `console-box`, `stat-grid`)을 쓰는가
+- [ ] 숏코드는 현행 이름(`cmd-box`, `compare-split`, `workflow-flow`, `faq-list`, `console-box`, `stat-grid`)을 쓰는가
 - [ ] `npm run sync:guides`로 `src/data/guides.json`이 갱신됐는가
 - [ ] `npm run build:publish` 후 `public/` 산출물이 갱신됐는가
 - [ ] PPTX가 필요한 경우 `md-to-pptx.mjs` 경고 로그를 확인했는가

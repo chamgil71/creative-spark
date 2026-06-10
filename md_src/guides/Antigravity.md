@@ -18,7 +18,7 @@ stats:
 
 각 도구는 서로 다른 역할을 하며, 조합될 때 시너지가 극대화됩니다.
 
-::: tool-box
+::: tool-list
 - icon: "🔮"
   title: "Obsidian"
   tag: "지식 관리"
@@ -26,7 +26,7 @@ stats:
   meta: "개발 노트, 아이디어 메모|기술 문서 개인 아카이브|마크다운으로 Claude와 연동"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "📝"
   title: "Notion"
   tag: "프로젝트 관리"
@@ -34,7 +34,7 @@ stats:
   meta: "프로젝트 로드맵 & 스프린트|기술 스펙 문서|팀 위키 & 온보딩 자료"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "🐙"
   title: "GitHub"
   tag: "버전 관리 & 협업"
@@ -42,7 +42,7 @@ stats:
   meta: "코드 저장 & 버전 관리|PR 기반 협업|Actions로 자동화"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "💻"
   title: "VS Code"
   tag: "코드 에디터"
@@ -50,7 +50,7 @@ stats:
   meta: "인라인 AI 코드 완성|터미널에서 Claude Code 실행|확장으로 무한 확장"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "📒"
   title: "NotebookLM"
   tag: "AI 리서치"
@@ -58,7 +58,7 @@ stats:
   meta: "기술 논문 & 문서 분석|API 문서 Q&A|경쟁사 리서치 분석"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "🤖"
   title: "Claude Code"
   tag: "AI 코딩 어시스턴트"
@@ -70,7 +70,7 @@ stats:
 
 아이디어에서 배포까지 — 도구들이 연결되는 방식을 시각화합니다.
 
-::: workflow-strip
+::: workflow-flow
 - title: |
     💡 아이디어 발생
      →

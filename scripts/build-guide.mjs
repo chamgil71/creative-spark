@@ -286,8 +286,8 @@ function renderShortcode(type, body, args) {
       </div>`;
     }).join("")}</div>`;
   }
-  // 2. tool-box (구 tool-card)
-  if (type === "tool-box") {
+  // 2. tool-list (구 tool-list)
+  if (type === "tool-list" || type === "tool-list") {
     return items.map(it => {
       const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `var(--brand-gradient)`;
       const metaItems = splitMeta(it.meta);
@@ -305,9 +305,9 @@ function renderShortcode(type, body, args) {
     }).join("");
   }
 
-  // 3. workflow-strip (구 workflow)
-  if (type === "workflow-strip") {
-    return `<div class="workflow-strip">${items.map((it, idx) => `
+  // 3. workflow-flow (구 workflow-flow)
+  if (type === "workflow-flow" || type === "workflow-flow") {
+    return `<div class="workflow-flow">${items.map((it, idx) => `
       <div class="wf-step" ${renderAccent(it.color)}>
         <div class="wf-icon" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.icon)}</div>
         <div class="wf-name" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
@@ -386,11 +386,11 @@ function renderShortcode(type, body, args) {
     }).join("")}</div>`;
   }
 
-  // 9. bottom-list
-  if (type === "bottom-list") {
+  // 9. summary-box (구 summary-box)
+  if (type === "summary-box" || type === "summary-box") {
     const it = items[0];
     const chips = splitMeta(it.meta);
-    return `<div class="bottom-list-card" ${renderAccent(it.color)}>
+    return `<div class="summary-box" ${renderAccent(it.color)}>
       <div class="bl-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
       ${renderDesc(it.desc, itemBullet(it), it.color)}
       ${chips.length ? `<div class="bl-chips">${chips.map(c => `<span class="bl-chip" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(c)}</span>`).join('')}</div>` : ""}
@@ -480,22 +480,31 @@ function renderShortcode(type, body, args) {
       </div>`).join("");
   }
 
-  // 16. [NEW] git-flow-strip (다차원 깃 플로우 브랜치 흐름 시각화)
-  if (type === "git-flow-strip") {
-    return `<div class="git-flow-container"><div class="flow-branches">${items.map((it, idx) => {
+  // 16. [NEW] git-flow (구 git-flow-strip) (다차원 깃 플로우 브랜치 흐름 시각화)
+  if (type === "git-flow" || type === "git-flow-strip") {
+    return `<div class="git-flow-container"><div class="flow-branches">${items.map(it => {
       const color = it.color || "var(--brand)";
       const metaItems = splitMeta(it.meta);
+      
+      const commitsHtml = metaItems.map((metaText, idx) => {
+        const isVersion = metaText.trim().startsWith("v") || metaText.trim().match(/^\d+\./);
+        const labelHtml = isVersion ? `<span class="commit-label" style="background:${color};">${escapeHtml(metaText)}</span>` : "";
+        const lineHtml = idx < metaItems.length - 1 ? `<div class="commit-line-segment" style="background:${color};"></div>` : "";
+        
+        return `
+          <div class="commit" style="border-color:${color};">
+            ${labelHtml}
+          </div>
+          ${lineHtml}
+        `;
+      }).join("");
+
       return `<div class="branch-row">
         <div class="branch-label" style="background: ${color}12; border-left: 4px solid ${color}; color: ${color}; font-weight: 800;">
           ${escapeHtml(it.title)}
         </div>
-        <div class="branch-line" style="background: linear-gradient(90deg, ${color} 30%, rgba(203, 213, 225, 0.4) 100%);">
-          <div class="commit" style="border-color: ${color};">
-            ${it.tag ? `<span class="commit-label" style="background: ${color};">${escapeHtml(it.tag)}</span>` : ""}
-            <div class="commit-line" style="border-color: ${color};">
-              ${metaItems.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
-            </div>
-          </div>
+        <div class="branch-line">
+          ${commitsHtml}
         </div>
       </div>`;
     }).join("")}</div></div>`;
@@ -545,17 +554,17 @@ function renderShortcode(type, body, args) {
     </div>`;
   }
   
-  // 19. [NEW] part-deck (시리즈 목차용 부(Part) 헤더)
-  if (type === "part-deck") {
+  // 19. [NEW] part-banner (구 part-banner) (시리즈 목차용 부(Part) 헤더)
+  if (type === "part-banner" || type === "part-banner") {
     return items.map(it => {
       const color = it.color || "var(--brand)";
-      return `<div class="part" style="--part-color: ${color};">
-        <div class="part-header" style="background: ${color};">
-          <div class="part-num-block">${escapeHtml(it.icon || "부")}</div>
-          <div class="part-title-block">
-            <span class="part-title-text">${escapeHtml(it.title)}</span>
-            ${it.desc ? `<span class="part-tagline">${escapeHtml(it.desc)}</span>` : ""}
-            ${it.tag ? `<span class="part-chapter-range">${escapeHtml(it.tag)}</span>` : ""}
+      return `<div class="part-banner" style="--part-color: ${color};">
+        <div class="part-banner-header" style="background: ${color};">
+          <div class="part-banner-num-block">${escapeHtml(it.icon || "부")}</div>
+          <div class="part-banner-title-block">
+            <span class="part-banner-title-text">${escapeHtml(it.title)}</span>
+            ${it.desc ? `<span class="part-banner-tagline">${escapeHtml(it.desc)}</span>` : ""}
+            ${it.tag ? `<span class="part-banner-chapter-range">${escapeHtml(it.tag)}</span>` : ""}
           </div>
         </div>
       </div>`;
@@ -595,14 +604,14 @@ function renderShortcode(type, body, args) {
     }).join("")}</div>`;
   }
 
-  // 22. [NEW] flow (가로/세로 흐름 시각화)
-  if (type === "flow") {
-    return `<div class="flow">${items.map(it => {
+  // 22. [NEW] step-flow (구 step-flow) (가로/세로 흐름 시각화)
+  if (type === "step-flow" || type === "step-flow") {
+    return `<div class="step-flow">${items.map(it => {
       if (it.type === "arrow" || it.title === "→" || it.icon === "→") {
-        return `<div class="flow-arrow">${escapeHtml(it.icon || "→")}</div>`;
+        return `<div class="step-flow-arrow">${escapeHtml(it.icon || "→")}</div>`;
       }
       const activeClass = it.tag === "active" ? "active" : "";
-      return `<div class="flow-step ${activeClass}">
+      return `<div class="step-flow-step ${activeClass}">
         <div class="fs-icon">${escapeHtml(it.icon)}</div>
         <div class="fs-title">${escapeHtml(it.title)}</div>
         <div class="fs-sub">${renderDesc(it.desc, itemBullet(it), it.color)}</div>
@@ -632,11 +641,11 @@ function renderShortcode(type, body, args) {
       </div>`).join("")}</div>`;
   }
 
-  // 25. [NEW] compare-before-after (좌우 1:1 전후 대조)
-  if (type === "compare-before-after") {
+  // 25. [NEW] compare-diff (구 compare-before-after) (좌우 1:1 전후 대조)
+  if (type === "compare-diff" || type === "compare-before-after") {
     const bad = items[0] || {};
     const good = items[1] || {};
-    return `<div class="compare-before-after">
+    return `<div class="compare-diff">
       <div class="before-box">
         <div class="ba-label">❌ ${escapeHtml(bad.title)}</div>
         <div class="ba-content">${escapeHtml(bad.desc).replace(/\n/g, "<br>")}</div>
@@ -648,10 +657,10 @@ function renderShortcode(type, body, args) {
     </div>`;
   }
 
-  // 26. [NEW] takeaway (Key Takeaway)
-  if (type === "takeaway") {
+  // 26. [NEW] takeaway-banner (구 takeaway) (Key Takeaway)
+  if (type === "takeaway-banner" || type === "takeaway") {
     const it = items[0] || {};
-    return `<div class="takeaway">
+    return `<div class="takeaway-banner">
       <div class="ta-icon">${escapeHtml(it.icon || "💡")}</div>
       <div>
         <div class="ta-label">${escapeHtml(it.title || "Key Takeaway")}</div>
@@ -703,11 +712,15 @@ export function buildHtml(inputPath, opts = {}) {
       openCard = true;
     } else {
       const isShortcode = tok.raw && (
+        tok.raw.includes('class="step-flow"') ||
         tok.raw.includes('class="flow"') ||
         tok.raw.includes('class="level-grid"') ||
         tok.raw.includes('class="checkpoint-grid"') ||
+        tok.raw.includes('class="compare-diff"') ||
         tok.raw.includes('class="compare-before-after"') ||
+        tok.raw.includes('class="takeaway-banner"') ||
         tok.raw.includes('class="takeaway"') ||
+        tok.raw.includes('class="part-banner"') ||
         tok.raw.includes('class="part"') ||
         tok.raw.includes('class="chapter-list"') ||
         tok.raw.includes('class="summary-bar"') ||
@@ -800,7 +813,7 @@ export function buildHtml(inputPath, opts = {}) {
   .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin: 25px 0;}
 
   /* Cards */
-  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .bottom-list-card, .badge-item { 
+  .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .summary-box, .badge-item { 
     background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; 
     position: relative; overflow: hidden; transition: 0.2s; box-shadow: var(--shadow);
   }
@@ -827,7 +840,7 @@ export function buildHtml(inputPath, opts = {}) {
   .tc-list { padding: 12px 25px 14px 40px; font-size: 0.88rem; background: var(--bg); border-top: 1px solid var(--border); color: var(--text-2); margin: 0; line-height: 1.9; }
 
   /* Workflow */
-  .workflow-strip { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; }
+  .workflow-flow { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; }
   .wf-step { flex: 1; min-width: 140px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; }
   .wf-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
   .wf-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; }
@@ -883,7 +896,7 @@ export function buildHtml(inputPath, opts = {}) {
   .c2-right .c2-note { background: var(--border); color: var(--text); }
   @media(max-width: 768px) { .compare-2col { flex-direction: column; } }
 
-  /* [NEW] Git Flow Strip */
+  /* [NEW] Git step-flow Strip */
   .git-flow-container { background: #0F172A; padding: 28px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.08); margin: 25px 0; overflow-x: auto; }
   .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
   .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
@@ -1011,16 +1024,16 @@ export function buildHtml(inputPath, opts = {}) {
   tr:nth-child(even) { background: #fafafa; }
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
-  td:contains('✓') { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+  td.check-highlight { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
 
   /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
-  .part { margin-bottom: 30px; }
-  .part-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
-  .part-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
-  .part-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
-  .part-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
-  .part-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
-  .part-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
+  .part-banner { margin-bottom: 30px; }
+  .part-banner-header { display: flex; align-items: center; border-radius: var(--radius); overflow: hidden; margin-bottom: 0; box-shadow: var(--shadow); }
+  .part-banner-num-block { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: white; background: var(--part-color, var(--brand)); }
+  .part-banner-title-block { flex: 1; height: 52px; display: flex; align-items: center; padding: 0 20px; background: var(--part-color, var(--brand)); }
+  .part-banner-title-text { font-family: 'Noto Serif KR', serif; font-size: 15px; font-weight: 600; color: white; }
+  .part-banner-tagline { font-size: 11px; color: rgba(255,255,255,0.7); margin-left: 12px; font-weight: 300; }
+  .part-banner-chapter-range { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.5); margin-left: auto; letter-spacing: 0.05em; }
 
   .chapter-list { margin-top: 0; border-left: 2px solid var(--border); margin-left: 26px; padding-left: 15px; }
   .chapter-item { display: flex; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); position: relative; transition: background 0.15s; }
@@ -1067,6 +1080,13 @@ export function buildHtml(inputPath, opts = {}) {
   <a class="back-top" href="#top" title="맨 위로">↑</a>
 <script>
 function switchTab(btn,id){var w=btn.closest('.tabs-wrap');w.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});w.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active')});btn.classList.add('active');var r=btn.getRootNode();var panel=r.getElementById?r.getElementById(id):document.getElementById(id);if(panel)panel.classList.add('active');}
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('td').forEach(function(td) {
+    if (td.textContent.trim() === '✓') {
+      td.classList.add('check-highlight');
+    }
+  });
+});
 </script>
 </body>
 </html>`;

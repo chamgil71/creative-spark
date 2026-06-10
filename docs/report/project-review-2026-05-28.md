@@ -40,9 +40,9 @@
 | 5 | `plan-grid` | - | 격자형 | 기존 |
 | 6 | `compare-grid` | - | 격자형 | 기존 |
 | 7 | `columns-grid` | - | 격자형 | 기존 |
-| 8 | `bottom-list` | - | 격자형 | 기존 |
-| 9 | `tool-box` | - | 특화 | 기존 |
-| 10 | `workflow-strip` | - | 특화 | 기존 |
+| 8 | `summary-box` | - | 격자형 | 기존 |
+| 9 | `tool-list` | - | 특화 | 기존 |
+| 10 | `workflow-flow` | - | 특화 | 기존 |
 | 11 | `step-list` | - | 특화 | 기존 |
 | 12 | `skill-list` | - | 특화 | 기존 |
 | 13 | `compare-split` | `compare-2col` | 특화 | 기존 |
@@ -51,17 +51,17 @@
 | 16 | `os-tabs` | `tabs` | 특화 | 기존 |
 | 17 | `faq-list` | - | 인터랙티브 | 기존 |
 | 18 | `console-box` | - | 인터랙티브 | 기존 |
-| 19 | `git-flow-strip` | - | 시각화 | 기존 |
+| 19 | `git-flow` | - | 시각화 | 기존 |
 | 20 | `editor-box` | - | 시각화 | 기존 |
 | 21 | `network-box` | - | 시각화 | 기존 |
-| 22 | `part-deck` | - | 시리즈 | v1.3 |
+| 22 | `part-banner` | - | 시리즈 | v1.3 |
 | 23 | `chapter-list` | - | 시리즈 | v1.3 |
 | 24 | `summary-bar` | - | 시리즈 | v1.3 |
-| 25 | `flow` | - | 데이터/흐름 | **v1.4 NEW** |
+| 25 | `step-flow` | - | 데이터/흐름 | **v1.4 NEW** |
 | 26 | `level-grid` | - | 데이터/흐름 | **v1.4 NEW** |
 | 27 | `checkpoint-grid` | - | 데이터/흐름 | **v1.4 NEW** |
-| 28 | `compare-before-after` | - | 데이터/흐름 | **v1.4 NEW** |
-| 29 | `takeaway` | - | 데이터/흐름 | **v1.4 NEW** |
+| 28 | `compare-diff` | - | 데이터/흐름 | **v1.4 NEW** |
+| 29 | `takeaway-banner` | - | 데이터/흐름 | **v1.4 NEW** |
 
 **총 29개 선언 (aliases 포함), 26종 고유 숏코드**  
 (aliases: `compare-split`=`compare-2col`, `cmd-box`=`command-block`, `os-tabs`=`tabs`)
@@ -81,7 +81,7 @@
 
 ### 2-3. 신규 5종 숏코드 문서 공백 상세
 
-v1.4에서 추가된 `flow`, `level-grid`, `checkpoint-grid`, `compare-before-after`, `takeaway`가 다음 위치에 **미반영**:
+v1.4에서 추가된 `step-flow`, `level-grid`, `checkpoint-grid`, `compare-diff`, `takeaway-banner`가 다음 위치에 **미반영**:
 
 - `docs/guide-creation.md` — "총 24종 지원" 표기 + 신규 5종 마크다운 표현법/6-key 스키마 명세 없음
 - `docs/shortcode-style-guide.md` — "24종 표준 숏코드" 표기 + 신규 5종 CSS 클래스 튜닝 섹션 없음
@@ -165,7 +165,7 @@ docs/
 | # | 우선순위 | 분류 | 문제 | 권장 조치 |
 |---|---------|------|------|---------|
 | 1 | HIGH | 문서 정합성 | `README.md` "24종 숏코드" 오기 | 29종으로 수정 |
-| 2 | HIGH | 문서 정합성 | `docs/guide-creation.md` "총 24종" + 신규 5종 명세 누락 | 29종 수정 + flow/level-grid/checkpoint-grid/compare-before-after/takeaway 명세 추가 |
+| 2 | HIGH | 문서 정합성 | `docs/guide-creation.md` "총 24종" + 신규 5종 명세 누락 | 29종 수정 + step-flow/level-grid/checkpoint-grid/compare-diff/takeaway-banner 명세 추가 |
 | 3 | HIGH | 디렉토리 구조 | `standalone-integrity-report.md` docs/ 루트 위치 | `docs/report/` 이동 (완료) |
 | 4 | MEDIUM | 문서 정합성 | `docs/shortcode-style-guide.md` "24종" + 신규 5종 CSS 튜닝 섹션 누락 | 29종 수정 + 섹션 추가 |
 | 5 | MEDIUM | 문서 정합성 | `docs/README.md` "24종" 오기 + 문서 목록 불완전 | 29종 수정 + pipeline.md, shortcode-style-guide.md, report/ 추가 |

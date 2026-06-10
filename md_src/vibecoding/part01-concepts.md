@@ -26,7 +26,7 @@ stats:
 
 ### 바이브코딩의 작동 흐름
 
-::: flow
+::: step-flow
 - icon: "🧑"
   title: "사람"
   desc: "원하는 것 설명"
@@ -82,7 +82,7 @@ stats:
   desc: "AI가 존재하지 않는 라이브러리나 함수를 사용하는 경우가 있습니다. 실행 전 \"이 코드에서 사용한 라이브러리가 실제로 존재하는지 확인해줘\"라고 재확인하는 습관이 중요합니다."
 :::
 
-::: takeaway
+::: takeaway-banner
 - icon: "💡"
   title: "Key Takeaway"
   desc: "바이브코딩은 코드를 쓰는 능력이 아니라 **원하는 것을 정확히 설명하는 능력**이 핵심인 새로운 개발 패러다임입니다."
@@ -165,7 +165,7 @@ stats:
   desc: "AI가 파일을 직접 수정합니다. 반드시 `git add . && git commit -m \"백업\"` 후 실행하세요. 잘못된 수정도 즉시 되돌릴 수 있습니다."
 :::
 
-::: takeaway
+::: takeaway-banner
 - icon: "💡"
   title: "Key Takeaway"
   desc: "에이전트 코딩은 AI에게 \"코드 한 줄\"이 아닌 **\"목표 하나\"를 주는 방식**으로, 계획·실행·수정의 전 과정을 AI가 자율적으로 처리합니다."
@@ -221,7 +221,7 @@ stats:
   desc: "SKILL.md를 프로젝트 루트에 두면 Claude Code가 자동 인식합니다. 매 대화 시작 시 첨부하면 일관된 작업이 가능합니다. SKILL.md 작성법은 17장에서 자세히 다룹니다."
 :::
 
-::: takeaway
+::: takeaway-banner
 - icon: "💡"
   title: "Key Takeaway"
   desc: "현대 에이전트는 **MCP로 도구를 쓰고, Sub-agent로 팀을 이루고, Hook으로 자동 실행되며, Memory로 맥락을 유지**합니다 — 이 4가지가 결합될 때 진정한 자동화가 완성됩니다."

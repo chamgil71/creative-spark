@@ -85,7 +85,7 @@
     "featureLineH": 0.28        // 특징 목록(meta) 한 줄당 높이
   },
 
-  // bottom-list: 하단 칩 목록 (meta에 정의된 태그들)
+  // summary-box: 하단 칩 목록 (meta에 정의된 태그들)
   "bottomList": {
     "chipGap":    0.12,
     "chipRadius": 0.1,

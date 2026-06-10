@@ -53,12 +53,12 @@ Claude는 한국어·코드·문서, ChatGPT는 이미지·추론·생태계, Ge
 
 AI가 직접 파일을 읽고·수정하고·실행하는 레벨 4 에이전트 도구. 브라우저를 벗어나 터미널에서 실행합니다.
 
-::: tool-box
+::: tool-list
 - icon: "⌨️"
   title: "Claude Code ⭐"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "🧠"
   title: "Codex CLI"
 :::
@@ -80,12 +80,12 @@ AI가 직접 파일을 읽고·수정하고·실행하는 레벨 4 에이전트 
 
 기존 코드 에디터 환경에서 벗어나지 않고 AI와 실시간 협업. VS Code 기반이라 전환 비용이 거의 없습니다.
 
-::: tool-box
+::: tool-list
 - icon: "✏️"
   title: "Cursor ⭐"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "🌊"
   title: "Windsurf"
 :::
@@ -123,12 +123,12 @@ AI가 직접 파일을 읽고·수정하고·실행하는 레벨 4 에이전트 
 
 코딩 없이 "A가 발생하면 B를 해서 C에 전달"하는 자동화 흐름을 시각적으로 설계하고 자동 실행합니다.
 
-::: tool-box
+::: tool-list
 - icon: "🔄"
   title: "n8n ⭐ 보안 중시"
 :::
 
-::: tool-box
+::: tool-list
 - icon: "🤖"
   title: "Antigravity"
 :::

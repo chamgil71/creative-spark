@@ -133,7 +133,7 @@
 
 ---
 
-## [6] tool-box (도구 상세 설명 요약 상자)
+## [6] tool-list (도구 상세 설명 요약 상자)
 
 ### 숏코드설명
 * **사용 키**: `icon` (도구 대표 아이콘), `title` (도구명), `desc` (슬로건/한 줄 설명), `tag` (사용처 배지), `meta` (도구 기능 리스트), `color`
@@ -142,7 +142,7 @@
 ### html 숏코드 디자인
 * **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 210 ~ 226)
 * **해당 CSS 클래스 및 조정 방법**:
-  * `.tool-card` (숏코드명: `tool-box`): 카드 전체 외곽선 섀도우 조율.
+  * `.tool-card` (숏코드명: `tool-list`): 카드 전체 외곽선 섀도우 조율.
   * `.tc-header`: 헤더 그라데이션 및 색상 융합 제어.
   * `.tc-list`: 하단의 기능 목록(`meta` 파이프 분할 영역) 여백 및 리스트 불렛 폰트 튜닝.
 * **조정 포인트 예시**: 목록 텍스트의 크기가 너무 커서 뭉쳐 보인다면, `.tc-list li` 의 `font-size` 값을 `0.85rem`으로 조금 줄이고 `padding`을 콤팩트하게 압축합니다.
@@ -155,7 +155,7 @@
 
 ---
 
-## [7] workflow-strip (가로형 연쇄 흐름도)
+## [7] workflow-flow (가로형 연쇄 흐름도)
 
 ### 숏코드설명
 * **사용 키**: `icon` (단계 이모지), `title` (단계명), `meta` (활용 툴/코멘트), `color`
@@ -164,7 +164,7 @@
 ### html 숏코드 디자인
 * **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 229 ~ 237)
 * **해당 CSS 클래스 및 조정 방법**:
-  * `.workflow-strip`: 가로 정렬 플렉스박스 구조.
+  * `.workflow-flow`: 가로 정렬 플렉스박스 구조.
   * `.wf-step`: 각 단계별 개별 라운드 박스.
   * `.wf-arrow`: 연결선 역할을 하는 오른쪽 정렬 화살표 위치 조율 (`right: -15px; top: 50%; font-size: 1.2rem;`).
 * **조정 포인트 예시**: 스텝 카드의 너비가 좁아 텍스트가 줄 바꿈 되는 경우, `.wf-step` 의 최소 가로폭을 명시적으로 부여하거나 패딩을 좁힙니다.
@@ -237,7 +237,7 @@
 
 ---
 
-## [11] bottom-list (최하단 태그 칩 마무리 카드)
+## [11] summary-box (최하단 태그 칩 마무리 카드)
 
 ### 숏코드설명
 * **사용 키**: `title` (마무리 권장 문구), `desc` (추가 요약문), `meta` (파이프 구분 태그들), `color`
@@ -246,7 +246,7 @@
 ### html 숏코드 디자인
 * **파일 및 위치**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) (라인 304 ~ 312)
 * **해당 CSS 클래스 및 조정 방법**:
-  * `.bottom-list-card`: 보더 및 그림자 속성.
+  * `.summary-box-card`: 보더 및 그림자 속성.
   * `.bl-chips`: 둥근 버튼 칩들의 묶음 컨테이너.
   * `.bl-chip`: 100px 필형 둥근 모서리형 뱃지 스타일 (`border-radius: 100px; padding: 5px 15px; font-weight: 800;`).
 
@@ -403,7 +403,7 @@
 
 ---
 
-## [19] git-flow-strip (특화 시각화: 깃 플로우 흐름도)
+## [19] git-flow (특화 시각화: 깃 플로우 흐름도)
 
 ### 숏코드설명
 * **사용 키**: `title` (브랜치명), `tag` (버전 배지), `meta` (파이프 구분 커밋 상세 목록), `color`
@@ -468,7 +468,7 @@
 
 ---
 
-## [22] part-deck (시리즈 대단원 부/Part 헤더)
+## [22] part-banner (시리즈 대단원 부/Part 헤더)
 
 ### 숏코드설명
 * **사용 키**: `icon` (부 번호), `title` (부 제목), `desc` (태그라인), `tag` (챕터 범위), `color`
@@ -530,15 +530,15 @@
 
 ---
 
-## [25] flow (프로세스 흐름 시각화)
+## [25] step-flow (프로세스 흐름 시각화)
 
 ### 숏코드설명
 * **사용 키**: `icon`, `title`, `desc`, `tag`, `color`
 * **주 사용처**: 단계별 프로세스, 데이터 흐름, 진행 순서를 가로 흐름으로 설명.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `renderShortcode()`의 `flow` 분기 및 `.flow`, `.flow-step`, `.flow-arrow` CSS.
-* **조정 포인트**: 흐름 카드 간격은 `.flow`의 gap, 단계 카드 크기와 강조선은 `.flow-step`, 화살표 표현은 `.flow-arrow`를 조정합니다.
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `renderShortcode()`의 `step-flow` 분기 및 `.step-flow`, `.flow-step`, `.flow-arrow` CSS.
+* **조정 포인트**: 흐름 카드 간격은 `.step-flow`의 gap, 단계 카드 크기와 강조선은 `.flow-step`, 화살표 표현은 `.flow-arrow`를 조정합니다.
 
 ### pptx 숏코드 디자인
 * 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
@@ -575,30 +575,30 @@
 
 ---
 
-## [28] compare-before-after (Before / After 비교)
+## [28] compare-diff (Before / After 비교)
 
 ### 숏코드설명
 * **사용 키**: `title`, `desc`, `tag`, `color`
 * **주 사용처**: 기존 방식과 개선 후 방식의 전후 차이 강조.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `compare-before-after` 분기 및 `.compare-before-after`, `.ba-card` CSS.
-* **조정 포인트**: 좌우 카드 간격은 `.compare-before-after`, 카드별 색상과 라벨은 `.ba-card` 및 하위 클래스를 조정합니다.
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `compare-diff` 분기 및 `.compare-diff`, `.ba-card` CSS.
+* **조정 포인트**: 좌우 카드 간격은 `.compare-diff`, 카드별 색상과 라벨은 `.ba-card` 및 하위 클래스를 조정합니다.
 
 ### pptx 숏코드 디자인
 * 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.
 
 ---
 
-## [29] takeaway (핵심 요약 배너)
+## [29] takeaway-banner (핵심 요약 배너)
 
 ### 숏코드설명
 * **사용 키**: `icon`, `title`, `desc`, `color`
 * **주 사용처**: 문서 마지막 결론, 섹션 요약, 기억해야 할 핵심 메시지.
 
 ### html 숏코드 디자인
-* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `takeaway` 분기 및 `.takeaway` CSS.
-* **조정 포인트**: 배너 배경과 강조선은 `.takeaway`, 제목/본문 간격은 내부 heading과 paragraph 스타일을 조정합니다.
+* **파일 및 위치**: [scripts/build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs) `takeaway-banner` 분기 및 `.takeaway-banner` CSS.
+* **조정 포인트**: 배너 배경과 강조선은 `.takeaway-banner`, 제목/본문 간격은 내부 heading과 paragraph 스타일을 조정합니다.
 
 ### pptx 숏코드 디자인
 * 현재 `scripts/md-to-pptx.mjs`에 전용 렌더러가 없습니다. 변환 시 경고 로그가 출력되며 PPTX에서는 제외됩니다.

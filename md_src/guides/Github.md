@@ -24,9 +24,9 @@ Git은 코드 변경 이력을 관리하는 분산 버전 관리 시스템입니
   desc: "git init"
 :::
 
-### 브랜치 전략 (Git Flow)
+### 브랜치 전략 (Git step-flow)
 
-::: workflow-strip
+::: workflow-flow
 - title: |
     main
      
@@ -94,7 +94,7 @@ Git은 코드 변경 이력을 관리하는 분산 버전 관리 시스템입니
 
 코드를 푸시하면 자동으로 테스트하고 배포하는 파이프라인을 구성합니다.
 
-::: workflow-strip
+::: workflow-flow
 - icon: "💾"
   title: "코드 Push"
   desc: "개발자가 GitHub에 코드 업로드"

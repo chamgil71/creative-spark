@@ -16,7 +16,7 @@ stats:
 
 # 나노바나나 (Nanobanana)
 
-::: tool-box
+::: tool-list
 - icon: "🍌"
   title: "나노바나나"
   desc: "nanobanana.ai · 한국어 특화 AI 이미지 생성"
@@ -26,7 +26,7 @@ stats:
 
 # ChatGPT Images 2.0 2026.04.21 출시
 
-::: tool-box
+::: tool-list
 - title: "ChatGPT Images 2.0 (gpt-image-2)"
   desc: "전 ChatGPT 플랜 · API 5월 초 오픈 · DALL-E 2·3 → 2026.05.12 종료"
   meta: |

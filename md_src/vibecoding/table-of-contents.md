@@ -10,7 +10,7 @@ stats:
 
 바이브코딩과 에이전트 코딩 완전 입문 가이드의 단원별 주제 및 챕터별 세부 요약 목차 리스트입니다.
 
-::: part-deck
+::: part-banner
 - icon: "1부"
   title: "개념 이해"
   desc: "바이브코딩과 에이전트 코딩의 작동 원리"
@@ -33,7 +33,7 @@ stats:
   tag: "개념"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "2부"
   title: "AI와 대화하는 법"
   desc: "프롬프트 설계부터 복잡한 작업 위임까지"
@@ -52,7 +52,7 @@ stats:
   tag: "실습"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "3부"
   title: "AI 코딩 도구"
   desc: "대화형부터 완전 자율 에이전트까지"
@@ -87,7 +87,7 @@ stats:
   tag: "도구"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "4부"
   title: "연계 도구 & 조합 패턴"
   desc: "GitHub부터 Cloudflare까지, 그리고 레시피"
@@ -130,7 +130,7 @@ stats:
   tag: "핵심"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "5부"
   title: "실전 사례"
   desc: "실제 파이프라인, 실제 코드, 실제 교훈"
@@ -165,7 +165,7 @@ stats:
   tag: "사례"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "6부"
   title: "품질과 운영"
   desc: "오류 처리, 디버깅, 재사용 자산 구축"
@@ -184,7 +184,7 @@ stats:
   tag: "실습"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "7부"
   title: "시작과 심화"
   desc: "일반인 입문 로드맵과 프롬프트 기법"
@@ -203,7 +203,7 @@ stats:
   tag: "가이드"
 :::
 
-::: part-deck
+::: part-banner
 - icon: "8부"
   title: "주의사항과 함정"
   desc: "강력한 도구일수록 신중하게"

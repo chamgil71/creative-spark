@@ -373,10 +373,10 @@ function itemH(item, w) {
   if (item.type === "columns-grid" || item.type === "columns") {
     return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
   }
-  if (item.type === "workflow-strip" || item.type === "workflow" || item.type === "git-flow-strip") {
+  if (item.type === "workflow-flow" || item.type === "workflow-flow" || item.type === "workflow" || item.type === "git-flow" || item.type === "git-flow") {
     return D.workflow.stepH + c.gap;
   }
-  if (item.type === "tool-box" || item.type === "tool-card") {
+  if (item.type === "tool-list" || item.type === "tool-list" || item.type === "tool-card") {
     return item.items.reduce((sum, it) => {
       const metaLines = splitMeta(it.meta).length;
       const h = D.toolCard.h + (metaLines > 0 ? 0.3 + metaLines * 0.24 : 0);
@@ -387,7 +387,7 @@ function itemH(item, w) {
     const maxFeat = Math.max(0, ...item.items.map(it => splitMeta(it.meta).length));
     return c.padY + 0.26 + 0.32 + maxFeat * D.planGrid.featureLineH + 0.28 + c.padY + c.gap;
   }
-  if (item.type === "bottom-list")  return 1.2 + c.gap + D.bottomList.chipH + c.gap;
+  if (item.type === "summary-box" || item.type === "summary-box")  return 1.2 + c.gap + D.bottomList.chipH + c.gap;
   if (item.type === "compare-split" || item.type === "compare-2col") {
     if (item.items.length < 2) return 1.5 + c.gap;
     const cc = D.compare2col;
@@ -445,16 +445,16 @@ function itemH(item, w) {
     return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
   }
   // Phase 4 신규 구현
-  if (item.type === "flow") {
+  if (item.type === "step-flow" || item.type === "step-flow") {
     return D.workflow.stepH + 0.3 + c.gap;
   }
-  if (item.type === "takeaway") {
+  if (item.type === "takeaway-banner-banner" || item.type === "takeaway-banner") {
     return item.items.reduce((sum, it) => {
       const lines = estimateLines(it.desc || "", w - c.padX * 2 - 0.5, c.bodySize + 1);
       return sum + c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0) + (c.bodySize + 1) / 72 * 1.7 * Math.max(1, lines) + c.gap;
     }, 0);
   }
-  if (item.type === "compare-before-after") {
+  if (item.type === "compare-diff" || item.type === "compare-diff") {
     if (item.items.length < 2) return 1.5 + c.gap;
     const cc = D.compare2col; const colW = (w - cc.colGap) / 2; const lh = (c.bodySize / 72) * 1.7;
     const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
@@ -463,6 +463,19 @@ function itemH(item, w) {
       return c.padY + (c.titleSize / 72) * 1.7 + c.gap + (descSegs.length ? descH + c.gap : 0) + c.padY;
     }));
     return maxH + c.gap;
+  }
+  if (item.type === "badge-grid" || item.type === "checkpoint-grid") {
+    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / g.iconCardMinW))) * (1.4 + g.gap);
+  }
+  if (item.type === "skill-list" || item.type === "chapter-list") {
+    return item.items.length * (g.stepItemH + c.gap);
+  }
+  if (item.type === "summary-bar") {
+    const cols = Math.max(1, Math.min(item.items.length, 4));
+    return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
+  }
+  if (item.type === "level-grid" || item.type === "part-banner" || item.type === "part-banner") {
+    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
   }
   return 0;
 }
@@ -1091,10 +1104,10 @@ function renderItem(slide, item, x, y, w, pal) {
   if (item.type === "step-list" || item.type === "steps")                        return renderSteps(slide, item, x, y, w, pal);
   if (item.type === "compare-grid")                                              return renderCompareGrid(slide, item, x, y, w, pal);
   if (item.type === "columns-grid" || item.type === "columns")                   return renderColumns(slide, item, x, y, w, pal);
-  if (item.type === "workflow-strip" || item.type === "workflow")                return renderWorkflow(slide, item, x, y, w, pal);
-  if (item.type === "tool-box" || item.type === "tool-card")                     return renderToolCard(slide, item, x, y, w, pal);
+  if (item.type === "workflow-flow" || item.type === "workflow-flow" || item.type === "workflow") return renderWorkflow(slide, item, x, y, w, pal);
+  if (item.type === "tool-list" || item.type === "tool-list" || item.type === "tool-card")         return renderToolCard(slide, item, x, y, w, pal);
   if (item.type === "plan-grid")                                                 return renderPlanGrid(slide, item, x, y, w, pal);
-  if (item.type === "bottom-list")                                               return renderBottomList(slide, item, x, y, w, pal);
+  if (item.type === "summary-box" || item.type === "summary-box")                                   return renderBottomList(slide, item, x, y, w, pal);
   if (item.type === "compare-split" || item.type === "compare-2col")             return renderCompare2Col(slide, item, x, y, w, pal);
   if (item.type === "alert-box")                                                 return renderAlertBox(slide, item, x, y, w, pal);
   if (item.type === "faq-list" || item.type === "faq-accordion")                 return renderFaqAccordion(slide, item, x, y, w, pal);
@@ -1104,13 +1117,22 @@ function renderItem(slide, item, x, y, w, pal) {
   if (item.type === "stat-grid" || item.type === "stat-highlight")               return renderStatHighlight(slide, item, x, y, w, pal);
   
   // 특화 숏코드 우회 매핑
-  if (item.type === "git-flow-strip")                                            return renderWorkflow(slide, item, x, y, w, pal);
+  if (item.type === "git-flow" || item.type === "git-flow")                return renderWorkflow(slide, item, x, y, w, pal);
   if (item.type === "editor-box")                                                return renderCommandBlock(slide, item, x, y, w, pal);
   if (item.type === "network-box")                                               return renderCompareGrid(slide, item, x, y, w, pal);
   // Phase 4 신규 구현
-  if (item.type === "flow")                                                      return renderFlow(slide, item, x, y, w, pal);
-  if (item.type === "takeaway")                                                  return renderTakeaway(slide, item, x, y, w, pal);
-  if (item.type === "compare-before-after")                                      return renderCompareBeforeAfter(slide, item, x, y, w, pal);
+  if (item.type === "step-flow" || item.type === "step-flow")                         return renderFlow(slide, item, x, y, w, pal);
+  if (item.type === "takeaway-banner-banner" || item.type === "takeaway-banner")               return renderTakeaway(slide, item, x, y, w, pal);
+  if (item.type === "compare-diff" || item.type === "compare-diff")       return renderCompareBeforeAfter(slide, item, x, y, w, pal);
+  // 추가 숏코드 우회 매핑
+  if (item.type === "badge-grid")                                                return renderIconGrid(slide, item, x, y, w, pal);
+  if (item.type === "checkpoint-grid")                                           return renderIconGrid(slide, item, x, y, w, pal);
+  if (item.type === "skill-list")                                                return renderSteps(slide, item, x, y, w, pal);
+  if (item.type === "chapter-list")                                              return renderSteps(slide, item, x, y, w, pal);
+  if (item.type === "summary-bar")                                               return renderStatHighlight(slide, item, x, y, w, pal);
+  if (item.type === "level-grid")                                                return renderCompareGrid(slide, item, x, y, w, pal);
+  if (item.type === "part-banner" || item.type === "part-banner")                  return renderCompareGrid(slide, item, x, y, w, pal);
+  
   // Phase 3: 미구현 숏코드 경고
   console.warn(`  ⚠️  PPTX 미구현 숏코드: "${item.type}" — 슬라이드에서 제외됨`);
   return 0;
@@ -1190,8 +1212,17 @@ export async function convertMdToPptx(mdPath, opts = {}) {
   const name = basename(mdPath, extname(mdPath));
   const outPath = out || join(D.output.dir, `${name}${D.output.suffix || ""}.pptx`);
   mkdirSync(dirname(resolve(outPath)), { recursive: true });
-  await prs.writeFile({ fileName: outPath });
-  console.log(`✅ ${basename(mdPath)} → ${outPath}  (섹션 ${sections.length}개)`);
+  try {
+    await prs.writeFile({ fileName: outPath });
+    console.log(`✅ ${basename(mdPath)} → ${outPath}  (섹션 ${sections.length}개)`);
+  } catch (err) {
+    if (err.code === "EBUSY" || err.code === "EPERM") {
+      console.warn(`⚠️  PPTX 쓰기 실패 (${outPath}): 파일이 PowerPoint 등 다른 프로그램에서 열려 있어 잠겨 있습니다. 파일을 닫고 다시 시도해 주세요.`);
+    } else {
+      console.error(`❌ PPTX 쓰기 실패 (${outPath}): ${err.message}`);
+      throw err;
+    }
+  }
   return outPath;
 }
 

@@ -65,11 +65,11 @@
 ### 1. 프리미엄 시각 숏코드 5종 도입 및 빌더 고도화 (`build-guide.mjs`, `build-presentation.mjs`)
 * **이슈 배경**: 바이브코딩 컬렉션의 풍부한 원본 HTML 시각 도형 및 컴포넌트(흐름도, 스펙트럼 등)들이 마크다운 변환 시 유실 및 뭉개져 쌩 텍스트 문단으로 노출되던 미학적 regressions를 완벽 해결했습니다.
 * **신규 숏코드 구현**:
-  * `flow`: 가로 흐름 다이어그램 (`flow`, `flow-step`, `flow-arrow`) 복원.
+  * `step-flow`: 가로 흐름 다이어그램 (`step-flow`, `flow-step`, `flow-arrow`) 복원.
   * `level-grid`: 난이도 및 5단계 로드맵 진행 스펙트럼 카드 그리드 복원.
   * `checkpoint-grid`: 이모지 기반 5단계 중간 체크포인트 수평 정렬 그리드 복원.
-  * `compare-before-after`: Bad vs Good 1:1 대비 전후 비교 레이아웃 복원.
-  * `takeaway`: 그라데이션 프리미엄 요약 배너 박스 복원.
+  * `compare-diff`: Bad vs Good 1:1 대비 전후 비교 레이아웃 복원.
+  * `takeaway-banner`: 그라데이션 프리미엄 요약 배너 박스 복원.
 * **쇼케이스 문서화**: `md_src/showcase/showcase.md` 가이드 맨 끝에 신규 숏코드 5종의 스키마 명세 및 마크다운 예제를 영구 추가 및 업데이트 완료(25번~29번 숏코드).
 
 ### 2. 동적 카드(`.card`) 래핑 개선으로 레이아웃 버그 척결

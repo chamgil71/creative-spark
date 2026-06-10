@@ -46,7 +46,7 @@ stats:
 
 4단계로 나만의 AI 지식 베이스를 만들어보세요.
 
-::: workflow-strip
+::: workflow-flow
 - title: "🆕 노트북 생성"
   desc: "notebooklm.google.com에서 \"새 노트북\" 클릭"
 - title: "📥 소스 추가"

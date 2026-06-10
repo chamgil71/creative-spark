@@ -239,8 +239,8 @@ function convertSpecial($, el) {
       meta: [".syn-ex", ".col-note", "li"]
     }), $el.children().length <= 2 ? "cols=2" : "cols=3");
   }
-  if (has("workflow-strip", "agent-flow", "actions-flow", "flow-demo", "flow-container", "workflow", "workflow-diagram")) {
-    return shortcode("workflow-strip", cardItems($, $el, ".wf-step,.af-step,.flow-step,.action-step,.wf-node,.branch-row,> div", {
+  if (has("workflow-flow", "agent-flow", "actions-flow", "flow-demo", "flow-container", "workflow", "workflow-diagram")) {
+    return shortcode("workflow-flow", cardItems($, $el, ".wf-step,.af-step,.flow-step,.action-step,.wf-node,.branch-row,> div", {
       icon: [".wf-icon", ".af-step-icon", ".as-icon"],
       title: [".wf-name", ".af-step-title", ".action-step span:first-child", "h3", "h4", "strong"],
       desc: [".wf-tool", ".af-step-desc", "p"],
@@ -264,7 +264,7 @@ function convertSpecial($, el) {
       if (text) metaParts.push(text);
     });
     const bodyText = textWithBreaks($, $el.find(".tc-body,.tool-body").first()[0] || null);
-    return shortcode("tool-box", [{
+    return shortcode("tool-list", [{
       icon: pickText($, $el, [".tc-icon", ".tool-icon", ".service-logo", ".project-icon"]),
       title: pickText($, $el, [".tc-name", ".tool-name", ".service-title", ".project-title", "h3", "h4"]),
       tag: pickText($, $el, [".tc-badge", ".tool-badge", ".service-tag"]),
@@ -325,7 +325,7 @@ function convertSpecial($, el) {
     return shortcode("network-box", items);
   }
   if (has("flow-branches")) {
-    return shortcode("git-flow-strip", cardItems($, $el, ".branch-row,> div", {
+    return shortcode("git-flow", cardItems($, $el, ".branch-row,> div", {
       title: [".branch-label", "h3", "h4", "strong"],
       tag: [".commit-label", ".tag"],
       meta: [".commit-line li", "li"]
