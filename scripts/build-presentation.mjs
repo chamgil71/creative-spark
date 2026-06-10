@@ -44,12 +44,12 @@ function standardizeItem(item) {
   const iconMatch = rawName.match(/^([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])\s*(.*)$/);
   const icon =     item.icon || (iconMatch ? iconMatch[1] : "") || "";
   const title =    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "";
-  const desc =     item.desc || item.description || item.tagline || item.body || "";
+  const desc =     String(item.desc || item.description || item.tagline || item.body || "").replace(/\\n/g, "\n");
   const tag =      item.tag || item.badge || item.type || "";
   const color =    item.color || "";
   const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
   const meta = item.meta || item.tool || item.features || item.items || item.points || "";
-  const note = item.note || "";
+  const note = String(item.note || "").replace(/\\n/g, "\n");
 
   return { ...item, icon, title, desc, tag, meta, note, color, featured };
 }
@@ -128,14 +128,18 @@ function parseShortcodeItems(src) {
 // Render shortcode (same visual blocks as build-guide)
 function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
   if (!text) return "";
-  const lines = String(text).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  const cleanText = String(text).replace(/\\n/g, "\n");
+  const lines = cleanText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
   
-  if (lines.length <= 1 && !lines[0]?.match(/^[-*+•✅✔️]/)) {
-    return defaultTag ? `<${defaultTag}>${escapeHtml(text)}</${defaultTag}>` : escapeHtml(text);
+  if (lines.length <= 1 && !lines[0]?.match(/^[-*+•✅✔️]/) && !customBullet) {
+    return defaultTag ? `<${defaultTag}>${escapeHtml(cleanText)}</${defaultTag}>` : escapeHtml(cleanText);
   }
 
   // 이모지 "✔️"의 색상을 완벽히 제어하기 위해 인라인 SVG 체크 기호를 기본값으로 탑재 (stroke="currentColor"로 color에 반응)
-  const defaultBullet = customBullet || `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  const svgBullet = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px; display: inline-block; vertical-align: middle;"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+  const activeBullet = customBullet || null;
+  const makeBulletHtml = (sym) =>
+    sym ? `<span style="font-size:1.1rem;line-height:1;">${sym}</span>` : svgBullet;
 
   let listHtml = '<div class="multiline-list" style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%;">';
   for (const line of lines) {
@@ -144,7 +148,7 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null) {
     if (!content.trim()) continue;
 
     listHtml += `<div class="multiline-item" style="display: flex; gap: 8px; align-items: flex-start; font-size: 1.1rem; color: var(--text-muted); line-height: 1.5;">
-      <span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;">${defaultBullet}</span>
+      <span class="bullet" style="color: var(--brand); flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; min-width: 16px;">${makeBulletHtml(activeBullet)}</span>
       <span class="content" style="text-align: left;">${escapeHtml(content)}</span>
     </div>`;
   }
@@ -173,8 +177,13 @@ function renderShortcode(type, body, args) {
   };
 
   const colsMatch = (args || "").match(/cols=(\d+)/);
+  const bulletMatch = (args || "").match(/bullet=(\S+)/);
   const cols = colsMatch ? colsMatch[1] : null;
+  const blockBullet = bulletMatch ? bulletMatch[1] : null;
   const gridStyle = cols ? `style="grid-template-columns: repeat(${cols}, 1fr);"` : "";
+
+  // 아이템 bullet 필드가 없으면 블록 레벨 bullet 사용
+  const itemBullet = (it) => it.bullet || blockBullet || null;
 
   if (["icon-grid", "feature-grid", "badge-grid", "stat-grid"].includes(type)) {
     const isBadge = type === "badge-grid";
@@ -288,7 +297,7 @@ function renderShortcode(type, body, args) {
       <div class="skill-item" ${renderAccent(it.color)}>
         <div class="skill-icon" ${it.color ? `style="background:${it.color}22; color:${it.color};"` : ""}>${escapeHtml(it.icon)}</div>
         <div class="skill-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
-        <div class="skill-desc">${escapeHtml(it.desc)}</div>
+        <div class="skill-desc">${renderMultiLineText(it.desc, "p", itemBullet(it))}</div>
       </div>`).join("")}</div>`;
   }
 

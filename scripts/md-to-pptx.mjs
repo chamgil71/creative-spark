@@ -45,14 +45,14 @@ function standardizeItem(item) {
 
   const icon =     item.icon || (iconMatch ? iconMatch[1] : "") || "";
   const title =    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "";
-  const desc =     item.desc || item.description || item.tagline || item.body || "";
+  const desc =     String(item.desc || item.description || item.tagline || item.body || "").replace(/\\n/g, "\n");
   const tag =      item.tag || item.badge || "";
   const color =    item.color || "";
   const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
 
   // meta와 note를 뭉개지 않고 각각의 고유값을 완벽하게 보존합니다.
   const meta = item.meta || item.features || item.items || item.points || item.tool || "";
-  const note = item.note || "";
+  const note = String(item.note || "").replace(/\\n/g, "\n");
 
   return {
     icon,

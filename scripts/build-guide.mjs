@@ -50,14 +50,14 @@ function standardizeItem(item) {
 
   const icon =     item.icon || (iconMatch ? iconMatch[1] : "") || "";
   const title =    item.title || (iconMatch ? iconMatch[2] : item.name) || item.col || "";
-  const desc =     item.desc || item.description || item.tagline || item.body || "";
+  const desc =     String(item.desc || item.description || item.tagline || item.body || "").replace(/\\n/g, "\n");
   const tag =      item.tag || item.badge || item.type || "";
   const color =    item.color || "";
   const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
   const bullet =   item.bullet || "";
 
   const meta = item.meta || item.tool || item.features || item.items || item.points || "";
-  const note = item.note || "";
+  const note = String(item.note || "").replace(/\\n/g, "\n");
 
   return {
     ...item,
@@ -168,8 +168,8 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null, bullet
   if (!text) return "";
   const lines = String(text).split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
-  // 단일 줄이고 불릿 마커 없으면 → 일반 태그
-  if (lines.length <= 1 && !STD_BULLET_RE.test(lines[0]) && !EMOJI_BULLET_RE.test(lines[0])) {
+  // 단일 줄이고 불릿 마커 없으며 호출자가 지정한 커스텀 불릿도 없으면 → 일반 태그
+  if (lines.length <= 1 && !STD_BULLET_RE.test(lines[0]) && !EMOJI_BULLET_RE.test(lines[0]) && !customBullet) {
     return defaultTag ? `<${defaultTag}>${escapeHtml(lines[0] ?? "")}</${defaultTag}>` : escapeHtml(lines[0] ?? "");
   }
 
