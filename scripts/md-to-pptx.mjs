@@ -445,16 +445,16 @@ function itemH(item, w) {
     return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
   }
   // Phase 4 신규 구현
-  if (item.type === "step-flow" || item.type === "step-flow") {
+  if (item.type === "step-flow" || item.type === "flow") {
     return D.workflow.stepH + 0.3 + c.gap;
   }
-  if (item.type === "takeaway-banner-banner" || item.type === "takeaway-banner") {
+  if (item.type === "takeaway-banner" || item.type === "takeaway") {
     return item.items.reduce((sum, it) => {
       const lines = estimateLines(it.desc || "", w - c.padX * 2 - 0.5, c.bodySize + 1);
       return sum + c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0) + (c.bodySize + 1) / 72 * 1.7 * Math.max(1, lines) + c.gap;
     }, 0);
   }
-  if (item.type === "compare-diff" || item.type === "compare-diff") {
+  if (item.type === "compare-diff" || item.type === "compare-before-after") {
     if (item.items.length < 2) return 1.5 + c.gap;
     const cc = D.compare2col; const colW = (w - cc.colGap) / 2; const lh = (c.bodySize / 72) * 1.7;
     const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
@@ -474,7 +474,7 @@ function itemH(item, w) {
     const cols = Math.max(1, Math.min(item.items.length, 4));
     return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
   }
-  if (item.type === "level-grid" || item.type === "part-banner" || item.type === "part-banner") {
+  if (item.type === "level-grid" || item.type === "part-banner" || item.type === "part-deck") {
     return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
   }
   return 0;
@@ -1117,13 +1117,13 @@ function renderItem(slide, item, x, y, w, pal) {
   if (item.type === "stat-grid" || item.type === "stat-highlight")               return renderStatHighlight(slide, item, x, y, w, pal);
   
   // 특화 숏코드 우회 매핑
-  if (item.type === "git-flow" || item.type === "git-flow")                return renderWorkflow(slide, item, x, y, w, pal);
+  if (item.type === "git-flow" || item.type === "git-flow-strip")                return renderWorkflow(slide, item, x, y, w, pal);
   if (item.type === "editor-box")                                                return renderCommandBlock(slide, item, x, y, w, pal);
   if (item.type === "network-box")                                               return renderCompareGrid(slide, item, x, y, w, pal);
   // Phase 4 신규 구현
-  if (item.type === "step-flow" || item.type === "step-flow")                         return renderFlow(slide, item, x, y, w, pal);
-  if (item.type === "takeaway-banner-banner" || item.type === "takeaway-banner")               return renderTakeaway(slide, item, x, y, w, pal);
-  if (item.type === "compare-diff" || item.type === "compare-diff")       return renderCompareBeforeAfter(slide, item, x, y, w, pal);
+  if (item.type === "step-flow" || item.type === "flow")                         return renderFlow(slide, item, x, y, w, pal);
+  if (item.type === "takeaway-banner" || item.type === "takeaway")               return renderTakeaway(slide, item, x, y, w, pal);
+  if (item.type === "compare-diff" || item.type === "compare-before-after")       return renderCompareBeforeAfter(slide, item, x, y, w, pal);
   // 추가 숏코드 우회 매핑
   if (item.type === "badge-grid")                                                return renderIconGrid(slide, item, x, y, w, pal);
   if (item.type === "checkpoint-grid")                                           return renderIconGrid(slide, item, x, y, w, pal);
@@ -1131,7 +1131,7 @@ function renderItem(slide, item, x, y, w, pal) {
   if (item.type === "chapter-list")                                              return renderSteps(slide, item, x, y, w, pal);
   if (item.type === "summary-bar")                                               return renderStatHighlight(slide, item, x, y, w, pal);
   if (item.type === "level-grid")                                                return renderCompareGrid(slide, item, x, y, w, pal);
-  if (item.type === "part-banner" || item.type === "part-banner")                  return renderCompareGrid(slide, item, x, y, w, pal);
+  if (item.type === "part-banner" || item.type === "part-deck")                  return renderCompareGrid(slide, item, x, y, w, pal);
   
   // Phase 3: 미구현 숏코드 경고
   console.warn(`  ⚠️  PPTX 미구현 숏코드: "${item.type}" — 슬라이드에서 제외됨`);

@@ -212,7 +212,7 @@ function renderShortcode(type, body, args) {
       </div>`;
     }).join("")}</div>`;
   }
-  if (type === "tool-list" || type === "tool-list") {
+  if (type === "tool-list" || type === "tool-box") {
     return items.map(it => {
       const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `var(--brand-gradient)`;
       const metaItems = splitMeta(it.meta);
@@ -230,7 +230,7 @@ function renderShortcode(type, body, args) {
     }).join("");
   }
 
-  if (type === "workflow-flow" || type === "workflow-flow") {
+  if (type === "workflow-flow" || type === "workflow-strip") {
     return `<div class="workflow-flow">${items.map((it, idx) => `
       <div class="wf-step" ${renderAccent(it.color)}>
         <div class="wf-icon" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.icon)}</div>
@@ -305,7 +305,7 @@ function renderShortcode(type, body, args) {
     }).join("")}</div>`;
   }
 
-  if (type === "summary-box" || type === "summary-box") {
+  if (type === "summary-box" || type === "bottom-list") {
     const it = items[0];
     const chips = splitMeta(it.meta);
     return `<div class="summary-box" ${renderAccent(it.color)}>
@@ -382,21 +382,36 @@ function renderShortcode(type, body, args) {
       </div>`).join("");
   }
 
-  if (type === "git-flow" || type === "git-flow") {
-    return `<div class="git-flow-container"><div class="flow-branches">${items.map((it, idx) => {
+  if (type === "git-flow" || type === "git-flow-strip") {
+    return `<div class="git-flow-container"><div class="flow-branches">${items.map(it => {
       const color = it.color || "var(--brand)";
-      const metaItems = splitMeta(it.meta);
+      const tags = it.tag ? it.tag.split("|").map(t => t.trim()) : [];
+      const metas = it.meta ? it.meta.split("|").map(m => m.trim()) : [];
+      const count = Math.max(tags.length, metas.length, 1);
+      
+      const commitsHtml = Array.from({ length: count }).map((_, idx) => {
+        const tag = tags[idx] || "";
+        const meta = metas[idx] || "";
+        
+        const labelHtml = tag ? `<span class="commit-label" style="background:${color};">${escapeHtml(tag)}</span>` : "";
+        const descHtml = meta ? `<span class="commit-desc">${escapeHtml(meta)}</span>` : "";
+        const lineHtml = idx < count - 1 ? `<div class="commit-line-segment" style="background:${color};"></div>` : "";
+        
+        return `
+          <div class="commit" style="border-color:${color};">
+            ${labelHtml}
+            ${descHtml}
+          </div>
+          ${lineHtml}
+        `;
+      }).join("");
+
       return `<div class="branch-row">
         <div class="branch-label" style="background: ${color}12; border-left: 4px solid ${color}; color: ${color}; font-weight: 800;">
           ${escapeHtml(it.title)}
         </div>
-        <div class="branch-line" style="background: linear-gradient(90deg, ${color} 30%, rgba(203, 213, 225, 0.4) 100%);">
-          <div class="commit" style="border-color: ${color};">
-            ${it.tag ? `<span class="commit-label" style="background: ${color};">${escapeHtml(it.tag)}</span>` : ""}
-            <div class="commit-line" style="border-color: ${color};">
-              ${metaItems.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
-            </div>
-          </div>
+        <div class="branch-line">
+          ${commitsHtml}
         </div>
       </div>`;
     }).join("")}</div></div>`;
@@ -445,7 +460,7 @@ function renderShortcode(type, body, args) {
   }
 
   // 19. part-banner (구 part-banner) (시리즈 목차용 부(Part) 헤더)
-  if (type === "part-banner" || type === "part-banner") {
+  if (type === "part-banner" || type === "part-deck") {
     return items.map(it => {
       const color = it.color || "var(--brand)";
       return `<div class="part-banner" style="--part-color: ${color};">
@@ -493,7 +508,7 @@ function renderShortcode(type, body, args) {
   }
 
   // 22. step-flow (구 step-flow) (가로/세로 흐름 시각화)
-  if (type === "step-flow" || type === "step-flow") {
+  if (type === "step-flow" || type === "flow") {
     return `<div class="step-flow">${items.map(it => {
       if (it.type === "arrow" || it.title === "→" || it.icon === "→") {
         return `<div class="step-flow-arrow">${escapeHtml(it.icon || "→")}</div>`;
@@ -530,7 +545,7 @@ function renderShortcode(type, body, args) {
   }
 
   // 25. compare-diff (구 compare-diff) (좌우 1:1 전후 대조)
-  if (type === "compare-diff" || type === "compare-diff") {
+  if (type === "compare-diff" || type === "compare-before-after") {
     const bad = items[0] || {};
     const good = items[1] || {};
     return `<div class="compare-diff">
@@ -546,9 +561,9 @@ function renderShortcode(type, body, args) {
   }
 
   // 26. takeaway-banner-banner (구 takeaway-banner) (Key Takeaway)
-  if (type === "takeaway-banner-banner" || type === "takeaway-banner") {
+  if (type === "takeaway-banner" || type === "takeaway") {
     const it = items[0] || {};
-    return `<div class="takeaway-banner-banner">
+    return `<div class="takeaway-banner">
       <div class="ta-icon">${escapeHtml(it.icon || "💡")}</div>
       <div>
         <div class="ta-label">${escapeHtml(it.title || "Key Takeaway")}</div>
@@ -887,17 +902,16 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .cmd-copy:hover { background: rgba(255,255,255,0.1); color: white; }
   .cmd-pre { margin: 0; padding: 18px 20px; color: #cbd5e1; font-size: 0.95rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; white-space: pre-wrap; }
 
-  /* Git step-flow */
+  /* [NEW] Git flow (다차원 깃 플로우 브랜치 흐름 시각화) */
   .git-flow-container { background: #000; padding: 24px; border-radius: var(--radius); border: 1px solid var(--border); margin: 25px 0; width: 100%; }
   .flow-branches { display: flex; flex-direction: column; gap: 20px; }
-  .branch-row { display: grid; grid-template-columns: 160px 1fr; gap: 24px; align-items: center; }
+  .branch-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: center; min-height: 80px; }
   .branch-label { padding: 6px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: center; }
-  .branch-line { height: 4px; position: relative; border-radius: 2px; }
-  .commit { width: 16px; height: 16px; background: #000; border: 3px solid var(--brand); border-radius: 50%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; }
+  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; }
+  .commit { width: 16px; height: 16px; background: #000; border: 3px solid var(--brand); border-radius: 50%; position: relative; cursor: pointer; flex-shrink: 0; }
   .commit-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
-  .commit-line { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 12px; list-style: none; font-size: 0.75rem; color: #94a3b8; display: none; z-index: 10; min-width: 140px; text-align: left; }
-  .commit-line li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .commit:hover .commit-line { display: block; }
+  .commit-desc { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); color: #94A3B8; font-size: 0.7rem; white-space: nowrap; font-family: inherit; font-weight: 500; }
+  .commit-line-segment { flex: 1; height: 3px; min-width: 30px; }
 
   /* Editor Box */
   .editor-sim { background: #1e1e1e; border: 1px solid #333; border-radius: var(--radius); overflow: hidden; margin: 25px 0; width: 100%; }
@@ -952,6 +966,69 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .summary-num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; color: var(--brand-light); line-height: 1; }
   .summary-num .unit { font-size: 12px; font-weight: 300; color: var(--text-muted); opacity: 0.8; margin-left: 2px; }
   .summary-label { font-size: 11px; color: var(--text-muted); opacity: 0.6; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+  /* ── [NEW] level-grid, checkpoint-grid, step-flow, takeaway-banner 스타일 ── */
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 25px 0; width: 100%; }
+  .level-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+  .level-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .level-card.highlight { border-color: var(--brand); background: rgba(255, 255, 255, 0.03); }
+  .level-num { font-size: 1.25rem; font-weight: 900; color: var(--brand); margin-bottom: 8px; }
+  .level-card.highlight .level-num { color: var(--brand-dark); }
+  .level-name { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .level-name p { margin: 0; }
+  .level-tool { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+  .level-desc { font-size: 0.78rem; color: var(--text-muted); opacity: 0.8; font-style: italic; margin-top: auto; border-top: 1px dashed var(--border); padding-top: 8px; }
+  .level-desc p { margin: 0; }
+
+  .checkpoint-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 25px 0; width: 100%; }
+  .checkpoint-item { display: flex; align-items: center; gap: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .checkpoint-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .ci-icon { font-size: 1.6rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 42px; height: 42px; background: rgba(255, 255, 255, 0.05); border-radius: 50%; color: var(--brand); }
+  .ci-text { font-size: 0.9rem; color: var(--text); line-height: 1.4; text-align: left; }
+  .ci-text strong { font-weight: 700; color: #fff; }
+
+  .step-flow { display: flex; align-items: stretch; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; width: 100%; }
+  .step-flow-step { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; display: flex; flex-direction: column; align-items: center; }
+  .step-flow-step.active { border-color: var(--brand); }
+  .step-flow-step.active .fs-icon { background: var(--brand); color: #fff; }
+  .fs-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: rgba(255, 255, 255, 0.05); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .fs-title { font-weight: 800; font-size: 1rem; margin-bottom: 5px; color: #fff; }
+  .fs-sub { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
+  .fs-sub p { margin: 0; }
+  .step-flow-arrow { display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--text-muted); opacity: 0.5; font-size: 1.5rem; flex-shrink: 0; user-select: none; }
+
+  .takeaway-banner {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-left: 5px solid var(--brand);
+    border-radius: var(--radius);
+    margin: 25px 0;
+    width: 100%;
+  }
+  .ta-icon {
+    font-size: 1.8rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .ta-label {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+    text-align: left;
+  }
+  .ta-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    text-align: left;
+  }
+  .ta-text p {
+    margin: 0;
+  }
 
   /* Controls */
   .controls {
