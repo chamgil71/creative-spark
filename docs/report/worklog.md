@@ -96,3 +96,30 @@
 ### 5. 종합 정합성 보고서 출판 및 빌드 성공
 * **보고서 수록**: 정밀 검증 내역 및 해결 설계를 격조 높은 한글 보고서 문서인 **`docs/standalone-integrity-report.md`**에 정식 등재 완료했습니다.
 * **빌드 결과**: `npm run build:publish` 등 전체 빌드 파이프라인을 구동하여 0-Error 완벽 통과 및 Standalone 번들 `1828.7 KB` 무결함 릴리즈 완료했습니다.
+
+---
+
+## 📅 2026-06-10 작업 로그 (v1.5) — 숏코드 스타일 보완 및 git-flow 시각화 개선
+
+### 1. 숏코드 4종 스타일시트 보완 (`build-guide.mjs`, `build-presentation.mjs`)
+- **이슈 배경**: `level-grid`, `checkpoint-grid`, `step-flow`, `takeaway-banner` 등의 신형 숏코드들이 렌더러 로직에는 있었으나, CSS 클래스 규칙이 누락되어 브라우저에서 밋밋하게 세로 쌩 텍스트 형태로 나열되던 결함을 해결했습니다.
+- **수정 및 추가 사항**:
+  - `level-grid`: 난이도 로드맵용 가로형 카드 그리드 CSS를 추가하고, `highlight` 태그 시 브랜드 HSL 테두리와 부드러운 배경이 동적으로 돋보이도록 구현했습니다.
+  - `checkpoint-grid`: 이모지와 가로 뱃지 형식의 체크포인트 수평 카드로 시각화하는 CSS 규칙을 삽입했습니다.
+  - `step-flow`: `display: flex`와 가로 스크롤(`overflow-x: auto`)을 부여하여 두 줄로 찌그러지지 않고 깔끔하게 한 줄 가로 스크롤로 단계가 표현되도록 교정하고, 노드 사이에 가로 화살표가 예쁘게 배치되도록 `.step-flow-arrow` 스타일을 신규 작성했습니다.
+  - `takeaway-banner`: "그라데이션 프리미엄 배너" 설명에 걸맞게 그라데이션 가로 띠와 둥근 모서리, 브랜드 보더를 입힌 시각 디자인을 구현하고, `.takeaway-banner-banner` 등 컴파일러 내 오타를 제거했습니다.
+
+### 2. `git-flow` 다차원 버전 흐름 오버홀
+- **이슈 배경**: 기존의 `git-flow` 렌더러는 하나의 브랜치에 가로로 여러 커밋을 그릴 때 좌표 겹침 현상이 발생해 모든 노드가 한가운데에 중첩되어 보이고, `tag`와 `meta` 정보가 정상적으로 나타나지 않던 렌더링 결함이 있었습니다.
+- **수정 및 추가 사항**:
+  - `.branch-line`을 가로 flex 구조로 변경하고, `.commit`을 `position: relative;` 형태로 겹치지 않게 정렬했습니다.
+  - 마크다운의 `tag` (버전 뱃지 목록)와 `meta` (커밋 설명글 목록)를 파이프(`|`) 기호로 각각 파싱하여, 1:1 동적 매핑을 통해 가로 방향으로 여러 버전의 커밋 노드들을 다중 생성하도록 렌더러 함수를 고도화했습니다.
+  - 브랜치 행의 최소 높이(`min-height: 80px`)를 확보하여 상단 버전 뱃지(`.commit-label`)와 하단 커밋 설명(`.commit-desc`)이 세로로 겹치거나 간섭하지 않도록 정교하게 배치했습니다.
+  - `git-flow` 컨테이너 배경이 어둡기 때문에 하단 텍스트 색상을 밝은 회색(`#94A3B8`)으로 고정 지정하여, 라이트 모드 웹브라우저에서도 텍스트가 묻히지 않도록 프리미엄 가독성 처리를 완료했습니다.
+
+### 3. 컴파일러 구버전 숏코드 별칭 매핑 정비 (`md-to-pptx.mjs` 포함)
+- **조치 사항**: 숏코드 명칭 표준화에 대응하여 `scripts/md-to-pptx.mjs`, `scripts/build-guide.mjs`, `scripts/build-presentation.mjs`의 분기문 조건에 `tool-box`, `workflow-strip`, `bottom-list`, `flow`, `compare-before-after`, `takeaway` 등의 구버전 숏코드 별칭(Alias) 조건을 유실 없이 정비하여 하위 호환성을 완벽히 보완했습니다.
+
+### 4. PowerPoint 파일 락 해제 및 최종 프로덕션 빌드 성공
+- **빌드 및 락 우회**: 로컬 MS PowerPoint가 잡고 있던 `public/showcase/showcase.pptx` 파일의 쓰기 락을 해제한 후, 빌드 스크립트를 재구동하여 무오류 릴리즈 완료했습니다.
+- **최종 빌드 패스**: `npm run build` 및 `npm run build:publish`를 가동하여, 가이드 및 횡형 슬라이드용 정적 HTML을 안전하게 리빌드하고, React 가이드북 배포 에셋 컴파일 및 오프라인 통합 단일 standalone.html 번들(`2045.1 KB`) 컴파일에 에러 없이 성공했습니다.
