@@ -661,7 +661,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
       console.warn(`⚠️ Warning: 파일이 존재하지 않아 스킵합니다: ${fp}`);
       continue;
     }
-    const raw = fs.readFileSync(fp, "utf8");
+    const raw = fs.readFileSync(fp, "utf8").replace(/\r\n/g, "\n");
     const { data: fm, content } = matter(raw);
     if (!mainFm) mainFm = fm;
 
@@ -1295,6 +1295,45 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   
   .slide-info {
     position: fixed; bottom: 43px; left: 40px; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--text-muted); z-index: 1000;
+  }
+
+  /* 📑 A4 Landscape PDF 인쇄 최적화 */
+  @media print {
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: visible !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .theme-toggle-btn,
+    .controls,
+    .progress-bar,
+    .slide-info {
+      display: none !important;
+    }
+    .slides-container {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .slide {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      position: relative !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+      padding: 60px 80px !important;
+    }
   }
 </style>
 </head>

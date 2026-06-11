@@ -748,7 +748,7 @@ export function buildHtml(inputPath, opts = {}) {
   const fontTag   = fontConfig.tag   || "'Noto Sans KR', sans-serif";
   const fontScale = fontConfig.scale || 1.0;
 
-  const raw = fs.readFileSync(inputPath, "utf8");
+  const raw = fs.readFileSync(inputPath, "utf8").replace(/\r\n/g, "\n");
   const { data: fm, content } = matter(raw);
   const styleKey = opts.style || fm.style || "ai-chat";
   const style = STYLES[styleKey] || STYLES["ai-chat"];

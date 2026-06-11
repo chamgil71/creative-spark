@@ -277,7 +277,7 @@ function tokenToBlock(tok) {
 }
 
 function buildSlideData(mdPath, styleOverride) {
-  const raw = readFileSync(mdPath, "utf8");
+  const raw = readFileSync(mdPath, "utf8").replace(/\r\n/g, "\n");
   const { data: fm, content } = matter(raw);
   const styleKey = styleOverride || fm.style || "ai-chat";
   const style = STYLES[styleKey] || STYLES["ai-chat"];

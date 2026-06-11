@@ -54,6 +54,12 @@
           "title": "ollama",
           "subtitle": "오픈소스 AI 활용 툴",
           "file": "Ollama.html"
+        },
+        {
+          "slug": "claude_guide",
+          "title": "Claude & Claude Code 통합 가이드",
+          "subtitle": "웹/앱부터 CLI 터미널 에이전트까지, Anthropic Claude 서비스 완벽 마스터",
+          "file": "claude_guide.html"
         }
       ]
     },
@@ -290,6 +296,14 @@
     }
   ],
   "collections": [
+    {
+      "id": "claudeguide",
+      "label": "claudeguide 시리즈",
+      "description": "claudeguide 가이드 컬렉션",
+      "color": "#6366f1",
+      "folder": "claudeguide",
+      "indexFile": "table-of-contents.html"
+    },
     {
       "id": "test",
       "label": "test 시리즈",

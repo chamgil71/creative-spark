@@ -1,0 +1,36 @@
+{
+  "id": "claudeguide",
+  "label": "claudeguide 시리즈",
+  "parts": [
+    {
+      "slug": "claude_guide",
+      "title": "Claude & Claude Code 통합 마스터 가이드",
+      "file": "claude_guide.html"
+    },
+    {
+      "slug": "claude_guide_presentation",
+      "title": "Presentation",
+      "file": "claude_guide_presentation.html"
+    },
+    {
+      "slug": "guide_summary",
+      "title": "Creative Spark AI 활용 도구 종합 요약 가이드",
+      "file": "guide_summary.html"
+    },
+    {
+      "slug": "guide_summary_presentation",
+      "title": "Presentation",
+      "file": "guide_summary_presentation.html"
+    },
+    {
+      "slug": "myproject_guide",
+      "title": "개인 프로젝트 및 AI 활용 기술 마스터 가이드",
+      "file": "myproject_guide.html"
+    },
+    {
+      "slug": "myproject_guide_presentation",
+      "title": "Presentation",
+      "file": "myproject_guide_presentation.html"
+    }
+  ]
+}

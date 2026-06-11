@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>클로드 코드설치 가이드</title>
+<title>Creative Spark AI 활용 도구 종합 요약 가이드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -433,391 +433,259 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">클로드 코드설치 가이드</a><ul class="nav-links"><li><a href="#sec-1">클로드 코드란 무엇인가요?</a></li><li><a href="#sec-2">설치 전 준비물을 확인해요</a></li><li><a href="#sec-3">본인의 운영체제를 선택해 주세요</a></li><li><a href="#sec-4">처음으로 클로드 코드 실행하기</a></li><li><a href="#sec-5">설치 중 문제가 생겼나요?</a></li><li><a href="#sec-6">자주 묻는 질문</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">💡 Creative Spark AI 활용 도구 종합 요약 가이드</a><ul class="nav-links"><li><a href="#sec-1">1. AI 및 개발 생산성 도구 종합 맵 (AI Landscape)</a></li><li><a href="#sec-2">2. [그룹 1] 대화형 &amp; 지식/검색 AI</a></li><li><a href="#sec-3">3. [그룹 2] AI 코딩 및 에이전트</a></li><li><a href="#sec-4">4. [그룹 3] 노코드 앱 빌더 &amp; 풀스택 플랫폼</a></li><li><a href="#sec-5">5. [그룹 4] 자동화 &amp; 연동 &amp; 개발 환경</a></li><li><a href="#sec-6">6. [그룹 5] 스마트 생산성 &amp; 개인 지식베이스</a></li><li><a href="#sec-7">7. [그룹 6] 디자인 &amp; 멀티미디어 크리에이티브 AI</a></li><li><a href="#sec-8">8. 실무 시너지 워크플로우 시나리오 (기획 &amp; 리서치)</a></li><li><a href="#sec-9">9. 실무 시너지 워크플로우 시나리오 (1인 창업 &amp; 앱 배포)</a></li><li><a href="#sec-10">10. 실무 시너지 워크플로우 시나리오 (업무 자동화 루틴)</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-badge"><span></span>🎉 완전 초보자 맞춤 가이드</div>
+      <div class="hero-badge"><span></span>📚 AI 도구 랜드스케이프 요약본</div>
+      <div class="hero-logo">💡</div>
+      <h1>Creative Spark AI 활용 도구 종합 요약 가이드</h1>
+      <p>40여 종의 최신 AI 툴과 개발 생산성 도구를 단숨에 파악하는 통합 맵</p>
       
-      <h1>클로드 코드설치 가이드</h1>
-      <p>클로드 코드 설치 가이드</p>
-      
-      <div class="hero-stats"><div class="hero-stat"><strong>약 10분</strong><span>설치 소요 시간</span></div><div class="hero-stat"><strong>3가지</strong><span>운영체제 지원</span></div><div class="hero-stat"><strong>무료</strong><span>Node.js 설치</span></div></div>
+      <div class="hero-stats"><div class="hero-stat"><strong>6대 그룹</strong><span>도구 분류 체계</span></div><div class="hero-stat"><strong>40여 종</strong><span>핵심 도구 커버</span></div><div class="hero-stat"><strong>10페이지</strong><span>슬라이드 분량</span></div></div>
     </div>
   </header>
-  <main id="top"><div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
+  <main id="top"><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>1. AI 및 개발 생산성 도구 종합 맵 (AI Landscape)</h2></div><div class="card"><p>본 가이드는 <code>md_src/guides/</code> 내 모든 도구들을 역할과 도메인에 따라 <strong>6대 그룹</strong>으로 명확히 분류하여 간략히 소개합니다.</p>
+</div><div class="card"><h3 class="card-title">AI 및 생산성 도구 6대 분류 체계</h3><p>작업 성격에 따라 최적의 도구 조합을 구성해 보세요.</p>
+<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
+<span class="feature-tag" >지식 획득</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">💡</span><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">💡</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">클로드 코드란?Step 1</span>
-</div></div>
+<span class="fc-icon">💬</span>1. 대화형 &amp; 검색 AI
 </div>
+<p>정보 탐색, 질문 답변, 장문 요약 및 리서치에 특화된 AI 서비스 군단입니다.</p>
 </div><div class="feature-card" >
+<span class="feature-tag" >업무 자동화</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📋</span><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">📋</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">준비물 확인Step 2</span>
-</div></div>
+<span class="fc-icon">💻</span>2. AI 코딩 &amp; 에이전트
 </div>
+<p>직접 터미널을 다루고 파일을 수정하며 자율 수행을 지원하는 코딩 에이전트 도구입니다.</p>
 </div><div class="feature-card" >
+<span class="feature-tag" >1인 웹 구축</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">⚙️</span><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">⚙️</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">설치하기Step 3</span>
-</div></div>
+<span class="fc-icon">🚀</span>3. 노코드 &amp; 인프라
 </div>
+<p>코딩 없이 서비스 화면을 뚝딱 만들고, 호스팅 인프라를 빠르게 연동 배포합니다.</p>
 </div><div class="feature-card" >
+<span class="feature-tag" >반복 업무 제거</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🚀</span><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">🚀</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">첫 번째 실행Step 4</span>
-</div></div>
+<span class="fc-icon">⚙️</span>4. 자동화 &amp; 연동 도구
 </div>
+<p>이종 앱 간의 데이터를 자동 연결하고, 주기적 수동 반복 작업을 완전 차단합니다.</p>
 </div><div class="feature-card" >
+<span class="feature-tag" >개인 지식창고</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🔧</span><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">🔧</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">문제 해결Step 5</span>
-</div></div>
+<span class="fc-icon">📝</span>5. 스마트 생산성
 </div>
+<p>노트 테이킹, 화면 고속 캡처 참조, 그리고 지식 위키를 안전하게 관리합니다.</p>
 </div><div class="feature-card" >
+<span class="feature-tag" >멀티미디어 생성</span>
 <div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">❓</span><div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">❓</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">자주 묻는 질문FAQ</span>
-</div></div>
+<span class="fc-icon">🎨</span>6. 비주얼 크리에이티브
 </div>
-</div></div><section class="section" id="sec-1"><div class="section-header"><div class="section-num">1</div><h2>클로드 코드란 무엇인가요?</h2></div><div class="card"><p>설치하기 전에 클로드 코드가 어떤 도구인지 간단히 알아봐요!</p>
-<div class="icon-grid" ><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">💬</div>
-<div class="icon-card-title" style="color: var(--text);">말로 하는 코딩 도우미</div>
-<p>\&quot;이 코드가 왜 오류가 나요?\&quot; 처럼 우리말로 물어보면 AI가 답해줍니다.</p>
-</div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">📁</div>
-<div class="icon-card-title" style="color: var(--text);">내 컴퓨터 파일과 직접 연결</div>
-<p>인터넷 창에 붙여넣기 할 필요 없이, 내 컴퓨터 파일을 직접 분석합니다.</p>
+<p>이미지 생성, 음악 제작, 비디오 편집 등 미디어 에셋을 제작하는 창작 도구입니다.</p>
+</div></div><hr>
+</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>2. [그룹 1] 대화형 &amp; 지식/검색 AI</h2></div><div class="card"><p>질문을 통해 정보를 얻거나 방대한 문서를 요약하고, 최신 트렌드를 고속 검색하는 도구들의 모음입니다.</p>
+<div class="plan-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >양대 범용 LLM</div>
+<div class="plan-title" >Claude &amp; ChatGPT</div>
+<ul class="plan-features">
+<li>Claude: 정밀 서술, 기획서 집필, 아티팩트 독립 시각 창 특화</li><li>ChatGPT: 다재다능한 챗봇, 빠른 응답성, 이미지 분석 및 실시간 웹 검색</li>
+</ul>
+<div class="plan-note" >기획안 및 비즈니스 작문의 시작점</div>
+</div><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >빅테크 대형 모델</div>
+<div class="plan-title" >Gemini &amp; Grok</div>
+<ul class="plan-features">
+<li>Gemini: 구글 오피스(Drive, Docs) 문서들과 실시간 연동 및 요약</li><li>Grok: 실시간 소셜 미디어(X/트위터) 트렌드 정보 즉시 분석 강점</li>
+</ul>
+<div class="plan-note" >구글 에코시스템 및 실시간 동향 파악</div>
+</div><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >연구 및 리서치 AI</div>
+<div class="plan-title" >NotebookLM &amp; Perplexity</div>
+<ul class="plan-features">
+<li>NotebookLM: 내 업무 문서, PDF를 안전하게 학습시켜 나만의 지식 비서 생성</li><li>Perplexity: 실시간 구글링 결과를 종합 요약 제공</li>
+</ul>
+<div class="plan-note" >정확한 팩트 체크 및 출처 기반 리서치</div>
+</div></div><hr>
+</div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>3. [그룹 2] AI 코딩 및 에이전트</h2></div><div class="card"><p>코드를 자동으로 생성하고, 파일을 직접 쓰며, 터미널 쉘에서 자율 명령어를 기동하여 업무 생산성을 극대화하는 코딩 어시스턴트입니다.</p>
+<div class="icon-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🤖</div>
+<div class="icon-card-title" style="color: var(--text);">Claude Code CLI</div>
+<p>터미널 쉘에 상주하며 로컬 디렉토리 내 파일을 스스로 분석하여, 소스 코드를 부분 패치하고 에러 발생 시 자율 교정 루프를 도는 CLI 에이전트.</p>
 </div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">⚡</div>
-<div class="icon-card-title" style="color: var(--text);">터미널(명령 창)에서 동작</div>
-<p>검은 화면의 터미널에서 실행하지만, 사용 방법은 매우 간단합니다!</p>
+<div class="icon-card-title" style="color: var(--text);">Cursor &amp; Copilot</div>
+<p>VS Code 기반 차세대 AI 에디터. 인라인 코드 생성, 전체 코드베이스 컨텍스트 이해 기반 코드 분석 및 탭 완성 자동 코딩 지원.</p>
 </div><div class="icon-card" >
-<div class="icon-card-icon" style="color: var(--brand);">🔄</div>
-<div class="icon-card-title" style="color: var(--text);">Claude.ai 와는 다른 도구</div>
-<p>claude.ai(웹사이트)와 별개로 설치해서 쓰는 전문 개발자 도구입니다.</p>
-</div></div><p>$</p>
-<p>claude</p>
-<p>✻ Claude Code 2.x.x 에 오신 걸 환영합니다!</p>
-<p>/help 로 사용법을 확인하세요.</p>
-<p>›</p>
-<p>이 파일에서 버그를 찾아줘</p>
-<p>⦿ app.py 파일을 분석하고 있습니다...</p>
-<p>⦿ 17번째 줄에서 오류를 발견했습니다.</p>
-<p>→ <code>None</code> 값에 대한 예외 처리가 필요합니다.</p>
-<p>›</p>
-</div></section><section class="section" id="sec-2"><div class="section-header"><div class="section-num">2</div><h2>설치 전 준비물을 확인해요</h2></div><div class="card"><p>아래 항목들을 미리 준비하시면 설치가 훨씬 매끄럽게 진행됩니다.</p>
-<div class="feature-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="feature-card" >
-<span class="feature-tag" >필수 확인</span>
-<div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">💻</span>지원 운영체제
-</div>
-<p>Windows, macOS(맥), Linux 모두 지원됩니다. 본인의 운영체제에 맞는 설치 방법을 선택해 주세요.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >필수 설치</span>
-<div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🟢</span>Node.js (버전 18 이상)
-</div>
-<p>클로드 코드가 동작하려면 Node.js가 필요합니다. 아직 없다면 설치 과정에서 함께 안내해 드려요.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >필수</span>
-<div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🔑</span>Anthropic 계정
-</div>
-<p>claude.ai 계정이 있으면 됩니다. Claude Pro ($20/월) 이상 구독 또는 API 키가 필요합니다.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >필수</span>
-<div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">📶</span>인터넷 연결
-</div>
-<p>설치 중 파일 다운로드 및 인증에 인터넷이 필요합니다. 안정적인 Wi-Fi 환경을 권장합니다.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >경우에 따라</span>
-<div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">⚡</span>관리자 권한
-</div>
-<p>설치 시 컴퓨터 관리자 비밀번호를 묻는 경우가 있을 수 있습니다. 미리 비밀번호를 확인해 두세요.</p>
-</div><div class="feature-card" >
-<span class="feature-tag" >권장 사항</span>
-<div class="feature-card-title" style="color: var(--brand-dark);">
-<span class="fc-icon">🐙</span>Git (선택)
-</div>
-<p>코드 버전 관리를 위한 Git이 있으면 더 편리합니다. Windows 사용자는 Git for Windows를 권장합니다.</p>
-</div></div><div class="alert-box alert-tip" style="--alert-color:var(--brand)">
-<div class="alert-body">
-<strong>Node.js가 뭔가요?</strong>
-<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">💡</span>
-</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
-<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">JavaScript 프로그래밍 언어를 컴퓨터에서 직접 실행할 수 있게 해주는 도구입니다. 클로드 코드 내부적으로 이것을 사용하기 때문에 미리 설치되어 있어야 합니다. 마치 한글 문서를 열기 위해 &#39;한글(HWP)&#39; 프로그램이 필요한 것과 같아요!</span>
-</div></div>
-</div>
-</div></div></section><section class="section" id="sec-3"><div class="section-header"><div class="section-num">3</div><h2>본인의 운영체제를 선택해 주세요</h2></div><div class="card"><p>사용하시는 컴퓨터 종류에 맞는 탭을 눌러주세요. 각 탭마다 맞춤 설치 방법을 안내해 드립니다.</p>
-<div class="tabs-wrap">
-<div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'tyi1bh-0')">macOS (맥)</button><button class="tab-btn" onclick="switchTab(this,'tyi1bh-1')">Windows</button><button class="tab-btn" onclick="switchTab(this,'tyi1bh-2')">Linux</button>
-</div>
-<div class="tab-panel active" id="tyi1bh-0"></div><div class="tab-panel" id="tyi1bh-1"></div><div class="tab-panel" id="tyi1bh-2"></div>
-</div><div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" >터미널 열기</div>
-<p>명령어를 입력하는 검은 화면 창을 열어요</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" >Node.js 설치 여부 확인</div>
-<p>이미 설치되어 있는지 먼저 확인해봐요</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" >클로드 코드 설치</div>
-<p>실제로 설치하는 명령어를 입력합니다</p>
-</div>
-</div></div><div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" >PowerShell 열기</div>
-<p>Windows의 명령 창을 열어요</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" >공식 설치 스크립트 실행</div>
-<p>Anthropic 공식 설치 스크립트를 사용합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" >Node.js 별도 설치 방법 (위 방법 실패 시)</div>
-<p>공식 스크립트가 안 될 때 수동으로 설치하는 방법</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >4</div>
-<div class="step-content">
-<div class="step-title" >설치 확인</div>
-<p>제대로 설치되었는지 확인합니다</p>
-</div>
-</div></div><div class="step-list">
-<div class="step-item" >
-<div class="step-num" >1</div>
-<div class="step-content">
-<div class="step-title" >터미널 열기</div>
-<p>리눅스에서 터미널을 실행합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >2</div>
-<div class="step-content">
-<div class="step-title" >공식 설치 스크립트 실행</div>
-<p>macOS와 동일한 방법으로 설치합니다</p>
-</div>
-</div>
-<div class="step-item" >
-<div class="step-num" >3</div>
-<div class="step-content">
-<div class="step-title" >Node.js 수동 설치 (필요 시)</div>
-<p>Node.js가 없을 때 설치하는 방법</p>
-</div>
-</div></div></div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>처음으로 클로드 코드 실행하기</h2></div><div class="card"><p>설치가 끝났으면 이제 실행해볼까요? 처음 실행 시 로그인이 필요합니다.</p>
+<div class="icon-card-icon" style="color: var(--brand);">🛠️</div>
+<div class="icon-card-title" style="color: var(--text);">Antigravity &amp; Ollama</div>
+<p>Antigravity: 다중 에이전트 협업 오케스트레이션 플랫폼. Ollama: 내 컴퓨터에서 데이터 유출 걱정 없이 로컬 AI 모델을 가동하는 무료 오프라인 LLM.</p>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🧠</div>
+<div class="icon-card-title" style="color: var(--text);">Manus &amp; Codex</div>
+<p>Manus: 목표만 던지면 브라우저를 조종해 가며 자율적으로 과업을 해결하는 에이전트. Codex: API 구현 및 코딩 논리 설계 보조.</p>
+</div></div><hr>
+</div></section><section class="section" id="sec-4"><div class="section-header"><div class="section-num">4</div><h2>4. [그룹 3] 노코드 앱 빌더 &amp; 풀스택 플랫폼</h2></div><div class="card"><p>복잡한 서버 관리나 호스팅 설정 없이, 한마디 말과 간단한 마우스 클릭만으로 나만의 홈페이지나 사내용 웹 앱을 직접 배포하는 라인업입니다.</p>
+<div class="compare-2col"><div class="c2-card c2-left">
+<div class="card-top-bar"></div>
+<div class="c2-title">노코드 화면 생성 및 프로토타이핑</div>
+<ul class="c2-list"><li>Lovable: 자연어 대화만으로 완성형 풀스택 웹 앱 빌드 및 호스팅</li><li>v0.dev: 텍스트로 묘사한 세련된 컴포넌트 마크업 코드를 즉석 렌더링</li></ul>
+<div class="c2-desc"><p>개발 지식이 전혀 없어도 화면 UI를 예쁘게 그리고 동작하는 웹 어플리케이션을 완성합니다.</p></div>
+<div class="c2-note">창업 아이디어 고속 MVP 검증에 최적</div>
+</div><div class="c2-card c2-right">
+<div class="card-top-bar"></div>
+<div class="c2-title">인프라 및 서버리스 연결 플랫폼</div>
+<ul class="c2-list"><li>Supabase: 클릭으로 완성하는 Postgres 데이터베이스 및 로그인 관리</li><li>Vercel: 프론트엔드 자동 빌드 및 글로벌 도메인 배포</li><li>Cloudflare: 글로벌 전송망 및 고성능 CDN 제공</li><li>Resend: 고객 알림 발송용 이메일 API</li></ul>
+<div class="c2-desc"><p>데이터베이스, 보안 인증, 배포 파이프라인을 복잡한 인프라 세팅 없이 즉시 바인딩합니다.</p></div>
+<div class="c2-note">안정적인 서비스 실시간 가동 및 관리</div>
+</div></div><hr>
+</div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>5. [그룹 4] 자동화 &amp; 연동 &amp; 개발 환경</h2></div><div class="card"><p>여러 서비스 앱을 유기적으로 엮어 수동으로 데이터를 복사하고 옮기는 작업을 자동화하고, 작업 환경의 효율을 끌어올리는 도구들입니다.</p>
 <div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" >claude 입력</div>
-<p>터미널에 claude를 입력하고 Enter</p>
+<div class="step-title" >n8n (업무 자동화 워크플로우)</div>
+<p>서로 다른 웹 서비스(Gmail, Slack, Notion 등)를 시각적으로 연결해, 새로운 메일이 오면 내용을 요약해 Slack으로 전송하는 식의 무인 자동 업무 루프를 형성합니다.</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >2</div>
 <div class="step-content">
-<div class="step-title" >브라우저 열림</div>
-<p>자동으로 웹 브라우저가 열립니다</p>
+<div class="step-title" >Playwright (브라우저 자동화 및 테스트)</div>
+<p>마치 사람이 직접 사이트를 방문하듯 크롬 브라우저를 가동하여 매일 아침 특정 사이트의 정보를 수집(스크래핑)하거나 기능이 마비되지 않았는지 자동 점검합니다.</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >3</div>
 <div class="step-content">
-<div class="step-title" >로그인</div>
-<p>Claude.ai 계정으로 로그인합니다</p>
+<div class="step-title" >GitHub &amp; VS Code (버전 제어 및 편집기)</div>
+<p>팀원들과 코드를 조율하여 저장하는 클라우드 저장소 GitHub와, 다양한 AI 어시스턴트 플러그인을 장착해 코딩 속도를 높여주는 에디터인 VS Code입니다.</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >4</div>
 <div class="step-content">
-<div class="step-title" >권한 허용</div>
-<p>&#39;Authorize&#39; 버튼을 눌러 허용합니다</p>
+<div class="step-title" >Devtools &amp; Terminal AI (브라우저 진단 및 CLI 보조)</div>
+<p>크롬 개발자 도구를 통해 웹 디자인 레이아웃을 현장에서 실시간 수정 진단하고, 터미널 명령이 꼬였을 때 AI의 도움을 받아 즉시 수정하는 도구 모음입니다.</p>
 </div>
-</div>
-<div class="step-item" >
-<div class="step-num" >5</div>
-<div class="step-content">
-<div class="step-title" >시작!</div>
-<p>터미널로 돌아와 사용 시작 🎉</p>
-</div>
-</div></div><div class="step-list">
+</div></div><hr>
+</div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>6. [그룹 5] 스마트 생산성 &amp; 개인 지식베이스</h2></div><div class="card"><p>개인의 메모, 수집 문서, 화면 캡처 자료들을 체계적인 디지털 서재로 관리하여 1초 만에 필요한 정보에 도달하게 해주는 생산성 허브입니다.</p>
+<div class="plan-grid" style="grid-template-columns: repeat(3, 1fr);"><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >지식 관리의 정수</div>
+<div class="plan-title" >Notion &amp; Obsidian</div>
+<ul class="plan-features">
+<li>Notion: 직관적인 표 데이터베이스, 쉬운 팀 협업 및 동기화 문서</li><li>Obsidian: 내 PC 폴더에 마크다운 파일로 영구 소장, 노트 간 연결망(Graph View)</li>
+</ul>
+<div class="plan-note" >협업용 공유 노트 vs 개인용 지식 두뇌</div>
+</div><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >화면 캡처 및 참조 핀</div>
+<div class="plan-title" >Snipaste &amp; Grabit</div>
+<ul class="plan-features">
+<li>Snipaste: 화면의 특정 영역을 캡처한 뒤, 모니터 화면 최상단에 투명 스티커처럼 핀으로 박아두어 참고</li><li>Grabit: 빠른 드래그로 텍스트를 즉시 캡처 보관</li>
+</ul>
+<div class="plan-note" >듀얼 모니터가 없어도 압도적인 작업 속도</div>
+</div><div class="plan-card " >
+<div class="card-top-bar" ></div>
+<div class="plan-badge" >지식 공개 &amp; 초고속 검색</div>
+<div class="plan-title" >Quartz &amp; Everything</div>
+<ul class="plan-features">
+<li>Quartz: Obsidian으로 정리한 로컬 노트를 깔끔한 개인 홈페이지로 무료 게시</li><li>Everything: 내 컴퓨터 속 백만 개 파일 중 원하는 파일을 1초 만에 검색</li>
+</ul>
+<div class="plan-note" >개인 지식 외부 전파 및 시스템 파일 탐색</div>
+</div></div><hr>
+</div></section><section class="section" id="sec-7"><div class="section-header"><div class="section-num">7</div><h2>7. [그룹 6] 디자인 &amp; 멀티미디어 크리에이티브 AI</h2></div><div class="card"><p>아이디어를 시각화하고, 고품질 마케팅 리소스를 창조하며, 오디오와 비디오 에셋을 생성 및 믹싱하는 미디어 제작 도구입니다.</p>
+<div class="icon-grid" style="grid-template-columns: repeat(2, 1fr);"><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎨</div>
+<div class="icon-card-title" style="color: var(--text);">이미지 생성 및 디자인/시각화 AI</div>
+<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">**도구 리스트**: Midjourney, DALL-E 3, Stable Diffusion, Canva 등.</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">**핵심 역할**: 텍스트 프롬프트를 바탕으로 실사 그래픽, UI 시각 컨셉 시트, 일러스트를 무한 생성하여 디자인 기획 단계의 소통 비용을 획기적으로 줄여줍니다.</span>
+</div></div>
+</div><div class="icon-card" >
+<div class="icon-card-icon" style="color: var(--brand);">🎬</div>
+<div class="icon-card-title" style="color: var(--text);">영상 및 음악/오디오 AI &amp; CapCut</div>
+<div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">**도구 리스트**: Suno, Udio (음악 생성), Runway, Sora (영상 생성), CapCut (스마트 영상 편집).</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">**핵심 역할**: 간단한 묘사로 오리지널 배경음악(BGM)과 사운드 이펙트를 합성하고, CapCut의 자동 자막 생성 및 AI 컷 편집 기술을 활용해 영상 콘텐츠 제작 장벽을 낮춥니다.</span>
+</div></div>
+</div></div><hr>
+</div></section><section class="section" id="sec-8"><div class="section-header"><div class="section-num">8</div><h2>8. 실무 시너지 워크플로우 시나리오 (기획 &amp; 리서치)</h2></div><div class="card"><p>개별 툴을 따로 사용하기보다, 각 목적에 맞춰 툴을 연결할 때 기획서 집필과 지식 가공 업무의 효율이 대폭 상승합니다.</p>
+<div class="step-list">
 <div class="step-item" >
 <div class="step-num" >1</div>
 <div class="step-content">
-<div class="step-title" >클로드 코드 실행하기</div>
-<p>처음 실행 시 자동으로 로그인 화면이 나타납니다</p>
+<div class="step-title" >1단계: Perplexity를 통한 실시간 트렌드 분석</div>
+<p>신규 사업 기획을 위해 Perplexity에 최신 해외 동향과 경쟁사 데이터를 검색하고, 신뢰할 수 있는 수치 링크와 요약본을 일차 수집합니다.</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >2</div>
 <div class="step-content">
-<div class="step-title" >첫 번째 대화 시도해보기</div>
-<p>로그인 후 바로 대화를 시작할 수 있어요</p>
+<div class="step-title" >2단계: Notion에 원시 데이터 수집 및 스토리라인 설계</div>
+<p>수집된 텍스트와 링크를 Notion 데이터베이스에 아카이빙하고, 마인드맵 형태로 기획서의 핵심 스토리 라인과 뼈대를 구축합니다.</p>
 </div>
 </div>
 <div class="step-item" >
 <div class="step-num" >3</div>
 <div class="step-content">
-<div class="step-title" >자주 쓰는 명령어</div>
-<p>기본 명령어를 알아두면 편리해요</p>
+<div class="step-title" >3단계: NotebookLM에 학습시켜 나만의 리서치 팟캐스트 소환</div>
+<p>Notion에 저장된 기획 초안 문서를 NotebookLM에 업로드한 뒤, 이를 바탕으로 &#39;Deep Dive 오디오 브리핑(대담 녹음)&#39; 파일을 생성해 이동 중에 청취하며 추가 개선 아이디어를 도출합니다.</p>
 </div>
-</div></div></div></section><section class="section" id="sec-5"><div class="section-header"><div class="section-num">5</div><h2>설치 중 문제가 생겼나요?</h2></div><div class="card"><p>가장 자주 발생하는 문제와 해결 방법을 모아봤습니다. 아래 항목을 클릭하면 해결 방법이 펼쳐집니다.</p>
-<div class="faq-list">
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>\&quot;command not found: claude\&quot; 오류가 나요</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>설치는 됐지만 터미널이 claude 명령어 위치를 아직 모르는 경우입니다.</p></div>
+</div></div><hr>
+</div></section><section class="section" id="sec-9"><div class="section-header"><div class="section-num">9</div><h2>9. 실무 시너지 워크플로우 시나리오 (1인 창업 &amp; 앱 배포)</h2></div><div class="card"><p>자신의 비즈니스 아이디어를 30분 만에 웹 서비스로 구현하여 실제로 작동하게 만들고 글로벌 고객에게 노출시키는 혁신 파이프라인입니다.</p>
+<div class="compare-2col"><div class="c2-card c2-left">
+<div class="card-top-bar"></div>
+<div class="c2-title">기획 및 디자인 설계 (Claude Web &amp; v0.dev)</div>
+<ul class="c2-list"><li>Claude: 서비스 비즈니스 규칙 정의</li><li>v0.dev: 미려한 카드 및 로그인 폼 등 컴포넌트 렌더링 코드 획득</li></ul>
+<div class="c2-desc"><p>아이디어를 구체화하고, 사용자 눈에 보일 미려한 반응형 웹 화면의 마크업 레이아웃을 생성합니다.</p></div>
+<div class="c2-note">시각 디자인 요소를 고속 빌드</div>
+</div><div class="c2-card c2-right">
+<div class="card-top-bar"></div>
+<div class="c2-title">서비스 기동 및 배포 (Lovable &amp; Vercel)</div>
+<ul class="c2-list"><li>Lovable: 대화형으로 동작 가능한 풀스택 코드 변환</li><li>Supabase: 회원 정보 및 지출 내역 저장을 위한 데이터베이스 즉시 구성</li><li>Vercel: 최종 결과물 웹 주소 퍼블리싱</li></ul>
+<div class="c2-desc"><p>데이터베이스를 부착하고 실제로 로그인과 데이터 저장이 수행되는 작동형 앱을 배포합니다.</p></div>
+<div class="c2-note">코딩 지식 없이 완전한 가동 상태 배포</div>
+</div></div><hr>
+</div></section><section class="section" id="sec-10"><div class="section-header"><div class="section-num">10</div><h2>10. 실무 시너지 워크플로우 시나리오 (업무 자동화 루틴)</h2></div><div class="card"><p>매일 아침 발생하는 반복 수동 작업을 지우고, 데이터 분석부터 결과 메일 발송까지 무인으로 실행하는 스마트 오피스 시나리오입니다.</p>
+<div class="step-list">
+<div class="step-item" >
+<div class="step-num" >1</div>
+<div class="step-content">
+<div class="step-title" >1단계: Playwright 웹 크롤러 가동 (아침 08:00)</div>
+<p>Playwright 스크립트가 매일 아침 특정 사이트들을 돌아다니며 환율 정보나 원자재 시세 데이터를 자동으로 긁어옵니다.</p>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>npm 설치 시 \&quot;EACCES: permission denied\&quot; 오류가 나요</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>npm이 시스템 폴더에 쓰려고 할 때 발생하는 권한 오류입니다. 아래처럼 npm 전역 설치 경로를 내 폴더로 바꿔주세요.</p></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>Node.js 버전이 너무 낮다고 해요 (18 미만)</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>Node.js를 최신 LTS 버전으로 업그레이드해야 합니다.</p></div>
+<div class="step-item" >
+<div class="step-num" >2</div>
+<div class="step-content">
+<div class="step-title" >2단계: n8n 워크플로우 트리거 및 데이터 정제</div>
+<p>수집이 완료되면 n8n이 동작하여 정제되지 않은 데이터 덩어리를 Notion 데이터베이스 테이블에 안전하게 정렬해 삽입합니다.</p>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>로그인이 안 되거나 인증 오류가 나요</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>인증을 초기화하고 다시 시도해보세요.</p></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>Windows에서 \&quot;Claude Code is not supported on Windows\&quot; 오류가 나요</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>CMD나 일반 PowerShell에서 WSL(Linux) 없이 실행할 때 발생합니다. 공식 PowerShell 설치 스크립트를 사용하면 대부분 해결됩니다.</p></div>
+<div class="step-item" >
+<div class="step-num" >3</div>
+<div class="step-content">
+<div class="step-title" >3단계: Claude API 연동 일일 동향 보고서 작성</div>
+<p>n8n이 Claude API에 해당 수치들을 입력값으로 전달하면, Claude가 어제 대비 변동폭과 원인을 분석한 간결한 3줄 보고서를 메일 본문용 텍스트로 작성합니다.</p>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>설치는 됐는데 너무 느려요 / 응답이 없어요</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>인터넷 연결 상태를 먼저 확인해주세요. 클로드 코드는 매 응답마다 Anthropic 서버와 통신합니다.</p></div>
-</div></div></div></section><section class="section" id="sec-6"><div class="section-header"><div class="section-num">6</div><h2>자주 묻는 질문</h2></div><div class="card"><p>설치 전후로 많이 물어보시는 질문들을 모았습니다.</p>
-<div class="faq-list">
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>클로드 코드는 무료인가요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>클로드 코드 자체는 무료로 설치할 수 있지만, 사용하려면 Claude Pro($20/월) 이상 구독 또는 Anthropic API 키(사용량 기반 요금)가 필요합니다. Node.js는 완전 무료입니다.</p></div>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>Claude.ai와 클로드 코드의 차이가 뭔가요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>Claude.ai는 웹 브라우저에서 쓰는 채팅 서비스입니다. 클로드 코드는 내 컴퓨터 파일과 직접 연결되어 동작하는 개발자용 도구입니다. 둘 다 같은 AI를 사용하지만 목적과 방식이 다릅니다.</p></div>
+<div class="step-item" >
+<div class="step-num" >4</div>
+<div class="step-content">
+<div class="step-title" >4단계: Resend API 메일 발송 및 Slack 알림</div>
+<p>완성된 보고서를 Resend 이메일 API를 통해 유관 부서 팀원들에게 자동 발송하고, Slack 채널에 &#39;오늘의 동향 보고 메일 발송 완료&#39; 메시지를 푸시하여 전사 업무를 무인 자동화합니다.</p>
 </div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>코딩을 전혀 모르는데 써도 되나요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>네! 한국어로 자유롭게 질문하면 됩니다. 다만 설치 과정에서 터미널 명령어를 입력해야 하므로 이 가이드를 잘 따라와 주세요. 설치 후 사용은 채팅처럼 편합니다.</p></div>
-</div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>Mac, Windows, Linux 모두 되나요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>네, 세 운영체제 모두 공식 지원됩니다. 이 가이드의 각 탭에서 운영체제별 설치 방법을 안내하고 있습니다.</p></div>
-</div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>설치 후 업데이트는 어떻게 하나요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>클로드 코드는 실행할 때마다 자동으로 최신 버전을 확인하고 업데이트합니다. 수동으로 업데이트하려면 터미널에 claude update를 입력하면 됩니다.</p></div>
-</div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>제 코드나 파일이 외부에 유출되나요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>클로드 코드가 파일을 읽을 때 해당 내용이 Anthropic 서버로 전송됩니다. 민감한 정보(비밀번호, 개인정보 등)가 담긴 파일은 주의하여 사용하세요. 자세한 내용은 Anthropic 개인정보처리방침을 확인하세요.</p></div>
-</div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>삭제(제거)는 어떻게 하나요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>터미널에서 npm uninstall -g @anthropic-ai/claude-code를 입력하면 삭제됩니다. 공식 스크립트로 설치했다면 ~/.claude 또는 ~/.local/bin/claude 파일을 삭제하면 됩니다.</p></div>
-</div>
-<div class="faq-item">
-<button class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">
-<span>한국어로 대화할 수 있나요?</span>
-<span class="faq-arrow">▼</span>
-</button>
-<div class="faq-a"><p>물론입니다! 클로드 코드는 한국어를 완벽하게 지원합니다. 질문도 한국어로, 답변도 한국어로 받을 수 있습니다.</p></div>
-</div></div></div><div class="card"><h3 class="card-title">🎉 설치 완료! 이제 시작해봐요</h3><p>아래 명령어들로 클로드 코드의 다양한 기능을 탐험해보세요!</p>
-<p>$ claude</p>
-<p>$ claude &quot;이 코드를 설명해줘&quot;</p>
-<p>$ claude doctor</p>
-<p>📚 공식 문서 바로가기</p>
-</div></section></main>
+</div></div></div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>
