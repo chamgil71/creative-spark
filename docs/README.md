@@ -69,6 +69,7 @@ AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트
 - [pipeline.md](pipeline.md) — 파이프라인 상세 + shortcode 레퍼런스
 - [standalone.md](standalone.md) — Standalone HTML 번들링 매커니즘
 - [shortcode-style-guide.md](shortcode-style-guide.md) — 숏코드별 CSS/PPTX 디자인 튜닝 가이드
+- [marp-comparison.md](marp-comparison.md) — Marp 프레젠테이션 엔진과 Creative Spark 비교 및 연동 가이드
 
 ### 참고 문서 (서브폴더)
 - [plan/](plan/) — 기획 및 분석 문서

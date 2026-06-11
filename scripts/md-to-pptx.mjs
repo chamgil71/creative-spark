@@ -161,7 +161,7 @@ function loadJsonWithComments(filePath) {
 
 const CONFIG_DIR = resolve(__dirname, "../config");
 const STYLES = loadJsonWithComments(resolve(CONFIG_DIR, "styles.json"));
-const D      = loadJsonWithComments(resolve(CONFIG_DIR, "pptdesign.config.json"));
+let D      = loadJsonWithComments(resolve(CONFIG_DIR, "pptdesign.config.json"));
 
 // ════════════════════════════════════════════════════════════════
 //  3. CLI 파서
@@ -232,7 +232,7 @@ function parseContentParts(content) {
     if (match.index > lastIndex) {
       parts.push({ kind: "md", src: content.slice(lastIndex, match.index) });
     }
-    parts.push({ kind: "shortcode", scType: match[1], args: match[2] || "", items: parseShortcodeItems(match[3]) });
+    parts.push({ kind: "shortcode", scType: match[1], args: match[2] || "", rawBody: match[3], items: parseShortcodeItems(match[3]) });
     lastIndex = match.index + match[0].length;
   }
   if (lastIndex < content.length) {
@@ -243,8 +243,13 @@ function parseContentParts(content) {
 
 function tokenToBlock(tok) {
   switch (tok.type) {
-    case "paragraph":
+    case "paragraph": {
+      if (tok.tokens && tok.tokens.length === 1 && tok.tokens[0].type === "image") {
+        const img = tok.tokens[0];
+        return { type: "image", src: img.href, alt: img.text };
+      }
       return { type: "p", text: stripMd(extractText(tok)) };
+    }
     case "heading":
       if (tok.depth === 3) return { type: "h3", text: stripMd(extractText(tok)) };
       if (tok.depth === 4) return { type: "h4", text: stripMd(extractText(tok)) };
@@ -284,13 +289,25 @@ function buildSlideData(mdPath, styleOverride) {
 
   function closeCard() {
     if (currentCard) {
-      if (currentSection) currentSection.items.push(currentCard);
+      const hasTitle = !!(currentCard.title && currentCard.title.trim());
+      const hasBlocks = currentCard.blocks && currentCard.blocks.length > 0;
+      if (hasTitle || hasBlocks) {
+        if (currentSection) currentSection.items.push(currentCard);
+      }
       currentCard = null;
     }
   }
   function closeSection() {
     closeCard();
-    if (currentSection) sections.push(currentSection);
+    if (currentSection) {
+      const hasItems = currentSection.items && currentSection.items.length > 0;
+      const hasTitle = !!(currentSection.title && currentSection.title.trim());
+      const hasConfig = !!currentSection.config;
+      
+      if (hasItems || hasTitle || hasConfig) {
+        sections.push(currentSection);
+      }
+    }
     currentSection = null;
   }
 
@@ -298,7 +315,20 @@ function buildSlideData(mdPath, styleOverride) {
     if (part.kind === "shortcode") {
       if (!currentSection) { sectionNum++; currentSection = { num: sectionNum, title: "", items: [] }; }
       closeCard();
-      currentSection.items.push({ type: part.scType, args: part.args || "", items: part.items });
+      if (part.scType === "slide-config") {
+        currentSection.config = currentSection.config || {};
+        const lines = (part.rawBody || "").split(/\r?\n/);
+        for (const line of lines) {
+          const m = line.match(/^\s*(?:-\s*)?([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+          if (m) {
+            const key = m[1].trim();
+            const val = cleanValue(m[2]);
+            currentSection.config[key] = val;
+          }
+        }
+      } else {
+        currentSection.items.push({ type: part.scType, args: part.args || "", items: part.items });
+      }
       continue;
     }
     const tokens = marked.lexer(part.src);
@@ -336,6 +366,7 @@ function buildSlideData(mdPath, styleOverride) {
 function blockH(block, w) {
   const c = D.card;
   switch (block.type) {
+    case "image": return 2.5 + c.gap;
     case "h3": return (c.h3Size / 72) * 1.7 + c.gap;
     case "h4": return ((c.h3Size - 1) / 72) * 1.7 + c.gap;
     case "p": return (c.bodySize / 72) * 1.7 * estimateLines(block.text, w - c.padX * 2, c.bodySize) + c.gap;
@@ -577,6 +608,23 @@ function renderBlock(slide, block, x, y, w, pal) {
       fontFace: font,
     });
     return totalH + c.gap;
+  }
+  if (block.type === "image") {
+    const h = 2.5;
+    try {
+      slide.addImage({
+        path: block.src,
+        x,
+        y,
+        w,
+        h,
+        altText: block.alt || "image"
+      });
+    } catch (err) {
+      slide.addShape("rect", { x, y, w, h, fill: { color: "F1F5F9" }, line: { color: pal.border, width: 0.75 } });
+      slide.addText(`[이미지 표시 실패: ${block.alt || 'No Alt'} (${block.src})]`, { x, y, w, h, fontSize: 10, align: "center", valign: "middle", color: pal.text2, fontFace: font });
+    }
+    return h + c.gap;
   }
   return 0;
 }
@@ -1166,19 +1214,51 @@ function renderCover(prs, fm, pal) {
 }
 
 function renderSectionSlide(prs, section, pal, verbose) {
-  const slide = prs.addSlide();
-  const dh = D.header; const sw = D.slide.widthIn; const mx = D.slide.marginX; const font = D.slide.font;
-  const bodyW = sw - mx * 2;
-  slide.background = { color: D.palette.white };
-  slide.addShape("rect", { x: 0, y: dh.y, w: sw, h: dh.h, fill: { color: pal.bgDark }, line: { color: pal.bgDark } });
-  const nbs = dh.numBoxSize; const nby = dh.y + (dh.h - nbs) / 2;
-  slide.addShape("roundRect", { x: dh.paddingX, y: nby, w: nbs, h: nbs, rectRadius: 0.1, fill: { color: pal.brand }, line: { color: pal.brand } });
-  slide.addText(String(section.num), { x: dh.paddingX, y: nby, w: nbs, h: nbs, fontSize: dh.numFontSize, bold: true, color: pal.white, fontFace: font, align: "center", valign: "middle" });
-  slide.addText(section.title, { x: dh.paddingX + nbs + 0.15, y: dh.y, w: sw - dh.paddingX - nbs - 0.25, h: dh.h, fontSize: dh.titleFontSize, bold: true, color: pal.white, fontFace: font, valign: "middle" });
-  let curY = D.slide.bodyTopY;
-  for (const item of section.items) {
-    if (curY + itemH(item, bodyW) > D.slide.bodyBottomY + 0.1 && verbose) console.warn(`  ⚠️  "${section.title}": 높이 초과 (type=${item.type})`);
-    curY += renderItem(slide, item, mx, curY, bodyW, pal) + D.card.gap;
+  const originalD = JSON.parse(JSON.stringify(D));
+  
+  if (section.config) {
+    if (section.config.titleSize) D.card.titleSize = Number(section.config.titleSize);
+    if (section.config.bodySize) D.card.bodySize = Number(section.config.bodySize);
+  }
+
+  try {
+    const slide = prs.addSlide();
+    const dh = D.header; const sw = D.slide.widthIn; const mx = D.slide.marginX; const font = D.slide.font;
+    const bodyW = sw - mx * 2;
+    
+    // Slide-level palette overrides
+    const slidePal = { ...pal };
+    const slideBg = (section.config && section.config.bg) || D.palette.white;
+    slide.background = { color: hexClean(slideBg) || "FFFFFF" };
+    
+    if (section.config && section.config.bg) {
+      const customBg = hexClean(section.config.bg);
+      if (customBg) {
+        slidePal.white = customBg;
+      }
+    }
+    
+    if (section.config && section.config.color) {
+      const customColor = hexClean(section.config.color);
+      if (customColor) {
+        slidePal.text = customColor;
+        slidePal.text2 = customColor;
+      }
+    }
+
+    slide.addShape("rect", { x: 0, y: dh.y, w: sw, h: dh.h, fill: { color: slidePal.bgDark }, line: { color: slidePal.bgDark } });
+    const nbs = dh.numBoxSize; const nby = dh.y + (dh.h - nbs) / 2;
+    slide.addShape("roundRect", { x: dh.paddingX, y: nby, w: nbs, h: nbs, rectRadius: 0.1, fill: { color: slidePal.brand }, line: { color: slidePal.brand } });
+    slide.addText(String(section.num), { x: dh.paddingX, y: nby, w: nbs, h: nbs, fontSize: dh.numFontSize, bold: true, color: slidePal.white, fontFace: font, align: "center", valign: "middle" });
+    slide.addText(section.title, { x: dh.paddingX + nbs + 0.15, y: dh.y, w: sw - dh.paddingX - nbs - 0.25, h: dh.h, fontSize: dh.titleFontSize, bold: true, color: slidePal.white, fontFace: font, valign: "middle" });
+    
+    let curY = D.slide.bodyTopY;
+    for (const item of section.items) {
+      if (curY + itemH(item, bodyW) > D.slide.bodyBottomY + 0.1 && verbose) console.warn(`  ⚠️  "${section.title}": 높이 초과 (type=${item.type})`);
+      curY += renderItem(slide, item, mx, curY, bodyW, slidePal) + D.card.gap;
+    }
+  } finally {
+    D = originalD; // Restore D
   }
 }
 
@@ -1198,7 +1278,25 @@ function renderDoneSlide(prs, fm, pal) {
 
 export async function convertMdToPptx(mdPath, opts = {}) {
   const { out, styleOverride, noCover, verbose } = opts;
-  const { fm, sections, styleKey, style } = buildSlideData(mdPath, styleOverride);
+  const originalD = JSON.parse(JSON.stringify(D));
+  
+  let fm, sections, styleKey, style;
+  try {
+    const data = buildSlideData(mdPath, styleOverride);
+    fm = data.fm;
+    sections = data.sections;
+    styleKey = data.styleKey;
+    style = data.style;
+    
+    // Apply frontmatter overrides to D
+    if (fm.fontFace) D.slide.font = fm.fontFace;
+    if (fm.titleSize) D.card.titleSize = Number(fm.titleSize);
+    if (fm.bodySize) D.card.bodySize = Number(fm.bodySize);
+  } catch (err) {
+    D = originalD;
+    throw err;
+  }
+
   const pal = makePalette(style);
   if (verbose) {
     console.log(`  📄 ${basename(mdPath)}  style: ${styleKey}`);
@@ -1206,24 +1304,30 @@ export async function convertMdToPptx(mdPath, opts = {}) {
   }
   const prs = new pptxgen();
   prs.layout = D.slide.layout;
-  if (!noCover) renderCover(prs, fm, pal);
-  for (const section of sections) renderSectionSlide(prs, section, pal, verbose);
-  renderDoneSlide(prs, fm, pal);
-  const name = basename(mdPath, extname(mdPath));
-  const outPath = out || join(D.output.dir, `${name}${D.output.suffix || ""}.pptx`);
-  mkdirSync(dirname(resolve(outPath)), { recursive: true });
+  
   try {
+    if (!noCover) renderCover(prs, fm, pal);
+    for (const section of sections) renderSectionSlide(prs, section, pal, verbose);
+    renderDoneSlide(prs, fm, pal);
+    const name = basename(mdPath, extname(mdPath));
+    const outPath = out || join(D.output.dir, `${name}${D.output.suffix || ""}.pptx`);
+    mkdirSync(dirname(resolve(outPath)), { recursive: true });
     await prs.writeFile({ fileName: outPath });
     console.log(`✅ ${basename(mdPath)} → ${outPath}  (섹션 ${sections.length}개)`);
+    return outPath;
   } catch (err) {
+    const name = basename(mdPath, extname(mdPath));
+    const outPath = out || join(D.output.dir, `${name}${D.output.suffix || ""}.pptx`);
     if (err.code === "EBUSY" || err.code === "EPERM") {
       console.warn(`⚠️  PPTX 쓰기 실패 (${outPath}): 파일이 PowerPoint 등 다른 프로그램에서 열려 있어 잠겨 있습니다. 파일을 닫고 다시 시도해 주세요.`);
+      return outPath;
     } else {
       console.error(`❌ PPTX 쓰기 실패 (${outPath}): ${err.message}`);
       throw err;
     }
+  } finally {
+    D = originalD; // Restore D
   }
-  return outPath;
 }
 
 // ════════════════════════════════════════════════════════════════

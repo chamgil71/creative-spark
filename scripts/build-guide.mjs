@@ -677,6 +677,61 @@ function renderShortcode(type, body, args) {
     </div>`;
   }
 
+  if (type === "slide-config") {
+    const lines = body.split(/\r?\n/);
+    let bg = "", color = "";
+    for (const line of lines) {
+      const m = line.match(/^\s*(?:-\s*)?([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+      if (m) {
+        const key = m[1].trim();
+        const val = cleanValue(m[2]);
+        if (key === "bg") bg = val;
+        if (key === "color") color = val;
+      }
+    }
+    if (bg || color) {
+      const uid = "style-" + Math.random().toString(36).slice(2, 7);
+      let styles = "";
+      if (bg) {
+        styles += `
+          .section:has(.${uid}) { background-color: ${bg} !important; }
+          .section:has(.${uid}) .card { background-color: ${bg} !important; border-color: rgba(255,255,255,0.1) !important; }
+          .slide:has(.${uid}) { background-color: ${bg} !important; }
+          .slide:has(.${uid}) .card { background-color: ${bg} !important; border-color: rgba(255,255,255,0.1) !important; }
+        `;
+      }
+      if (color) {
+        styles += `
+          .section:has(.${uid}) { color: ${color} !important; }
+          .section:has(.${uid}) h2,
+          .section:has(.${uid}) h3,
+          .section:has(.${uid}) p,
+          .section:has(.${uid}) li,
+          .section:has(.${uid}) span,
+          .section:has(.${uid}) div,
+          .section:has(.${uid}) strong,
+          .section:has(.${uid}) a {
+            color: ${color} !important;
+          }
+          .slide:has(.${uid}) { color: ${color} !important; }
+          .slide:has(.${uid}) h1,
+          .slide:has(.${uid}) h2,
+          .slide:has(.${uid}) h3,
+          .slide:has(.${uid}) p,
+          .slide:has(.${uid}) li,
+          .slide:has(.${uid}) span,
+          .slide:has(.${uid}) div,
+          .slide:has(.${uid}) strong,
+          .slide:has(.${uid}) a {
+            color: ${color} !important;
+          }
+        `;
+      }
+      return `<style>${styles}</style><div class="slide-style-trigger ${uid}" style="display:none;"></div>`;
+    }
+    return "";
+  }
+
   return "";
 }
 

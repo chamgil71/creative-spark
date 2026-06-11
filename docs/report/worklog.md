@@ -123,3 +123,28 @@
 ### 4. PowerPoint 파일 락 해제 및 최종 프로덕션 빌드 성공
 - **빌드 및 락 우회**: 로컬 MS PowerPoint가 잡고 있던 `public/showcase/showcase.pptx` 파일의 쓰기 락을 해제한 후, 빌드 스크립트를 재구동하여 무오류 릴리즈 완료했습니다.
 - **최종 빌드 패스**: `npm run build` 및 `npm run build:publish`를 가동하여, 가이드 및 횡형 슬라이드용 정적 HTML을 안전하게 리빌드하고, React 가이드북 배포 에셋 컴파일 및 오프라인 통합 단일 standalone.html 번들(`2045.1 KB`) 컴파일에 에러 없이 성공했습니다.
+
+---
+
+## 📅 2026-06-11 작업 로그 (v1.6) — Marp 기능 통합 및 커스텀 슬라이드 설정 고도화
+
+### 1. 슬라이드 분할 로직 보완 (H1, H2 및 `---` 공존)
+* **수정 파일**: [build-presentation.mjs](file:///c:/ai/creative-spark/scripts/build-presentation.mjs), [md-to-pptx.mjs](file:///c:/ai/creative-spark/scripts/md-to-pptx.mjs)
+* **조치 내용**: 헤더 기반 자동 분할과 `---` 수평선 기준 수동 분할이 단일 문서 내에서 혼용될 수 있도록 빌더들의 토큰 파싱 로직을 보완했습니다. 분할 지시어가 연속해서 발생하거나 본문이 없는 빈 레이아웃 상황에서 내용이 아예 없는 빈 페이지(빈 슬라이드)가 중복으로 렌더링되지 않도록 세이프가드 필터링을 완비했습니다.
+
+### 2. 프론트메터 전역 스타일 오버라이드 구현
+* **수정 파일**: [md-to-pptx.mjs](file:///c:/ai/creative-spark/scripts/md-to-pptx.mjs)
+* **조치 내용**: 개별 마크다운 문서 상단 Frontmatter에 `fontFace`, `titleSize`, `bodySize` 등의 디자인 변수를 임시 지정하면, 전역 기본 설정인 `pptdesign.config.json` 값을 오버라이드하여 최우선 반영되도록 데이터 바인딩을 추가했습니다.
+
+### 3. 로컬 슬라이드 스타일 `::: slide-config` 숏코드 개발
+* **수정 파일**: [md-to-pptx.mjs](file:///c:/ai/creative-spark/scripts/md-to-pptx.mjs), [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs), [build-presentation.mjs](file:///c:/ai/creative-spark/scripts/build-presentation.mjs)
+* **조치 내용**:
+  * **PPTX**: 해당 숏코드 블록 내의 배경(`bg`), 글자색(`color`), 크기 옵션들이 **현재 슬라이드 범위에만 적용**되고 다음 페이지 분할 지점에서 원본 기본값으로 완벽하게 리셋되는 슬라이드 단위의 일시 스타일 주입 메커니즘을 적용했습니다.
+  * **HTML 및 횡형 슬라이드**: 브라우저 렌더링 시 타 요소에 사이드 이펙트를 주지 않도록 `:has()` 가상 선택자와 임의 생성된 고유 `uid` 클래스를 결합하여, 오직 **해당 슬라이드/섹션 범위에만 인라인 CSS 변수 및 스타일을 Scoped하게 주입**하도록 구현했습니다.
+
+### 4. 검증 파일 작성 및 빌드 통과
+* **검증 내용**: 
+  * 마크다운 테스트 원본 [test-marp-features.md](file:///c:/ai/creative-spark/md_src/guides/test-marp-features.md)를 작성하여 `npm run build:publish` 및 PPTX 수동 변환을 실행했습니다.
+  * H1, H2, `---`가 동시 공존함에도 빈 페이지 없이 정확히 4개의 슬라이드로 쪼개지고, `::: slide-config`가 포함된 영역만 다크 모드로 변경된 후 다음 장에서 정상 원복되는 가로 슬라이더 및 파워포인트 도형 정합성을 성공적으로 완수했습니다.
+  * `npm run test` 유닛 테스트 스크립트 실행으로 0-Error 통과를 확인했습니다.
+

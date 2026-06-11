@@ -14,6 +14,10 @@ subtitle: "도구의 핵심 가치와 활용 목적을 한 줄로 설명"
 badge: "Category · 2026"
 style: "ai-chat"
 logo: "🤖"
+# [선택 사항] 디자인 세부 오버라이드 (Marp 호환)
+fontFace: "Malgun Gothic"   # 개별 문서용 기본 폰트 오버라이드
+titleSize: 22               # 슬라이드 대제목 크기 강제 조율 (기본 28pt)
+bodySize: 12                # 슬라이드 본문 글자 크기 강제 조율 (기본 14pt)
 stats:
   - value: "무료"
     label: "시작 가능"
@@ -140,6 +144,18 @@ footer:
   desc: "Markdown 원본을 HTML/PPTX 산출물로 자동 변환합니다."
   meta: "자동화|일관된 품질|배포 쉬움"
   note: "After"
+:::
+```
+
+### 슬라이드 로컬 스타일 (`slide-config`)
+
+특정 슬라이드 영역에서만 일시적으로 배경색, 글자색, 글자 크기 등을 변경합니다. 다음 슬라이드 분할 구분선(`#`, `##`, `---`)을 만나면 자동으로 기본 테마 값으로 리셋됩니다.
+
+```md
+::: slide-config
+bg: "#0F172A"       # 해당 슬라이드 배경색 변경
+color: "#FFFFFF"    # 해당 슬라이드 텍스트 색 변경
+titleSize: 22       # 해당 슬라이드 타이틀 크기 일시 축소
 :::
 ```
 

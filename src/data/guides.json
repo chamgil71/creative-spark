@@ -246,6 +246,12 @@
           "title": "Snipaste",
           "subtitle": "캡처와 화면 부착 도구",
           "file": "Snipaste.html"
+        },
+        {
+          "slug": "test-marp-features",
+          "title": "Marp Features Test",
+          "subtitle": "H1/H2 분할, 수평선 분할, 프론트메터 오버라이드 및 slide-config 검증",
+          "file": "test-marp-features.html"
         }
       ]
     },
