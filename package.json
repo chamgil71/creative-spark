@@ -11,6 +11,7 @@
     "build:publish": "node scripts/build-publish.mjs",
     "sync:guides": "node scripts/sync-guides-index.mjs",
     "build:slide": "node scripts/build-presentation.mjs",
+    "build:group-presentation": "node scripts/build-group-presentation.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",

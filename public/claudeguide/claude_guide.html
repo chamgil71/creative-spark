@@ -610,7 +610,7 @@
 <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
 </div>
 <div class="code-area"><pre><code># 1. SQLite 데이터베이스 제어용 MCP 서버 등록하기 (줄번호 글자 크기 이슈 방지를 위해 백틱 코드 사용)
-npx -y sql-mcp-server --db ./data/prod.db
+npx -y @modelcontextprotocol/server-sqlite --db ./data/prod.db
 # 2. 쉘 내에서 데이터 질의 지시하기
 › prod.db 파일의 users 테이블에서 최근 7일 이내 회원 목록을 조회해서 이메일 도메인별 통계를 표로 그려줘.
 # 3. 브레이브 서치(Brave Search) 공식 웹 검색 MCP 추가하여 최신 뉴스 수집하기 (Brave API 키 등록 필요)

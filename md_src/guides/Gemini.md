@@ -77,83 +77,62 @@ stats:
     # Gems는 claude.ai의 프로젝트와 유사한 개인화 에이전트
 :::
 
-🎯
+# Gemini 특화 프롬프트 기법 🎯
 
-Gemini 특화 프롬프트 기법
+::: feature-grid cols=4
+- icon: "🔍"
+  title: "검색 활용"
+  desc: "\"최신 정보로\" / \"2025년 기준으로 검색해서\""
+- icon: "📄"
+  title: "파일 분석"
+  desc: "문서 업로드 후 \"이 문서의 핵심 수치를 표로\""
+- icon: "💻"
+  title: "코드 실행"
+  desc: "\"Python으로 계산하고 차트로 보여줘\""
+- icon: "🎥"
+  title: "유튜브 분석"
+  desc: "URL 붙여넣기 → \"이 영상 요약해줘\""
+:::
 
-검색 활용:
+# Gems 활용 예시 💎
 
-"최신 정보로" / "2025년 기준으로 검색해서"
-
-파일 분석:
-
-문서 업로드 후 "이 문서의 핵심 수치를 표로"
-
-코드 실행:
-
-"Python으로 계산하고 차트로 보여줘"
-
-유튜브 분석:
-
-URL 붙여넣기 → "이 영상 요약해줘"
-
-💎
-
-Gems 활용 예시
-
-번역 전문가:
-
-한↔영 번역 + 문화적 뉘앙스 반영
-
-코딩 멘토:
-
-내 코드 스타일을 학습한 리뷰어
-
-회의록 작성:
-
-음성/텍스트 → 구조화된 회의록
-
-데이터 분석:
-
-CSV 업로드 → 자동 인사이트 도출
+::: feature-grid cols=4
+- icon: "🔤"
+  title: "번역 전문가"
+  desc: "한↔영 번역 + 문화적 뉘앙스 반영"
+- icon: "💻"
+  title: "코딩 멘토"
+  desc: "내 코드 스타일을 학습한 리뷰어"
+- icon: "📝"
+  title: "회의록 작성"
+  desc: "음성/텍스트 → 구조화된 회의록"
+- icon: "📊"
+  title: "데이터 분석"
+  desc: "CSV 업로드 → 자동 인사이트 도출"
+:::
 
 # Google Workspace 통합
 
-📧
-
-Gmail
-
-이메일 요약·작성·분류
-
-📄
-
-Google Docs
-
-문서 분석·편집·생성
-
-📊
-
-Google Sheets
-
-데이터 분석·수식 생성
-
-📁
-
-Google Drive
-
-파일 검색·내용 분석
-
-📅
-
-Calendar
-
-일정 관리·회의 요약
-
-🎬
-
-YouTube
-
-영상 요약·자막 분석
+::: feature-grid cols=3
+- icon: "📧"
+  title: "Gmail"
+  desc: "이메일 요약·작성·분류"
+- icon: "📄"
+  title: "Google Docs"
+  desc: "문서 분석·편집·생성"
+- icon: "📊"
+  title: "Google Sheets"
+  desc: "데이터 분석·수식 생성"
+- icon: "📁"
+  title: "Google Drive"
+  desc: "파일 검색·내용 분석"
+- icon: "📅"
+  title: "Calendar"
+  desc: "일정 관리·회의 요약"
+- icon: "🎬"
+  title: "YouTube"
+  desc: "영상 요약·자막 분석"
+:::
 
 ::: alert-box tip
 - title: "💡 Workspace AI 활성화:"

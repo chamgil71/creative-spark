@@ -678,7 +678,12 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     processedContent = processedContent.replace(/(?<!https?:|[a-zA-Z0-9.\-_]+)(?:\\n|\/n)(?!\w)/g, "<br>");
 
     const tokens = marked.lexer(processedContent);
-    let currentSlide = null;
+    let currentSlide = {
+      type: "cover",
+      title: fm.title || path.basename(fp, ".md"),
+      body: fm.subtitle || fm.description || "",
+      style
+    };
     let isAfterSplit = false;
 
     for (const tok of tokens) {
@@ -1027,6 +1032,10 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .icon-card, .feature-card, .compare-card, .column-card, .plan-card, .summary-box, .badge-item, .stat-card { 
     background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; 
     position: relative; overflow: hidden; transition: 0.2s; color: var(--text-muted);
+  }
+  /* 텍스트 정렬 정규화: 기존 HTML 숏코드 양식과 동일하게 좌측 정렬 보장 */
+  .feature-card, .compare-card, .column-card, .summary-box, .stat-card, .step-content, .skill-desc, .fs-sub, .ci-text, .alert-body, .chapter-title {
+    text-align: left;
   }
   .icon-card p, .feature-card p, .compare-card p, .column-card p, .plan-card p, .summary-box p, .stat-card p, .stat-note p {
     font-family: var(--font-desc);
