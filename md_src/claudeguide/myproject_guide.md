@@ -1,213 +1,484 @@
 ---
-title: "개인 프로젝트 및 AI 활용 기술 마스터 가이드"
-subtitle: "나만의 지식 관리 체계, AI 개발 스택, 7대 핵심 프로젝트 운영 현황"
-badge: "🛠️ 개인 프로젝트 대시보드"
+title: "내 프로젝트 운영 가이드"
+subtitle: "c:\\ai\\ 하위 11개 프로젝트 현황 및 운영 참조"
+badge: "2026-06 기준"
 style: "ai-dev"
-logo: "💻"
+logo: "🛠️"
 fontFace: "Malgun Gothic"
 titleSize: 22
 bodySize: 12
 stats:
-  - value: "5대 분야"
-    label: "습득 기술 맵"
-  - value: "7개"
-    label: "개발 프로젝트"
+  - value: "11개"
+    label: "운영 프로젝트"
   - value: "3개"
-    label: "주요 GitHub 저장소"
-  - value: "5요소"
-    label: "실무 프롬프트 규칙"
+    label: "Vercel 배포"
+  - value: "7종"
+    label: "GitHub 저장소"
+  - value: "Python"
+    label: "주력 언어"
+done:
+  title: "🛠️ 프로젝트 운영 가이드 완성!"
+  subtitle: "웹 서비스, AI 자동화, 데이터 엔진, 엔터프라이즈 솔루션, 콘텐츠 빌더까지 — c:\\ai\\ 전체 프로젝트를 한 곳에서 파악하세요."
+  ctaLabel: "GitHub 프로필"
+  ctaUrl: "https://github.com/chamgil71"
 ---
 
-# 1. 지식 관리, 검색 & AI 핵심 두뇌 스택
+# 1. 프로젝트 전체 맵
 
-정보를 수집하고 정제하여 아카이빙하는 지식 관리 솔루션과 실제 두뇌 역할을 하는 범용 AI 플랫폼 기술 맵입니다.
-
----
-
-## 핵심 AI 두뇌 라인업 
-비즈니스 기획, 프로그래밍 코딩, 자율 수행 등 목표 용도에 최적화된 인공지능 모델입니다.
-
-::: plan-grid cols=3
-- title: "ChatGPT (OpenAI)"
-  tag: "범용 비서 & 데이터 분석"
-  meta: "스위스 아미 나이프형 범용 챗봇|엑셀/CSV 데이터 분석 및 동적 그래프 시각화|사용자 정의 GPTs 봇 구성"
-  note: "데이터 시각화 및 아이디어 브레인스토밍"
-- title: "Claude (Anthropic)"
-  tag: "프로그래밍 & 비즈니스 작문"
-  meta: "대용량 코드베이스 완벽 이해 및 리팩토링|아티팩트(Artifacts) 실시간 웹 렌더링|정중한 비즈니스 톤앤매너 윤문"
-  note: "정밀 코딩 및 기획서 작성 최적"
-  featured: "true"
-- title: "Gemini & Manus"
-  tag: "구글 통합 & 자율 대리"
-  meta: "Gemini: 구글 워크스페이스 및 YouTube 영상 요약 강점|Manus: 목적 달성을 위해 웹을 자율 조종하는 에이전트"
-  note: "구글 오피스 연동 & 자율 리서치 업무 위임"
-:::
-
-## 지식 관리 및 정보 검색 도구
-생각과 자료를 그물망처럼 연결하고, 정확한 출처 기반으로 가치를 창출합니다.
-
-::: compare-split
-- title: "지식 관리 및 아카이빙 (Obsidian & Notion)"
-  desc: "개인의 아이디어 정리부터 데이터베이스 구축과 협업 문서화까지 지식의 전 주기를 통제합니다."
-  meta: "Obsidian: 평생 무료 오프라인 위키, 양방향 링크([[ ]])를 통한 생각 지도 시각화|Notion: 올인원 데이터베이스, 칸반 보드 업무 관리, 손쉬운 공유 페이지 빌드"
-  note: "개인용 세컨드 브레인(Obsidian) & 팀 협업 플랫폼(Notion)"
-- title: "출처 기반 검색 & 정보 요약 (NotebookLM & Perplexity)"
-  desc: "환각(거짓 정보) 없이 내가 던진 문서와 웹 데이터를 기반으로 팩트를 정밀 수집합니다."
-  meta: "NotebookLM: 구글 드라이브 문서 및 PDF 학습 기반 1:1 맞춤형 지식 비서|Perplexity: 실시간 구글링 결과 종합 요약 및 클릭 가능한 정보 출처(각주) 표기"
-  note: "정밀 데이터 팩트 요약(NotebookLM) & 리서치 검색(Perplexity)"
-:::
+11개 운영 프로젝트를 도메인별로 분류하고 스택·배포 현황을 한눈에 정리.
 
 ---
 
-# 2. 프로그래밍 개발 도구 및 웹서비스 배포 인프라
-
-아이디어를 파이썬 코드로 구현하고, AI 에디터를 통해 고속 코딩하며, 서버리스 인프라를 활용해 세상에 서비스를 출시하는 기술 체계입니다.
-
-## 개발 및 AI 코딩 어시스턴트
-인공지능의 코드 보조를 장착하여 개발 효율성과 타이핑 속도를 극한으로 끌어올립니다.
+## 도메인별 분류
 
 ::: feature-grid cols=3
-- icon: "🐍"
-  title: "Python"
-  tag: "코딩 언어"
-  desc: "학습 장벽이 낮으며, AI 연동 라이브러리와 엑셀 등 반복 업무 자동화 스크립트 작성에 독보적인 만능 프로그래밍 언어입니다."
-- icon: "🖥️"
-  title: "VS Code"
-  tag: "통합 편집기"
-  desc: "전 세계 개발자가 표준으로 사용하는 무료 에디터입니다. 수많은 플러그인과 연동해 쾌적한 텍스트 코딩을 수행합니다."
-- icon: "🪄"
-  title: "Cursor & Copilot"
-  tag: "AI 코딩 비서"
-  desc: "자연어로 코드 수정을 요청하면 직접 패치해주는 AI 에디터(Cursor)와, 타이핑 시 다음 라인을 실시간 자동 완성(Copilot)하는 도구입니다."
+- icon: "🌐"
+  title: "웹 서비스 & 대시보드"
+  tag: "3개"
+  desc: "배포된 정적·풀스택 웹 서비스"
+  meta: "pjtoverview — R&D 과제 관리 (Vercel)|mywiki — 개인 지식 창고 (Vercel + Pages)|clearsurvey — 설문 정제 대시보드 (로컬)"
+  color: "#6366F1"
 - icon: "🤖"
-  title: "Claude Code CLI"
-  tag: "터미널 에이전트"
-  desc: "까만 명령 창에서 실행되어 프로젝트의 구조를 분석하고, 버그 발생 시 자율적으로 코드를 읽고 고치는 에이전트 도구입니다."
-- icon: "🧬"
-  title: "Anti Gravity"
-  tag: "기본 뼈대 프레임워크"
-  desc: "AI 스크립트와 로컬 하드웨어 서버를 견고하게 묶어 24시간 안정적으로 연동 가동되도록 돕는 설계 프레임워크입니다."
+  title: "AI 자동화 파이프라인"
+  tag: "2개"
+  desc: "스케줄·이벤트 기반 자동 발행 시스템"
+  meta: "dailynews — 뉴스 3채널 자동 브리핑 (Vercel)|weeklyreport — 주간보고서 취합·발행 (로컬)"
+  color: "#10A37F"
+- icon: "⚙️"
+  title: "데이터 처리 엔진"
+  tag: "2개"
+  desc: "대용량 파일 파이프라인 및 분석 도구"
+  meta: "BudgetN — 예산 7단계 파이프라인 (Pages)|doc-analysis — 기밀문서 분석 (로컬 전용)"
+  color: "#F59E0B"
+- icon: "🏢"
+  title: "엔터프라이즈 솔루션"
+  tag: "3개"
+  desc: "기업 내부 업무 자동화 솔루션 묶음"
+  meta: "companypool — 기업 마스터 DB ETL|convertertools — 문서 형식 변환 엔진|filetools — 파일 관리·무결성 검증"
+  color: "#8B5CF6"
+- icon: "✨"
+  title: "콘텐츠 빌더"
+  tag: "1개"
+  desc: "MD → HTML 슬라이드 / PPTX 변환 엔진"
+  meta: "creative-spark — 29종 shortcode 시스템"
+  color: "#D97757"
 :::
 
 ---
 
-## 웹서비스 배포 및 서버리스 백엔드 인프라
-서버 장비 임대나 어려운 네트워크 세팅 없이, 단 몇 초 만에 글로벌 인터넷 주소(URL)로 배포하고 DB를 연동하는 인프라입니다.
-
-::: compare-split
-- title: "프론트엔드 및 정적 사이트 (Lovable, Vercel, Quartz)"
-  desc: "채팅으로 웹 화면을 그리고, 저장소를 연결하여 즉석 배포합니다."
-  meta: "Lovable: 자연어 코딩 기반 고속 웹 UI 프로토타이핑 빌더|Vercel: GitHub 연동 클릭 한 번으로 글로벌 호스팅 웹 주소 생성|Quartz: 옵시디언 마크다운 노트를 예쁜 웹 블로그로 변환 출력"
-  note: "비주얼 웹페이지 고속 빌딩 및 배포"
-- title: "백엔드 및 도메인 보안 (Supabase, Resend, Cloudflare)"
-  desc: "회원가입, 데이터 보관, 자동 메일 전송 및 방화벽을 원스톱 적용합니다."
-  meta: "Supabase: Postgres DB, 사용자 인증, 클라우드 스토리지 통합 BaaS|Resend: 파이썬 코드로 자동 리포트를 발송하는 고성능 이메일 API|Cloudflare: 디도스 방지, 도메인 연결 및 로컬 서버 외부 통로 보안"
-  note: "안정적인 데이터 저장 및 메일링 자동화"
-:::
-
----
-
-# 3. 주요 진행 개발 프로젝트 현황 (Project Inventory)
-
-실무에서 개발 중이거나 목표로 삼고 있는 **핵심 소프트웨어 프로젝트**의 요약 리스트입니다.
-
-::: columns-grid cols=3
-- title: "1) convertertools"
-  desc: "문서 포맷 상호 변환기"
-  meta: "hwpx, pptx, xlsx, docx, pdf 파일들 간의 상호 변환|마크다운(md), JSON, YAML 포맷으로의 파싱 및 구조 추출|분석 - 편집 - 적용 단계별 모듈화 설계"
-- title: "2) filetools"
-  desc: "일괄 폴더 및 파일 관리기"
-  meta: "폴더 리스트 목록 Excel 생성|Excel 지침을 읽어 일괄 파일명 변경, 압축 해제 및 복사|zip 압축 해제 후 문서 파일들을 자동으로 pdf 일괄 변환"
-- title: "3) companypool"
-  desc: "기업 및 솔루션 DB 대시보드"
-  meta: "기업/솔루션 xlsx 데이터 취합 ➔ JSON화|DB 스키마(YAML/JSON) 자동 생성|React/Vite 웹 기반 반응형 대시보드 구축"
-- title: "4) xlsx-contract"
-  desc: "Excel 헤더 파싱 및 DB 변환기"
-  meta: "Excel 상단 2행 복합 헤더 자동 분석 및 트리 구조 스키마 생성|데이터 추출 후 JSON 통합|집계용 통계 메타데이터 컬럼 자동 부착"
-- title: "5) site-analyzer"
-  desc: "홈페이지 깊이 구조 파악 툴"
-  meta: "특정 웹 도메인의 URL Depth 탐색|전체 메뉴 트리 및 사이트 아키텍처 구조도 추출"
-- title: "6) weeklyreport & pdf to ppt"
-  desc: "업무 보고 취합 & AI 슬라이드 복원"
-  meta: "weeklyreport: 팀별 YAML 보고를 일괄 취합해 Excel/HTML 보고서 렌더링|pdf to ppt: PDF 슬라이드를 고해상도 이미지화 후 Gemini API 레이아웃 분석을 거쳐 편집 가능한 파워포인트(PPTX) 벡터 파일로 자동 재생성"
-:::
-
----
-
-# 4. 생산성을 높여주는 보조 툴 및 GitHub 리포지토리
-
-일일 업무 속도를 배가하는 깨알 같은 유틸리티 목록과, 실제 관리 중인 GitHub 원격 소스 코드 저장소 정보입니다.
-
-## 업무 효율 극대화용 유용한 보조 유틸리티 7선
-한 번 설치해두면 윈도우 환경에서 코딩 및 기획 작업 생산성이 2배 이상 비약적으로 향상되는 필수 보조 툴입니다.
-
-::: step-list
-- title: "1. NotebookLM Importer & Grabit (크롬 확장 프로그램)"
-  desc: "웹 서핑 중 발견한 유익한 테크 아티클을 원클릭으로 내 NotebookLM 지식창고에 꽂아 넣고, 웹페이지 상의 수많은 UI 디자인 요소를 한 번에 캡처 수집합니다."
-- title: "2. Snipaste (로컬 화면 캡처 및 화면 핀)"
-  desc: "원하는 소스 코드나 템플릿 영역을 캡처하여 화면 최상단에 스티커(Pin)처럼 띄워 둡니다. 보조 모니터가 없어도 양쪽 화면 코드를 대조해가며 분석할 때 최고의 위력을 발휘합니다."
-- title: "3. PowerToys (윈도우 공식 유틸리티 패키지)"
-  desc: "`FancyZones`를 활용해 모니터 화면 분할 영역을 고정하고, `Color Picker`로 화면 내 특정 픽셀의 HEX/RGB 색상 코드를 1초 만에 추출하여 프론트엔드 디자인에 적용합니다."
-- title: "4. Power Automate, Everything & Sider"
-  desc: "윈도우 내장 RPA인 Power Automate로 첨부파일 자동 다운로드 루틴을 셋업하고, Everything으로 수십만 개 파일 중 0.1초 만에 파일을 검색하며, Sider 사이드바 AI를 소환해 즉시 번역/해설을 봅니다."
-:::
-
----
-
-## 3대 핵심 GitHub 원격 저장소 목록
-로컬 코드를 안전하게 커밋하고 형상 관리를 유지하는 클라우드 소스 코드 저장소 현황입니다.
+## 배포 & 저장소 현황
 
 ::: git-flow
-- title: "companytools"
-  tag: "기업 및 솔루션 DB 관리"
-  meta: "https://github.com/chamgil71/companytools.git|기업 데이터 가공, 스키마 변환 및 json 파이프라인 관리 모듈 수록"
-  color: "#3B82F6"
-- title: "BudgetN"
-  tag: "예산 내역 관리 웹 앱"
-  meta: "https://github.com/chamgil71/BudgetN.git|Lovable 및 Supabase 데이터 바인딩을 적용한 정적/동적 웹 어플리케이션 저장소"
-  color: "#10B981"
 - title: "pjtoverview"
-  tag: "전체 프로젝트 대시보드"
-  meta: "https://github.com/chamgil71/pjtoverview.git|개인 기획, 7대 자동화 툴 프로젝트의 통합 명세서 및 빌드 가이드 보관소"
+  tag: "Vercel 배포"
+  meta: "https://pjtoverview.vercel.app|github.com/chamgil71/pjtoverview"
+  color: "#6366F1"
+- title: "mywiki"
+  tag: "Vercel + GitHub Pages"
+  meta: "https://mywiki-khaki.vercel.app|github.com/chamgil71/mywiki"
   color: "#8B5CF6"
+- title: "dailynews"
+  tag: "Vercel 배포"
+  meta: "https://ms-dailynews.vercel.app|github.com/chamgil71/dailynews"
+  color: "#10A37F"
+- title: "BudgetN"
+  tag: "GitHub Pages"
+  meta: "Actions 자동 배포 (main push)|github.com/chamgil71/BudgetN"
+  color: "#F59E0B"
+- title: "companytools"
+  tag: "로컬 운영"
+  meta: "github.com/chamgil71/companytools|companypool · convertertools · filetools 포함"
+  color: "#D97757"
 :::
 
 ---
 
-# 5. 실무 프롬프트 필수 5대 요소 및 작성 규칙
+# 2. 웹 서비스 & 대시보드
 
-AI가 환각 없이 가장 만족스러운 품질의 리포트나 코드를 뱉어내게 만드는 5대 필수 항목과 실제 적용 문장 양식입니다.
+---
+
+## pjtoverview — R&D 과제 통합 관리
+
+XLSX 4개 시트 → Python 7단계 파이프라인 → JSON → React 대시보드 → Vercel 정적 배포.
+
+::: tool-list
+- icon: "📊"
+  title: "KPI 대시보드"
+  desc: "KPI 카드 5종, 연도별 트렌드, 본부별·재원별 차트"
+  meta: "멀티 필터 AND/OR 검색|슬라이드 패널 과제 상세|협약 리스트"
+  color: "#6366F1"
+- icon: "🔬"
+  title: "분석 기능"
+  desc: "과제명 TF-IDF 유사도 교차 분석, 3-way 비교 팝업"
+  meta: "예산 3자 교차 검증 (사업총괄/과제총괄/수행기관)|기업 연도별 참여 이력 조회|Supabase 이메일 로그인"
+  color: "#4F46E5"
+:::
 
 ::: step-list
-- title: "1. Role (역할 부여) & 2. Context (배경 설명)"
-  desc: "AI에게 구체적인 페르소나를 정해주고(예: '너는 15년 차 시니어 파이썬 개발자야'), 현재 어떤 목표의 프로젝트를 만들고 있는 중인지 배경 맥락을 상술합니다."
-- title: "3. Task (수행 과업) & 4. Constraint (제약 조건)"
-  desc: "해결해야 할 문제와 기능(예: 'CSV에서 월별 평균 지출을 구하는 함수 작성')을 명시하고, 절대 하지 말아야 할 한계점이나 기술 스택 제한(예: '외부 라이브러리 pandas 외 사용 금지, 한국어 주석 필수')을 지정합니다."
-- title: "5. Output (출력 형식 지정)"
-  desc: "답변이 장황하게 나오지 않도록 최종 산출물 서식을 통제합니다. (예: '설명은 생략하고 마크다운 코드 블록 안에 완성된 파이썬 함수만 깔끔하게 출력해줘')"
+- title: "1 파이프라인 실행"
+  desc: "python pipeline/cli.py --input storage/input.xlsx"
+  color: "#6366F1"
+- title: "2 프론트엔드"
+  desc: "cd frontend && npm run dev"
+  color: "#8B5CF6"
+- title: "3 배포"
+  desc: "npm run build → Vercel 자동 배포"
+  color: "#A78BFA"
 :::
 
 ---
 
-## 실전 실무 적용 프롬프트 템플릿
-기본 5요소를 결합하여 실제 Claude나 ChatGPT에 입력하는 템플릿 구조 예시입니다.
+## mywiki — 개인 지식 창고
 
-::: console-box
-- title: "실전 보고서 생성 및 코딩 프롬프트 템플릿"
-  desc: |
-    [역할 지정]
-    너는 글로벌 IT 컨설팅 펌의 수석 AI 산업 분야 전문 애널리스트야.
-    
-    [배경 맥락]
-    현재 2026년 상반기 AI 트렌드(자율형 에이전트 기술 중심) 보고서 슬라이드를 기획하고 있어.
-    
-    [구체적 과업]
-    아래에 텍스트로 첨부한 일일 AI 뉴스 수집 데이터를 정밀 분석해서, 이번 달 시장의 핵심 인사이트 3가지를 명확히 도출하고 상세 리포트 초안을 작성해줘.
-    
-    [제약 조건]
-    1. 추상적인 미래 전망 서술은 배제하고, 실제 기업 명칭(예: Anthropic, xAI)과 실질적인 기술 스택을 언급할 것.
-    2. 객관적이고 간결한 개조식 비즈니스 톤앤매너를 준수할 것.
-    
-    [출력 서식]
-    결과물 최상단에 3줄 핵심 요약을 배치하고, 본문은 마크다운 헤더(H2, H3)와 불릿 포인트를 활용해 표 형태 데이터와 함께 정렬하여 반환해줘.
+Obsidian 노트 중 `publish: true` 표시된 것만 Quartz v4로 빌드해 Vercel · GitHub Pages에 이중 배포.
+
+::: compare-grid cols=2
+- title: "Vercel (주 서비스)"
+  desc: "mywiki-khaki.vercel.app"
+  meta: "GitHub 연동 자동 배포|글로벌 CDN 빠른 응답"
+  color: "#000000"
+- title: "GitHub Pages (백업)"
+  desc: "chamgil71.github.io/mywiki"
+  meta: "GitHub Actions → deploy.yaml|main push 시 자동 빌드"
+  color: "#1F2937"
+:::
+
+::: step-list
+- title: "노트 작성"
+  desc: "Obsidian에서 작성 후 publish: true 설정"
+  color: "#7C3AED"
+- title: "로컬 미리보기"
+  desc: "npx quartz build --serve"
+  color: "#8B5CF6"
+- title: "배포"
+  desc: "git push → GitHub Actions 자동 빌드 & 배포"
+  color: "#A78BFA"
+:::
+
+::: summary-box
+- title: "주요 설정 파일"
+  desc: "quartz.config.ts — 사이트 제목·테마·플러그인 / quartz.layout.ts — 레이아웃 구성 / index_md.py — 노트 인덱스 자동 생성"
+  meta: "content/ 폴더에 마크다운 노트 보관|deploy.ps1로 Vercel 수동 배포 가능"
+:::
+
+---
+
+## clearsurvey — 설문 데이터 정제 & 대시보드
+
+설문·행정 원본 XLSX를 1-Click으로 정밀 정제하고 엑셀 요약 보고서와 React 대시보드로 발행하는 풀스택 플랫폼.
+
+::: compare-grid cols=2
+- title: "정적 모드"
+  desc: "백엔드 없이 demo JSON으로 차트·PDF/CSV 기능 동작. GitHub Pages 환경에서도 서비스 가능."
+  meta: "설치 없이 즉시 사용|Donut · Bar · Histogram 차트|PDF/CSV 다운로드"
+  color: "#6366F1"
+- title: "풀스택 모드"
+  desc: "FastAPI 연동으로 파일 업로드·10열 컬럼 매핑·실시간 정제 파이프라인 트리거."
+  meta: "SSE 실시간 로그 스트리밍|SurveyPipeline 1-Click 실행|openpyxl Slicer 패치 엑셀 보고서"
+  color: "#10A37F"
+:::
+
+::: step-list
+- title: "백엔드 실행"
+  desc: "pip install -r requirements.txt && python main.py"
+  color: "#6366F1"
+- title: "프론트엔드"
+  desc: "cd web && npm run dev"
+  color: "#8B5CF6"
+- title: "프로젝트 설정"
+  desc: "config/config.yaml — 컬럼 매핑·변환 규칙(20여 종) 정의"
+  color: "#A78BFA"
+:::
+
+---
+
+# 3. AI 자동화 파이프라인
+
+---
+
+## dailynews — AI 뉴스 자동 브리핑
+
+RSS 수집 → Gemini/Claude 분석 → 웹 + 이메일 + 텔레그램 + 카드뉴스를 **완전 자동** 발행하는 서버리스 3채널 시스템.
+
+::: stat-grid cols=3
+- icon: "📰"
+  title: "뉴스 채널"
+  desc: "KST 03:15 수집 → 즉시 배포·발송"
+- icon: "📊"
+  title: "주식 채널"
+  desc: "21:25 수집 → 23:00 빌드 → 익일 08:00 발송"
+- icon: "🤖"
+  title: "AI이슈 채널"
+  desc: "매주 일 07:00 수집 → 즉시 배포·발송"
+:::
+
+::: git-flow
+- title: "GitHub Actions 수집"
+  tag: "스케줄 트리거"
+  meta: "news.yml / stock_build.yml / ai_issue.yml|7개 워크플로우로 채널별 독립 운영"
+  color: "#1F2937"
+- title: "Gemini / Claude 분석"
+  tag: "AI 처리"
+  meta: "RSS 원문 → 요약·분류·인사이트 추출|scripts/run_news.py · build_site.py"
+  color: "#10A37F"
+- title: "Vercel 배포"
+  tag: "ms-dailynews.vercel.app"
+  meta: "HTML 정적 빌드 → Vercel CLI push"
+  color: "#000000"
+- title: "이메일 + 텔레그램"
+  tag: "Resend API 발송"
+  meta: "send_email.py --type news|stock|ai-issue|send_telegram.py 동일 인터페이스"
+  color: "#6366F1"
+:::
+
+---
+
+## weeklyreport — 주간보고서 자동화
+
+팀원이 YAML 파일에 업무를 기록하면 취합·검증·발행·누적 관리까지 자동 처리하는 WRMS v3.2.
+
+::: feature-grid cols=2
+- icon: "📥"
+  title: "YAML 입력"
+  desc: "reports/yymmdd/팀명.yaml 형식으로 팀별 분리 입력"
+- icon: "✅"
+  title: "자동 검증"
+  desc: "dryrun.py로 오류 사전 점검 후 취합 실행"
+- icon: "📤"
+  title: "다중 출력"
+  desc: "HTML / Excel / PDF / DOCX 동시 내보내기"
+- icon: "📈"
+  title: "누적 관리"
+  desc: "누적관리.xlsx — 매주 시트 자동 추가 (히스토리 보존)"
+:::
+
+::: step-list
+- title: "dryrun (검증)"
+  desc: "python wrms.py --dryrun --date 260613"
+  color: "#10A37F"
+- title: "취합 & 출력"
+  desc: "python wrms.py --date 260613"
+  color: "#059669"
+- title: "GUI 실행"
+  desc: "python wrms.py --gui"
+  color: "#047857"
+:::
+
+---
+
+# 4. 데이터 처리 엔진
+
+---
+
+## BudgetN — 정부 예산 7단계 파이프라인
+
+PDF·XLSX·YAML 등 다양한 포맷의 정부 예산 자료를 단일 canonical JSON으로 통합하고 TF-IDF 유사도 분석 후 GitHub Pages로 자동 배포.
+
+::: workflow-flow
+- icon: "📥"
+  title: "수집"
+  meta: "PDF · XLSX(총괄/A4) · YAML · JSON 멀티 포맷"
+- icon: "→"
+- icon: "🔀"
+  title: "통합"
+  meta: "단일 canonical schema (merged.json) 수렴"
+- icon: "→"
+- icon: "📐"
+  title: "정규화"
+  meta: "법인명·날짜·금액 표준화"
+- icon: "→"
+- icon: "🔬"
+  title: "분석"
+  meta: "TF-IDF + Cosine + Jaccard 유사도"
+- icon: "→"
+- icon: "📦"
+  title: "번들링"
+  meta: "embedded-*.js 오프라인 Fallback"
+- icon: "→"
+- icon: "🚀"
+  title: "배포"
+  meta: "GitHub Actions → GitHub Pages 자동"
+:::
+
+::: summary-box
+- title: "핵심 실행 명령"
+  desc: "python backend/master_builder.py — 전체 7단계 한 번에 실행 / python backend/master_builder.py --step 4 — 특정 단계만 부분 실행"
+  meta: "config/config.yaml 컬럼 매핑만 수정하면 코드 변경 불필요|cd web && npm run dev — 로컬 대시보드 확인"
+:::
+
+---
+
+## doc-analysis — 기밀문서 분석
+
+내부 기밀문서(HWP·PDF·XLSX·PPTX 등)를 마크다운으로 변환하고 유사도 분석·사업별 분할·통계 통합을 수행하는 **완전 로컬** 분석 환경.
+
+::: feature-grid cols=3
+- icon: "🔒"
+  title: "보안 원칙"
+  tag: "절대 준수"
+  desc: "외부 API·클라우드 서비스 전송 금지. web_search, Notion MCP 사용 금지."
+- icon: "🔄"
+  title: "변환"
+  desc: "convert_to_md.py — 전 포맷 고속 변환 (pymupdf) / pdf_to_md.py — 표 구조 정밀 보존 (pdfplumber)"
+- icon: "✂️"
+  title: "분할"
+  desc: "split_by_project.py — 사업명 기준 MD 자동 분할"
+- icon: "📊"
+  title: "유사도 분석"
+  desc: "similarity_analysis.py — TF-IDF / Jaccard 교차 분석 → Excel"
+- icon: "📈"
+  title: "통계 통합"
+  desc: "stats_merger.py — 연도별 통계 통합 → Excel"
+- icon: "🗂️"
+  title: "파일 분류"
+  desc: "file_classifier.py — 키워드 기반 자동 분류"
+:::
+
+::: step-list
+- title: "원본 배치"
+  desc: "raw_docs/ 폴더에 기밀 파일 배치 또는 Junction 링크 연결"
+  color: "#F59E0B"
+- title: "변환"
+  desc: "python scripts/convert_to_md.py --input raw_docs/ --output md_docs/"
+  color: "#D97757"
+- title: "분할 → 분석"
+  desc: "python scripts/split_by_project.py && python scripts/similarity_analysis.py"
+  color: "#B45309"
+:::
+
+---
+
+# 5. 엔터프라이즈 솔루션 (company)
+
+`c:\ai\company\` 하위 기업 내부 업무용 솔루션 3종. 모두 **4-Layer 아키텍처** 공통 준수.
+
+---
+
+## company 워크스페이스 3종
+
+::: tool-list
+- icon: "🏷️"
+  title: "companypool — 기업 마스터 DB"
+  desc: "다양한 출처의 기업 정보 Excel을 정규화된 마스터 DB(JSON)로 통합하는 ETL 도구"
+  meta: "python main.py sync -i storage/input.xlsx → output.json + result.xlsx|config.yaml 컬럼 매핑·패턴 정의|변경이력 자동 기록"
+  color: "#8B5CF6"
+- icon: "🔀"
+  title: "convertertools — 문서 변환 엔진"
+  desc: "HWP·HWPX·PDF·Word·PPT·Excel을 포맷 독립 중간 표현형(IRBlock) 경유로 자유 변환"
+  meta: "지원: HWPX·HWP·DOCX·PPTX·XLSX·PDF·MD|python convert_to_md.py --input doc.hwpx --output doc.md|python gui/app.py — GUI 실행"
+  color: "#7C3AED"
+- icon: "📁"
+  title: "filetools — 파일 관리·무결성"
+  desc: "대용량 파일 고속 복사·해시 기반 무결성 검증·매니페스트 기반 일괄 작업 파이프라인"
+  meta: "액션: Keep / Rename / Move / Copy / Unzip / PDF_Convert|streamlit run frontend/app.py — 웹 UI|python backend/pipeline.py --manifest storage/manifest.xlsx"
+  color: "#6D28D9"
+:::
+
+::: summary-box
+- title: "4-Layer 아키텍처 공통 규칙"
+  desc: "backend/(api·service·repository·models) → frontend/ → storage/ → docs/ 구조를 3개 솔루션 모두 준수."
+  meta: "Router에 비즈니스 로직 금지|모든 파일 경로는 pathlib.Path 사용|환경변수는 .env + config.yaml 분리"
+:::
+
+---
+
+# 6. creative-spark — 콘텐츠 빌더
+
+마크다운 + 29종 shortcode로 작성한 문서를 React 웹북 / 횡스크롤 슬라이드 HTML / PPTX로 동시 출력하는 빌드 엔진.
+
+---
+
+## 3가지 출력 형식
+
+::: stat-grid cols=3
+- icon: "📖"
+  title: "가이드 HTML"
+  desc: "node scripts/build-guide.mjs <파일> → public/<폴더>/<파일>.html"
+- icon: "🎞️"
+  title: "횡 슬라이드"
+  desc: "node scripts/build-presentation.mjs <파일> → public/presentation/<파일>.html"
+- icon: "📊"
+  title: "PPTX"
+  desc: "node scripts/build-pptx.mjs <파일> → public/pptx/<파일>.pptx"
+:::
+
+---
+
+## 29종 shortcode & 스타일 시스템
+
+::: feature-grid cols=2
+- icon: "🧩"
+  title: "레이아웃 & 목록"
+  desc: "feature-grid, icon-grid, compare-grid, stat-grid, tool-list, level-grid, plan-grid, columns-grid"
+- icon: "🔀"
+  title: "흐름 & 코드"
+  desc: "step-list, step-flow, git-flow, workflow-flow, editor-box, cmd-box, console-box"
+- icon: "🎨"
+  title: "스타일 프리셋"
+  desc: "ai-chat(그린) · ai-dev(오렌지) · knowledge(퍼플) · dark-pro(다크) 등 10종"
+- icon: "📁"
+  title: "소스 위치"
+  desc: "md_src/claudeguide/ — AI 도구·프로젝트 가이드 / config/styles.json — 스타일 설정"
+:::
+
+::: step-list
+- title: "단일 파일 빌드"
+  desc: "node scripts/build-guide.mjs md_src/claudeguide/ai-tools-guide.md"
+  color: "#D97757"
+- title: "슬라이드 빌드"
+  desc: "node scripts/build-presentation.mjs md_src/claudeguide/myproject_guide.md"
+  color: "#B45309"
+- title: "전체 빌드"
+  desc: "npm run build:all — dist/ + public/ 동시 생성"
+  color: "#92400E"
+:::
+
+---
+
+# 7. 공통 인프라 & 운영
+
+---
+
+## GitHub Actions 공통 패턴
+
+dailynews(7개), BudgetN, pjtoverview에서 공통으로 쓰는 워크플로우 구조.
+
+::: feature-grid cols=2
+- icon: "⏰"
+  title: "스케줄 & 수동 트리거"
+  desc: "on: schedule(cron: KST 보정) + workflow_dispatch 항상 포함"
+- icon: "🔐"
+  title: "Secrets 관리"
+  desc: "API 키는 GitHub Repository Secrets에 저장. 코드 하드코딩 절대 금지. 로컬은 .env 파일 사용"
+- icon: "🐍"
+  title: "Python 빌드"
+  desc: "actions/setup-python@v5 → pip install → python scripts/run.py"
+- icon: "🚀"
+  title: "GitHub Pages 배포"
+  desc: "peaceiris/actions-gh-pages@v4 → gh-pages 브랜치 자동 push"
+:::
+
+---
+
+## 프로젝트 간 데이터 흐름
+
+::: git-flow
+- title: "원본 데이터"
+  tag: "입력"
+  meta: "doc-analysis: 기밀 HWP·PDF·XLSX → MD|companypool: 기업 Excel → output.json|BudgetN: 예산 PDF/XLSX → merged.json"
+  color: "#6B7280"
+- title: "정제 & 분석"
+  tag: "처리"
+  meta: "pjtoverview: R&D XLSX → JSON → 대시보드|clearsurvey: 설문 XLSX → 정제 → 대시보드|weeklyreport: YAML → 취합 → Excel/HTML"
+  color: "#F59E0B"
+- title: "콘텐츠 & 발행"
+  tag: "출력"
+  meta: "creative-spark: MD → HTML슬라이드 / PPTX|mywiki: Obsidian 노트 → Quartz → Vercel|dailynews: RSS → AI → 웹+이메일+텔레그램"
+  color: "#10A37F"
+:::
+
+::: summary-box
+- title: "Vercel 공통 설정 (pjtoverview · mywiki · dailynews)"
+  desc: "buildCommand: npm run build / outputDirectory: dist / rewrites: SPA fallback (/* → /index.html)"
+  meta: "GitHub 연동으로 main push 시 자동 배포|프리뷰 URL은 PR마다 자동 생성"
 :::

@@ -731,9 +731,12 @@ function renderWorkflow(slide, item, x, y, w, pal) {
   const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
   const n = item.items.length; if (!n) return 0;
   const stepH = D.workflow.stepH; const arrowW = D.workflow.arrowW;
-  const stepW = (w - (n - 1) * arrowW) / n;
+  const isGitFlow = item.type === "git-flow" || item.type === "git-flow-strip";
+  const margin = isGitFlow ? w * 0.10 : 0;
+  const wUsable = w - margin * 2;
+  const stepW = (wUsable - (n - 1) * arrowW) / n;
   item.items.forEach((it, idx) => {
-    const cx = x + idx * (stepW + arrowW);
+    const cx = x + margin + idx * (stepW + arrowW);
     const stepBg = it.color ? { color: hexClean(it.color), transparency: 90 } : { color: pal.brandLight };
     slide.addShape("roundRect", { x: cx, y, w: stepW, h: stepH, rectRadius: r, fill: stepBg, line: { color: it.color ? hexClean(it.color) : pal.border, width: 0.75 } });
     if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx, y: y + 0.08, w: stepW, h: 0.3, fontSize: 16, align: "center", valign: "middle" });

@@ -31,6 +31,10 @@ function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+function renderInline(s) {
+  return escapeHtml(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>");
+}
+
 function cleanValue(v) {
   return String(v ?? "").trim().replace(/^["']|["']$/g, "");
 }
@@ -211,7 +215,7 @@ function renderShortcode(type, body, args) {
         ${isFeat && it.color ? `<div class="card-top-bar" style="background-color:${it.color}"></div>` : ''}
         ${it.tag ? `<span class="feature-tag" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.tag)}</span>` : ""}
         ${isFeat ? `
-          <div class="feature-card-title" style="color: var(--brand-light);">
+          <div class="feature-card-title" style="color: var(--text);">
             ${it.icon ? `<span class="fc-icon">${escapeHtml(it.icon)}</span>` : ""}${renderMultiLineText(it.title, "")}
           </div>
         ` : `
@@ -224,18 +228,18 @@ function renderShortcode(type, body, args) {
   }
   if (type === "tool-list" || type === "tool-box") {
     return items.map(it => {
-      const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `var(--brand-gradient)`;
+      const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `linear-gradient(135deg, var(--brand), var(--brand-deep))`;
       const metaItems = splitMeta(it.meta);
       return `<div class="tool-card">
-        <div class="tc-header" style="background: ${grad}; color: #fff;">
+        <div class="tc-side" style="background: ${grad};">
           <div class="tc-icon">${escapeHtml(it.icon)}</div>
-          <div class="tc-content">
-            <div class="tc-name">${escapeHtml(it.title)}</div>
-            <div class="tc-sub">${escapeHtml(it.desc)}</div>
-          </div>
+          <div class="tc-name">${escapeHtml(it.title)}</div>
           ${it.tag ? `<div class="tc-badge">${escapeHtml(it.tag)}</div>` : ""}
         </div>
-        ${metaItems.length ? `<ul class="tc-list">${metaItems.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>` : ""}
+        <div class="tc-body">
+          ${it.desc ? `<div class="tc-sub">${escapeHtml(it.desc)}</div>` : ""}
+          ${metaItems.length ? `<ul class="tc-list">${metaItems.map(f => `<li>${escapeHtml(f)}</li>`).join("")}</ul>` : ""}
+        </div>
       </div>`;
     }).join("");
   }
@@ -319,7 +323,7 @@ function renderShortcode(type, body, args) {
     const it = items[0];
     const chips = splitMeta(it.meta);
     return `<div class="summary-box" ${renderAccent(it.color)}>
-      <div class="bl-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
+      <div class="bl-title" ${renderTextColor(it.color)}>${renderInline(it.title)}</div>
       <p class="bl-desc">${escapeHtml(it.desc)}</p>
       ${chips.length ? `<div class="bl-chips">${chips.map(c => `<span class="bl-chip" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(c)}</span>`).join('')}</div>` : ""}
     </div>`;
@@ -747,6 +751,19 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
 
   if (!slides.length) throw new Error("변환된 슬라이드 데이터가 없습니다.");
 
+  // Extract main style for global :root defaults
+  const mainStyle = STYLES[opts.style || mainFm?.style || "ai-chat"] || STYLES["ai-chat"];
+
+  // Generate TOC items HTML
+  const tocHtml = slides.map((s, idx) => {
+    const plainTitle = s.title.replace(/<[^>]*>/g, "");
+    const isCover = s.type === "cover";
+    return `<div class="toc-item${isCover ? " toc-cover" : ""}" data-idx="${idx}" onclick="scrollToSlide(${idx}); toggleToc(false);">
+      <span class="toc-num">${idx + 1}</span>
+      <span class="toc-title">${escapeHtml(plainTitle)}</span>
+    </div>`;
+  }).join("\n");
+
   // Config-based border-radius
   const radiusVal = CONFIG?.slide?.globalRadius || 0.08;
   const cssRadius = radiusVal > 0 ? `${Math.round(radiusVal * 150)}px` : "12px";
@@ -755,7 +772,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   const slidesHtml = slides.map((s, idx) => {
     const sNum = `${idx + 1} / ${slides.length}`;
     const activeStyle = s.style || STYLES["ai-chat"];
-    const styleAttr = `style="--brand: ${activeStyle.brand}; --brand-dark: ${activeStyle.brandDark}; --brand-deep: ${activeStyle.brandDeep}; --brand-light: ${activeStyle.brandLight}; --brand-mid: ${activeStyle.brandMid};"`;
+    const styleAttr = `style="--brand: ${activeStyle.brand}; --brand-dark: ${activeStyle.brandDark}; --brand-deep: ${activeStyle.brandDeep}; --brand-light: ${activeStyle.brandLight}; --brand-mid: ${activeStyle.brandMid}; --brand-gradient: linear-gradient(135deg, ${activeStyle.brand}, ${activeStyle.brandDeep});"`;
 
     if (s.type === "cover") {
       return `<div class="slide cover" ${styleAttr}>
@@ -782,6 +799,12 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
+    --brand:      ${mainStyle.brand};
+    --brand-dark: ${mainStyle.brandDark};
+    --brand-deep: ${mainStyle.brandDeep};
+    --brand-light: ${mainStyle.brandLight};
+    --brand-mid:  ${mainStyle.brandMid};
+    --brand-gradient: linear-gradient(135deg, ${mainStyle.brand}, ${mainStyle.brandDeep});
     --border:     rgba(255, 255, 255, 0.1);
     --bg:         #0b0d12; /* 💡 다크모드 기본 배경색을 변경하려면 이 값을 수정하세요! */
     --text:       #f8fafc;
@@ -1002,7 +1025,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .slide-header h2 {
     font-family: var(--font-title);
     font-size: calc(var(--size-h2) * var(--font-scale));
-    color: var(--brand-light);
+    color: rgba(255,255,255,0.95);
     font-weight: 700;
   }
   .slide-num {
@@ -1123,7 +1146,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .flow-branches { display: flex; flex-direction: column; gap: 20px; }
   .branch-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: center; min-height: 80px; }
   .branch-label { padding: 6px 12px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: center; }
-  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; }
+  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; padding: 0 10%; }
   .commit { width: 16px; height: 16px; background: #000; border: 3px solid var(--brand); border-radius: 50%; position: relative; cursor: pointer; flex-shrink: 0; }
   .commit-label { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 100px; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
   .commit-desc { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); color: #94A3B8; font-size: 0.7rem; white-space: nowrap; font-family: inherit; font-weight: 500; }
@@ -1195,6 +1218,24 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .level-tool { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
   .level-desc { font-size: 0.78rem; color: var(--text-muted); opacity: 0.8; font-style: italic; margin-top: auto; border-top: 1px dashed var(--border); padding-top: 8px; }
   .level-desc p { margin: 0; }
+
+  /* Tool Card - 두 컬럼 레이아웃 (좌: 색상 사이드바, 우: 설명) */
+  .tool-card { display: flex; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); margin: 10px 0; min-height: 76px; }
+  .tc-side { width: 210px; flex-shrink: 0; padding: 14px 18px; display: flex; flex-direction: column; justify-content: center; gap: 6px; color: #fff; }
+  .tc-icon { font-size: 1.5rem; line-height: 1; }
+  .tc-name { font-size: 1rem; font-weight: 800; line-height: 1.3; }
+  .tc-badge { font-size: 0.68rem; padding: 2px 8px; border-radius: 100px; background: rgba(255,255,255,0.25); align-self: flex-start; white-space: nowrap; }
+  .tc-body { flex: 1; padding: 14px 18px; background: var(--card-bg); display: flex; flex-direction: column; justify-content: center; gap: 8px; overflow: hidden; }
+  .tc-sub { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+  .tc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+  .tc-list li { font-size: 0.76rem; background: rgba(255,255,255,0.04); padding: 2px 9px; border-radius: 100px; border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
+
+  /* Light-mode: #fff 하드코딩 컴포넌트 오버라이드 */
+  body.light-mode .level-name { color: var(--text); }
+  body.light-mode .fs-title { color: var(--text); }
+  body.light-mode .ci-text strong { color: var(--text); }
+  body.light-mode .ta-label { color: var(--text); }
+  body.light-mode .tc-list li { background: rgba(15,23,42,0.04); }
 
   .checkpoint-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 25px 0; width: 100%; }
   .checkpoint-item { display: flex; align-items: center; gap: 16px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
@@ -1279,6 +1320,136 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   .skill-title { font-weight: 800; font-size: 1.1rem; color: var(--text); }
   .skill-desc { font-size: 0.92rem; color: var(--text-muted); flex: 1; }
 
+  /* ── TOC Sidebar ── */
+  .toc-toggle-btn {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 10001;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  }
+  .toc-toggle-btn:hover {
+    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.15);
+  }
+  body.light-mode .toc-toggle-btn {
+    background: rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    color: #0f172a;
+  }
+  .toc-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(2px);
+  }
+  .toc-overlay.active { display: block; }
+  .toc-sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background: rgba(11, 13, 18, 0.97);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.4);
+  }
+  .toc-sidebar.open { left: 0; }
+  body.light-mode .toc-sidebar {
+    background: rgba(248, 250, 252, 0.97);
+    border-right: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.12);
+  }
+  .toc-header {
+    padding: 80px 20px 14px;
+    font-family: var(--font-note);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+  }
+  body.light-mode .toc-header {
+    border-bottom-color: rgba(15, 23, 42, 0.08);
+  }
+  .toc-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+  }
+  .toc-list::-webkit-scrollbar { width: 4px; }
+  .toc-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+  .toc-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+  .toc-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  body.light-mode .toc-item:hover {
+    background: rgba(15, 23, 42, 0.05);
+  }
+  .toc-item.active {
+    background: rgba(255, 255, 255, 0.04);
+    border-left-color: var(--brand);
+  }
+  body.light-mode .toc-item.active {
+    background: rgba(15, 23, 42, 0.04);
+  }
+  .toc-num {
+    font-family: var(--font-note);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    min-width: 22px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    opacity: 0.6;
+  }
+  .toc-item.active .toc-num { opacity: 1; color: var(--brand); }
+  .toc-title {
+    font-family: var(--font-desc);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+  .toc-item.active .toc-title { color: var(--text); }
+  .toc-cover .toc-title {
+    font-weight: 700;
+    color: var(--brand-light, var(--brand));
+  }
+  .toc-item.active.toc-cover .toc-title { color: var(--brand); }
+
   /* Controls */
   .controls {
     position: fixed; bottom: 30px; right: 40px; display: flex; gap: 15px; z-index: 1000;
@@ -1320,6 +1491,9 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
       print-color-adjust: exact !important;
     }
     .theme-toggle-btn,
+    .toc-toggle-btn,
+    .toc-sidebar,
+    .toc-overlay,
     .controls,
     .progress-bar,
     .slide-info {
@@ -1360,6 +1534,22 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 
+  <!-- TOC Toggle -->
+  <button class="toc-toggle-btn" id="tocToggle" title="목차 열기/닫기 (T)">
+    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="0" y1="1" x2="18" y2="1"/><line x1="0" y1="7" x2="14" y2="7"/><line x1="0" y1="13" x2="18" y2="13"/>
+    </svg>
+  </button>
+
+  <!-- TOC Sidebar -->
+  <div class="toc-overlay" id="tocOverlay"></div>
+  <nav class="toc-sidebar" id="tocSidebar">
+    <div class="toc-header">목차</div>
+    <div class="toc-list" id="tocList">
+      ${tocHtml}
+    </div>
+  </nav>
+
   <div class="controls">
     <button id="btnPrev" title="이전 슬라이드 (← / PageUp)">←</button>
     <button id="btnNext" title="다음 슬라이드 (→ / Space / PageDown)">→</button>
@@ -1385,11 +1575,31 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
     });
 
+    // TOC Logic
+    const tocSidebar = document.getElementById('tocSidebar');
+    const tocOverlay = document.getElementById('tocOverlay');
+    const tocItems = document.querySelectorAll('.toc-item');
+    document.getElementById('tocToggle').addEventListener('click', () => toggleToc());
+    tocOverlay.addEventListener('click', () => toggleToc(false));
+
+    function toggleToc(force) {
+      const isOpen = typeof force === 'boolean' ? force : !tocSidebar.classList.contains('open');
+      tocSidebar.classList.toggle('open', isOpen);
+      tocOverlay.classList.toggle('active', isOpen);
+    }
+
+    function updateTocActive(idx) {
+      tocItems.forEach((item, i) => item.classList.toggle('active', i === idx));
+      const active = tocSidebar.querySelector('.toc-item.active');
+      if (active) active.scrollIntoView({ block: 'nearest' });
+    }
+
     function update() {
       progress.style.width = ((currentIdx + 1) / slides.length * 100) + '%';
       slideInfo.textContent = 'SLIDE ' + (currentIdx + 1) + ' / ' + slides.length;
       btnPrev.disabled = currentIdx === 0;
       btnNext.disabled = currentIdx === slides.length - 1;
+      updateTocActive(currentIdx);
     }
 
     function scrollToSlide(idx) {
@@ -1415,6 +1625,11 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
       } else if (e.key === 'End') {
         e.preventDefault();
         scrollToSlide(slides.length - 1);
+      } else if (e.key === 't' || e.key === 'T') {
+        if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+          e.preventDefault();
+          toggleToc();
+        }
       }
     });
 

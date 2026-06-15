@@ -33,6 +33,10 @@ function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+function renderInline(s) {
+  return escapeHtml(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>");
+}
+
 function cleanValue(v) {
   return String(v ?? "").trim().replace(/^["']|["']$/g, "");
 }
@@ -393,7 +397,7 @@ function renderShortcode(type, body, args) {
     const it = items[0];
     const chips = splitMeta(it.meta);
     return `<div class="summary-box" ${renderAccent(it.color)}>
-      <div class="bl-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
+      <div class="bl-title" ${renderTextColor(it.color)}>${renderInline(it.title)}</div>
       ${renderDesc(it.desc, itemBullet(it), it.color)}
       ${chips.length ? `<div class="bl-chips">${chips.map(c => `<span class="bl-chip" ${it.color ? `style="background:${it.color}15; color:${it.color}"` : ""}>${escapeHtml(c)}</span>`).join('')}</div>` : ""}
     </div>`;
@@ -831,6 +835,7 @@ export function buildHtml(inputPath, opts = {}) {
     --brand-deep: ${style.brandDeep};
     --brand-light:${style.brandLight};
     --brand-mid:  ${style.brandMid};
+    --brand-gradient: linear-gradient(135deg, ${style.brand}, ${style.brandDeep});
     --border:     ${style.border};
     --bg:         ${style.bg || '#F8FAFC'};
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
@@ -1003,7 +1008,7 @@ export function buildHtml(inputPath, opts = {}) {
   .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
   .branch-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: center; min-height: 80px; }
   .branch-label { padding: 8px 16px; border-radius: 8px; font-family: var(--font-code); font-size: calc(0.9rem * var(--font-scale)); text-align: center; }
-  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; }
+  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; padding: 0 10%; }
   .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
   .commit:hover { transform: scale(1.25); }
   .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: calc(0.72rem * var(--font-scale)); font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: var(--font-code); }

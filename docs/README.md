@@ -1,12 +1,19 @@
 # Creative Spark — 프로젝트 문서
 
-> 최종 업데이트: 2026-05-28
+> 최종 업데이트: 2026-06-15
 
 ## 개요
 
 AI 도구 가이드를 작성·변환·배포하는 파이프라인 프로젝트.  
-**Markdown → HTML**, **Markdown → PPTX** 두 출력 경로를 JSON 설정 파일 기반으로 운영한다.  
+**Markdown → HTML 가이드**, **Markdown → 횡 슬라이드 HTML**, **Markdown → PPTX** 세 출력 경로를 JSON 설정 파일 기반으로 운영한다.  
 29종 shortcode (26종 고유, aliases 포함), 11가지 색상 프리셋 지원.
+
+### 최근 주요 변경 (2026-06)
+
+- **횡 슬라이드 TOC 사이드바**: `build-presentation.mjs` 출력 HTML에 왼쪽 접이식 목차 패널 내장. 키보드 `T` 또는 ☰ 버튼으로 열기/닫기.
+- **`renderInline()`**: 숏코드 title 필드에서 `**bold**` → `<strong>` 렌더링 지원 (`build-guide.mjs`, `build-presentation.mjs`).
+- **git-flow 마진**: 커밋 노드 양끝 10% 여백 적용 (HTML 2종 + PPTX).
+- **ai-tools-guide**: 스킬(2-5)·커넥터(2-6)·플러그인(2-7) 3섹션 추가, 목차 슬라이드 2장 추가.
 
 ---
 
