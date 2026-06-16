@@ -1,20 +1,7 @@
 #!/usr/bin/env node
 /**
- * md-to-pptx_v2.mjs
+ * md-to-pptx.mjs
  * Universal Schema(6대 표준 키: icon, title, desc, tag, meta, color) 기반 MD→PPTX 변환 CLI
- *
- * 사용법:
- *   node scripts/md-to-pptx_v2.mjs mddata/Supabase.md
- *   node scripts/md-to-pptx_v2.mjs mddata/Supabase.md --out dist/Supabase.pptx
- *   node scripts/md-to-pptx_v2.mjs --all "mddata/*.md"
- *   node scripts/md-to-pptx_v2.mjs mddata/Supabase.md --style ai-dev --verbose
- *
- * 옵션:
- *   --out <path>     출력 .pptx 경로 (기본: dist-pptx/<이름>.pptx)
- *   --style <key>    styles.json 색상 프리셋 강제 지정
- *   --no-cover       표지 슬라이드 생성 안 함
- *   --verbose        상세 로그 출력
- *   --all            위치 인수를 glob 패턴으로 처리
  */
 
 import { readFileSync, mkdirSync } from "node:fs";
@@ -24,6 +11,7 @@ import matter from "gray-matter";
 import { marked } from "marked";
 import pptxgen from "pptxgenjs";
 import { glob } from "node:fs/promises";
+import { pptxRegistry, helpers } from "./pptx-renderers/registry.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -50,7 +38,7 @@ function standardizeItem(item) {
   const color =    item.color || "";
   const featured = String(item.featured || "").trim().toLowerCase() === "true" ? "true" : "";
 
-  // meta와 note를 뭉개지 않고 각각의 고유값을 완벽하게 보존합니다.
+  // meta와 note를 보존
   const meta = item.meta || item.features || item.items || item.points || item.tool || "";
   const note = String(item.note || "").replace(/\\n/g, "\n");
 
@@ -74,9 +62,8 @@ function parseShortcodeItems(src) {
 
   for (const line of src.split(/\r?\n/)) {
     const trimmed = line.trim();
-    if (!trimmed) continue;  // 빈 줄 무시
+    if (!trimmed) continue;
 
-    // 멀티라인 리터럴 블록 내부 파싱 보장 (공백 4칸 들여쓰기 유지 시)
     if (inLiteralBlock && line.startsWith("    ")) {
       const val = line.slice(4);
       const sep = currentKey === 'meta' ? ' | ' : '\n';
@@ -87,7 +74,6 @@ function parseShortcodeItems(src) {
       inLiteralBlock = false;
     }
 
-    // 1. 새 아이템 시작: - key: value
     const firstMatch = line.match(/^\s*-\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (firstMatch) {
       currentKey = firstMatch[1];
@@ -102,7 +88,6 @@ function parseShortcodeItems(src) {
       continue;
     }
 
-    // 2. 기존 아이템 내 새 키 (들여쓰기 + key: value)
     const nextMatch = line.match(/^\s+([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
     if (nextMatch && current) {
       currentKey = nextMatch[1];
@@ -116,8 +101,6 @@ function parseShortcodeItems(src) {
       continue;
     }
 
-    // 3. 들여쓰기된 하이픈 리스트 항목 (들여쓰기 + - value)
-    //    meta → | 구분, desc/note → \n 구분
     const listMatch = line.match(/^\s+-\s+(.+)$/);
     if (listMatch && current && currentKey) {
       const val = listMatch[1].trim();
@@ -127,8 +110,6 @@ function parseShortcodeItems(src) {
       continue;
     }
 
-    // 4. 들여쓰기된 연속 텍스트 (desc/note 멀티라인, YAML | 블록 스칼라 지원)
-    //    반드시 인덴트가 있어야 캡처됨 → 새 아이템 오인 방지
     if (line.match(/^\s+\S/) && current && currentKey) {
       const val = line.trim();
       if (val === '|') {
@@ -341,8 +322,14 @@ function buildSlideData(mdPath, styleOverride) {
         currentSection = { num: m ? parseInt(m[1]) : sectionNum, title: m ? m[2] : raw2, items: [] };
       } else if (tok.type === "heading" && tok.depth === 2) {
         closeCard();
-        if (!currentSection) { sectionNum++; currentSection = { num: sectionNum, title: "", items: [] }; }
-        currentCard = { type: "card", title: stripMd(extractText(tok)), blocks: [] };
+        const h2Title = stripMd(extractText(tok));
+        if (!currentSection) {
+          sectionNum++;
+          currentSection = { num: sectionNum, title: h2Title, items: [] };
+        } else if (!currentSection.title) {
+          currentSection.title = h2Title;
+        }
+        currentCard = { type: "card", title: h2Title, blocks: [] };
       } else if (tok.type === "hr") {
         closeSection();
       } else if (tok.type === "space") {
@@ -360,7 +347,7 @@ function buildSlideData(mdPath, styleOverride) {
 }
 
 // ════════════════════════════════════════════════════════════════
-//  6. 높이 추정
+//  6. 높이 추정 (레지스트리 기반 위임)
 // ════════════════════════════════════════════════════════════════
 
 function blockH(block, w) {
@@ -388,126 +375,18 @@ function cardH(card, w) {
 }
 
 function itemH(item, w) {
-  const g = D.grid;
-  const c = D.card;
-  if (item.type === "card")         return cardH(item, w);
-  if (item.type === "icon-grid")    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / g.iconCardMinW))) * (1.4 + g.gap);
-  if (item.type === "feature-grid") return Math.ceil(item.items.length / Math.max(1, Math.floor(w / g.featureCardMinW))) * (1.5 + g.gap);
+  if (item.type === "card") return cardH(item, w);
   
-  // 신형 표준 숏코드 및 3대 특화 숏코드 높이 매핑
-  if (item.type === "step-list" || item.type === "steps") {
-    return item.items.length * (g.stepItemH + c.gap);
+  const renderer = pptxRegistry.get(item.type);
+  if (renderer) {
+    try {
+      return renderer.estimateHeight(item, w, D, helpers);
+    } catch (err) {
+      console.error(`  ⚠️  숏코드 높이 추정 오류 (${item.type}): ${err.message}`);
+      return 1.0;
+    }
   }
-  if (item.type === "compare-grid" || item.type === "network-box") {
-    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
-  }
-  if (item.type === "columns-grid" || item.type === "columns") {
-    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
-  }
-  if (item.type === "workflow-flow" || item.type === "workflow-flow" || item.type === "workflow" || item.type === "git-flow" || item.type === "git-flow") {
-    return D.workflow.stepH + c.gap;
-  }
-  if (item.type === "tool-list" || item.type === "tool-list" || item.type === "tool-card") {
-    return item.items.reduce((sum, it) => {
-      const metaLines = splitMeta(it.meta).length;
-      const h = D.toolCard.h + (metaLines > 0 ? 0.3 + metaLines * 0.24 : 0);
-      return sum + h + c.gap;
-    }, 0);
-  }
-  if (item.type === "plan-grid") {
-    const maxFeat = Math.max(0, ...item.items.map(it => splitMeta(it.meta).length));
-    return c.padY + 0.26 + 0.32 + maxFeat * D.planGrid.featureLineH + 0.28 + c.padY + c.gap;
-  }
-  if (item.type === "summary-box" || item.type === "summary-box")  return 1.2 + c.gap + D.bottomList.chipH + c.gap;
-  if (item.type === "compare-split" || item.type === "compare-2col") {
-    if (item.items.length < 2) return 1.5 + c.gap;
-    const cc = D.compare2col;
-    const colW = (w - cc.colGap) / 2;
-    const lh = (c.bodySize / 72) * 1.7;
-    const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
-      // desc: \n 구분 각 세그먼트의 줄바꿈 포함 높이 합산
-      const descSegs = (it.desc || "").split("\n").filter(Boolean);
-      const descH = descSegs.reduce((sum, seg) =>
-        sum + lh * Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize)) + 0.05, 0);
-      // meta: | 구분 불릿 수
-      const metaLines = splitMeta(it.meta).length;
-      return c.padY
-        + (c.titleSize / 72) * 1.7 + c.gap
-        + (descSegs.length > 0 ? descH + c.gap : 0)
-        + metaLines * (lh + 0.05)
-        + (it.note ? 0.28 + 0.12 : 0)
-        + c.padY;
-    }));
-    return maxH + c.gap;
-  }
-  if (item.type === "alert-box") {
-    return item.items.reduce((sum, it) => {
-      const lines = estimateLines(it.desc || "", w - c.padX * 2 - 0.12, c.bodySize);
-      return sum + c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0) + (c.bodySize / 72) * 1.7 * lines + c.gap;
-    }, 0);
-  }
-  if (item.type === "faq-accordion") {
-    return item.items.reduce((sum, it) => {
-      const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize);
-      return sum + (c.titleSize / 72) * 1.7 + 0.1 + (c.bodySize / 72) * 1.7 * lines + c.gap * 0.5 + c.gap;
-    }, 0);
-  }
-  if (item.type === "prompt-example") {
-    return item.items.reduce((sum, it) => {
-      const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize - 1);
-      return sum + c.padY + (c.titleSize / 72) * 1.7 + c.gap * 0.5 + (c.bodySize - 1) / 72 * 1.7 * lines + c.padY + c.gap;
-    }, 0);
-  }
-  if (item.type === "command-block") {
-    return item.items.reduce((sum, it) => {
-      const codeLines = (it.desc || "").split("\n");
-      const h = Math.max(0.4, (c.codeSize / 72) * 1.7 * codeLines.length + 0.2) + 0.38;
-      return sum + h + c.gap;
-    }, 0);
-  }
-  if (item.type === "tabs") {
-    return item.items.reduce((sum, it) => {
-      const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize);
-      return sum + 0.4 + (c.bodySize / 72) * 1.7 * lines + c.gap;
-    }, 0);
-  }
-  if (item.type === "stat-highlight") {
-    const cols = Math.max(1, Math.min(item.items.length, 4));
-    return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
-  }
-  // Phase 4 신규 구현
-  if (item.type === "step-flow" || item.type === "flow") {
-    return D.workflow.stepH + 0.3 + c.gap;
-  }
-  if (item.type === "takeaway-banner" || item.type === "takeaway") {
-    return item.items.reduce((sum, it) => {
-      const lines = estimateLines(it.desc || "", w - c.padX * 2 - 0.5, c.bodySize + 1);
-      return sum + c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0) + (c.bodySize + 1) / 72 * 1.7 * Math.max(1, lines) + c.gap;
-    }, 0);
-  }
-  if (item.type === "compare-diff" || item.type === "compare-before-after") {
-    if (item.items.length < 2) return 1.5 + c.gap;
-    const cc = D.compare2col; const colW = (w - cc.colGap) / 2; const lh = (c.bodySize / 72) * 1.7;
-    const maxH = Math.max(1.2, ...item.items.slice(0, 2).map(it => {
-      const descSegs = (it.desc || "").split("\n").filter(Boolean);
-      const descH = descSegs.reduce((s, seg) => s + lh * Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize)) + 0.05, 0);
-      return c.padY + (c.titleSize / 72) * 1.7 + c.gap + (descSegs.length ? descH + c.gap : 0) + c.padY;
-    }));
-    return maxH + c.gap;
-  }
-  if (item.type === "badge-grid" || item.type === "checkpoint-grid") {
-    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / g.iconCardMinW))) * (1.4 + g.gap);
-  }
-  if (item.type === "skill-list" || item.type === "chapter-list") {
-    return item.items.length * (g.stepItemH + c.gap);
-  }
-  if (item.type === "summary-bar") {
-    const cols = Math.max(1, Math.min(item.items.length, 4));
-    return Math.ceil(item.items.length / cols) * (1.2 + g.gap);
-  }
-  if (item.type === "level-grid" || item.type === "part-banner" || item.type === "part-deck") {
-    return Math.ceil(item.items.length / Math.max(1, Math.floor(w / 2.4))) * (1.4 + g.gap);
-  }
+  
   return 0;
 }
 
@@ -535,23 +414,25 @@ function makePalette(style) {
 }
 
 // ════════════════════════════════════════════════════════════════
-//  8. 블록 렌더러
+//  8. 마크다운 기본 블록 렌더러 (정밀 폰트 적용)
 // ════════════════════════════════════════════════════════════════
 
 function renderBlock(slide, block, x, y, w, pal) {
   const c = D.card;
   const font = D.slide.font;
+  const fontTitle = D.slide.fontTitle || font;
+  const fontSubTitle = D.slide.fontSubTitle || font;
   const mono = D.slide.fontMono;
 
   if (block.type === "h3") {
     const h = (c.h3Size / 72) * 1.7;
-    slide.addText(block.text, { x, y, w, h: h + 0.05, fontSize: c.h3Size, bold: true, color: pal.text, fontFace: font, valign: "top" });
+    slide.addText(block.text, { x, y, w, h: h + 0.05, fontSize: c.h3Size, bold: true, color: pal.text, fontFace: fontSubTitle, valign: "top" });
     return h + c.gap;
   }
   if (block.type === "h4") {
     const fs = c.h3Size - 1;
     const h = (fs / 72) * 1.7;
-    slide.addText(block.text, { x, y, w, h: h + 0.05, fontSize: fs, bold: true, color: pal.text2, fontFace: font, valign: "top" });
+    slide.addText(block.text, { x, y, w, h: h + 0.05, fontSize: fs, bold: true, color: pal.text2, fontFace: fontSubTitle, valign: "top" });
     return h + c.gap;
   }
   if (block.type === "p") {
@@ -573,8 +454,8 @@ function renderBlock(slide, block, x, y, w, pal) {
   if (block.type === "blockquote") {
     const lines = estimateLines(block.text, w - c.quoteBarW - 0.12, c.bodySize);
     const h = Math.max(0.38, (c.bodySize / 72) * 1.7 * lines + 0.15);
-    slide.addShape("rect", { x, y, w: c.quoteBarW, h, fill: { color: pal.brand }, line: { color: pal.brand } });
-    slide.addShape("rect", { x: x + c.quoteBarW, y, w: w - c.quoteBarW, h, fill: { color: pal.brandLight }, line: { color: pal.brandLight } });
+    slide.addShape("rect", { x, y, w: c.quoteBarW, h, fill: { color: pal.brand }, line: { width: 0 } });
+    slide.addShape("rect", { x: x + c.quoteBarW, y, w: w - c.quoteBarW, h, fill: { color: pal.brandLight }, line: { width: 0 } });
     slide.addText(block.text, {
       x: x + c.quoteBarW + 0.1, y: y + 0.06, w: w - c.quoteBarW - 0.14, h: h - 0.1,
       fontSize: c.bodySize, color: pal.brandDeep || pal.brandDark, fontFace: font, italic: true, valign: "middle", wrap: true,
@@ -629,589 +510,120 @@ function renderBlock(slide, block, x, y, w, pal) {
   return 0;
 }
 
-// ════════════════════════════════════════════════════════════════
-//  9. 숏코드 렌더러 (Universal Schema 키 사용)
-// ════════════════════════════════════════════════════════════════
-
 function renderCard(slide, card, x, y, w, pal) {
   const c = D.card;
   const font = D.slide.font;
+  const fontSubTitle = D.slide.fontSubTitle || font;
   const r = D.slide.globalRadius;
   const h = cardH(card, w);
   slide.addShape("roundRect", { x, y, w, h, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
   let cy = y + c.padY;
   if (card.title) {
     const th = (c.titleSize / 72) * 1.7;
-    slide.addText(card.title, { x: x + c.padX, y: cy, w: w - c.padX * 2, h: th + 0.05, fontSize: c.titleSize, bold: true, color: pal.brandDark, fontFace: font, valign: "top" });
+    slide.addText(card.title, { x: x + c.padX, y: cy, w: w - c.padX * 2, h: th + 0.05, fontSize: c.titleSize, bold: true, color: pal.brandDark, fontFace: fontSubTitle, valign: "top" });
     cy += th + 0.05 + c.gap * 0.5;
   }
   for (const block of (card.blocks || [])) cy += renderBlock(slide, block, x + c.padX, cy, w - c.padX * 2, pal);
   return h;
 }
 
-function renderIconGrid(slide, item, x, y, w, pal) {
-  const g = D.grid; const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const cols = Math.max(1, Math.min(item.items.length, Math.floor(w / g.iconCardMinW)));
-  const cardW = (w - (cols - 1) * g.gap) / cols;
-  const cardH2 = 1.4;
-  item.items.forEach((it, idx) => {
-    const col = idx % cols; const row = Math.floor(idx / cols);
-    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
-    const ac = it.color ? hexClean(it.color) : null;
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: ac ? { color: ac, transparency: 95 } : { color: pal.white }, line: { color: ac || pal.border, width: 0.75 } });
-    if (ac) slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac } });
-    if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx + 0.1, y: cy + 0.1, w: cardW - 0.2, h: 0.42, fontSize: 20, align: "center", valign: "middle" });
-    slide.addText(it.title, { x: cx + 0.1, y: cy + 0.58, w: cardW - 0.2, h: 0.28, fontSize: c.bodySize, bold: true, color: pal.text, fontFace: font, align: "center" });
-    if (it.desc) slide.addText(it.desc, { x: cx + 0.1, y: cy + 0.88, w: cardW - 0.2, h: cardH2 - 0.94, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, align: "center", wrap: true, valign: "top" });
-  });
-  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
-}
-
-function renderFeatureGrid(slide, item, x, y, w, pal) {
-  const g = D.grid; const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const cols = Math.max(1, Math.min(item.items.length, Math.floor(w / g.featureCardMinW)));
-  const cardW = (w - (cols - 1) * g.gap) / cols;
-  const cardH2 = 1.5;
-  item.items.forEach((it, idx) => {
-    const col = idx % cols; const row = Math.floor(idx / cols);
-    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
-    const ac = it.color ? hexClean(it.color) : pal.brand;
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
-    slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
-    let ty = cy + 0.12;
-    if (it.tag) { slide.addText(it.tag, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: 0.22, fontSize: 8, bold: true, color: pal.brandDark, fontFace: font }); ty += 0.24; }
-    const titleText = (it.icon && it.icon !== "•" ? it.icon + " " : "") + it.title;
-    slide.addText(titleText, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: 0.3, fontSize: c.titleSize, bold: true, color: pal.text, fontFace: font });
-    ty += 0.34;
-    if (it.desc) slide.addText(it.desc, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: cardH2 - (ty - cy) - 0.08, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, wrap: true, valign: "top" });
-  });
-  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
-}
-
-function renderSteps(slide, item, x, y, w, pal) {
-  const g = D.grid; const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const stepH = g.stepItemH;
-  item.items.forEach((it, idx) => {
-    const ac = hexClean(it.color) || pal.brand;
-    const cy = y + idx * (stepH + c.gap);
-    slide.addShape("roundRect", { x, y: cy, w: stepH, h: stepH, rectRadius: r, fill: it.color ? { color: ac, transparency: 90 } : { color: pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
-    const numSz = 0.42; const ny = cy + (stepH - numSz) / 2;
-    slide.addShape("roundRect", { x: x + 0.1, y: ny, w: numSz, h: numSz, rectRadius: 0.1, fill: { color: ac }, line: { color: ac } });
-    slide.addText(String(idx + 1), { x: x + 0.1, y: ny, w: numSz, h: numSz, fontSize: 13, bold: true, color: pal.white, fontFace: font, align: "center", valign: "middle" });
-    const tx = x + 0.1 + numSz + 0.12; const tw = w - 0.1 - numSz - 0.22;
-    slide.addText(it.title, { x: tx, y: cy + 0.07, w: tw, h: 0.26, fontSize: c.bodySize, bold: true, color: it.color ? ac : pal.text, fontFace: font, valign: "top" });
-    if (it.desc) slide.addText(it.desc, { x: tx, y: cy + 0.34, w: tw, h: stepH - 0.4, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, wrap: true, valign: "top" });
-  });
-  return item.items.length * (stepH + c.gap);
-}
-
-function renderCompareGrid(slide, item, x, y, w, pal) {
-  const g = D.grid; const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const cols = Math.max(1, Math.min(item.items.length, Math.floor(w / 2.4)));
-  const cardW = (w - (cols - 1) * g.gap) / cols;
-  const cardH2 = 1.4;
-  item.items.forEach((it, idx) => {
-    const col = idx % cols; const row = Math.floor(idx / cols);
-    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
-    const ac = hexClean(it.color) || pal.brand;
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: it.color ? { color: ac, transparency: 95 } : { color: pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
-    slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
-    slide.addText(it.title, { x: cx + 0.12, y: cy + 0.1, w: cardW - 0.24, h: 0.3, fontSize: c.titleSize, bold: true, color: it.color ? ac : pal.brandDark, fontFace: font });
-    if (it.desc) slide.addText(it.desc, { x: cx + 0.12, y: cy + 0.42, w: cardW - 0.24, h: 0.6, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, wrap: true, valign: "top" });
-    const activeNote = it.note || it.meta;
-    if (activeNote) {
-      slide.addShape("roundRect", { x: cx + 0.12, y: cy + 1.05, w: cardW - 0.24, h: 0.28, rectRadius: 0.06, fill: it.color ? { color: ac, transparency: 85 } : { color: pal.brandLight }, line: { color: ac } });
-      slide.addText(activeNote, { x: cx + 0.12, y: cy + 1.05, w: cardW - 0.24, h: 0.28, fontSize: 8, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
-    }
-  });
-  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
-}
-
-function renderWorkflow(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const n = item.items.length; if (!n) return 0;
-  const stepH = D.workflow.stepH; const arrowW = D.workflow.arrowW;
-  const isGitFlow = item.type === "git-flow" || item.type === "git-flow-strip";
-  const margin = isGitFlow ? w * 0.10 : 0;
-  const wUsable = w - margin * 2;
-  const stepW = (wUsable - (n - 1) * arrowW) / n;
-  item.items.forEach((it, idx) => {
-    const cx = x + margin + idx * (stepW + arrowW);
-    const stepBg = it.color ? { color: hexClean(it.color), transparency: 90 } : { color: pal.brandLight };
-    slide.addShape("roundRect", { x: cx, y, w: stepW, h: stepH, rectRadius: r, fill: stepBg, line: { color: it.color ? hexClean(it.color) : pal.border, width: 0.75 } });
-    if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx, y: y + 0.08, w: stepW, h: 0.3, fontSize: 16, align: "center", valign: "middle" });
-    slide.addText(it.title, { x: cx + 0.06, y: y + 0.42, w: stepW - 0.12, h: 0.26, fontSize: c.bodySize, bold: true, color: pal.text, fontFace: font, align: "center" });
-    if (it.meta) slide.addText(it.meta, { x: cx + 0.06, y: y + 0.68, w: stepW - 0.12, h: 0.18, fontSize: c.bodySize - 2, color: pal.text2, fontFace: font, align: "center" });
-    if (idx < n - 1) slide.addText("→", { x: cx + stepW, y: y + (stepH - 0.22) / 2, w: arrowW, h: 0.22, fontSize: 14, color: D.palette.workflowArrow, align: "center", valign: "middle" });
-  });
-  return stepH + c.gap;
-}
-
-function renderToolCard(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const tcH = D.toolCard.h || 0.85;
-  let cy = y;
-  for (const it of item.items) {
-    const bgColor = hexClean(it.color) || pal.brand;
-    const metaList = (it.meta || "").split("|").filter(Boolean).map(f => f.trim());
-    const hasMeta = metaList.length > 0;
-    const cardH = tcH + (hasMeta ? 0.3 + metaList.length * 0.24 : 0);
-    
-    // Draw outer round rect wrapper
-    slide.addShape("roundRect", { x, y: cy, w, h: cardH, rectRadius: r / 2, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
-    
-    // Draw top banner header
-    slide.addShape("roundRect", { x, y: cy, w, h: tcH, rectRadius: r / 2, fill: { color: bgColor }, line: { color: bgColor } });
-    // Cover the bottom rounding of top banner with a flat rect to make it merge cleanly if there is a meta list
-    if (hasMeta) {
-      slide.addShape("rect", { x, y: cy + tcH - 0.1, w, h: 0.1, fill: { color: bgColor }, line: { color: bgColor } });
-    }
-    
-    let cx = x + 0.16;
-    if (it.icon && it.icon !== "•") { slide.addText(it.icon, { x: cx, y: cy, w: 0.52, h: tcH, fontSize: 20, align: "center", valign: "middle" }); cx += 0.58; }
-    const badgeW = it.tag ? 1.1 : 0; const tw = w - (cx - x) - badgeW - 0.14;
-    slide.addText(it.title, { x: cx, y: cy + 0.1, w: tw, h: 0.28, fontSize: c.titleSize, bold: true, color: D.palette.white, fontFace: font });
-    if (it.desc) slide.addText(it.desc, { x: cx, y: cy + 0.4, w: tw, h: 0.22, fontSize: c.bodySize - 2, color: pal.mutedLight, fontFace: font });
-    if (it.tag) slide.addText(it.tag, { x: x + w - badgeW - 0.08, y: cy + (tcH - 0.22) / 2, w: badgeW, h: 0.22, fontSize: 9, bold: true, color: D.palette.white, fontFace: font, align: "right" });
-    
-    if (hasMeta) {
-      let my = cy + tcH + 0.12;
-      metaList.forEach(m => {
-        slide.addText("• " + m, { x: x + 0.3, y: my, w: w - 0.6, h: 0.22, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font });
-        my += 0.24;
-      });
-    }
-    
-    cy += cardH + c.gap;
-  }
-  return cy - y;
-}
-
-function renderPlanGrid(slide, item, x, y, w, pal) {
-  const g = D.grid; const c = D.card; const pg = D.planGrid; const font = D.slide.font; const r = D.slide.globalRadius;
-  const cols = Math.max(1, Math.min(item.items.length, pg.maxCols));
-  const cardW = (w - (cols - 1) * g.gap) / cols;
-  const maxFeat = Math.max(0, ...item.items.map(it => splitMeta(it.meta).length));
-  const cardH2 = c.padY + 0.26 + 0.32 + maxFeat * pg.featureLineH + 0.28 + c.padY;
-  item.items.forEach((it, idx) => {
-    if (idx >= cols) return;
-    const cx = x + idx * (cardW + g.gap); const isFeatured = it.featured === "true";
-    const ac = hexClean(it.color) || (isFeatured ? pal.brand : pal.brand);
-    const usedColor = hexClean(it.color);
-    const cardFill = usedColor ? { color: usedColor, transparency: 95 } : { color: isFeatured ? pal.brandLight : D.palette.white };
-    const cardLine = usedColor || (isFeatured ? pal.brand : pal.border);
-    slide.addShape("roundRect", { x: cx, y, w: cardW, h: cardH2, rectRadius: r, fill: cardFill, line: { color: cardLine, width: (usedColor || isFeatured) ? 1.5 : 0.75 } });
-    slide.addShape("rect", { x: cx, y, w: cardW, h: 0.05, fill: { color: ac }, line: { color: ac } });
-    let ty = y + c.padY;
-    if (it.tag) {
-      const bw = Math.min(cardW - 0.24, 1.2);
-      slide.addShape("roundRect", { x: cx + 0.12, y: ty, w: bw, h: 0.22, rectRadius: 0.08, fill: { color: (usedColor || isFeatured) ? ac : pal.brandLight }, line: { color: ac } });
-      slide.addText(it.tag, { x: cx + 0.12, y: ty, w: bw, h: 0.22, fontSize: 8, bold: true, color: (usedColor || isFeatured) ? D.palette.white : pal.brandDark, fontFace: font, align: "center", valign: "middle" });
-      ty += 0.26;
-    }
-    slide.addText(it.title, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: 0.28, fontSize: c.titleSize, bold: true, color: pal.text, fontFace: font, valign: "top" });
-    ty += 0.32;
-    for (const feat of splitMeta(it.meta)) {
-      slide.addText("• " + feat, { x: cx + 0.12, y: ty, w: cardW - 0.24, h: pg.featureLineH, fontSize: c.bodySize - 1, color: pal.text2, fontFace: font, valign: "top" });
-      ty += pg.featureLineH;
-    }
-    if (it.note) {
-      const noteY = y + cardH2 - c.padY - 0.24;
-      slide.addShape("roundRect", { x: cx + 0.12, y: noteY, w: cardW - 0.24, h: 0.22, rectRadius: 0.06, fill: { color: (usedColor || isFeatured) ? ac : pal.brandLight }, line: { color: ac } });
-      slide.addText(it.note, { x: cx + 0.12, y: noteY, w: cardW - 0.24, h: 0.22, fontSize: 8, bold: true, color: (usedColor || isFeatured) ? D.palette.white : pal.brandDark, fontFace: font, align: "center", valign: "middle" });
-    }
-  });
-  return cardH2 + c.gap;
-}
-
-function renderBottomList(slide, item, x, y, w, pal) {
-  const c = D.card; const bl = D.bottomList; const font = D.slide.font; const r = D.slide.globalRadius;
-  if (!item.items.length) return 0;
-  const it = item.items[0];
-  const ac = hexClean(it.color) || pal.brand;
-  const points = splitMeta(it.meta);
-  const bodyLines = it.desc ? estimateLines(it.desc, w - c.padX * 2, c.bodySize) : 0;
-  const topH = Math.max(0.8, c.padY * 2 + (it.title ? (c.titleSize / 72) * 1.7 + c.gap : 0) + (bodyLines > 0 ? (c.bodySize / 72) * 1.7 * bodyLines + c.gap : 0));
-  slide.addShape("roundRect", { x, y, w: topH, rectRadius: r, fill: it.color ? { color: ac, transparency: 95 } : { color: pal.white }, line: { color: it.color ? ac : pal.border, width: 0.75 } });
-  let ty = y + c.padY;
-  if (it.title) {
-    const th = (c.titleSize / 72) * 1.7;
-    slide.addText(it.title, { x: x + c.padX, y: ty, w: w - c.padX * 2, h: th + 0.05, fontSize: c.titleSize, bold: true, color: it.color ? ac : pal.brandDark, fontFace: font, valign: "top" });
-    ty += th + c.gap;
-  }
-  if (it.desc) slide.addText(it.desc, { x: x + c.padX, y: ty, w: w - c.padX * 2, h: Math.max(0.2, (c.bodySize / 72) * 1.7 * bodyLines), fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
-  if (points.length) {
-    const chipBY = y + topH + c.gap; const chipW = (w - (points.length - 1) * bl.chipGap) / points.length;
-    points.forEach((pt, i) => {
-      const cx = x + i * (chipW + bl.chipGap);
-      slide.addShape("roundRect", { x: cx, y: chipBY, w: chipW, h: bl.chipH, rectRadius: bl.chipRadius, fill: it.color ? { color: ac, transparency: 88 } : { color: pal.brandLight }, line: { color: ac, width: 0.75 } });
-      slide.addText(pt, { x: cx + 0.08, y: chipBY, w: chipW - 0.16, h: bl.chipH, fontSize: bl.fontSize, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
-    });
-    return topH + c.gap + bl.chipH + c.gap;
-  }
-  return topH + c.gap;
-}
-
-function renderCompare2Col(slide, item, x, y, w, pal) {
-  const c = D.card; const cc = D.compare2col; const font = D.slide.font; const r = D.slide.globalRadius;
-  if (item.items.length < 2) return renderCompareGrid(slide, item, x, y, w, pal);
-  const colW = (w - cc.colGap) / 2;
-  const lh = (c.bodySize / 72) * 1.7;
-  const noteH = 0.28;
-  // itemH()와 동일한 로직으로 maxH 계산 (c.gap 제거)
-  const maxH = itemH(item, w) - c.gap;
-
-  item.items.slice(0, 2).forEach((it, idx) => {
-    const cx = x + idx * (colW + cc.colGap); const isLeft = idx === 0;
-    const ac = hexClean(it.color) || (isLeft ? pal.brand : pal.text2);
-    const cardFill = it.color ? { color: hexClean(it.color), transparency: 95 } : { color: isLeft ? pal.brandLight : D.palette.white };
-
-    slide.addShape("roundRect", { x: cx, y, w: colW, h: maxH, rectRadius: r, fill: cardFill, line: { color: ac, width: (it.color || isLeft) ? 1.5 : 0.75 } });
-    slide.addShape("rect", { x: cx, y, w: colW, h: 0.05, fill: { color: ac }, line: { color: ac } });
-
-    let ty = y + c.padY;
-
-    // 타이틀
-    slide.addText(it.title, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: (c.titleSize / 72) * 1.7 + 0.05, fontSize: c.titleSize + 1, bold: true, color: it.color ? ac : (isLeft ? (pal.brandDeep || pal.brandDark) : pal.text), fontFace: font, valign: "top" });
-    ty += (c.titleSize / 72) * 1.7 + c.gap;
-
-    // desc: \n 구분 단락 텍스트 — 세그먼트별 wrap 높이 계산 후 순차 렌더링
-    if (it.desc) {
-      const descSegs = it.desc.split("\n").filter(Boolean);
-      for (const seg of descSegs) {
-        const segLines = Math.max(1, estimateLines(seg, colW - c.padX * 2, c.bodySize));
-        const segH = lh * segLines + 0.05;
-        slide.addText(seg, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: segH, fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
-        ty += segH;
-      }
-      ty += c.gap;  // desc 블록 아래 여백
-    }
-
-    // meta: | 구분 불릿 (ty 누적으로 겹침 방지)
-    for (const bullet of splitMeta(it.meta)) {
-      slide.addText("• " + bullet, { x: cx + c.padX, y: ty, w: colW - c.padX * 2, h: lh + 0.05, fontSize: c.bodySize, color: it.color ? ac : (isLeft ? (pal.brandDeep || pal.brandDark) : pal.text2), fontFace: font });
-      ty += lh + 0.05;
-    }
-
-    // note: 카드 하단 고정 배지 (다중 줄이면 · 로 연결)
-    if (it.note) {
-      const noteText = it.note.split("\n").filter(Boolean).join(" · ");
-      const noteY = y + maxH - c.padY - noteH;
-      slide.addShape("roundRect", { x: cx + c.padX, y: noteY, w: colW - c.padX * 2, h: noteH, rectRadius: 0.06, fill: { color: (it.color || isLeft) ? ac : pal.brandLight }, line: { color: ac } });
-      slide.addText(noteText, { x: cx + c.padX, y: noteY, w: colW - c.padX * 2, h: noteH, fontSize: 8, bold: true, color: (it.color || isLeft) ? D.palette.white : pal.brandDark, fontFace: font, align: "center", valign: "middle" });
-    }
-  });
-
-  return maxH + c.gap;
-}
-
-// ── Phase 4 신규 렌더러 ──────────────────────────────────────────
-
-function renderFlow(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const steps = item.items.filter(it => it.title !== "→" && it.icon !== "→");
-  const n = steps.length; if (!n) return 0;
-  const arrowW = D.workflow.arrowW;
-  const stepW  = (w - (n - 1) * arrowW) / n;
-  const stepH  = D.workflow.stepH + 0.3;
-  steps.forEach((it, idx) => {
-    const cx = x + idx * (stepW + arrowW);
-    const isActive = it.tag === "active";
-    const bg = isActive
-      ? { color: hexClean(pal.brand), transparency: 10 }
-      : it.color ? { color: hexClean(it.color), transparency: 90 } : { color: pal.brandLight };
-    const border = isActive ? pal.brand : it.color ? hexClean(it.color) : pal.border;
-    slide.addShape("roundRect", { x: cx, y, w: stepW, h: stepH, rectRadius: r, fill: bg, line: { color: border, width: isActive ? 1.5 : 0.75 } });
-    if (it.icon && it.icon !== "•") slide.addText(it.icon, { x: cx, y: y + 0.08, w: stepW, h: 0.3, fontSize: 16, align: "center" });
-    slide.addText(it.title, { x: cx + 0.06, y: y + 0.42, w: stepW - 0.12, h: 0.26, fontSize: c.bodySize, bold: true, color: isActive ? pal.white : pal.text, fontFace: font, align: "center" });
-    if (it.desc) slide.addText(it.desc, { x: cx + 0.06, y: y + 0.7, w: stepW - 0.12, h: 0.22, fontSize: c.bodySize - 2, color: isActive ? pal.mutedLight : pal.text2, fontFace: font, align: "center", wrap: true });
-    if (idx < steps.length - 1) slide.addText("→", { x: cx + stepW, y: y + (stepH - 0.22) / 2, w: arrowW, h: 0.22, fontSize: 14, color: D.palette.workflowArrow, align: "center", valign: "middle" });
-  });
-  return stepH + c.gap;
-}
-
-function renderTakeaway(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  let cy = y;
-  for (const it of item.items) {
-    const lines  = estimateLines(it.desc || "", w - c.padX * 2 - 0.5, c.bodySize + 1);
-    const titleH = it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0;
-    const descH  = (c.bodySize + 1) / 72 * 1.7 * Math.max(1, lines);
-    const boxH   = c.padY * 2 + titleH + descH;
-    slide.addShape("roundRect", { x, y: cy, w, h: boxH, rectRadius: r, fill: { color: hexClean(pal.brand), transparency: 12 }, line: { color: hexClean(pal.brand), width: 1.5 } });
-    let tx = x + c.padX; let tw = w - c.padX * 2; let ty = cy + c.padY;
-    if (it.icon) { slide.addText(it.icon, { x: tx, y: ty, w: 0.4, h: boxH - c.padY * 2, fontSize: 20, valign: "middle" }); tx += 0.48; tw -= 0.48; }
-    if (it.title) { slide.addText(it.title, { x: tx, y: ty, w: tw, h: titleH, fontSize: c.titleSize + 1, bold: true, color: pal.brandDark || pal.brand, fontFace: font, valign: "top" }); ty += titleH; }
-    if (it.desc)  slide.addText(it.desc, { x: tx, y: ty, w: tw, h: descH + 0.05, fontSize: c.bodySize + 1, color: pal.text, fontFace: font, valign: "top", wrap: true });
-    cy += boxH + c.gap;
-  }
-  return cy - y;
-}
-
-function renderCompareBeforeAfter(slide, item, x, y, w, pal) {
-  // Before(좌) = 붉은 계열, After(우) = 초록 계열 — 색이 없으면 기본값 주입
-  const modItem = {
-    ...item,
-    items: item.items.slice(0, 2).map((it, idx) => ({
-      ...it,
-      color: it.color || (idx === 0 ? "#EF4444" : "#10B981"),
-    })),
-  };
-  return renderCompare2Col(slide, modItem, x, y, w, pal);
-}
-
-const ALERT_COLORS = {
-  tip:     { bg: "F0FDF4", bar: "22C55E", title: "15803D", text: "166534" },
-  warn:    { bg: "FFFBEB", bar: "F59E0B", title: "B45309", text: "92400E" },
-  success: { bg: "F0FDF4", bar: "10B981", title: "065F46", text: "064E3B" },
-  danger:  { bg: "FFF1F2", bar: "EF4444", title: "B91C1C", text: "991B1B" },
-};
-
-function renderAlertBox(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  let cy = y;
-  for (const it of item.items) {
-    const t = String(item.args || it.type || "tip").trim().toLowerCase();
-    const ac = ALERT_COLORS[t] || ALERT_COLORS.tip;
-    
-    // Adjust width for icon if present
-    const hasIcon = !!it.icon;
-    const barW = 0.08;
-    let tx = x + barW + 0.1;
-    let tw = w - barW - 0.14;
-    
-    const lines = estimateLines(it.desc || "", hasIcon ? tw - 0.38 : tw, c.bodySize);
-    const titleH = it.title ? (c.titleSize / 72) * 1.7 + c.gap * 0.5 : 0;
-    const descH  = (c.bodySize / 72) * 1.7 * Math.max(1, lines);
-    const boxH   = c.padY * 2 + titleH + descH;
-    
-    slide.addShape("roundRect", { x, y: cy, w, h: boxH, rectRadius: r, fill: { color: ac.bg }, line: { color: ac.bar, width: 1.5 } });
-    slide.addShape("rect",      { x, y: cy, w: barW, h: boxH, fill: { color: ac.bar }, line: { color: ac.bar } });
-    
-    let ty = cy + c.padY;
-    if (hasIcon) {
-      slide.addText(it.icon, { x: tx, y: ty, w: 0.35, h: 0.35, fontSize: 14, valign: "middle" });
-      tx += 0.38;
-      tw -= 0.38;
-    }
-    
-    if (it.title) {
-      slide.addText(it.title, { x: tx, y: ty, w: tw, h: titleH, fontSize: c.titleSize, bold: true, color: ac.title, fontFace: font, valign: "top" });
-      ty += titleH;
-    }
-    if (it.desc) {
-      slide.addText(it.desc, { x: tx, y: ty, w: tw, h: descH + 0.05, fontSize: c.bodySize, color: ac.text, fontFace: font, valign: "top", wrap: true });
-    }
-    cy += boxH + c.gap;
-  }
-  return cy - y;
-}
-
-function renderFaqAccordion(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  let cy = y;
-  item.items.forEach((it, idx) => {
-    const ac = hexClean(it.color) || pal.brand;
-    const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize);
-    const qH  = (c.titleSize / 72) * 1.7 + 0.1;
-    const aH  = (c.bodySize / 72) * 1.7 * Math.max(1, lines);
-    const rowH = qH + aH + c.gap * 0.5;
-    const isEven = idx % 2 === 0;
-    const rowFill = it.color ? { color: hexClean(it.color), transparency: 90 } : { color: isEven ? pal.brandLight : D.palette.white };
-    slide.addShape("roundRect", { x, y: cy, w, h: rowH, rectRadius: r, fill: rowFill, line: { color: it.color ? ac : pal.border, width: 0.75 } });
-    slide.addShape("rect", { x, y: cy, w: 0.06, h: rowH, fill: { color: ac }, line: { color: ac } });
-    slide.addText("Q  " + (it.title || ""), { x: x + 0.12, y: cy + 0.06, w: w - 0.16, h: qH, fontSize: c.titleSize, bold: true, color: it.color ? ac : pal.brandDark, fontFace: font, valign: "top" });
-    if (it.desc) slide.addText("A  " + it.desc, { x: x + 0.12, y: cy + 0.06 + qH, w: w - 0.16, h: aH + 0.05, fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
-    cy += rowH + c.gap * 0.5;
-  });
-  return cy - y;
-}
-
-function renderPromptExample(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const mono = D.slide.fontMono; const r = D.slide.globalRadius;
-  let cy = y;
-  for (const it of item.items) {
-    const ac = hexClean(it.color) || pal.brand;
-    const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize - 1);
-    const titleH = (c.titleSize / 72) * 1.7;
-    const descH  = (c.bodySize - 1) / 72 * 1.7 * Math.max(1, lines);
-    const boxH   = c.padY + titleH + c.gap * 0.5 + descH + c.padY;
-    slide.addShape("roundRect", { x, y: cy, w, h: boxH, rectRadius: r, fill: { color: D.palette.codeBg || "0D1117" }, line: { color: ac, width: 1 } });
-    slide.addShape("rect", { x, y: cy, w, h: 0.04, fill: { color: ac }, line: { color: ac } });
-    let ty = cy + c.padY;
-    if (it.title) {
-      slide.addText("▶ " + it.title, { x: x + c.padX, y: ty, w: w - c.padX * 2, h: titleH + 0.05, fontSize: c.titleSize, bold: true, color: D.palette.codeText || "A8B2D8", fontFace: font, valign: "top" });
-      ty += titleH + c.gap * 0.5;
-    }
-    if (it.desc) slide.addText(it.desc, { x: x + c.padX, y: ty, w: w - c.padX * 2, h: descH + 0.05, fontSize: c.bodySize - 1, color: "CDD6F4", fontFace: mono || font, valign: "top", wrap: true });
-    cy += boxH + c.gap;
-  }
-  return cy - y;
-}
-
-function renderCommandBlock(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const mono = D.slide.fontMono; const r = D.slide.globalRadius;
-  let cy = y;
-  for (const it of item.items) {
-    const label = it.title || it.tag || "Terminal";
-    const lang = it.meta || "bash";
-    const codeLines = (it.desc || "").split("\n");
-    const codeH = Math.max(0.4, (c.codeSize / 72) * 1.7 * codeLines.length + 0.2);
-    const totalH = codeH + 0.38;
-    
-    slide.addShape("roundRect", { x, y: cy, w, h: totalH, rectRadius: r, fill: { color: "0F172A" }, line: { color: pal.border, width: 0.75 } });
-    slide.addShape("rect", { x, y: cy, w, h: 0.35, fill: { color: "1E293B" }, line: { color: "1E293B" } });
-    slide.addText(label, { x: x + 0.12, y: cy, w: w * 0.7, h: 0.35, fontSize: 9, bold: true, color: pal.muted || "8892B0", fontFace: mono || font, valign: "middle" });
-    slide.addText(lang, { x: x + w - 1.2, y: cy, w: 1.0, h: 0.35, fontSize: 9, color: pal.brand, fontFace: mono || font, align: "right", valign: "middle" });
-    
-    slide.addText(it.desc || "", { x: x + 0.12, y: cy + 0.38, w: w - 0.24, h: codeH - 0.05, fontSize: c.codeSize, color: pal.codeText || "CDD5E1", fontFace: mono || font, valign: "top", wrap: true });
-    cy += totalH + c.gap;
-  }
-  return cy - y;
-}
-
-function renderTabs(slide, item, x, y, w, pal) {
-  const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  let cy = y;
-  item.items.forEach((it, idx) => {
-    const tabTitle = it.title || it.tag || `Tab ${idx + 1}`;
-    const lines = estimateLines(it.desc || "", w - c.padX * 2, c.bodySize);
-    const descH = (c.bodySize / 72) * 1.7 * lines;
-    const totalH = 0.35 + descH + 0.2;
-    
-    slide.addShape("roundRect", { x, y: cy, w, h: totalH, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
-    slide.addShape("rect", { x, y: cy, w, h: 0.35, fill: { color: pal.brandLight }, line: { color: pal.brandLight } });
-    slide.addShape("rect", { x, y: cy + 0.31, w, h: 0.04, fill: { color: pal.brand }, line: { color: pal.brand } });
-    slide.addText(tabTitle, { x: x + 0.15, y: cy, w: w - 0.3, h: 0.31, fontSize: 10, bold: true, color: pal.brandDark, fontFace: font, valign: "middle" });
-    
-    slide.addText(it.desc || "", { x: x + c.padX, y: cy + 0.45, w: w - c.padX * 2, h: descH, fontSize: c.bodySize, color: pal.text2, fontFace: font, valign: "top", wrap: true });
-    cy += totalH + c.gap;
-  });
-  return cy - y;
-}
-
-function renderStatHighlight(slide, item, x, y, w, pal) {
-  const g = D.grid; const c = D.card; const font = D.slide.font; const r = D.slide.globalRadius;
-  const cols = Math.max(1, Math.min(item.items.length, 4));
-  const cardW = (w - (cols - 1) * g.gap) / cols;
-  const cardH2 = 1.2;
-  item.items.forEach((it, idx) => {
-    const col = idx % cols; const row = Math.floor(idx / cols);
-    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
-    const ac = it.color ? hexClean(it.color) : pal.brand;
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
-    slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
-    
-    const val = it.icon || it.title;
-    slide.addText(val, { x: cx + 0.1, y: cy + 0.1, w: cardW - 0.2, h: 0.45, fontSize: 22, bold: true, color: ac, fontFace: font, align: "center", valign: "middle" });
-    if (it.icon) {
-      slide.addText(it.title, { x: cx + 0.1, y: cy + 0.6, w: cardW - 0.2, h: 0.24, fontSize: 9, bold: true, color: pal.text, fontFace: font, align: "center" });
-    }
-    if (it.desc) {
-      slide.addText(it.desc, { x: cx + 0.1, y: cy + 0.88, w: cardW - 0.2, h: cardH2 - 0.94, fontSize: 8, color: pal.muted || "8892B0", fontFace: font, align: "center" });
-    }
-  });
-  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
-}
-
-function renderColumns(slide, item, x, y, w, pal) {
-  const g = D.grid; const font = D.slide.font; const r = D.slide.globalRadius || 0.08;
-  const cols = Math.max(1, Math.floor(w / 2.4));
-  const cardW = (w - g.gap * (cols - 1)) / cols;
-  const cardH2 = 1.4;
-  
-  item.items.forEach((it, idx) => {
-    const col = idx % cols; const row = Math.floor(idx / cols);
-    const cx = x + col * (cardW + g.gap); const cy = y + row * (cardH2 + g.gap);
-    const ac = it.color ? hexClean(it.color) : pal.brand;
-    
-    // 카드 외곽선 그리기
-    slide.addShape("roundRect", { x: cx, y: cy, w: cardW, h: cardH2, rectRadius: r, fill: { color: pal.white }, line: { color: pal.border, width: 0.75 } });
-    // 카드 상단 바 그리기
-    slide.addShape("rect", { x: cx, y: cy, w: cardW, h: 0.04, fill: { color: ac }, line: { color: ac } });
-    
-    // 타이틀(문법) - 연한 브랜드 배경에 monospaced 느낌으로
-    slide.addShape("roundRect", { x: cx + 0.12, y: cy + 0.12, w: cardW - 0.24, h: 0.32, rectRadius: 0.06, fill: { color: ac, transparency: 93 } });
-    slide.addText(it.title || "", { x: cx + 0.12, y: cy + 0.12, w: cardW - 0.24, h: 0.32, fontSize: 10, bold: true, color: ac, fontFace: "Courier New", align: "center", valign: "middle" });
-    
-    // 설명 (desc)
-    if (it.desc) {
-      slide.addText(it.desc, { x: cx + 0.12, y: cy + 0.52, w: cardW - 0.24, h: 0.35, fontSize: 8.5, color: pal.text, fontFace: font, align: "center", valign: "top" });
-    }
-    // 예시 (meta/note)
-    const example = it.meta || it.note;
-    if (example) {
-      slide.addShape("roundRect", { x: cx + 0.12, y: cy + 0.94, w: cardW - 0.24, h: 0.34, rectRadius: 0.04, fill: { color: ac, transparency: 96 } });
-      slide.addText(example, { x: cx + 0.16, y: cy + 0.94, w: cardW - 0.32, h: 0.34, fontSize: 7.5, color: pal.muted || "8892B0", fontFace: "Courier New", align: "center", valign: "middle" });
-    }
-  });
-  return Math.ceil(item.items.length / cols) * (cardH2 + g.gap);
-}
+// ════════════════════════════════════════════════════════════════
+//  9. 숏코드 렌더러 디스패처 (레지스트리 위임)
+// ════════════════════════════════════════════════════════════════
 
 function renderItem(slide, item, x, y, w, pal) {
-  if (item.type === "card")                                                      return renderCard(slide, item, x, y, w, pal);
-  if (item.type === "icon-grid")                                                 return renderIconGrid(slide, item, x, y, w, pal);
-  if (item.type === "feature-grid")                                              return renderFeatureGrid(slide, item, x, y, w, pal);
-  if (item.type === "step-list" || item.type === "steps")                        return renderSteps(slide, item, x, y, w, pal);
-  if (item.type === "compare-grid")                                              return renderCompareGrid(slide, item, x, y, w, pal);
-  if (item.type === "columns-grid" || item.type === "columns")                   return renderColumns(slide, item, x, y, w, pal);
-  if (item.type === "workflow-flow" || item.type === "workflow-flow" || item.type === "workflow") return renderWorkflow(slide, item, x, y, w, pal);
-  if (item.type === "tool-list" || item.type === "tool-list" || item.type === "tool-card")         return renderToolCard(slide, item, x, y, w, pal);
-  if (item.type === "plan-grid")                                                 return renderPlanGrid(slide, item, x, y, w, pal);
-  if (item.type === "summary-box" || item.type === "summary-box")                                   return renderBottomList(slide, item, x, y, w, pal);
-  if (item.type === "compare-split" || item.type === "compare-2col")             return renderCompare2Col(slide, item, x, y, w, pal);
-  if (item.type === "alert-box")                                                 return renderAlertBox(slide, item, x, y, w, pal);
-  if (item.type === "faq-list" || item.type === "faq-accordion")                 return renderFaqAccordion(slide, item, x, y, w, pal);
-  if (item.type === "console-box" || item.type === "prompt-example")             return renderPromptExample(slide, item, x, y, w, pal);
-  if (item.type === "cmd-box" || item.type === "command-block")                  return renderCommandBlock(slide, item, x, y, w, pal);
-  if (item.type === "os-tabs" || item.type === "tabs")                           return renderTabs(slide, item, x, y, w, pal);
-  if (item.type === "stat-grid" || item.type === "stat-highlight")               return renderStatHighlight(slide, item, x, y, w, pal);
+  if (item.type === "card") return renderCard(slide, item, x, y, w, pal);
   
-  // 특화 숏코드 우회 매핑
-  if (item.type === "git-flow" || item.type === "git-flow-strip")                return renderWorkflow(slide, item, x, y, w, pal);
-  if (item.type === "editor-box")                                                return renderCommandBlock(slide, item, x, y, w, pal);
-  if (item.type === "network-box")                                               return renderCompareGrid(slide, item, x, y, w, pal);
-  // Phase 4 신규 구현
-  if (item.type === "step-flow" || item.type === "flow")                         return renderFlow(slide, item, x, y, w, pal);
-  if (item.type === "takeaway-banner" || item.type === "takeaway")               return renderTakeaway(slide, item, x, y, w, pal);
-  if (item.type === "compare-diff" || item.type === "compare-before-after")       return renderCompareBeforeAfter(slide, item, x, y, w, pal);
-  // 추가 숏코드 우회 매핑
-  if (item.type === "badge-grid")                                                return renderIconGrid(slide, item, x, y, w, pal);
-  if (item.type === "checkpoint-grid")                                           return renderIconGrid(slide, item, x, y, w, pal);
-  if (item.type === "skill-list")                                                return renderSteps(slide, item, x, y, w, pal);
-  if (item.type === "chapter-list")                                              return renderSteps(slide, item, x, y, w, pal);
-  if (item.type === "summary-bar")                                               return renderStatHighlight(slide, item, x, y, w, pal);
-  if (item.type === "level-grid")                                                return renderCompareGrid(slide, item, x, y, w, pal);
-  if (item.type === "part-banner" || item.type === "part-deck")                  return renderCompareGrid(slide, item, x, y, w, pal);
+  const renderer = pptxRegistry.get(item.type);
+  if (renderer) {
+    try {
+      return renderer.render(slide, item, x, y, w, pal, D, helpers);
+    } catch (err) {
+      console.error(`  ❌ 숏코드 렌더링 실패 (${item.type}):`, err);
+      slide.addShape("roundRect", { x, y, w, h: 0.5, fill: { color: "FFF1F2" }, line: { color: "EF4444", width: 1.0 } });
+      slide.addText(`[숏코드 렌더링 에러: ${item.type} (${err.message})]`, { x: x + 0.1, y, w: w - 0.2, h: 0.5, fontSize: 9.5, color: "B91C1C", valign: "middle" });
+      return 0.5;
+    }
+  }
   
-  // Phase 3: 미구현 숏코드 경고
   console.warn(`  ⚠️  PPTX 미구현 숏코드: "${item.type}" — 슬라이드에서 제외됨`);
   return 0;
 }
 
 // ════════════════════════════════════════════════════════════════
-//  10. 슬라이드 렌더러
+//  10. 슬라이드 렌더러 (표지 및 섹션 렌더링)
 // ════════════════════════════════════════════════════════════════
 
 function renderCover(prs, fm, pal) {
   const slide = prs.addSlide();
-  const dc = D.cover; const sw = D.slide.widthIn; const font = D.slide.font;
-  slide.background = { color: pal.bgDark };
-  slide.addShape("rect", { x: dc.accentBarX, y: dc.accentBarY, w: dc.accentBarW, h: dc.accentBarH, fill: { color: pal.brand }, line: { color: pal.brand } });
-  let ty = dc.titleY;
-  if (fm.logo) slide.addText(fm.logo, { x: dc.titleX, y: ty - 0.85, w: 0.85, h: 0.75, fontSize: dc.logoFontSize, align: "left", valign: "middle" });
-  slide.addText(fm.title || "", { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: 1.2, fontSize: dc.titleFontSize, bold: true, color: pal.white, fontFace: font, valign: "top" });
-  ty += 1.2;
-  if (fm.subtitle) {
-    slide.addText(fm.subtitle, { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: 0.4, fontSize: dc.subtitleFontSize, color: pal.muted, fontFace: font });
-    ty += 0.5;
+  const dc = D.cover;
+  const sw = D.slide.widthIn;
+  const sh = D.slide.heightIn || 7.5;
+  const font = D.slide.font;
+  const fontTitle = D.slide.fontTitle || font;
+  
+  // 1. Frontmatter 색상 및 레이아웃 설정 파싱
+  const customBg = hexClean(fm.coverBg);
+  const customAccent = hexClean(fm.coverAccent);
+  const customTextColor = hexClean(fm.coverTextColor);
+  const layout = String(fm.coverLayout || "accent-bar").trim().toLowerCase();
+  
+  const bg = customBg || pal.bgDark;
+  const accent = customAccent || pal.brand;
+  const textClr = customTextColor || pal.white;
+  
+  // 2. 배경 설정
+  slide.background = { color: bg };
+  
+  // 3. 레이아웃에 따른 렌더링
+  if (layout === "full-brand") {
+    slide.background = { color: pal.brand };
+    slide.addShape("rect", { x: 0, y: sh - 0.12, w: sw, h: 0.12, fill: { color: pal.white }, line: { width: 0 } });
+    
+    let ty = dc.titleY - 0.2;
+    if (fm.logo) {
+      slide.addText(fm.logo, { x: 1.0, y: ty - 0.85, w: 1.0, h: 0.75, fontSize: dc.logoFontSize + 4, align: "left", valign: "middle" });
+    }
+    slide.addText(fm.title || "", { x: 1.0, y: ty, w: sw - 2.0, h: 1.3, fontSize: dc.titleFontSize + 2, bold: true, color: pal.white, fontFace: fontTitle, valign: "top" });
+    ty += 1.35;
+    if (fm.subtitle) {
+      slide.addText(fm.subtitle, { x: 1.0, y: ty, w: sw - 2.0, h: 0.45, fontSize: dc.subtitleFontSize + 1, color: pal.brandLight, fontFace: font });
+      ty += 0.55;
+    }
+  } else if (layout === "minimal-dark") {
+    let ty = dc.titleY;
+    if (fm.logo) {
+      slide.addText(fm.logo, { x: 1.0, y: ty - 0.85, w: 1.0, h: 0.75, fontSize: dc.logoFontSize, align: "left", valign: "middle" });
+    }
+    slide.addText(fm.title || "", { x: 1.0, y: ty, w: sw - 2.0, h: 1.2, fontSize: dc.titleFontSize, bold: true, color: textClr, fontFace: fontTitle, valign: "top" });
+    ty += 1.2;
+    if (fm.subtitle) {
+      slide.addText(fm.subtitle, { x: 1.0, y: ty, w: sw - 2.0, h: 0.4, fontSize: dc.subtitleFontSize, color: pal.muted, fontFace: font });
+      ty += 0.5;
+    }
+  } else {
+    slide.addShape("rect", { x: dc.accentBarX, y: dc.accentBarY, w: dc.accentBarW, h: dc.accentBarH, fill: { color: accent }, line: { width: 0 } });
+    
+    let ty = dc.titleY;
+    if (fm.logo) {
+      slide.addText(fm.logo, { x: dc.titleX, y: ty - 0.85, w: 0.85, h: 0.75, fontSize: dc.logoFontSize, align: "left", valign: "middle" });
+    }
+    slide.addText(fm.title || "", { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: 1.2, fontSize: dc.titleFontSize, bold: true, color: textClr, fontFace: fontTitle, valign: "top" });
+    ty += 1.2;
+    if (fm.subtitle) {
+      slide.addText(fm.subtitle, { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: 0.4, fontSize: dc.subtitleFontSize, color: pal.muted, fontFace: font });
+      ty += 0.5;
+    }
   }
+  
+  // 4. 하단 통계 지표
+  let statsY = sh - 1.8;
   if (fm.stats?.length) {
-    const statW = 1.4;
+    const statW = 1.6;
     fm.stats.forEach((stat, i) => {
-      const sx = dc.titleX + i * (statW + 0.2);
-      slide.addText(stat.value || "", { x: sx, y: ty, w: statW, h: 0.38, fontSize: 18, bold: true, color: pal.brand, fontFace: font });
-      slide.addText(stat.label || "", { x: sx, y: ty + 0.36, w: statW, h: 0.24, fontSize: 10, color: pal.muted, fontFace: font });
+      const sx = (layout === "accent-bar" ? dc.titleX : 1.0) + i * (statW + 0.3);
+      slide.addText(stat.value || "", { x: sx, y: statsY, w: statW, h: 0.38, fontSize: 19, bold: true, color: accent, fontFace: fontTitle });
+      slide.addText(stat.label || "", { x: sx, y: statsY + 0.38, w: statW, h: 0.24, fontSize: 9.5, color: pal.muted, fontFace: font });
     });
   }
 }
@@ -1225,14 +637,16 @@ function renderSectionSlide(prs, section, pal, verbose) {
   }
 
   try {
-    const slide = prs.addSlide();
-    const dh = D.header; const sw = D.slide.widthIn; const mx = D.slide.marginX; const font = D.slide.font;
+    const dh = D.header;
+    const sw = D.slide.widthIn;
+    const mx = D.slide.marginX;
+    const font = D.slide.font;
+    const fontTitle = D.slide.fontTitle || font;
     const bodyW = sw - mx * 2;
     
-    // Slide-level palette overrides
+    // 슬라이드 단위 팔레트 세팅
     const slidePal = { ...pal };
     const slideBg = (section.config && section.config.bg) || D.palette.white;
-    slide.background = { color: hexClean(slideBg) || "FFFFFF" };
     
     if (section.config && section.config.bg) {
       const customBg = hexClean(section.config.bg);
@@ -1249,30 +663,57 @@ function renderSectionSlide(prs, section, pal, verbose) {
       }
     }
 
-    slide.addShape("rect", { x: 0, y: dh.y, w: sw, h: dh.h, fill: { color: slidePal.bgDark }, line: { color: slidePal.bgDark } });
-    const nbs = dh.numBoxSize; const nby = dh.y + (dh.h - nbs) / 2;
-    slide.addShape("roundRect", { x: dh.paddingX, y: nby, w: nbs, h: nbs, rectRadius: 0.1, fill: { color: slidePal.brand }, line: { color: slidePal.brand } });
-    slide.addText(String(section.num), { x: dh.paddingX, y: nby, w: nbs, h: nbs, fontSize: dh.numFontSize, bold: true, color: slidePal.white, fontFace: font, align: "center", valign: "middle" });
-    slide.addText(section.title, { x: dh.paddingX + nbs + 0.15, y: dh.y, w: sw - dh.paddingX - nbs - 0.25, h: dh.h, fontSize: dh.titleFontSize, bold: true, color: slidePal.white, fontFace: font, valign: "middle" });
+    // 슬라이드 자동분할 헤더 초기화
+    let currentSlide = prs.addSlide();
+    let pageCount = 1;
+
+    function initSlideHeader(slide, pageNum) {
+      slide.background = { color: hexClean(slideBg) || "FFFFFF" };
+      slide.addShape("rect", { x: 0, y: dh.y, w: sw, h: dh.h, fill: { color: slidePal.bgDark }, line: { width: 0 } });
+      
+      const nbs = dh.numBoxSize;
+      const nby = dh.y + (dh.h - nbs) / 2;
+      slide.addShape("roundRect", { x: dh.paddingX, y: nby, w: nbs, h: nbs, rectRadius: 0.1, fill: { color: slidePal.brand }, line: { width: 0 } });
+      slide.addText(String(section.num), { x: dh.paddingX, y: nby, w: nbs, h: nbs, fontSize: dh.numFontSize, bold: true, color: slidePal.white, fontFace: fontTitle, align: "center", valign: "middle" });
+      
+      const displayTitle = section.title + (pageNum > 1 ? " (계속)" : "");
+      slide.addText(displayTitle, { x: dh.paddingX + nbs + 0.15, y: dh.y, w: sw - dh.paddingX - nbs - 0.25, h: dh.h, fontSize: dh.titleFontSize, bold: true, color: slidePal.white, fontFace: fontTitle, valign: "middle" });
+    }
+
+    initSlideHeader(currentSlide, pageCount);
     
     let curY = D.slide.bodyTopY;
+    
     for (const item of section.items) {
-      if (curY + itemH(item, bodyW) > D.slide.bodyBottomY + 0.1 && verbose) console.warn(`  ⚠️  "${section.title}": 높이 초과 (type=${item.type})`);
-      curY += renderItem(slide, item, mx, curY, bodyW, slidePal) + D.card.gap;
+      const height = itemH(item, bodyW);
+      
+      if (curY + height > D.slide.bodyBottomY + 0.15) {
+        if (verbose) {
+          console.log(`  💡 "${section.title}": 영역 초과로 슬라이드 분할 (curY=${curY.toFixed(2)}, height=${height.toFixed(2)}, max=${D.slide.bodyBottomY})`);
+        }
+        pageCount++;
+        currentSlide = prs.addSlide();
+        initSlideHeader(currentSlide, pageCount);
+        curY = D.slide.bodyTopY;
+      }
+      
+      curY += renderItem(currentSlide, item, mx, curY, bodyW, slidePal) + D.card.gap;
     }
   } finally {
-    D = originalD; // Restore D
+    D = originalD;
   }
 }
 
 function renderDoneSlide(prs, fm, pal) {
   if (!fm.done?.title) return;
   const slide = prs.addSlide();
-  const sw = D.slide.widthIn; const font = D.slide.font;
+  const sw = D.slide.widthIn;
+  const font = D.slide.font;
+  const fontTitle = D.slide.fontTitle || font;
   slide.background = { color: pal.brandDeep || pal.brandDark };
-  slide.addText(fm.done.title, { x: 1, y: 2.5, w: sw - 2, h: 0.8, fontSize: 36, bold: true, color: D.palette.white, fontFace: font, align: "center" });
+  slide.addText(fm.done.title, { x: 1, y: 2.5, w: sw - 2, h: 0.8, fontSize: 36, bold: true, color: D.palette.white, fontFace: fontTitle, align: "center" });
   if (fm.done.subtitle) slide.addText(fm.done.subtitle, { x: 1.5, y: 3.5, w: sw - 3, h: 0.6, fontSize: 16, color: pal.mutedLight, fontFace: font, align: "center", wrap: true });
-  if (fm.done.ctaLabel) slide.addText(fm.done.ctaLabel + " →", { x: (sw - 3) / 2, y: 4.3, w: 3, h: 0.5, fontSize: 14, bold: true, color: pal.brand, fontFace: font, align: "center" });
+  if (fm.done.ctaLabel) slide.addText(fm.done.ctaLabel + " →", { x: (sw - 3) / 2, y: 4.3, w: 3, h: 0.5, fontSize: 14, bold: true, color: pal.brand, fontFace: fontTitle, align: "center" });
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -1291,8 +732,17 @@ export async function convertMdToPptx(mdPath, opts = {}) {
     styleKey = data.styleKey;
     style = data.style;
     
-    // Apply frontmatter overrides to D
+    // Style 오버라이드 지원 (styles.json 정의 우선 적용)
+    if (style.pptxFont) D.slide.font = style.pptxFont;
+    if (style.pptxFontTitle) D.slide.fontTitle = style.pptxFontTitle;
+    if (style.pptxFontSubTitle) D.slide.fontSubTitle = style.pptxFontSubTitle;
+    if (style.titleSize) D.card.titleSize = Number(style.titleSize);
+    if (style.bodySize) D.card.bodySize = Number(style.bodySize);
+    
+    // Frontmatter 오버라이드 지원 (제목/본문/중간제목 폰트 세분화 - 최종 덮어쓰기)
     if (fm.fontFace) D.slide.font = fm.fontFace;
+    if (fm.fontTitle) D.slide.fontTitle = fm.fontTitle;
+    if (fm.fontSubTitle) D.slide.fontSubTitle = fm.fontSubTitle;
     if (fm.titleSize) D.card.titleSize = Number(fm.titleSize);
     if (fm.bodySize) D.card.bodySize = Number(fm.bodySize);
   } catch (err) {
@@ -1301,12 +751,31 @@ export async function convertMdToPptx(mdPath, opts = {}) {
   }
 
   const pal = makePalette(style);
+  
+  // Frontmatter 브랜드 메인 컬러 강제 오버라이드 지원
+  if (fm.brandColor) {
+    const customBrand = hexClean(fm.brandColor);
+    if (customBrand) {
+      pal.brand = customBrand;
+      pal.brandDark = customBrand;
+      pal.brandDeep = customBrand;
+      pal.brandLight = "F0F7FF"; // Prevent 8-digit hex, use 6-digit pastel blue
+    }
+  }
+
   if (verbose) {
     console.log(`  📄 ${basename(mdPath)}  style: ${styleKey}`);
     sections.forEach(s => console.log(`     [${s.num}] "${s.title}"  items: ${s.items.map(i => i.type).join(", ")}`));
   }
   const prs = new pptxgen();
-  prs.layout = D.slide.layout;
+  if (D.slide.layout && D.slide.widthIn && D.slide.heightIn) {
+    prs.defineLayout({
+      name: D.slide.layout,
+      width: Number(D.slide.widthIn),
+      height: Number(D.slide.heightIn)
+    });
+  }
+  prs.layout = D.slide.layout || "LAYOUT_16x9";
   
   try {
     if (!noCover) renderCover(prs, fm, pal);
@@ -1329,7 +798,7 @@ export async function convertMdToPptx(mdPath, opts = {}) {
       throw err;
     }
   } finally {
-    D = originalD; // Restore D
+    D = originalD;
   }
 }
 

@@ -6,14 +6,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --brand-gradient: linear-gradient(135deg, #10A37F, #085C4A);
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #2789F5;
+    --brand-dark: #1E71CE;
+    --brand-deep: #0F478F;
+    --brand-light:#F0F7FF;
+    --brand-mid:  undefined;
+    --brand-gradient: linear-gradient(135deg, #2789F5, #0F478F);
+    --border:     #D2E5FA;
+    --bg:         #FAFBFD;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -54,14 +54,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: calc(14px * var(--font-scale)); font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: var(--brand-dark); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #2789F555 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: calc(13px * var(--font-scale)); font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: calc(44px * var(--font-scale)); }
   .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.92); margin-bottom: 40px; }
+  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.85); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: calc(16px * var(--font-scale)); padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -224,7 +224,7 @@
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: var(--font-title); font-size: calc(clamp(1.8rem, 4vw, 2.6rem) * var(--font-scale)); margin-bottom: 10px; }
-  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.86); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */
@@ -796,7 +796,7 @@
 <p>Settings → Integrations → Skills 탭에서 활성 스킬 수 확인 및 관리. 플러그인을 제거하면 해당 스킬도 함께 비활성화된다.</p>
 </div>
 </div><hr>
-</div><div class="card"><h3 class="card-title">커넥터 (Connectors) — 외부 서비스 실시간 연결</h3><p>Settings → Integrations → <strong>Connectors</strong> 탭. MCP 기반으로 웹 Claude에서 외부 서비스 데이터를 직접 조회·제어. 현재 13종 제공.</p>
+</div><div class="card"><h3 class="card-title">커넥터 (Connectors) — 외부 서비스 실시간 연결</h3><p>Settings → Integrations → <strong>Connectors</strong> 탭. MCP 기반으로 웹 Claude에서 외부 서비스 데이터를 직접 조회·제어. 디렉터리에 수십~수백 종이 등록되어 있고 계속 늘어나는 중이며, 아래는 대표 예시다.</p>
 <div class="icon-grid" ><div class="icon-card" >
 <span class="feature-tag" >협업</span>
 <div class="icon-card-icon" style="color: var(--brand);">💬</div>
@@ -1211,16 +1211,19 @@ claude
 </div></div>
 </div><div class="icon-card" >
 <div class="icon-card-icon" style="color: var(--brand);">💬</div>
-<div class="icon-card-title" style="color: var(--text);">카카오 메시지 연동</div>
+<div class="icon-card-title" style="color: var(--text);">카카오 메모 연동 (제한적)</div>
 <div class="multiline-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;"><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
 <span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">PlayMCP(카카오 공식 MCP) 연결 시 KakaoTalk 조회·발송</span>
+<span class="content" style="text-align:left;">PlayMCP(카카오 공식 MCP)는 카카오톡 &#39;나와의 채팅방&#39;에 메모를 보내는 기능만 제공</span>
 </div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
 <span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">Claude Desktop Settings → MCP 서버에 카카오 MCP 추가</span>
+<span class="content" style="text-align:left;">타인과의 대화 조회·발송은 지원하지 않음 (자기 자신에게만 전송 가능)</span>
 </div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
 <span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
-<span class="content" style="text-align:left;">&quot;오늘 받은 카카오 메시지 중 업무 내용 요약해줘&quot;</span>
+<span class="content" style="text-align:left;">톡캘린더·카카오맵·선물하기 등 다른 카카오 서비스 MCP는 별도 제공</span>
+</div><div class="multiline-item" style="display:flex;gap:8px;align-items:flex-start;font-size:0.9rem;color:var(--text-2);line-height:1.5;">
+<span class="bullet" style="color:var(--brand);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+<span class="content" style="text-align:left;">&quot;오늘 정리한 할 일을 나와의 채팅방으로 보내줘&quot; 정도가 현실적인 활용 범위</span>
 </div></div>
 </div></div><hr>
 </div><div class="card"><h3 class="card-title">Claude 루틴 (정기 자동화)</h3><p>Claude Code의 <code>/schedule</code> 기능으로 반복 작업을 클라우드 에이전트로 등록. PC가 꺼져 있어도 자동 실행된다.</p>
@@ -1276,7 +1279,7 @@ claude
 <div class="tc-icon">🤖</div>
 <div class="tc-content">
 <div class="tc-name">Claude Code (Anthropic)</div>
-<div class="tc-sub">npm install -g 후 claude 명령어로 실행. 대용량 컨텍스트(200K 토큰), CLAUDE.md 프로젝트 지침, 메모리 시스템, 훅 자동화가 강점.</div>
+<div class="tc-sub">npm install -g 후 claude 명령어로 실행. 대용량 컨텍스트(Opus/Sonnet 4.6 기준 표준 요금으로 최대 1M 토큰), CLAUDE.md 프로젝트 지침, 메모리 시스템, 훅 자동화가 강점.</div>
 </div>
 <div class="tc-badge">터미널 CLI</div>
 </div>
@@ -1310,7 +1313,7 @@ claude
 </div>
 <div class="tc-badge">Google 생태계</div>
 </div>
-<ul class="tc-list"><li>Gemini 2.0 Flash로 빠른 응답</li><li>무료 사용량 넉넉함</li><li>Google 생태계 활용 시 강점</li></ul>
+<ul class="tc-list"><li>Gemini 3 계열(3.5 Flash·3.1 Pro)로 빠른 응답</li><li>무료 사용량 넉넉함</li><li>Google 생태계 활용 시 강점</li></ul>
 </div><div class="tool-card">
 <div class="tc-header" style="background: linear-gradient(135deg, #10A37F, #10A37FCC); color: #fff;">
 <div class="tc-icon">🤍</div>
@@ -1320,7 +1323,7 @@ claude
 </div>
 <div class="tc-badge">OpenAI</div>
 </div>
-<ul class="tc-list"><li>GPT-4o 기반</li><li>광범위한 언어·프레임워크</li><li>Python 인터프리터 내장</li></ul>
+<ul class="tc-list"><li>GPT-5.5 기반</li><li>광범위한 언어·프레임워크</li><li>Python 인터프리터 내장</li></ul>
 </div><hr>
 </div><div class="card"><h3 class="card-title">도구 선택 가이드</h3></div><div class="level-grid"><div class="level-card ">
 <div class="level-num">처음 AI 코딩 시작</div>
@@ -1370,7 +1373,7 @@ claude
 </div>
 <div class="tc-badge">개발자용</div>
 </div>
-<ul class="tc-list"><li>무료 사용량 넉넉함</li><li>Gemini 2.0 Flash 포함</li><li>API 키 발급 무료</li></ul>
+<ul class="tc-list"><li>무료 사용량 넉넉함</li><li>Gemini 3 계열 모델 포함</li><li>API 키 발급 무료</li></ul>
 </div><div class="tool-card">
 <div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
 <div class="tc-icon">📓</div>
@@ -1406,8 +1409,8 @@ claude
 <div class="tc-header" style="background: var(--brand-gradient); color: #fff;">
 <div class="tc-icon">🖼️</div>
 <div class="tc-content">
-<div class="tc-name">GPT Image (DALL-E 4)</div>
-<div class="tc-sub">DALL-E 4 기반 고품질 이미지 생성 및 편집. 이미지 위에 텍스트 추가, 특정 부분만 수정(Inpainting) 지원.</div>
+<div class="tc-name">GPT Image 2</div>
+<div class="tc-sub">OpenAI의 차세대 이미지 모델. 2026년 5월 DALL-E 시리즈가 단계적으로 종료되며 이미지 생성을 대체. 텍스트 추가, 부분 수정(Inpainting), 한 프롬프트로 다중 이미지 생성 지원.</div>
 </div>
 <div class="tc-badge">이미지 생성</div>
 </div>
@@ -1710,13 +1713,13 @@ Claude API
 <div class="wf-tool">발표 자료 완성</div>
 </div></div><hr>
 </div><div class="card"><h3 class="card-title">AI 플랫폼 빠른 비교</h3><div class="stat-grid" style="grid-template-columns: repeat(4, 1fr);"><div class="stat-card" style="border-top: 3px solid var(--brand);">
-<div class="stat-val" >200K</div>
+<div class="stat-val" >1M</div>
 <div class="stat-name">Claude 컨텍스트</div>
-<div class="stat-note"><p>토큰 기준 (Pro/Max 플랜)</p></div>
+<div class="stat-note"><p>Opus/Sonnet 4.6, 표준 요금</p></div>
 </div><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >1M</div>
 <div class="stat-name">Gemini 컨텍스트</div>
-<div class="stat-note"><p>Gemini 1.5 Pro 기준</p></div>
+<div class="stat-note"><p>Gemini 3.1 Pro 기준</p></div>
 </div><div class="stat-card" style="border-top: 3px solid var(--brand);">
 <div class="stat-val" >✅</div>
 <div class="stat-name">Claude 강점</div>

@@ -1,5 +1,22 @@
 {
   "$comment": "카테고리별 스타일 프리셋. md 파일에서 'style: <키>'로 선택. 색상은 src/data/guides.ts의 5개 카테고리와 매칭.",
+  "custom-blue": {
+    "label": "페이퍼로지 커스텀 블루 (테스트 테마)",
+    "brand": "#2789F5",
+    "brandDark": "#1E71CE",
+    "brandDeep": "#0F478F",
+    "brandLight": "#F0F7FF",
+    "border": "#D2E5FA",
+    "bg": "#FAFBFD",
+    "bgDark": "#2789F5",
+    "webFont": "Malgun Gothic, sans-serif",
+    "webFontTitle": "Malgun Gothic, sans-serif",
+    "pptxFont": "Paperlogy 4",
+    "pptxFontTitle": "Paperlogy 8",
+    "pptxFontSubTitle": "Paperlogy 6",
+    "titleSize": 14,
+    "bodySize": 11
+  },
   "ai-chat": {
     "label": "AI 챗봇 (그린)",
     "brand": "#10A37F",
@@ -11,7 +28,12 @@
     "bg": "#F7FBF9",
     "heroGradient": "linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Pretendard, 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Pretendard",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   },
   "ai-dev": {
     "label": "AI 개발 도구 (오렌지)",
@@ -24,7 +46,12 @@
     "bg": "#FBF7F5",
     "heroGradient": "linear-gradient(135deg, #1A1410 0%, #2E1F18 40%, #6B3825 70%, #D97757 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "'JetBrains Mono', 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Consolas",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   },
   "knowledge": {
     "label": "노트 & 지식관리 (퍼플)",
@@ -37,7 +64,12 @@
     "bg": "#F8F9FE",
     "heroGradient": "linear-gradient(135deg, #0A0F1E 0%, #1E1B3A 40%, #3730A3 70%, #6366F1 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "'Noto Serif KR', serif",
+    "webFontTitle": "'Noto Serif KR', serif",
+    "pptxFont": "KoPubWorldBatang",
+    "pptxFontTitle": "KoPubWorldBatang",
+    "pptxFontSubTitle": "KoPubWorldDotum"
   },
   "productivity": {
     "label": "생산성 유틸 (블루)",
@@ -50,7 +82,12 @@
     "bg": "#F5FAFE",
     "heroGradient": "linear-gradient(135deg, #0A0F1E 0%, #0D2747 40%, #0D47A1 70%, #1565C0 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Pretendard, 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Pretendard",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   },
   "creative": {
     "label": "크리에이티브 AI (마젠타)",
@@ -63,7 +100,12 @@
     "bg": "#FBF7FC",
     "heroGradient": "linear-gradient(135deg, #0A0F1E 0%, #2A1A3E 40%, #5B2C6F 70%, #9B59B6 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Paperlogy, sans-serif",
+    "webFontTitle": "Paperlogy, sans-serif",
+    "pptxFont": "Paperlogy 4",
+    "pptxFontTitle": "Paperlogy 8",
+    "pptxFontSubTitle": "Paperlogy 6"
   },
   "security": {
     "label": "보안 & 인프라 (사이언)",
@@ -76,7 +118,12 @@
     "bg": "#F4FCFD",
     "heroGradient": "linear-gradient(135deg, #07131A 0%, #0B2230 40%, #0E7490 70%, #06B6D4 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Pretendard, 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Pretendard",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   },
   "finance": {
     "label": "재테크 & 금융 (골드)",
@@ -89,7 +136,12 @@
     "bg": "#FFFCF5",
     "heroGradient": "linear-gradient(135deg, #17120A 0%, #2E2412 40%, #7A5A00 70%, #D4A017 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "'Noto Serif KR', serif",
+    "webFontTitle": "'Noto Serif KR', serif",
+    "pptxFont": "KoPubWorldBatang",
+    "pptxFontTitle": "KoPubWorldBatang",
+    "pptxFontSubTitle": "KoPubWorldDotum"
   },
   "future": {
     "label": "퓨처 AI (네온 라임)",
@@ -102,7 +154,12 @@
     "bg": "#FBFFF5",
     "heroGradient": "linear-gradient(135deg, #0B1207 0%, #1B2A12 40%, #3F6212 70%, #84CC16 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Pretendard, 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Pretendard",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   },
   "enterprise": {
     "label": "엔터프라이즈 (슬레이트)",
@@ -115,7 +172,12 @@
     "bg": "#F8FAFC",
     "heroGradient": "linear-gradient(135deg, #020617 0%, #0F172A 40%, #1E293B 70%, #475569 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Pretendard, 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Pretendard",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   },
   "media": {
     "label": "미디어 & 콘텐츠 (로즈)",
@@ -128,6 +190,11 @@
     "bg": "#FFF8F8",
     "heroGradient": "linear-gradient(135deg, #14070B 0%, #2E111B 40%, #881337 70%, #E11D48 100%)",
     "subtitleColor": "rgba(255,255,255,0.92)",
-    "doneSubtitleColor": "rgba(255,255,255,0.92)"
+    "doneSubtitleColor": "rgba(255,255,255,0.92)",
+    "webFont": "Pretendard, 'Noto Sans KR', sans-serif",
+    "webFontTitle": "Pretendard-Bold, sans-serif",
+    "pptxFont": "Pretendard",
+    "pptxFontTitle": "Pretendard",
+    "pptxFontSubTitle": "Pretendard"
   }
 }

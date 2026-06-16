@@ -43,7 +43,8 @@
       "Bash(Move-Item *)",
       "Bash(grep -n \"^# \\\\|^## \\\\|^---$\" C:/ai/creative-spark/md_src/claudeguide/ai-tools-guide.md)",
       "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(s['name'],'-',s['brand']\\) for s in d['styles']]\")",
-      "Bash(grep -v \"^--$\")"
+      "Bash(grep -v \"^--$\")",
+      "WebSearch"
     ]
   }
 }
