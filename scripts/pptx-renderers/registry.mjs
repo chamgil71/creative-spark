@@ -13,8 +13,16 @@ export const helpers = {
       .filter(Boolean);
   },
 
-  hexClean(hex) {
+  hexClean(hex, pal) {
     if (!hex) return null;
+    const lower = (hex + "").trim().toLowerCase();
+    if (pal) {
+      if (lower === "main" || lower === "brand") return this.hexClean(pal.brand);
+      if (lower === "sub" || lower === "branddark" || lower === "brand-dark") return this.hexClean(pal.brandDark);
+      if (lower === "deep" || lower === "branddeep" || lower === "brand-deep") return this.hexClean(pal.brandDeep);
+      if (lower === "light" || lower === "brandlight" || lower === "brand-light") return this.hexClean(pal.brandLight);
+      if (lower === "border") return this.hexClean(pal.border);
+    }
     hex = (hex + "").replace(/^["']|["']$/g, "").replace(/^#/, "");
     if (hex.length === 3) hex = hex.split("").map(c => c + c).join("");
     return hex.length >= 6 ? hex.slice(0, 6).toUpperCase() : null;

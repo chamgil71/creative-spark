@@ -98,6 +98,7 @@ creative-spark/
 
 ### 6대 표준 키
 `icon` / `title` / `desc` / `tag` / `meta` / `note` / `color`
+* **color**: 개별 고정 Hex 색상(예: `"#6366F1"`) 외에도 테마 의미론적 키워드(`"main"`, `"sub"`, `"deep"`, `"mid"`, `"light"`)를 지원하여 스타일 전환에 유연하게 대처 가능.
 
 ### 기본 문법
 ```md
@@ -106,7 +107,7 @@ creative-spark/
   title: "제목"
   desc: "설명 내용"
   tag: "태그"
-  color: "#6366F1"
+  color: "sub"  # 또는 "#6366F1"
 :::
 ```
 
@@ -194,6 +195,7 @@ workflow-flow 타입에는 마진 미적용.
 
 | 날짜 | 변경 내용 |
 |------|-----------|
+| 2026-06-17 | 숏코드 내 테마 연동 색상 키워드(`main`/`sub`/`deep`/`mid`/`light`) 도입 및 PPTX/HTML 연동 |
 | 2026-06-15 | `build-presentation.mjs`에 TOC 사이드바 추가 |
 | 2026-06-15 | `ai-tools-guide.md` 섹션 2에 스킬·커넥터·플러그인(2-5~2-7) 추가 |
 | 2026-06-12 | `ai-tools-guide.md` 목차 슬라이드 2장(chapter-list) 추가 |

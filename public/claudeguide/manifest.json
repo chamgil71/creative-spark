@@ -3,6 +3,11 @@
   "label": "claudeguide 시리즈",
   "parts": [
     {
+      "slug": "ai-tools-guide",
+      "title": "AI 도구 학습 가이드",
+      "file": "ai-tools-guide.html"
+    },
+    {
       "slug": "claude_guide",
       "title": "Claude & Claude Code 통합 마스터 가이드",
       "file": "claude_guide.html"
@@ -24,7 +29,7 @@
     },
     {
       "slug": "myproject_guide",
-      "title": "개인 프로젝트 및 AI 활용 기술 마스터 가이드",
+      "title": "내 프로젝트 운영 가이드",
       "file": "myproject_guide.html"
     },
     {

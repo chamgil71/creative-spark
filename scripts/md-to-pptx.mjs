@@ -374,13 +374,19 @@ function cardH(card, w) {
   return Math.max(0.45, h);
 }
 
-function itemH(item, w) {
+function itemH(item, w, pal) {
   if (item.type === "card") return cardH(item, w);
   
   const renderer = pptxRegistry.get(item.type);
   if (renderer) {
     try {
-      return renderer.estimateHeight(item, w, D, helpers);
+      const boundHelpers = {
+        ...helpers,
+        hexClean(hex) {
+          return helpers.hexClean(hex, pal);
+        }
+      };
+      return renderer.estimateHeight(item, w, D, boundHelpers);
     } catch (err) {
       console.error(`  ⚠️  숏코드 높이 추정 오류 (${item.type}): ${err.message}`);
       return 1.0;
@@ -537,7 +543,13 @@ function renderItem(slide, item, x, y, w, pal) {
   const renderer = pptxRegistry.get(item.type);
   if (renderer) {
     try {
-      return renderer.render(slide, item, x, y, w, pal, D, helpers);
+      const boundHelpers = {
+        ...helpers,
+        hexClean(hex) {
+          return helpers.hexClean(hex, pal);
+        }
+      };
+      return renderer.render(slide, item, x, y, w, pal, D, boundHelpers);
     } catch (err) {
       console.error(`  ❌ 숏코드 렌더링 실패 (${item.type}):`, err);
       slide.addShape("roundRect", { x, y, w, h: 0.5, fill: { color: "FFF1F2" }, line: { color: "EF4444", width: 1.0 } });
@@ -685,7 +697,7 @@ function renderSectionSlide(prs, section, pal, verbose) {
     let curY = D.slide.bodyTopY;
     
     for (const item of section.items) {
-      const height = itemH(item, bodyW);
+      const height = itemH(item, bodyW, slidePal);
       
       if (curY + height > D.slide.bodyBottomY + 0.15) {
         if (verbose) {

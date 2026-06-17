@@ -155,4 +155,30 @@
   * H1, H2, `---`가 동시 공존함에도 빈 페이지 없이 정확히 5개의 슬라이드로 쪼개지고, `::: slide-config` 다크 테마 및 PPTX 내의 외부 이미지 렌더링이 경고 없이 고화질 파워포인트 슬라이드로 최종 빌드 완료됨을 교차 검증했습니다.
   * `npm run test` 유닛 테스트 스크립트 실행으로 0-Error 통과를 확인했습니다.
 
+---
+
+## 📅 2026-06-17 작업 로그 (v1.7) — 테마 안전한 숏코드 색상 키워드(main, sub, deep 등) 지원
+
+### 1. 숏코드용 의미론적(Semantic) 색상 키워드 기능 도입
+* **배경 및 필요성**: 기존 숏코드 컴포넌트들의 개별 아이템 색상을 다르게 지정하려면 마크다운 원본 내에 `#6366F1`과 같은 Hex 색상 코드를 하드코딩해야 했습니다. 이로 인해 스타일 프리셋(예: `ai-chat`, `ai-dev` 등)을 전환하더라도 마크다운에 하드코딩된 색상이 우선 적용되어 디자인 일관성이 깨지는 서식 이식성 결함이 있었습니다.
+* **해결 방안 및 구현**:
+  * 마크다운 숏코드의 `color:` 필드에 하드코딩된 Hex 값 대신 의미론적 키워드(`main`, `sub`, `deep`, `mid`, `light` 등)를 지정할 수 있는 색상 키워드 해석 시스템을 신설했습니다.
+  * 기존 Hex 코드 사용성도 100% 정상 지원하는 하이브리드 인터프리팅 방식으로 하위 호환성을 완벽 보장합니다.
+
+### 2. 가이드 및 프레젠테이션 빌더 고도화
+* **수정 파일**: [build-guide.mjs](file:///c:/ai/creative-spark/scripts/build-guide.mjs), [build-presentation.mjs](file:///c:/ai/creative-spark/scripts/build-presentation.mjs)
+* **조치 내용**:
+  * `resolveColorKeyword(color)` 공통 함수를 추가하여 `"main"`/`"brand"` ➡️ `var(--brand)`, `"sub"`/`"brand-dark"` ➡️ `var(--brand-dark)`, `"deep"`/`"brand-deep"` ➡️ `var(--brand-deep)`, `"mid"`/`"brand-mid"` ➡️ `var(--brand-mid)`, `"light"`/`"brand-light"` ➡️ `var(--brand-light)`로 매핑했습니다.
+  * `renderAccent`, `renderTextColor`, `renderCompareNote`, `renderDesc` 및 각 숏코드 렌더러 분기(`stat-card`, `tool-list`, `plan-grid`, `columns-grid` 등) 내에서 이 키워드를 파싱하여, CSS 변수일 때는 `color-mix()`와 조합하여 투명도나 그라데이션이 알맞게 처리되도록 인라인 CSS 코드를 정교하게 작성했습니다.
+
+### 3. PPTX 렌더러 키워드 매핑 및 컨텍스트 바인딩
+* **수정 파일**: [registry.mjs](file:///c:/ai/creative-spark/scripts/pptx-renderers/registry.mjs), [md-to-pptx.mjs](file:///c:/ai/creative-spark/scripts/md-to-pptx.mjs)
+* **조치 내용**:
+  * PPTX 공통 유틸리티인 `helpers.hexClean(hex, pal)` 함수에 `pal` 매개변수를 추가하여 PPTX 생성 환경에서도 의미론적 키워드가 해당 슬라이드의 활성화된 팔레트 색상 Hex값으로 즉시 자동 번역되도록 개선했습니다.
+  * 22개 PPTX 개별 숏코드 렌더러 파일을 일일이 고치지 않고도, `md-to-pptx.mjs` 디스패처 레벨(`itemH` 및 `renderItem`)에서 `helpers`의 `hexClean`을 현재 슬라이드의 `pal` 컨텍스트와 바인딩(`helpers.hexClean(hex, pal)`)하여 호출하도록 우아하게 설계했습니다.
+
+### 4. 마스터 가이드 검증 및 프로덕션 빌드 성공
+* **수수료 조치**: [ai-tools-guide.md](file:///c:/ai/creative-spark/md_src/claudeguide/ai-tools-guide.md)의 특정 `step-list` 숏코드에서 하드코딩되어 있던 `#6366F1`, `#10B981`, `#F59E0B` 색상을 각각 `main`, `sub`, `deep` 키워드로 변환하여 실전 작동을 검증했습니다.
+* **빌드 검증**: `npm run build`를 재가동하여 0-Error로 컴파일 통과 및 단독 standalone.html 번들 생성 완료를 확인했습니다.
+
 

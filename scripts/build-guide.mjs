@@ -214,9 +214,20 @@ function renderMultiLineText(text, defaultTag = "p", customBullet = null, bullet
   return listHtml;
 }
 
+function resolveColorKeyword(color) {
+  if (!color) return "";
+  const lower = String(color).trim().toLowerCase();
+  if (lower === "main" || lower === "brand") return "var(--brand)";
+  if (lower === "sub" || lower === "branddark" || lower === "brand-dark") return "var(--brand-dark)";
+  if (lower === "deep" || lower === "branddeep" || lower === "brand-deep") return "var(--brand-deep)";
+  if (lower === "mid" || lower === "brandmid" || lower === "brand-mid") return "var(--brand-mid)";
+  if (lower === "light" || lower === "brandlight" || lower === "brand-light") return "var(--brand-light)";
+  return color;
+}
+
 // 텍스트성 desc/note 통일 렌더러 (코드블록 제외 모든 숏코드에 사용)
 function renderDesc(text, bullet, color) {
-  return renderMultiLineText(text, "p", bullet || null, color || null);
+  return renderMultiLineText(text, "p", bullet || null, resolveColorKeyword(color) || null);
 }
 
 // note는 배지 맥락이지만 \n → · 구분으로 렌더
@@ -229,16 +240,35 @@ function renderShortcode(type, body, args) {
   const items = parseShortcodeItems(body);
   if (!items.length) return "";
 
-  const renderAccent = (color) => color ? `style="border-color: ${color}; background-color: ${color}08;"` : "";
-  const renderTextColor = (color) => color ? `style="color: ${color};"` : "";
+  const renderAccent = (color) => {
+    if (!color) return "";
+    const res = resolveColorKeyword(color);
+    if (res.startsWith("var(")) {
+      return `style="border-color: ${res}; background-color: color-mix(in srgb, ${res} 8%, transparent);"`;
+    }
+    return `style="border-color: ${res}; background-color: ${res}08;"`;
+  };
+  const renderTextColor = (color) => {
+    if (!color) return "";
+    const res = resolveColorKeyword(color);
+    return `style="color: ${res};"`;
+  };
   const renderCompareNote = (activeNote, color) => {
     if (!activeNote) return "";
     const metaItems = splitMeta(activeNote);
-    const style = color ? `style="background:${color}15; color:${color}"` : "";
+    const res = resolveColorKeyword(color);
+    let style = "";
+    if (res) {
+      if (res.startsWith("var(")) {
+        style = `style="background:color-mix(in srgb, ${res} 8%, transparent); color:${res}"`;
+      } else {
+        style = `style="background:${res}15; color:${res}"`;
+      }
+    }
     if (metaItems.length > 1) {
       return `<div class="compare-note" ${style}>
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left;">
-          ${metaItems.map(f => `<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: ${color || 'var(--brand)'}; flex-shrink: 0; margin-top: 2px;">•</span><span>${escapeHtml(f)}</span></li>`).join("")}
+          ${metaItems.map(f => `<li style="display: flex; gap: 8px; align-items: flex-start; font-size: 0.85rem;"><span style="color: ${res || 'var(--brand)'}; flex-shrink: 0; margin-top: 2px;">•</span><span>${escapeHtml(f)}</span></li>`).join("")}
         </ul>
       </div>`;
     }
@@ -278,8 +308,8 @@ function renderShortcode(type, body, args) {
         </div>`;
       }
       return `<div class="${isFeat ? 'feature-card' : 'icon-card'}" ${renderAccent(it.color)}>
-        ${isFeat && it.color ? `<div class="card-top-bar" style="background-color:${it.color}"></div>` : ''}
-        ${it.tag ? `<span class="feature-tag" ${it.color ? `style="background:${it.color}; color:#fff;"` : ""}>${escapeHtml(it.tag)}</span>` : ""}
+        ${isFeat && it.color ? `<div class="card-top-bar" style="background-color:${resolveColorKeyword(it.color)}"></div>` : ''}
+        ${it.tag ? `<span class="feature-tag" ${it.color ? `style="background:${resolveColorKeyword(it.color)}; color:#fff;"` : ""}>${escapeHtml(it.tag)}</span>` : ""}
         ${isFeat ? `
           <div class="feature-card-title" style="color: var(--brand-dark);">
             ${it.icon ? `<span class="fc-icon">${escapeHtml(it.icon)}</span>` : ""}${renderMultiLineText(it.title, "")}
@@ -295,7 +325,8 @@ function renderShortcode(type, body, args) {
   // 2. tool-list (구 tool-box 호환)
   if (type === "tool-list" || type === "tool-box") {
     return items.map(it => {
-      const grad = it.color ? `linear-gradient(135deg, ${it.color}, ${it.color}CC)` : `var(--brand-gradient)`;
+      const resColor = resolveColorKeyword(it.color);
+      const grad = resColor ? (resColor.startsWith("var(") ? `linear-gradient(135deg, ${resColor}, color-mix(in srgb, ${resColor} 80%, black))` : `linear-gradient(135deg, ${resColor}, ${resColor}CC)`) : `var(--brand-gradient)`;
       const metaItems = splitMeta(it.meta);
       return `<div class="tool-card">
         <div class="tc-header" style="background: ${grad}; color: #fff;">
@@ -352,8 +383,9 @@ function renderShortcode(type, body, args) {
     return `<div class="plan-grid" ${gridStyle}>${items.map(it => {
       const isFeat = it.featured === "true" || it.tag === "Best" || it.color;
       const highlight = isFeat ? "plan-featured" : "";
-      const style = it.color ? `style="border-color:${it.color}; box-shadow: 0 8px 24px ${it.color}33;"` : "";
-      const topBarStyle = it.color ? `style="background:${it.color};"` : "";
+      const resColor = resolveColorKeyword(it.color);
+      const style = resColor ? `style="border-color:${resColor}; box-shadow: 0 8px 24px ${resColor.startsWith("var(") ? 'color-mix(in srgb, ' + resColor + ' 20%, transparent)' : resColor + '33'};"` : "";
+      const topBarStyle = resColor ? `style="background:${resColor};"` : "";
       const metaItems = splitMeta(it.meta);
       
       return `<div class="plan-card ${highlight}" ${style}>
@@ -384,7 +416,7 @@ function renderShortcode(type, body, args) {
       const activeNote = it.note || it.meta;
       return `
       <div class="column-card" ${renderAccent(it.color)}>
-        <div class="card-top-bar" ${it.color ? `style="background:${it.color}"` : ""}></div>
+        <div class="card-top-bar" ${it.color ? `style="background:${resolveColorKeyword(it.color)}"` : ""}></div>
         <div class="col-title" ${renderTextColor(it.color)}>${escapeHtml(it.title)}</div>
         ${renderDesc(it.desc, itemBullet(it), it.color)}
         ${activeNote ? renderCompareNote(activeNote, it.color) : ""}

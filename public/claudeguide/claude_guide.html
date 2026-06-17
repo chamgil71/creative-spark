@@ -6,13 +6,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
-    --brand:      #10A37F;
-    --brand-dark: #0D8065;
-    --brand-deep: #085C4A;
-    --brand-light:#E6F4F0;
-    --brand-mid:  #A8DDD0;
-    --border:     #C8E6DF;
-    --bg:         #F7FBF9;
+    --brand:      #2789F5;
+    --brand-dark: #1E71CE;
+    --brand-deep: #0F478F;
+    --brand-light:#F0F7FF;
+    --brand-mid:  undefined;
+    --brand-gradient: linear-gradient(135deg, #2789F5, #0F478F);
+    --border:     #D2E5FA;
+    --bg:         #FAFBFD;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
     --shadow:    0 4px 24px rgba(0,0,0,0.06);
     --shadow-lg: 0 8px 40px rgba(0,0,0,0.10);
@@ -53,14 +54,14 @@
   .nav-links { display: flex; gap: 18px; list-style: none; }
   .nav-links a { text-decoration: none; color: var(--text-2); font-size: calc(14px * var(--font-scale)); font-weight: 500; transition: 0.2s; }
   .nav-links a:hover { color: var(--brand); }
-  .hero { background: linear-gradient(135deg, #0A0F1E 0%, #1A1A2E 40%, #0D4A38 70%, #10A37F 100%); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #10A37F55 0%, transparent 60%); pointer-events: none; }
+  .hero { background: var(--brand-dark); color: white; padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, #2789F555 0%, transparent 60%); pointer-events: none; }
   .hero-inner { max-width: 760px; margin: 0 auto; position: relative; z-index: 1; }
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: calc(13px * var(--font-scale)); font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: calc(44px * var(--font-scale)); }
   .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.92); margin-bottom: 40px; }
+  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.85); margin-bottom: 40px; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: calc(16px * var(--font-scale)); padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -183,7 +184,7 @@
   .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
   .branch-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: center; min-height: 80px; }
   .branch-label { padding: 8px 16px; border-radius: 8px; font-family: var(--font-code); font-size: calc(0.9rem * var(--font-scale)); text-align: center; }
-  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; }
+  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; padding: 0 10%; }
   .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
   .commit:hover { transform: scale(1.25); }
   .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: calc(0.72rem * var(--font-scale)); font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: var(--font-code); }
@@ -223,7 +224,7 @@
   /* Done section */
   .done-section { background: linear-gradient(135deg, var(--brand-deep), var(--brand)); color: white; padding: 72px 24px; text-align: center; }
   .done-section h2 { font-family: var(--font-title); font-size: calc(clamp(1.8rem, 4vw, 2.6rem) * var(--font-scale)); margin-bottom: 10px; }
-  .done-section p { color: rgba(255,255,255,0.92); margin-bottom: 24px; }
+  .done-section p { color: rgba(255,255,255,0.86); margin-bottom: 24px; }
   .done-link { display: inline-flex; align-items: center; background: white; color: var(--brand-dark); font-weight: 800; padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); }
 
   /* Back to top */

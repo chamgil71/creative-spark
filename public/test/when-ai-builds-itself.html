@@ -11,6 +11,7 @@
     --brand-deep: #8B4530;
     --brand-light:#FDF0EB;
     --brand-mid:  #F4C5AE;
+    --brand-gradient: linear-gradient(135deg, #D97757, #8B4530);
     --border:     #F0D4C4;
     --bg:         #FBF7F5;
     --text:   #1A1A2E; --text-2: #475569; --text-3: #8892B0;
@@ -183,7 +184,7 @@
   .flow-branches { display: flex; flex-direction: column; gap: 20px; min-width: 600px; }
   .branch-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; align-items: center; min-height: 80px; }
   .branch-label { padding: 8px 16px; border-radius: 8px; font-family: var(--font-code); font-size: calc(0.9rem * var(--font-scale)); text-align: center; }
-  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; }
+  .branch-line { display: flex; align-items: center; justify-content: flex-start; flex: 1; height: 32px; position: relative; padding: 0 10%; }
   .commit { width: 18px; height: 18px; background: #0F172A; border: 3px solid var(--brand); border-radius: 50%; position: relative; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
   .commit:hover { transform: scale(1.25); }
   .commit-label { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: #fff; font-size: calc(0.72rem * var(--font-scale)); font-weight: 800; padding: 2px 8px; border-radius: 100px; white-space: nowrap; font-family: var(--font-code); }
