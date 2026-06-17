@@ -60,8 +60,8 @@
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: calc(13px * var(--font-scale)); font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: calc(44px * var(--font-scale)); }
-  .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.92); margin-bottom: 40px; }
+  .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; white-space: pre-line; }
+  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.92); margin-bottom: 40px; white-space: pre-line; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: calc(16px * var(--font-scale)); padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -329,14 +329,71 @@
   pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
   code { font-family: var(--font-code); font-size: calc(0.9em * var(--font-scale)); }
   
-  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
-  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: calc(0.9rem * var(--font-scale)); }
-  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
-  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
-  tr:nth-child(even) { background: #fafafa; }
+  /* Flow Arrow Separator (↓, →, ↑, ←) Styles */
+  .flow-arrow-separator {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 20px 0;
+    color: var(--brand);
+    text-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    animation: guideFlowBounce 2s infinite;
+  }
+  @keyframes guideFlowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* 비교표(Table) 세로형 가이드 스타일 고도화 */
+  table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    margin: 24px 0; 
+    font-size: calc(0.9rem * var(--font-scale)); 
+    border-radius: 8px; 
+    overflow: hidden; 
+    border: 1px solid var(--border); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  th { 
+    background: var(--brand-light); 
+    color: var(--brand-dark); 
+    padding: 13px 16px; 
+    font-weight: 800; 
+    border-bottom: 2px solid var(--border); 
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  th:last-child {
+    border-right: none;
+  }
+  td { 
+    padding: 12px 16px; 
+    border-bottom: 1px solid var(--border); 
+    border-right: 1px solid var(--border);
+    text-align: center; 
+    color: var(--text-2); 
+  }
+  td:last-child {
+    border-right: none;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:nth-child(even) { 
+    background: #fafbfc; 
+  }
+  tr:hover {
+    background: rgba(99, 102, 241, 0.015);
+  }
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
-  td.check-highlight { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+  td.check-highlight { 
+    color: var(--brand-dark); 
+    font-weight: 800; 
+    background: var(--brand-light); 
+  }
 
   /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
   .part-banner { margin-bottom: 30px; }
@@ -434,7 +491,7 @@
 </style>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Creative Spark 숏코드 쇼케이스</a><ul class="nav-links"><li><a href="#sec-1">현재 지원 숏코드 목록</a></li><li><a href="#sec-2">숏코드 표준 입력 키</a></li><li><a href="#sec-3">블록 인자</a></li><li><a href="#sec-4">1. icon-grid</a></li><li><a href="#sec-5">2. feature-grid</a></li><li><a href="#sec-6">3. badge-grid</a></li><li><a href="#sec-7">4. stat-grid</a></li><li><a href="#sec-8">5. columns-grid</a></li><li><a href="#sec-9">6. compare-grid</a></li><li><a href="#sec-10">7. plan-grid</a></li><li><a href="#sec-11">8. level-grid</a></li><li><a href="#sec-12">9. checkpoint-grid</a></li><li><a href="#sec-13">10. step-list</a></li><li><a href="#sec-14">11. skill-list</a></li><li><a href="#sec-15">12. chapter-list</a></li><li><a href="#sec-16">13. faq-list</a></li><li><a href="#sec-17">14. tool-list</a></li><li><a href="#sec-18">15. workflow-flow</a></li><li><a href="#sec-19">16. git-flow</a></li><li><a href="#sec-20">17. step-flow</a></li><li><a href="#sec-21">18. alert-box</a></li><li><a href="#sec-22">19. cmd-box</a></li><li><a href="#sec-23">20. console-box</a></li><li><a href="#sec-24">21. editor-box</a></li><li><a href="#sec-25">22. network-box</a></li><li><a href="#sec-26">23. summary-box</a></li><li><a href="#sec-27">24. compare-split</a></li><li><a href="#sec-28">25. compare-diff</a></li><li><a href="#sec-29">26. part-banner</a></li><li><a href="#sec-30">27. takeaway-banner</a></li><li><a href="#sec-31">28. summary-bar</a></li><li><a href="#sec-32">29. os-tabs</a></li><li><a href="#sec-33">부록 A. desc 다중 줄 불릿 목록</a></li><li><a href="#sec-34">부록 B. bullet 필드 — 아이템별 불릿 오버라이드</a></li><li><a href="#sec-35">부록 C. bullet= 블록 인자 — 블록 전체 불릿 지정</a></li><li><a href="#sec-36">부록 D. color — 카드 강조 + SVG 불릿 색 동시 적용</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="#" class="nav-logo">Creative Spark 숏코드 쇼케이스</a><ul class="nav-links"><li><a href="#sec-1">현재 지원 숏코드 목록</a></li><li><a href="#sec-2">숏코드 표준 입력 키</a></li><li><a href="#sec-3">블록 인자</a></li><li><a href="#sec-4">1. icon-grid</a></li><li><a href="#sec-5">2. feature-grid</a></li><li><a href="#sec-6">3. badge-grid</a></li><li><a href="#sec-7">4. stat-grid</a></li><li><a href="#sec-8">5. columns-grid</a></li><li><a href="#sec-9">6. compare-grid</a></li><li><a href="#sec-10">7. plan-grid</a></li><li><a href="#sec-11">8. level-grid</a></li><li><a href="#sec-12">9. checkpoint-grid</a></li><li><a href="#sec-13">10. step-list</a></li><li><a href="#sec-14">11. skill-list</a></li><li><a href="#sec-15">12. chapter-list</a></li><li><a href="#sec-16">13. faq-list</a></li><li><a href="#sec-17">14. tool-list</a></li><li><a href="#sec-18">15. workflow-flow</a></li><li><a href="#sec-19">16. git-flow</a></li><li><a href="#sec-20">17. step-flow</a></li><li><a href="#sec-21">18. alert-box</a></li><li><a href="#sec-22">19. cmd-box</a></li><li><a href="#sec-23">20. console-box</a></li><li><a href="#sec-24">21. editor-box</a></li><li><a href="#sec-25">22. network-box</a></li><li><a href="#sec-26">23. summary-box</a></li><li><a href="#sec-27">24. compare-split</a></li><li><a href="#sec-28">25. compare-diff</a></li><li><a href="#sec-29">26. part-banner</a></li><li><a href="#sec-30">27. takeaway-banner</a></li><li><a href="#sec-31">28. summary-bar</a></li><li><a href="#sec-32">29. os-tabs</a></li><li><a href="#sec-33">부록 A. desc 다중 줄 불릿 목록</a></li><li><a href="#sec-34">부록 B. bullet 필드 — 아이템별 불릿 오버라이드</a></li><li><a href="#sec-35">부록 C. bullet= 블록 인자 — 블록 전체 불릿 지정</a></li><li><a href="#sec-36">부록 D. color — 카드 강조 + SVG 불릿 색 동시 적용</a></li><li><a href="#sec-37">부록 E. Frontmatter (문서 메타) 및 slide-config</a></li></ul></div></nav>
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-badge"><span></span>Shortcode Reference · v2.0</div>
@@ -1783,12 +1840,12 @@ Markdown
 </code></pre>
 <div class="tabs-wrap">
 <div class="tabs-nav">
-<button class="tab-btn active" onclick="switchTab(this,'tqqaou-0')">macOS</button><button class="tab-btn" onclick="switchTab(this,'tqqaou-1')">Windows</button>
+<button class="tab-btn active" onclick="switchTab(this,'tcqxdq-0')">macOS</button><button class="tab-btn" onclick="switchTab(this,'tcqxdq-1')">Windows</button>
 </div>
-<div class="tab-panel active" id="tqqaou-0"><h4>터미널 설치</h4>
+<div class="tab-panel active" id="tcqxdq-0"><h4>터미널 설치</h4>
 <pre><code class="language-bash">brew install node
 </code></pre>
-</div><div class="tab-panel" id="tqqaou-1"><h4>PowerShell 설치</h4>
+</div><div class="tab-panel" id="tcqxdq-1"><h4>PowerShell 설치</h4>
 <pre><code class="language-powershell">winget install OpenJS.NodeJS
 </code></pre>
 </div>
@@ -1993,7 +2050,49 @@ Markdown
 <span class="bullet" style="color:#E11D48;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;min-width:16px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="margin-top:4px;display:inline-block;vertical-align:middle;"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
 <span class="content" style="text-align:left;">취약점 스캔</span>
 </div></div>
-</div></div></div></section></main>
+</div></div></div></section><section class="section" id="sec-37"><div class="section-header"><div class="section-num">37</div><h2>부록 E. Frontmatter (문서 메타) 및 slide-config</h2></div><div class="card"><h3 class="card-title">1. Frontmatter 설정 (문서 메타데이터)</h3><p>마크다운 문서 최상단의 YAML Frontmatter 영역에서 문서 전체의 테마, 제목, 및 표지 설정을 할 수 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th>설정 키</th>
+<th>설명</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td>문서 전체 제목 (표지에 렌더링)</td>
+<td><code>&quot;Creative Spark 가이드&quot;</code></td>
+</tr>
+<tr>
+<td><code>subtitle</code></td>
+<td>문서 부제목</td>
+<td><code>&quot;숏코드 설명서&quot;</code></td>
+</tr>
+<tr>
+<td><code>badge</code></td>
+<td>표지 상단에 노출되는 배지</td>
+<td><code>&quot;v2.0&quot;</code></td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>문서에 적용할 테마 명칭</td>
+<td><code>&quot;custom-blue&quot;</code>, <code>&quot;ai-chat&quot;</code>, <code>&quot;green&quot;</code>, <code>&quot;purple&quot;</code>, <code>&quot;coral&quot;</code> 등</td>
+</tr>
+<tr>
+<td><code>coverBg</code></td>
+<td>표지 전용 배경색 또는 그라데이션</td>
+<td><code>&quot;#2563FF&quot;</code>, <code>&quot;linear-gradient(135deg, #2563FF, #0F478F)&quot;</code></td>
+</tr>
+</tbody></table>
+</div><div class="card"><h3 class="card-title">2. slide-config 숏코드</h3><p>개별 슬라이드나 섹션의 배경색(<code>bg</code>)과 글자색(<code>color</code>)을 임의로 재정의할 수 있는 특수 숏코드입니다. 이 숏코드는 화면에 렌더링되지 않으며 해당 슬라이드의 스타일만 오버라이드합니다.</p>
+<p>숏코드 입력내용</p>
+<pre><code class="language-md">\::: slide-config
+bg: &quot;#0F172A&quot;
+color: &quot;#F8FAFC&quot;
+\:::
+</code></pre>
+</div></section></main>
   
   
   <a class="back-top" href="#top" title="맨 위로">↑</a>

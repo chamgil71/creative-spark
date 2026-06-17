@@ -1,0 +1,338 @@
+{
+  "_comment": "doc-converter template.json v1.0 — 구조(structure) + 테마(theme) + 컴포넌트(components) 통합 스펙",
+  "_schema": "https://github.com/your-org/doc-converter/schema/v1",
+
+  "meta": {
+    "name": "NIPA 정책 보고서",
+    "description": "NIPA 스타일 정책 보고서 기본 템플릿",
+    "version": "1.0",
+    "base_format": "A4",
+    "lang": "ko",
+    "author": ""
+  },
+
+  "theme": {
+    "_comment": "여기만 바꾸면 전체 브랜드 교체. primary 3색 + accent는 세트로 교체.",
+
+    "colors": {
+      "_comment": "primary 3색은 반드시 같이 교체할 것. accent_bg/table_alt/border는 'auto' 유지 권장.",
+      "primary":      "#1D4E8F",
+      "primary_dark": "#1A3A6B",
+      "primary_mid":  "#2557A7",
+
+      "accent_bg":    "auto",
+      "table_alt":    "auto",
+      "border":       "auto",
+
+      "text_body":    "#1A1A1A",
+      "text_muted":   "#555555",
+      "text_on_primary": "#FFFFFF",
+      "background":   "#FFFFFF",
+      "page_bg":      "#F6F8FA",
+
+      "_presets": {
+        "_comment": "아래 프리셋 중 하나를 primary/primary_dark/primary_mid에 복사해서 사용",
+        "violet": {
+          "primary":      "#7C3AED",
+          "primary_dark": "#4C1D95",
+          "primary_mid":  "#6D28D9"
+        },
+        "teal": {
+          "primary":      "#0F766E",
+          "primary_dark": "#134E4A",
+          "primary_mid":  "#0D9488"
+        },
+        "red": {
+          "primary":      "#B91C1C",
+          "primary_dark": "#7F1D1D",
+          "primary_mid":  "#DC2626"
+        },
+        "slate": {
+          "primary":      "#334155",
+          "primary_dark": "#0F172A",
+          "primary_mid":  "#475569"
+        }
+      }
+    },
+
+    "fonts": {
+      "_comment": "body/heading 교체 시 html은 Google Fonts URL도 함께 변경 필요. hwpx는 시스템 설치 필수.",
+      "body":     "맑은 고딕",
+      "heading":  "맑은 고딕",
+      "code":     "D2Coding",
+      "fallback": "돋움, sans-serif",
+
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap",
+
+      "_presets": {
+        "nanum": {
+          "body":    "나눔고딕",
+          "heading": "나눔바른고딕",
+          "google_fonts_url": "https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nanum+Barun+Gothic:wght@400;700&display=swap"
+        },
+        "noto": {
+          "body":    "Noto Sans KR",
+          "heading": "Noto Serif KR",
+          "google_fonts_url": "https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap"
+        },
+        "human": {
+          "body":    "나눔고딕",
+          "heading": "휴먼명조",
+          "google_fonts_url": "https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap",
+          "_note": "휴먼명조는 웹폰트 미지원. HTML에서는 heading에 Noto Serif KR 폴백 사용 권장"
+        }
+      }
+    },
+
+    "sizes": {
+      "_unit": "pt (HTML 변환 시 px로 자동 환산: 1pt = 1.333px)",
+      "doc_title":    18,
+      "section":      14,
+      "h1":           13,
+      "h2":           12,
+      "h3":           11,
+      "body":         11,
+      "table_header": 10.5,
+      "table_body":   10.5,
+      "caption":      10,
+      "footnote":     9.5
+    },
+
+    "spacing": {
+      "line_height":    1.45,
+      "indent_h2_mm":   10,
+      "indent_h3_mm":   20,
+      "section_gap_pt": 18,
+      "para_gap_pt":    6,
+      "page_margin_mm": 25
+    }
+  },
+
+  "structure": {
+    "_comment": "계층 기호는 파서와 1:1 매핑. 변경 시 converter.py의 MARKERS 딕셔너리도 함께 수정 필요.",
+
+    "markers": {
+      "h1":         "■",
+      "h2":         "○",
+      "h3":         "–",
+      "note":       "*",
+      "conclusion": "è"
+    },
+
+    "section_numbering": "arabic",
+    "table_caption_wrap": "angle",
+
+    "h1_style": {
+      "bold": true,
+      "color_role": "primary_dark",
+      "marker_color_role": "primary_dark"
+    },
+    "h2_style": {
+      "bold": false,
+      "color_role": "text_body",
+      "marker_color_role": "primary_mid",
+      "indent_role": "indent_h2_mm"
+    },
+    "h3_style": {
+      "bold": false,
+      "color_role": "text_muted",
+      "marker_color_role": "text_muted",
+      "indent_role": "indent_h3_mm"
+    },
+    "conclusion_style": {
+      "background_role": "accent_bg",
+      "border_left_role": "primary_mid",
+      "bold_keywords": true
+    }
+  },
+
+  "components": {
+    "_comment": "github.html에서 추출한 박스/도형 컴포넌트. MD에서 특수 펜스 블록으로 호출.",
+
+    "section_header": {
+      "_trigger": "자동 (## 섹션 레벨)",
+      "background_role": "primary",
+      "text_color_role": "text_on_primary",
+      "number_badge": {
+        "background": "#FFFFFF",
+        "text_color_role": "primary",
+        "border_radius": "4px"
+      },
+      "border_radius": "0px",
+      "padding": "6px 16px"
+    },
+
+    "info_box": {
+      "_trigger": "```info ... ```",
+      "_example": "```info\n내용\n```",
+      "background_role": "accent_bg",
+      "border_left_role": "primary_mid",
+      "border_left_width": "3px",
+      "border_radius": "0 6px 6px 0",
+      "padding": "12px 16px",
+      "icon": "💡",
+      "variants": {
+        "warn": {
+          "background": "#FFFBEB",
+          "border_left": "#F59E0B",
+          "icon": "⚠️"
+        },
+        "ok": {
+          "background": "#F0FDF4",
+          "border_left": "#22C55E",
+          "icon": "✅"
+        },
+        "danger": {
+          "background": "#FEF2F2",
+          "border_left": "#EF4444",
+          "icon": "🚨"
+        }
+      }
+    },
+
+    "tip_card": {
+      "_trigger": "```tip[color] ... ```",
+      "_example": "```tip:green\n**제목**\n내용\n```",
+      "background": "#FFFFFF",
+      "border_left_width": "4px",
+      "border_radius": "0 8px 8px 0",
+      "padding": "20px 24px",
+      "shadow": true,
+      "color_options": ["green", "blue", "purple", "orange", "red"],
+      "color_map": {
+        "green":  "#3FB950",
+        "blue":   "#58A6FF",
+        "purple": "#BC8CFF",
+        "orange": "#F0883E",
+        "red":    "#F85149"
+      }
+    },
+
+    "terminal": {
+      "_trigger": "```terminal ... ```",
+      "_example": "```terminal title=\"bash\"\n$ git init\n```",
+      "background": "#0D1117",
+      "header_background": "#161B22",
+      "border": "#30363D",
+      "text_color": "#E6EDF3",
+      "border_radius": "8px",
+      "traffic_lights": true,
+      "syntax": {
+        "command":  "#3FB950",
+        "comment":  "#8B949E",
+        "output":   "#58A6FF",
+        "keyword":  "#BC8CFF",
+        "string":   "#E6EDF3"
+      }
+    },
+
+    "feature_card": {
+      "_trigger": "```cards ... ```",
+      "_example": "```cards\n🔀 | Pull Request | 설명 | tag:협업\n🐛 | Issues | 설명 | tag:blue:관리\n```",
+      "background": "#FFFFFF",
+      "border": "#D0D7DE",
+      "border_radius": "12px",
+      "shadow": true,
+      "hover_lift": true,
+      "grid_min_width": "280px",
+      "tag_colors": {
+        "default": { "bg": "#DCFCE7", "text": "#16A34A" },
+        "blue":    { "bg": "#EFF6FF", "text": "#2563EB" },
+        "purple":  { "bg": "#F5F3FF", "text": "#7C3AED" },
+        "orange":  { "bg": "#FFF7ED", "text": "#EA580C" }
+      }
+    },
+
+    "flow_steps": {
+      "_trigger": "```flow ... ```",
+      "_example": "```flow\n💾 Push → 🔧 Build → 🧪 Test → 🚀 Deploy\n```",
+      "step_background": "#FFFFFF",
+      "step_border": "#D0D7DE",
+      "step_border_radius": "8px",
+      "arrow_color": "#D0D7DE",
+      "shadow": true
+    },
+
+    "table": {
+      "_trigger": "표준 마크다운 테이블 | 헤더 |",
+      "header_background_role": "primary_mid",
+      "header_text_color_role": "text_on_primary",
+      "alt_row_background_role": "table_alt",
+      "border_role": "border",
+      "border_radius": "8px",
+      "overflow_hidden": true,
+      "shadow": false
+    },
+
+    "badge": {
+      "_trigger": "`badge:text` 또는 `badge:color:text`",
+      "border_radius": "100px",
+      "padding": "2px 10px",
+      "font_size": "11px",
+      "font_weight": "600"
+    },
+
+    "hero": {
+      "_trigger": "```hero ... ```",
+      "_example": "```hero\ntitle: 문서 제목\nsubtitle: 부제목\nbadge: 배지 텍스트\n```",
+      "background": "#0D1117",
+      "text_color": "#E6EDF3",
+      "accent_color_role": "primary",
+      "show_stats": false
+    },
+
+    "nav": {
+      "_trigger": "```nav ... ```",
+      "background": "rgba(13,17,23,0.97)",
+      "border_bottom": "#30363D",
+      "link_color": "#8B949E",
+      "link_hover": "#FFFFFF",
+      "sticky": true
+    },
+
+    "git_flow": {
+      "_trigger": "```gitflow ... ```",
+      "_example": "```gitflow\nmain: v1.0, v1.1, v2.0\ndevelop: c1, c2, c3\nfeature: , c1, c2\n```",
+      "background": "#0D1117",
+      "border": "#30363D",
+      "branch_colors": {
+        "main":    "#3FB950",
+        "develop": "#58A6FF",
+        "feature": "#BC8CFF",
+        "release": "#F0883E",
+        "hotfix":  "#F85149"
+      }
+    },
+
+    "kbd": {
+      "_trigger": "`kbd:Ctrl+K`",
+      "background": "#F6F8FA",
+      "border": "#D0D7DE",
+      "border_radius": "4px",
+      "font_family": "monospace"
+    }
+  },
+
+  "output": {
+    "html": {
+      "inject_css_vars": true,
+      "responsive": true,
+      "print_stylesheet": true,
+      "max_content_width": "960px",
+      "nav": true,
+      "back_to_top": true,
+      "syntax_highlight": true
+    },
+    "hwpx": {
+      "template_file": "report-template.hwpx",
+      "force_font_override": true,
+      "section_numbering": "arabic"
+    },
+    "pptx": {
+      "slide_break_marker": "---",
+      "layout": "16:9",
+      "title_slide_for_sections": true,
+      "font_embed": true
+    }
+  }
+}

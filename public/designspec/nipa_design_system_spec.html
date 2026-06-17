@@ -1,0 +1,437 @@
+
+<style>
+:root {
+  --nipa-blue: #1A3A6B;
+  --nipa-blue-mid: #2557A7;
+  --nipa-accent: #E8F0FB;
+  --nipa-section-bg: #1D4E8F;
+  --nipa-text: #1A1A1A;
+  --nipa-text-muted: #555;
+  --nipa-border: #D0D8E8;
+  --nipa-white: #FFFFFF;
+  --nipa-table-head: #2557A7;
+  --nipa-bullet1: #1A3A6B;
+  --nipa-bullet2: #2557A7;
+  --nipa-bullet3: #3A6099;
+  --tag-fixed: #C8E6C9;
+  --tag-fixed-t: #1B5E20;
+  --tag-change: #FFF9C4;
+  --tag-change-t: #795548;
+  --tag-extend: #E3F2FD;
+  --tag-extend-t: #0D47A1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans, sans-serif); font-size: 14px; color: var(--color-text-primary); }
+h2 { font-size: 16px; font-weight: 500; margin: 24px 0 8px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); padding-bottom: 6px; }
+h3 { font-size: 13px; font-weight: 500; margin: 16px 0 8px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+p { font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); margin-bottom: 8px; }
+
+.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+.b-fixed { background: var(--tag-fixed); color: var(--tag-fixed-t); }
+.b-change { background: var(--tag-change); color: var(--tag-change-t); }
+.b-extend { background: var(--tag-extend); color: var(--tag-extend-t); }
+
+.legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--color-text-secondary); }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* Color swatches */
+.swatch-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.swatch { width: 120px; }
+.swatch-block { height: 36px; border-radius: 6px; border: 0.5px solid rgba(0,0,0,0.1); }
+.swatch-label { font-size: 11px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.4; }
+.swatch-hex { font-size: 10px; font-family: var(--font-mono, monospace); color: var(--color-text-tertiary); }
+
+/* Token table */
+.token-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 16px; }
+.token-table th { text-align: left; padding: 6px 8px; background: var(--color-background-secondary); font-weight: 500; font-size: 11px; color: var(--color-text-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+.token-table td { padding: 6px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); vertical-align: middle; line-height: 1.5; }
+.token-table tr:last-child td { border-bottom: none; }
+.token-name { font-family: var(--font-mono, monospace); font-size: 11px; color: var(--color-text-secondary); }
+.token-val { font-family: var(--font-mono, monospace); font-size: 11px; color: var(--color-text-primary); }
+
+/* Hierarchy preview */
+.preview-box { border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+.preview-section-header { background: #1D4E8F; color: #fff; padding: 6px 14px; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+.preview-section-header .num { background: #fff; color: #1D4E8F; border-radius: 3px; font-size: 12px; font-weight: 700; padding: 0 6px; }
+.preview-body { padding: 12px 16px; background: var(--color-background-primary); }
+.preview-h1 { font-size: 15px; font-weight: 700; color: #1A3A6B; margin-bottom: 6px; display: flex; align-items: baseline; gap: 6px; }
+.preview-h1::before { content: "■"; font-size: 12px; color: #1A3A6B; }
+.preview-h2 { font-size: 13px; color: #1A1A1A; margin: 8px 0 4px 12px; display: flex; gap: 6px; }
+.preview-h2::before { content: "○"; color: #2557A7; }
+.preview-h3 { font-size: 12px; color: #333; margin: 6px 0 3px 24px; display: flex; gap: 6px; }
+.preview-h3::before { content: "–"; color: #888; }
+.preview-kw { color: #1A3A6B; font-weight: 700; }
+.preview-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+.preview-table th { background: #2557A7; color: #fff; padding: 4px 8px; font-weight: 500; }
+.preview-table td { border: 0.5px solid var(--color-border-tertiary); padding: 4px 8px; }
+.preview-table tr:nth-child(even) td { background: #F5F8FF; }
+
+/* Format mapping */
+.format-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.format-card { border: 0.5px solid var(--color-border-tertiary); border-radius: 8px; padding: 12px; background: var(--color-background-primary); }
+.format-card h4 { font-size: 12px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.format-icon { font-size: 16px; }
+.format-card ul { list-style: none; }
+.format-card li { font-size: 11px; color: var(--color-text-secondary); padding: 2px 0; display: flex; gap: 4px; }
+.format-card li::before { content: "→"; color: var(--color-text-tertiary); }
+
+.tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--color-border-tertiary); margin-bottom: 16px; overflow-x: auto; }
+.tab { padding: 7px 14px; font-size: 13px; cursor: pointer; color: var(--color-text-secondary); border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab.active { color: var(--color-text-primary); border-bottom-color: #2557A7; font-weight: 500; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.info-box { background: var(--color-background-secondary); border-left: 3px solid #2557A7; border-radius: 0 6px 6px 0; padding: 10px 14px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+
+.section { margin-bottom: 24px; }
+</style>
+
+<div style="padding: 0 0 24px;">
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#C8E6C9;"></div> 고정값 (변경 금지)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF9C4;"></div> 변경 권장값 (교체 가능)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E3F2FD;"></div> 확장 가능</div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active" onclick="switchTab('colors')">색상 시스템</div>
+  <div class="tab" onclick="switchTab('typo')">타이포그래피</div>
+  <div class="tab" onclick="switchTab('layout')">구조 & 레이아웃</div>
+  <div class="tab" onclick="switchTab('preview')">계층 미리보기</div>
+  <div class="tab" onclick="switchTab('mapping')">포맷별 매핑</div>
+</div>
+
+<!-- TAB 1: 색상 -->
+<div class="tab-panel active" id="tab-colors">
+
+<div class="section">
+<h3>핵심 색상 팔레트</h3>
+<div class="swatch-row">
+  <div class="swatch">
+    <div class="swatch-block" style="background:#1D4E8F;"></div>
+    <div class="swatch-label">섹션 헤더 배경 <span class="badge b-fixed">고정</span></div>
+    <div class="swatch-hex">#1D4E8F</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#1A3A6B;"></div>
+    <div class="swatch-label">제목 텍스트 / ■ 불릿 <span class="badge b-fixed">고정</span></div>
+    <div class="swatch-hex">#1A3A6B</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#2557A7;"></div>
+    <div class="swatch-label">표 헤더 / ○ 불릿 <span class="badge b-fixed">고정</span></div>
+    <div class="swatch-hex">#2557A7</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#E8F0FB;"></div>
+    <div class="swatch-label">강조 배경 / accent <span class="badge b-change">변경 가능</span></div>
+    <div class="swatch-hex">#E8F0FB</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#FFFFFF; border: 0.5px solid #ddd;"></div>
+    <div class="swatch-label">본문 배경 <span class="badge b-fixed">고정</span></div>
+    <div class="swatch-hex">#FFFFFF</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#1A1A1A;"></div>
+    <div class="swatch-label">본문 텍스트 <span class="badge b-fixed">고정</span></div>
+    <div class="swatch-hex">#1A1A1A</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#555555;"></div>
+    <div class="swatch-label">보조 텍스트 <span class="badge b-change">변경 가능</span></div>
+    <div class="swatch-hex">#555555</div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-block" style="background:#F5F8FF; border: 0.5px solid #ddd;"></div>
+    <div class="swatch-label">표 짝수행 배경 <span class="badge b-change">변경 가능</span></div>
+    <div class="swatch-hex">#F5F8FF</div>
+  </div>
+</div>
+</div>
+
+<div class="section">
+<h3>색상 역할 정의</h3>
+<table class="token-table">
+  <thead><tr><th>역할</th><th>값</th><th>사용처</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td class="token-name">primary-brand</td><td class="token-val">#1D4E8F</td><td>섹션 번호 배경, 상단 타이틀 배경</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td class="token-name">primary-dark</td><td class="token-val">#1A3A6B</td><td>■ 대분류 텍스트, 키워드 강조</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td class="token-name">primary-mid</td><td class="token-val">#2557A7</td><td>표 헤더, ○ 소분류 마커</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td class="token-name">accent-bg</td><td class="token-val">#E8F0FB</td><td>화살표(è) 결론 박스 배경</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td class="token-name">table-row-alt</td><td class="token-val">#F5F8FF</td><td>표 짝수행 stripe</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td class="token-name">header-text</td><td class="token-val">#FFFFFF</td><td>섹션 헤더 텍스트</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td class="token-name">border-main</td><td class="token-val">#D0D8E8</td><td>표 테두리, 구분선</td><td><span class="badge b-change">변경 가능</span></td></tr>
+  </tbody>
+</table>
+<div class="info-box">💡 브랜드 색상 변경 시: primary-brand / primary-dark / primary-mid 3가지를 <strong>HSB 동일 채도·명도 비율</strong>로 조정하면 전체 계층 일관성 유지. accent-bg는 primary-brand의 10% opacity 값으로 자동 생성 가능.</div>
+</div>
+
+</div>
+
+<!-- TAB 2: 타이포그래피 -->
+<div class="tab-panel" id="tab-typo">
+
+<div class="section">
+<h3>폰트 패밀리</h3>
+<table class="token-table">
+  <thead><tr><th>용도</th><th>폰트명</th><th>대체 폰트</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>전체 본문</td><td class="token-val">맑은 고딕 (Windows) / 나눔고딕</td><td>Apple SD Gothic Neo, 돋움</td><td><span class="badge b-change">변경 권장</span></td></tr>
+    <tr><td>표 헤더</td><td class="token-val">맑은 고딕 Bold</td><td>나눔바른고딕 ExtraBold</td><td><span class="badge b-change">변경 권장</span></td></tr>
+    <tr><td>코드/수식</td><td class="token-val">(별도 미지정)</td><td>Courier New, D2Coding</td><td><span class="badge b-extend">확장 필요</span></td></tr>
+    <tr><td>영문 혼용</td><td class="token-val">맑은 고딕 (영문 포함)</td><td>Noto Sans KR + Noto Sans</td><td><span class="badge b-change">변경 권장</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>크기 & 굵기 체계</h3>
+<table class="token-table">
+  <thead><tr><th>레벨</th><th>마커</th><th>크기</th><th>굵기</th><th>색상</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>문서 제목</td><td>타이틀 박스</td><td class="token-val">18–20pt</td><td class="token-val">Bold</td><td class="token-val">#FFFFFF (배경 #1D4E8F)</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>섹션 제목 (H1)</td><td>■ + 번호 박스</td><td class="token-val">14–15pt</td><td class="token-val">Bold</td><td class="token-val">#FFFFFF (배경 #1D4E8F)</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>대분류 (H2)</td><td>■ (블랙스퀘어)</td><td class="token-val">12–13pt</td><td class="token-val">Bold</td><td class="token-val">#1A3A6B</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>소분류 (H3)</td><td>○ (화이트서클)</td><td class="token-val">11–12pt</td><td class="token-val">Regular</td><td class="token-val">#1A1A1A</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>세부항목 (H4)</td><td>– (em dash)</td><td class="token-val">10.5–11pt</td><td class="token-val">Regular</td><td class="token-val">#333333</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>표 헤더</td><td>셀 배경</td><td class="token-val">10.5pt</td><td class="token-val">Bold</td><td class="token-val">#FFFFFF (배경 #2557A7)</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>표 본문</td><td>–</td><td class="token-val">10–10.5pt</td><td class="token-val">Regular</td><td class="token-val">#1A1A1A</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>주석/각주</td><td>* 기호</td><td class="token-val">9–10pt</td><td class="token-val">Regular</td><td class="token-val">#555555</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>키워드 강조</td><td>볼드 인라인</td><td class="token-val">본문 동일</td><td class="token-val">Bold</td><td class="token-val">#1A3A6B</td><td><span class="badge b-fixed">고정</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>줄간격 & 여백</h3>
+<table class="token-table">
+  <thead><tr><th>요소</th><th>값</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>본문 줄간격</td><td class="token-val">1.4–1.5 (약 18–20pt)</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>섹션 간 여백</td><td class="token-val">16–24pt (1단락 이상)</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>들여쓰기 H3 (○)</td><td class="token-val">약 10mm / 0.5인치</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>들여쓰기 H4 (–)</td><td class="token-val">약 20mm / 1인치</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>페이지 여백</td><td class="token-val">상하 25mm / 좌우 25mm</td><td><span class="badge b-change">변경 가능</span></td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<!-- TAB 3: 레이아웃 -->
+<div class="tab-panel" id="tab-layout">
+
+<div class="section">
+<h3>섹션 구조 패턴</h3>
+<table class="token-table">
+  <thead><tr><th>요소</th><th>형태</th><th>규칙</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>섹션 헤더 박스</td><td>배경색 박스 + 흰 텍스트</td><td>번호(숫자) + 제목, 배경 #1D4E8F</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>섹션 번호</td><td>흰 배경 역박스 내 숫자</td><td>1, 2, 3… 아라비아 숫자</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>■ 항목</td><td>블랙스퀘어 + 굵은 텍스트</td><td>문단 첫 행, 좌정렬</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>○ 항목</td><td>화이트서클 + 들여쓰기</td><td>■ 하위, 10mm 들여쓰기</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>– 항목</td><td>em dash + 들여쓰기</td><td>○ 하위, 20mm 들여쓰기</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>* 주석</td><td>asterisk + 작은 텍스트</td><td>○ 하위 동일 들여쓰기</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>è 결론 박스</td><td>accent 배경 + 들여쓰기</td><td>섹션 말미 결론 강조</td><td><span class="badge b-change">변경 가능</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>표(Table) 스타일</h3>
+<table class="token-table">
+  <thead><tr><th>속성</th><th>값</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>헤더 배경</td><td class="token-val">#2557A7</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>헤더 텍스트</td><td class="token-val">#FFFFFF, Bold, 10.5pt</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>짝수행 배경</td><td class="token-val">#F5F8FF</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>홀수행 배경</td><td class="token-val">#FFFFFF</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>테두리</td><td class="token-val">0.5pt solid #D0D8E8</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>셀 패딩</td><td class="token-val">4–6pt 상하 / 8–10pt 좌우</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>불릿(•) 셀</td><td class="token-val">• 텍스트로 다중 항목 나열</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>첫 번째 열</td><td class="token-val">Bold, 구분 역할</td><td><span class="badge b-fixed">고정</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="section">
+<h3>소제목 구조 (표 안)</h3>
+<div class="info-box">표 내 소제목 형태: <strong>&lt;구분&gt;</strong> 열에 카테고리, <strong>&lt;주요내용&gt;</strong> 열에 • 항목 나열. 표 제목은 표 상단에 가운데 정렬, 괄호 &lt; &gt; 사용.</div>
+<table class="token-table">
+  <thead><tr><th>요소</th><th>값</th><th>상태</th></tr></thead>
+  <tbody>
+    <tr><td>표 캡션</td><td class="token-val">&lt;제목&gt; 형식, 가운데 정렬, Bold</td><td><span class="badge b-fixed">고정</span></td></tr>
+    <tr><td>페이지 번호</td><td class="token-val">하단 중앙, - N - 형식</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>기관 로고</td><td class="token-val">우상단 고정, nipa 로고</td><td><span class="badge b-change">변경 가능</span></td></tr>
+    <tr><td>날짜/부서</td><td class="token-val">첫 페이지 우정렬, 12pt</td><td><span class="badge b-change">변경 가능</span></td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<!-- TAB 4: 계층 미리보기 -->
+<div class="tab-panel" id="tab-preview">
+<div class="info-box">실제 PDF에서 추출한 계층 구조를 재현한 미리보기입니다.</div>
+
+<div class="preview-box">
+  <div class="preview-section-header">
+    <span class="num">2</span>
+    핵무기 거버넌스와 ASI 적용 가능성 분석
+  </div>
+  <div class="preview-body">
+    <div class="preview-h1">「AI 신의 탄생, 인간의 종말」은 <span class="preview-kw">"틀렸기를 바라지만, 틀렸다고 증명하기 어려운 책"</span>으로</div>
+    <div class="preview-h2">핵무기 거버넌스의 성공 요인 : 다층적 통제 체계의 구조</div>
+    <div class="preview-h3">검증가능성(Verifiability) : 핵물질은 물리적 실체이므로 탐지·계측 가능</div>
+    <div class="preview-h3">진입장벽(High Barrier) : 농축·무기화에 수십억 달러와 국가급 인프라 필요</div>
+    <div style="margin-top: 12px;">
+      <table class="preview-table">
+        <thead><tr><th>공통점</th><th>핵무기</th><th>ASI</th></tr></thead>
+        <tbody>
+          <tr><td>존재론적 위험</td><td>• 인류 멸절 가능</td><td>• 인류 멸절 가능(저자 주장)</td></tr>
+          <tr><td>이중용도(dual-use)</td><td>• 원자력 발전 ↔ 무기</td><td>• 좁은 AI ↔ 범용 ASI</td></tr>
+          <tr><td>비가역성</td><td>• 사용 후 복구 불가</td><td>• 통제 상실 후 복구 불가</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#E8F0FB; border-left: 3px solid #2557A7; padding: 8px 12px; margin-top: 12px; font-size: 12px; border-radius: 0 4px 4px 0;">
+      è 즉, 핵경쟁은 "먼저 가져도 쓰지 못한다"는 균형이 성립했지만, ASI 경쟁은 <strong>"먼저 가지면 모든 것을 가진다"</strong>는 승자독식 논리로 흐를 수 있는 가능성이 높음
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top: 16px;">계층 기호 체계 요약</h3>
+<table class="token-table">
+  <thead><tr><th>레벨</th><th>기호</th><th>의미</th><th>들여쓰기</th></tr></thead>
+  <tbody>
+    <tr><td>L0</td><td class="token-val">섹션 헤더 박스</td><td>챕터 구분</td><td>없음</td></tr>
+    <tr><td>L1</td><td class="token-val">■ (■ 채움 사각)</td><td>핵심 주제 단락</td><td>0</td></tr>
+    <tr><td>L2</td><td class="token-val">○ (빈 원)</td><td>설명 항목</td><td>10mm</td></tr>
+    <tr><td>L3</td><td class="token-val">– (em dash)</td><td>세부 내용</td><td>20mm</td></tr>
+    <tr><td>L3b</td><td class="token-val">* (별표)</td><td>용어 정의/각주</td><td>20mm</td></tr>
+    <tr><td>결론</td><td class="token-val">è (화살표)</td><td>결론/요약 강조박스</td><td>accent bg</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- TAB 5: 포맷별 매핑 -->
+<div class="tab-panel" id="tab-mapping">
+<div class="info-box">각 포맷에서 이 디자인 시스템을 구현할 때의 변환 지점을 정리합니다. <strong>고정값</strong>은 그대로, <strong>변경 가능</strong>은 포맷 특성에 맞게 조정.</div>
+
+<div class="format-grid">
+  <div class="format-card">
+    <h4><span class="format-icon">🌐</span> HTML / CSS</h4>
+    <ul>
+      <li>CSS 변수로 토큰 관리</li>
+      <li>--color-primary: #1D4E8F</li>
+      <li>section-header → .section-header</li>
+      <li>■/○/– → ul 커스텀 마커</li>
+      <li>표 → thead 배경색 직접 지정</li>
+      <li>è박스 → blockquote 스타일</li>
+      <li>@media print 별도 정의 필요</li>
+    </ul>
+  </div>
+  <div class="format-card">
+    <h4><span class="format-icon">📝</span> Markdown</h4>
+    <ul>
+      <li># → L0 섹션 (렌더러 의존)</li>
+      <li>**텍스트** → ■ 효과</li>
+      <li>- 항목 → ○ 효과</li>
+      <li>  - 중첩 → – 효과</li>
+      <li>| 표 | → 표 스타일 제한적</li>
+      <li>> 인용 → è 결론박스</li>
+      <li>색상·폰트 직접 제어 불가</li>
+    </ul>
+  </div>
+  <div class="format-card">
+    <h4><span class="format-icon">📄</span> HWPX (한글)</h4>
+    <ul>
+      <li>스타일시트에 색상 직접 등록</li>
+      <li>■/○/– → 개요 번호 스타일</li>
+      <li>섹션헤더 → 문단 배경색</li>
+      <li>표 헤더 → 셀 배경 #2557A7</li>
+      <li>è박스 → 테두리 문단 스타일</li>
+      <li>맑은고딕 → 휴먼고딕 등 교체</li>
+      <li>개요수준 1~5 매핑 필요</li>
+    </ul>
+  </div>
+  <div class="format-card">
+    <h4><span class="format-icon">📊</span> PPTX</h4>
+    <ul>
+      <li>슬라이드 마스터에 색상 등록</li>
+      <li>섹션헤더 → 섹션 구분 슬라이드</li>
+      <li>■ 항목 → 텍스트박스 제목</li>
+      <li>○/– → 불릿 레벨 1/2</li>
+      <li>표 → 테마 테이블 스타일</li>
+      <li>è → 강조 텍스트박스</li>
+      <li>폰트 임베딩 필수 확인</li>
+    </ul>
+  </div>
+  <div class="format-card">
+    <h4><span class="format-icon">📋</span> XLSX</h4>
+    <ul>
+      <li>Named Style로 색상 저장</li>
+      <li>헤더행 → fill #2557A7</li>
+      <li>짝수행 → fill #F5F8FF</li>
+      <li>계층 표현 → 들여쓰기 레벨</li>
+      <li>■ 항목 → 병합셀 + 굵은체</li>
+      <li>조건부 서식으로 stripe 자동화</li>
+    </ul>
+  </div>
+  <div class="format-card">
+    <h4><span class="format-icon">📰</span> PDF 생성</h4>
+    <ul>
+      <li>ReportLab/WeasyPrint 색상 그대로</li>
+      <li>CSS-to-PDF: print 미디어쿼리</li>
+      <li>폰트 서브셋 임베딩 필수</li>
+      <li>페이지 번호: @page 규칙</li>
+      <li>표 페이지 분할 주의</li>
+      <li>배경색 인쇄: -webkit-print 설정</li>
+    </ul>
+  </div>
+</div>
+
+<h3>변경 가능 vs 고정 요약</h3>
+<table class="token-table">
+  <thead><tr><th>카테고리</th><th>고정 (브랜드 정체성)</th><th>변경 권장 (환경 적응)</th><th>확장 필요</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>색상</td>
+      <td>primary 3색 (#1D4E8F, #1A3A6B, #2557A7), 흰 텍스트</td>
+      <td>accent-bg, border, table-alt, muted-text</td>
+      <td>다크모드 팔레트, 인쇄용 팔레트</td>
+    </tr>
+    <tr>
+      <td>타이포</td>
+      <td>계층별 굵기·크기 비율, 들여쓰기 depth</td>
+      <td>폰트 패밀리 (맑은고딕 → Noto Sans KR 등), 줄간격</td>
+      <td>영문 전용 폰트 페어링, 코드 폰트</td>
+    </tr>
+    <tr>
+      <td>구조</td>
+      <td>■/○/–/* 4단계 계층, è 결론박스, 섹션헤더 박스</td>
+      <td>페이지 여백, 섹션 간 간격, 페이지번호 위치</td>
+      <td>사이드바 레이아웃, 2단 구성, 차트 스타일</td>
+    </tr>
+    <tr>
+      <td>표</td>
+      <td>헤더 배경색 = primary-mid, • 항목 나열 방식</td>
+      <td>테두리 두께, 셀 패딩, stripe 색상</td>
+      <td>컬러 코딩 표, 히트맵 표</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

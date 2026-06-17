@@ -60,8 +60,8 @@
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: calc(13px * var(--font-scale)); font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: calc(44px * var(--font-scale)); }
-  .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.92); margin-bottom: 40px; }
+  .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; white-space: pre-line; }
+  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.92); margin-bottom: 40px; white-space: pre-line; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: calc(16px * var(--font-scale)); padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -329,14 +329,71 @@
   pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
   code { font-family: var(--font-code); font-size: calc(0.9em * var(--font-scale)); }
   
-  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
-  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: calc(0.9rem * var(--font-scale)); }
-  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
-  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
-  tr:nth-child(even) { background: #fafafa; }
+  /* Flow Arrow Separator (↓, →, ↑, ←) Styles */
+  .flow-arrow-separator {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 20px 0;
+    color: var(--brand);
+    text-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    animation: guideFlowBounce 2s infinite;
+  }
+  @keyframes guideFlowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* 비교표(Table) 세로형 가이드 스타일 고도화 */
+  table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    margin: 24px 0; 
+    font-size: calc(0.9rem * var(--font-scale)); 
+    border-radius: 8px; 
+    overflow: hidden; 
+    border: 1px solid var(--border); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  th { 
+    background: var(--brand-light); 
+    color: var(--brand-dark); 
+    padding: 13px 16px; 
+    font-weight: 800; 
+    border-bottom: 2px solid var(--border); 
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  th:last-child {
+    border-right: none;
+  }
+  td { 
+    padding: 12px 16px; 
+    border-bottom: 1px solid var(--border); 
+    border-right: 1px solid var(--border);
+    text-align: center; 
+    color: var(--text-2); 
+  }
+  td:last-child {
+    border-right: none;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:nth-child(even) { 
+    background: #fafbfc; 
+  }
+  tr:hover {
+    background: rgba(99, 102, 241, 0.015);
+  }
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
-  td.check-highlight { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+  td.check-highlight { 
+    color: var(--brand-dark); 
+    font-weight: 800; 
+    background: var(--brand-light); 
+  }
 
   /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
   .part-banner { margin-bottom: 30px; }
@@ -454,15 +511,14 @@
 <p>PDF 1권(300페이지) 수작업 Excel 변환에 4<del>6시간 소요. 연간 30</del>60시간 낭비, 오류율 3~5%. 병합 셀·한국어 숫자·다단 구조가 파싱의 주요 장벽.</p>
 <h4>🔄 파이프라인</h4>
 <p>PDF 원본</p>
-<p>→</p>
-<p>pdf_to_json.py (pdfplumber)</p>
-<p>→</p>
-<p>json_structurer.py (병합셀 처리)</p>
-<p>→</p>
-<p>budget_parser.py (DB 저장)</p>
-<p>→</p>
-<p>SQLite budget.db</p>
-<p>pdfplumber</p>
+<div class="flow-arrow-separator">→</div>
+pdf_to_json.py (pdfplumber)
+<div class="flow-arrow-separator">→</div>
+json_structurer.py (병합셀 처리)
+<div class="flow-arrow-separator">→</div>
+budget_parser.py (DB 저장)
+<div class="flow-arrow-separator">→</div>
+SQLite budget.db<p>pdfplumber</p>
 <p>Pydantic</p>
 <p>SQLAlchemy</p>
 <p>Claude Code</p>
@@ -489,13 +545,12 @@
 <p>반복되는 정부 보고서 양식 작업을 3단계 파이프라인으로 자동화</p>
 <h4>🔄 파이프라인</h4>
 <p>Claude 콘텐츠 생성</p>
-<p>→</p>
-<p>sentence-normalizer (□○― 구조화)</p>
-<p>→</p>
-<p>python-pptx / hwpx 빌더</p>
-<p>→</p>
-<p>최종 파일</p>
-<p>python-pptx</p>
+<div class="flow-arrow-separator">→</div>
+sentence-normalizer (□○― 구조화)
+<div class="flow-arrow-separator">→</div>
+python-pptx / hwpx 빌더
+<div class="flow-arrow-separator">→</div>
+최종 파일<p>python-pptx</p>
 <p>pptx_inspector.py</p>
 <p>hwpx SKILL.md</p>
 <p>sentence-normalizer</p>
@@ -520,15 +575,14 @@
 <p>설문→배정→보고서까지, 수작업 이틀을 30분으로</p>
 <h4>🔄 파이프라인</h4>
 <p>Google Form 설문</p>
-<p>→</p>
-<p>Pydantic 검증</p>
-<p>→</p>
-<p>규칙 기반 자동 배정</p>
-<p>→</p>
-<p>Claude 예외 처리</p>
-<p>→</p>
-<p>openpyxl 보고서</p>
-<p>Pydantic</p>
+<div class="flow-arrow-separator">→</div>
+Pydantic 검증
+<div class="flow-arrow-separator">→</div>
+규칙 기반 자동 배정
+<div class="flow-arrow-separator">→</div>
+Claude 예외 처리
+<div class="flow-arrow-separator">→</div>
+openpyxl 보고서<p>Pydantic</p>
 <p>Python 배정 엔진</p>
 <p>Claude API</p>
 <p>openpyxl</p>
@@ -582,15 +636,14 @@
 <p>뱅크샐러드 CSV → 3단계 Excel 체인 → pykrx/yfinance → 대시보드</p>
 <h4>🔄 파이프라인</h4>
 <p>뱅크샐러드 CSV</p>
-<p>→</p>
-<p>DATA.xlsx (정제)</p>
-<p>→</p>
-<p>SUMMARY.xlsx (집계)</p>
-<p>→</p>
-<p>DASHBOARD.xlsx (주가연동)</p>
-<p>→</p>
-<p>Streamlit 대시보드</p>
-<p>pandas</p>
+<div class="flow-arrow-separator">→</div>
+DATA.xlsx (정제)
+<div class="flow-arrow-separator">→</div>
+SUMMARY.xlsx (집계)
+<div class="flow-arrow-separator">→</div>
+DASHBOARD.xlsx (주가연동)
+<div class="flow-arrow-separator">→</div>
+Streamlit 대시보드<p>pandas</p>
 <p>openpyxl</p>
 <p>pykrx (국내주가)</p>
 <p>yfinance (해외주가)</p>
@@ -625,13 +678,12 @@
 <p>블로그, 개인 미디어 — 단독 인용 금지</p>
 <h4>🔄 Phase 분리 워크플로우</h4>
 <p>Phase 1: 웹검색 10회+ 리서치</p>
-<p>→</p>
-<p>사용자 확인</p>
-<p>→</p>
-<p>Phase 2: 보고서 작성</p>
-<p>→</p>
-<p>출처 목록 자동 생성</p>
-<h4>⚠️ 실제 오류 수정 사례</h4>
+<div class="flow-arrow-separator">→</div>
+사용자 확인
+<div class="flow-arrow-separator">→</div>
+Phase 2: 보고서 작성
+<div class="flow-arrow-separator">→</div>
+출처 목록 자동 생성<h4>⚠️ 실제 오류 수정 사례</h4>
 <p>AI 오류:</p>
 <p>&quot;테슬라는 자체 LLM &#39;Grok&#39;을 출시하여...&quot;</p>
 <p>사실:</p>

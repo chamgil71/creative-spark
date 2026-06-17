@@ -114,6 +114,102 @@ footer:                    # 맨 하단 푸터 기재 사항
   :::
   ```
 
+### E. 주요 숏코드군별 핵심 사용례 마크다운 스펙
+사용자는 이 마크업 문법을 그대로 컴파일하므로, 다음의 YAML-like 구조(4칸 들여쓰기)를 칼각으로 엄수하십시오:
+
+#### 1) 3대 동적 시각화 특화 숏코드 (`network-box`, `editor-box`, `git-flow`)
+```markdown
+::: network-box
+- title: "중앙 코어 노드 (첫 번째 위치)"
+  color: "#EC4899"
+- title: "위성 노드 A"
+  meta: "연관 서브 정보"
+  color: "#10B981"
+:::
+
+::: editor-box
+- title: "main.py"
+  tag: "python"
+  desc: |
+    def hello_world():
+        print("Hello Creative Spark!")
+:::
+
+::: git-flow
+- title: "main"
+  tag: "v1.0.0"
+  meta: "배포 파이프라인 무결함 빌드 완수|인덱스 갱신 성공"
+  color: "#10B981"
+- title: "feature/visuals"
+  tag: "Commit 101"
+  meta: "에디터 숏코드 행 번호 기능 탑재|테마 관리자 연동"
+  color: "#3B82F6"
+:::
+```
+
+#### 2) 가로 2단/멀티 워크플로우 흐름도 (`workflow-flow`)
+* *작성 팁*: 슬라이드에서 2단으로 줄바꿈 흐름을 연출하고 싶다면 숏코드 사이에 단독 화살표 행(`↓`)을 적어주십시오. 자동으로 세련된 바운스 화살표로 치환됩니다.
+```markdown
+::: workflow-flow
+- title: "💡 아이디어 발생"
+- title: "📓 Obsidian 기록"
+:::
+
+↓
+
+::: workflow-flow
+- title: "💻 VS Code 개발"
+- title: "💻 Claude Code 구현"
+:::
+```
+
+#### 3) 가격/요금제 비교 격자 카드 (`plan-grid cols=N`)
+```markdown
+::: plan-grid cols=3
+- title: "Free 플랜"
+  tag: "체험용"
+  meta: "기본 숏코드 지원|하루 10회 컴파일"
+  desc: "비용 없음"
+- title: "Spark Pro"
+  tag: "추천"
+  meta: "모든 특화 숏코드 지원|HSL 테마 관리자"
+  desc: "$9.99 / 월"
+  featured: "true"
+  color: "#2563FF"
+:::
+```
+
+#### 4) 비교 스플릿 & 디프 (`compare-split`, `compare-diff`)
+```markdown
+::: compare-split
+- title: "AS-IS (기존 방식)"
+  desc: "수동으로 HTML 마크업을 변경하고 PPTX 레이아웃을 작성해 시간이 지체됨"
+- title: "TO-BE (엔진 도입)"
+  desc: "마크다운 문서 1장을 통해 반응형 HTML과 PowerPoint 파일 자동 동시 생성"
+:::
+
+::: compare-diff
+- title: "Bad (비권장)"
+  desc: "숏코드 내부 리스트 작성 시 표준이 아닌 커스텀 필드명을 남발함"
+- title: "Good (권장)"
+  desc: "Universal Schema인 6대 표준 키(icon, title, desc, tag, meta, color)만 사용"
+:::
+```
+
+#### 5) OS별 다중 탭 전환 컴포넌트 (`os-tabs`)
+```markdown
+::: os-tabs
+- title: "Windows"
+  tag: "PowerShell"
+  desc: |
+    npm run dev:converter
+- title: "macOS / Linux"
+  tag: "Bash"
+  desc: |
+    npm run dev:converter
+:::
+```
+
 ---
 
 ## 4. 6대 표준 키(Universal Schema) 스키마 규칙

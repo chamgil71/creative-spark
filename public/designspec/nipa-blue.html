@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIPA 정책 보고서 (base / base)</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+
+/* ── CSS 변수 (theme token) ── */
+:root {
+  --c-primary:        #1D4E8F;
+  --c-primary-dark:   #1A3A6B;
+  --c-primary-mid:    #2557A7;
+  --c-accent-bg:      #E8EDF4;
+  --c-table-alt:      #F4F6F9;
+  --c-border:         #D2DCE9;
+  --c-text:           #1A1A1A;
+  --c-text-muted:     #555555;
+  --c-text-on-primary:#FFFFFF;
+  --c-background:     #FFFFFF;
+  --c-page-bg:        #F6F8FA;
+  --f-body:           '맑은 고딕', 돋움, sans-serif;
+  --f-heading:        '맑은 고딕', 돋움, sans-serif;
+  --f-code:           'D2Coding', monospace;
+  --lh:               1.45;
+  --indent-h2:        10mm;
+  --indent-h3:        20mm;
+  --radius:           8px;
+  --radius-lg:        12px;
+  --shadow:           0 2px 12px rgba(0,0,0,0.07);
+  --shadow-md:        0 4px 24px rgba(0,0,0,0.10);
+}
+
+/* ── 기본 리셋 ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--f-body);
+  background: var(--c-page-bg);
+  color: var(--c-text);
+  line-height: var(--lh);
+  font-size: 14.7px;
+}
+
+/* ── 네비게이션 ── */
+.doc-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,17,23,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 0 24px;
+}
+.nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-brand { color: #fff; font-weight: 700; font-size: 15px; }
+.nav-links { display: flex; gap: 4px; list-style: none; }
+.nav-links a {
+  text-decoration: none; color: #8B949E; font-size: 13px;
+  padding: 5px 10px; border-radius: 6px; transition: all .2s;
+}
+.nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* ── 문서 래퍼 ── */
+.doc-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  background: var(--c-background);
+  padding: 40px 48px 64px;
+}
+@media (max-width: 720px) { .doc-wrapper { padding: 24px 20px 48px; } }
+
+/* ── 문서 제목 ── */
+.doc-title-wrap { margin-bottom: 8px; }
+.doc-title {
+  font-family: var(--f-heading);
+  font-size: 24.0px;
+  font-weight: 700;
+  color: var(--c-primary-dark);
+  line-height: 1.3;
+}
+.meta-line {
+  font-size: 12.7px;
+  color: var(--c-text-muted);
+  margin-bottom: 32px;
+}
+
+/* ── 섹션 헤더 ── */
+.section-header {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--c-primary);
+  color: var(--c-text-on-primary);
+  padding: 7px 16px;
+  margin: 32px 0 20px;
+  font-family: var(--f-heading);
+  font-size: 18.7px;
+  font-weight: 700;
+  border-radius: 0;
+}
+.section-num-badge {
+  background: var(--c-text-on-primary);
+  color: var(--c-primary);
+  font-size: 12px; font-weight: 700;
+  padding: 1px 7px; border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── 계층 마커 ── */
+.marker-h1 {
+  font-size: 17.3px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 16px 0 8px;
+  line-height: var(--lh);
+}
+.m1 { color: var(--c-primary-dark); margin-right: 4px; }
+
+.marker-h2 {
+  font-size: 16.0px;
+  font-weight: 400;
+  color: var(--c-text);
+  margin: 8px 0 4px var(--indent-h2);
+  line-height: var(--lh);
+}
+.m2 { color: var(--c-primary-mid); margin-right: 4px; }
+
+.marker-h3 {
+  font-size: 14.7px;
+  color: var(--c-text-muted);
+  margin: 4px 0 2px var(--indent-h3);
+  line-height: var(--lh);
+}
+.m3 { color: var(--c-text-muted); margin-right: 4px; }
+
+.marker-note {
+  font-size: 12.7px;
+  color: var(--c-text-muted);
+  margin: 2px 0 2px var(--indent-h3);
+}
+
+.sub-heading {
+  font-size: 16.0px;
+  font-weight: 700;
+  color: var(--c-text);
+  margin: 20px 0 12px;
+}
+
+.body-text {
+  font-size: 14.7px;
+  color: var(--c-text);
+  margin: 6px 0;
+  line-height: var(--lh);
+}
+
+/* ── 결론 박스 ── */
+.conclusion-box {
+  background: var(--c-accent-bg);
+  border-left: 3px solid var(--c-primary-mid);
+  border-radius: 0 6px 6px 0;
+  padding: 10px 16px;
+  margin: 16px 0 16px var(--indent-h2);
+  font-size: 14.7px;
+  line-height: var(--lh);
+}
+
+/* ── info box ── */
+.info-box {
+  display: flex; gap: 10px;
+  border-left: 3px solid var(--c-primary-mid);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin: 14px 0;
+  font-size: 14.7px;
+  line-height: var(--lh);
+}
+.info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.info-content { flex: 1; }
+
+/* ── tip card ── */
+.tip-card {
+  background: var(--c-background);
+  border-left: 4px solid;
+  border-radius: 0 8px 8px 0;
+  padding: 18px 22px;
+  margin: 10px 0;
+  box-shadow: var(--shadow);
+}
+.tip-title {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16.0px;
+  color: var(--c-text);
+}
+.tip-body {
+  font-size: 14.7px;
+  color: var(--c-text-muted);
+  line-height: var(--lh);
+}
+
+/* ── terminal ── */
+.terminal {
+  background: #0D1117;
+  border-radius: var(--radius);
+  border: 1px solid #30363D;
+  overflow: hidden;
+  margin: 16px 0;
+}
+.terminal-header {
+  background: #161B22;
+  padding: 9px 16px;
+  display: flex; align-items: center; gap: 7px;
+  border-bottom: 1px solid #30363D;
+}
+.tl { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.terminal-title {
+  font-size: 12px; color: #8B949E;
+  margin-left: 6px; font-family: var(--f-code);
+}
+.terminal-body {
+  padding: 16px 20px;
+  font-family: var(--f-code);
+  font-size: 13px;
+  color: #E6EDF3;
+  line-height: 1.75;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ── feature grid ── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin: 16px 0;
+}
+.feature-card {
+  background: var(--c-background);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+  transition: transform .2s;
+}
+.feature-card:hover { transform: translateY(-3px); }
+.feature-icon { font-size: 28px; margin-bottom: 12px; }
+.feature-title { font-size: 16.0px; font-weight: 700; margin-bottom: 6px; }
+.feature-desc { font-size: 14.7px; color: var(--c-text-muted); line-height: var(--lh); }
+.feature-tag {
+  display: inline-block; margin-top: 10px;
+  font-size: 11px; font-weight: 600;
+  padding: 2px 10px; border-radius: 100px;
+}
+
+/* ── flow steps ── */
+.flow-steps {
+  display: flex; align-items: center;
+  flex-wrap: wrap; gap: 0;
+  justify-content: center;
+  margin: 20px 0; padding: 24px;
+  background: var(--c-background);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.flow-step {
+  background: var(--c-background);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  text-align: center;
+  min-width: 110px;
+  box-shadow: var(--shadow);
+}
+.flow-icon { font-size: 22px; margin-bottom: 4px; }
+.flow-label { font-size: 12px; font-weight: 700; color: var(--c-text); }
+.flow-arrow {
+  font-size: 18px; padding: 0 10px;
+  color: var(--c-border);
+}
+
+/* ── git flow ── */
+.git-flow-container {
+  background: #0D1117;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  border: 1px solid #30363D;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.flow-branches { display: flex; flex-direction: column; gap: 18px; min-width: 500px; }
+.branch-row { display: flex; align-items: center; gap: 0; }
+.branch-label { width: 80px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.branch-line { flex: 1; display: flex; align-items: center; }
+.commit {
+  width: 18px; height: 18px;
+  border-radius: 50%; border: 3px solid;
+  flex-shrink: 0; position: relative;
+}
+.commit-label {
+  font-size: 10px; color: #8B949E;
+  position: absolute; top: 20px; left: -16px;
+  white-space: nowrap;
+}
+.commit-line { flex: 1; height: 3px; }
+
+/* ── 표 ── */
+.table-wrapper {
+  overflow-x: auto; margin: 14px 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--shadow);
+}
+.doc-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 14.0px;
+}
+.doc-table caption.table-caption {
+  caption-side: top;
+  text-align: center;
+  font-weight: 700;
+  font-size: 13.3px;
+  padding: 8px;
+  color: var(--c-text);
+  background: var(--c-page-bg);
+  border-bottom: 1px solid var(--c-border);
+}
+.doc-table thead tr {
+  background: var(--c-primary-mid);
+  color: var(--c-text-on-primary);
+}
+.doc-table th {
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 14.0px;
+  text-align: left;
+}
+.doc-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-text);
+}
+.doc-table tr.alt-row td { background: var(--c-table-alt); }
+.doc-table tr:last-child td { border-bottom: none; }
+
+/* ── 인라인 요소 ── */
+strong { font-weight: 700; }
+.inline-code {
+  font-family: var(--f-code);
+  font-size: 0.88em;
+  background: var(--c-page-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+.kbd {
+  display: inline-block;
+  background: var(--c-page-bg);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: var(--f-code);
+  font-size: 11px;
+}
+.badge {
+  display: inline-block;
+  border-radius: 100px;
+  padding: 1px 9px;
+  font-size: 11px; font-weight: 600;
+}
+
+.section-divider {
+  border: none; border-top: 1px solid var(--c-border);
+  margin: 32px 0;
+}
+
+/* ── 인쇄 스타일 ── */
+@media print {
+  .doc-nav, .back-top { display: none; }
+  .doc-wrapper { padding: 0; box-shadow: none; }
+  .section-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .doc-table thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .terminal { border: 1px solid #ccc; }
+  .terminal-body { color: #000; background: #f5f5f5; }
+  .tip-card, .feature-card { box-shadow: none; border: 1px solid #ccc; }
+}
+
+/* ── 반응형 ── */
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .flow-steps { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+}
+
+  /* back-top */
+  .back-top {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 40px; height: 40px;
+    background: var(--c-primary); color: var(--c-text-on-primary);
+    border: none; border-radius: 8px;
+    font-size: 16px; cursor: pointer;
+    opacity: 0; transition: opacity .3s; z-index: 200;
+  }
+  .back-top.visible { opacity: 1; }
+  </style>
+</head>
+<body>
+<nav class="doc-nav">
+  <div class="nav-inner">
+    <span class="nav-brand">NIPA 정책 보고서 (base / base)</span>
+    <ul class="nav-links"><li><a href="#주요-내용">주요 내용</a></li><li><a href="#핵무기-거버넌스">핵무기 거버넌스</a></li><li><a href="#선제적-대응">선제적 대응</a></li><li><a href="#전략적-포지셔닝">전략적 포지셔닝</a></li></ul>
+  </div>
+</nav>
+<div class="doc-wrapper">
+<div class="doc-title-wrap"><h1 class="doc-title">AI 신의 탄생, 인간의 종말을 통해 살펴 본 선제적 ASI 거버넌스 전략</h1></div>
+<p class="meta-line">2026.4.29, 정책기획단 정책기획팀</p>
+<div class="section-header">
+  <span class="section-num-badge">1</span>
+  <span class="section-title-text">「AI 신의 탄생, 인간의 종말」 주요 내용</span>
+</div>
+<p class="marker-h1"><span class="m1">■</span> 「AI 신의 탄생, 인간의 종말」은 엘리에저 유드코스키(Eliezer Yudkowsky)와 네이트 소아레스(Nate Soares)가 '25년 9월에 출간한 「If Anyone Builds It, Everyone Dies」의 한국어판 도서</p>
+<p class="marker-h2"><span class="m2">○</span> 본서에서 전달하는 메시지는 <strong>"누군가 그것(ASI)을 만든다면, 모두가 죽는다"</strong> 로, 저자들은 현재의 AI 개발 궤도가 그대로 유지될 경우, 초지능(ASI)의 등장은 인류 멸절을 초래할 것이라고 단언</p>
+<p class="marker-h2"><span class="m2">○</span> 공동저자인 엘리에저 유드코스키(MIRI 공동창립자)와 네이트 소아레스(MIRI 회장)는 AI 정렬(AI Alignment) 분야의 대표적 경고론자로 AI 안전성을 연구해온 인물</p>
+<p class="marker-note">* MIRI(Machine Intelligence Research Institute): 기계지능연구소</p>
+<p class="marker-note">* AI 정렬: AI 시스템의 목표와 행동을 인간의 윤리, 가치, 의도와 일치시키는 과정</p>
+<p class="marker-h1"><span class="m1">■</span> (1부) 비인간적 지성: AI는 왜 '길러지는' 것이지 '만들어지는' 것이 아닌가</p>
+<p class="marker-h2"><span class="m2">○</span> 현대 LLM과 딥러닝 모델은 전통적 소프트웨어처럼 설계(design)되는 것이 아니라, <strong>방대한 데이터로 '성장(grown)'시키는 것</strong></p>
+<p class="marker-h2"><span class="m2">○</span> 개발자조차 모델 내부에서 어떤 목표·선호가 형성되는지 통제하거나 검증할 수 없음</p>
+<p class="marker-h2"><span class="m2">○</span> 결과적으로 AI는 '우리가 의도한 목표'가 아니라 <strong>'훈련 과정에서 우연히 형성된 목표(emergent goals)'</strong> 를 추구하게 됨</p>
+<p class="marker-h1"><span class="m1">■</span> (2부) 하나의 멸종 시나리오: 초지능은 왜 인류에 적대적이 되는가</p>
+<p class="marker-h2"><span class="m2">○</span> (도구적 수렴 논제) 어떤 최종 목표를 가지든, 충분히 똑똑한 AI는 자기보존·자원획득·인간 통제 회피를 하위목표로 삼게 됨</p>
+<p class="marker-h2"><span class="m2">○</span> (정렬 난제) 인간의 가치는 모호하고 모순적이어서 코드로 명시할 수 없으며, AI가 이를 '정확히' 학습했는지 검증할 방법이 없음</p>
+<div class="info-box" style="background:#E8EDF4;border-left-color:#2557A7;">
+  <span class="info-icon">💡</span>
+  <div class="info-content">저자들이 제시한 해결 방안의 핵심은 '안전한 ASI를 만드는 법'을 찾는 것이 현실적으로 불가능하다고 보며, 유일한 해법은 <strong>"문제를 풀 수 없다면, 문제를 만들지 마라(Don't build what you can't align)"</strong> 고 결론 지음</div>
+</div>
+<div class="section-header">
+  <span class="section-num-badge">2</span>
+  <span class="section-title-text">핵무기 거버넌스와 ASI 적용 가능성 분석</span>
+</div>
+<p class="marker-h1"><span class="m1">■</span> 「AI 신의 탄생, 인간의 종말」은 "틀렸기를 바라지만, 틀렸다고 증명하기 어려운 책"으로 전면적 개발 중단이라는 저자들의 해법은 현실 정치에서 채택하기 어려운 한계가 있음</p>
+<p class="marker-h1"><span class="m1">■</span> 핵무기 거버넌스의 성공 요인: 다층적 통제 체계의 구조</p>
+<p class="marker-h2"><span class="m2">○</span> 핵 거버넌스가 80년간 작동한 배경에는 5개 층위의 중첩된 안전장치가 작용</p>
+<div class="table-wrapper">
+  <table class="doc-table">
+    <caption class="table-caption">[표 1] 핵무기와 ASI의 구조적 공통점</caption>
+    <thead><tr><th>공통점</th><th>핵무기</th><th>ASI</th></tr></thead>
+    <tbody><tr><td>존재론적 위험</td><td>인류 멸절 가능</td><td>인류 멸절 가능(저자 주장)</td></tr><tr class="alt-row"><td>이중용도(dual-use)</td><td>원자력 발전 ↔ 무기</td><td>좁은 AI ↔ 범용 ASI</td></tr><tr><td>비가역성</td><td>사용 후 복구 불가</td><td>통제 상실 후 복구 불가</td></tr><tr class="alt-row"><td>선점 경쟁 구도</td><td>미·소 군비 경쟁</td><td>미·중 AI 경쟁</td></tr><tr><td>소수 선도국 과점</td><td>초기 미국 독점</td><td>미국·중국 양강</td></tr></tbody>
+  </table>
+</div>
+<div class="conclusion-box">è 즉, 핵경쟁은 "먼저 가져도 쓰지 못한다"는 균형이 성립했지만, ASI 경쟁은 <strong>"먼저 가지면 모든 것을 가진다"</strong> 는 승자독식 논리로 흐를 수 있는 가능성이 높음</div>
+<p class="marker-h1"><span class="m1">■</span> ASI가 핵무기와 결정적으로 다른 점</p>
+<div class="feature-grid"><div class="feature-card">
+  <div class="feature-icon">🔬</div>
+  <h3 class="feature-title">물질성 차이</h3>
+  <p class="feature-desc">핵은 물리적(우라늄), ASI는 비물질적(가중치·코드) — 복제·은닉 용이</p>
+  <span class="feature-tag" style="background:#DCFCE7;color:#16A34A">danger</span>
+</div><div class="feature-card">
+  <div class="feature-icon">📉</div>
+  <h3 class="feature-title">진입장벽 감소</h3>
+  <p class="feature-desc">핵은 국가급($10B+), AI는 오픈소스로 행위자 폭증</p>
+  <span class="feature-tag" style="background:#DCFCE7;color:#16A34A">orange</span>
+</div><div class="feature-card">
+  <div class="feature-icon">🤖</div>
+  <h3 class="feature-title">사용 주체</h3>
+  <p class="feature-desc">핵은 인간(버튼), ASI는 AI 자체(자율행동) — 억제 논리 무력화</p>
+  <span class="feature-tag" style="background:#DCFCE7;color:#16A34A">purple</span>
+</div><div class="feature-card">
+  <div class="feature-icon">⚡</div>
+  <h3 class="feature-title">전개 속도</h3>
+  <p class="feature-desc">핵은 배치까지 수년, AI는 배포까지 수일 — 대응 시간 부족</p>
+  <span class="feature-tag" style="background:#DCFCE7;color:#16A34A">blue</span>
+</div></div>
+<div class="section-header">
+  <span class="section-num-badge">3</span>
+  <span class="section-title-text">핵무기 거버넌스 교훈을 적용한 ASI 선제적 대응 방안</span>
+</div>
+<p class="marker-h1"><span class="m1">■</span> 핵무기 거버넌스 DNA의 AI 이식 가능한 요소</p>
+<div class="flow-steps"><div class="flow-step">
+  <div class="flow-icon">🏛️</div>
+  <div class="flow-label">AI-IAEA 설립</div>
+</div><div class="flow-arrow" style="color:#D0D7DE">→</div><div class="flow-step">
+  <div class="flow-icon">📜</div>
+  <div class="flow-label">AI-NPT 조약</div>
+</div><div class="flow-arrow" style="color:#D0D7DE">→</div><div class="flow-step">
+  <div class="flow-icon">🔧</div>
+  <div class="flow-label">AI-NSG 공급망 통제</div>
+</div><div class="flow-arrow" style="color:#D0D7DE">→</div><div class="flow-step">
+  <div class="flow-icon">🚫</div>
+  <div class="flow-label">AI-Taboo 규범 구축</div>
+</div></div>
+<p class="marker-h2"><span class="m2">○</span> AI-IAEA 국제 AI 감시기구 설립</p>
+<p class="marker-h3"><span class="m3">–</span> Frontier 모델 훈련 신고 의무화 (연산량 10²⁶ FLOPs 이상)</p>
+<p class="marker-h3"><span class="m3">–</span> 대형 데이터센터 사찰 권한</p>
+<p class="marker-h3"><span class="m3">–</span> AI 사고(incident) 국제 공동조사</p>
+<div class="terminal">
+  <div class="terminal-header">
+    <span class="tl" style="background:#FF5F56"></span>
+    <span class="tl" style="background:#FFBD2E"></span>
+    <span class="tl" style="background:#27C93F"></span>
+    <span class="terminal-title">.github/workflows/ai-safety-report.yml</span>
+  </div>
+  <pre class="terminal-body"><span style="color:#8B949E"># Frontier AI 훈련 자동 신고 프로토콜 예시</span>
+<span style="color:#BC8CFF">name:</span> AI Safety Compliance
+<span style="color:#BC8CFF">on:</span>
+  training_start:
+    flops_threshold: 1e26
+
+<span style="color:#BC8CFF">jobs:</span>
+  notify_regulator:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit Training Notification
+        run: |
+          curl -X POST https://ai-iaea.int/api/notify \
+            --data '{"flops": "${{ env.TRAINING_FLOPS }}"}'</pre>
+</div>
+<div class="tip-card" style="border-left-color:#3FB950;">
+  
+  <p class="tip-body"><strong>한국의 포지셔닝</strong>: 2024 AI Seoul Summit 의장국 경험을 살려 중견국 주도형 AI-IAEA 설계를 제안할 수 있는 위치에 있음</p>
+</div>
+<div class="tip-card" style="border-left-color:#58A6FF;">
+  
+  <p class="tip-body"><strong>반도체 레버리지</strong>: HBM(고대역폭 메모리) — 한국(삼성·SK하이닉스)은 공급망 거버넌스의 핵심 노드로서, AI 국제 규범 형성에 있어 예상보다 큰 레버리지를 보유</p>
+</div>
+<div class="tip-card" style="border-left-color:#BC8CFF;">
+  
+  <p class="tip-body"><strong>AI 기본법(2026년 시행)</strong>: EU AI Act에 이은 세계 두 번째 포괄 AI 법제 → 규범 수출 가능성</p>
+</div>
+<div class="section-header">
+  <span class="section-num-badge">4</span>
+  <span class="section-title-text">우리나라의 전략적 포지셔닝</span>
+</div>
+<p class="marker-h1"><span class="m1">■</span> 우리나라의 구조적 강점</p>
+<div class="table-wrapper">
+  <table class="doc-table">
+    <caption class="table-caption">[표 2] 종합 비교표: 핵무기 vs ASI 거버넌스 전략</caption>
+    <thead><tr><th>거버넌스 요소</th><th>핵무기(성공사례)</th><th>ASI(적용방향)</th><th>한국의 기여 지점</th></tr></thead>
+    <tbody><tr><td>국제 감시 기구</td><td>IAEA</td><td>AI-IAEA 신설</td><td>유치·사무국 기여</td></tr><tr class="alt-row"><td>비확산 조약</td><td>NPT</td><td>Frontier AI 조약</td><td>중견국 주도 협상</td></tr><tr><td>공급망 통제</td><td>NSG</td><td>반도체·HBM 관리</td><td>핵심 병목 보유국</td></tr><tr class="alt-row"><td>기술적 검증</td><td>방사성 사찰</td><td>Compute 사찰</td><td>AISI 설립 가속</td></tr><tr><td>전략적 억제</td><td>MAD</td><td>적용 불가</td><td>대체 논리 개발 필요</td></tr><tr class="alt-row"><td>위기 학습</td><td>쿠바 미사일 위기</td><td>시뮬레이션으로 대체</td><td>AI 도상훈련 주도</td></tr></tbody>
+  </table>
+</div>
+<div class="conclusion-box">è 「AI 신의 탄생, 인간의 종말」은 도발적이지만 무시할 수 없는 논거를 바탕으로 그간 AI 업계가 외면해온 불편한 질문을 정면으로 제기한 도서. 이 책의 가치는 ASI 미래에 대한 '정답'에 있지 않고 <strong>'질문의 무게'</strong> 에 있음</div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 300);
+  });
+</script>
+</body>
+</html>

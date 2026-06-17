@@ -699,6 +699,20 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     }
     const raw = fs.readFileSync(fp, "utf8").replace(/\r\n/g, "\n");
     const { data: fm, content } = matter(raw);
+
+    const sanitizeTitle = (t) => {
+      let clean = String(t ?? "").trim();
+      if (clean.startsWith('"') && clean.endsWith('"')) {
+        clean = clean.slice(1, -1);
+      } else if (clean.startsWith("'") && clean.endsWith("'")) {
+        clean = clean.slice(1, -1);
+      }
+      return clean.trim();
+    };
+
+    fm.title = sanitizeTitle(fm.title || "");
+    if (fm.subtitle) fm.subtitle = sanitizeTitle(fm.subtitle);
+
     if (!mainFm) mainFm = fm;
 
     const styleKey = opts.style || fm.style || "ai-chat";
@@ -712,6 +726,9 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
 
     // Replace literal '\n' and '/n' (not part of URLs) with <br> inside general markdown text
     processedContent = processedContent.replace(/(?<!https?:|[a-zA-Z0-9.\-_]+)(?:\\n|\/n)(?!\w)/g, "<br>");
+
+    // 💡 단독 화살표 줄(↓, →, ↑, ←)을 중앙 정렬 세퍼레이터 div로 치환
+    processedContent = processedContent.replace(/^\s*(↓|→|↑|←)\s*$/gm, '<div class="flow-arrow-separator">$1</div>');
 
     const tokens = marked.lexer(processedContent);
     let currentSlide = {
@@ -807,9 +824,18 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     const styleAttr = `style="--brand: ${activeStyle.brand}; --brand-dark: ${activeStyle.brandDark}; --brand-deep: ${activeStyle.brandDeep}; --brand-light: ${activeStyle.brandLight}; --brand-mid: ${activeStyle.brandMid}; --brand-gradient: linear-gradient(135deg, ${activeStyle.brand}, ${activeStyle.brandDeep});"`;
 
     if (s.type === "cover") {
-      return `<div class="slide cover" ${styleAttr}>
-        <h1>${s.title}</h1>
-        ${s.body ? `<div class="cover-body">${s.body}</div>` : ""}
+      const coverBg = mainFm?.coverBg || "";
+      const coverTextColor = mainFm?.coverTextColor || "";
+      
+      let coverStyle = "";
+      if (coverBg) coverStyle += `background: ${coverBg}; `;
+      if (coverTextColor) coverStyle += `color: ${coverTextColor}; `;
+      
+      const inlineStyle = coverStyle ? `style="${coverStyle}"` : "";
+      
+      return `<div class="slide cover" ${styleAttr} ${inlineStyle}>
+        <h1 ${coverTextColor ? `style="color: ${coverTextColor}; text-shadow: none;"` : ""}>${s.title}</h1>
+        ${s.body ? `<div class="cover-body" ${coverTextColor ? `style="color: ${coverTextColor};"` : ""}>${s.body}</div>` : ""}
       </div>`;
     }
     return `<div class="slide content" ${styleAttr}>
@@ -1019,12 +1045,14 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     color: #fff;
     margin-bottom: 24px;
     text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    white-space: pre-line;
   }
   .slide.cover > p {
     font-family: var(--font-desc);
     font-size: calc(1.7rem * var(--font-scale));
     color: var(--brand-light);
     max-width: 900px;
+    white-space: pre-line;
   }
   .cover-body {
     max-width: 900px;
@@ -1038,6 +1066,7 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     line-height: 1.8;
     margin-bottom: 24px;
     color: var(--brand-light);
+    white-space: pre-line;
   }
   
   .slide.content {
@@ -1071,6 +1100,103 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
     flex: 1;
     font-size: calc(1.45rem * var(--font-scale));
     line-height: 1.8;
+  }
+
+  /* Premium Table Styles for Slides */
+  table { 
+    width: 100%; 
+    max-width: 96%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    margin: 20px auto; 
+    font-size: calc(0.9rem * var(--font-scale)); 
+    background: rgba(255, 255, 255, 0.05); 
+    border-radius: 12px; 
+    overflow: hidden; 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); 
+    backdrop-filter: blur(4px); 
+  }
+
+  /* Flow Arrow Separator (↓, →, ↑, ←) Styles */
+  .flow-arrow-separator {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 15px 0;
+    color: var(--brand);
+    text-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+    animation: flowBounce 2s infinite;
+  }
+  @keyframes flowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  .slide:not(.cover) table {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  th { 
+    background: rgba(255, 255, 255, 0.15); 
+    color: #fff; 
+    padding: 14px 16px; 
+    font-weight: 800; 
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2); 
+    text-align: center; 
+    font-size: calc(0.95rem * var(--font-scale));
+    letter-spacing: -0.02em;
+  }
+  
+  .slide:not(.cover) th {
+    background: var(--brand);
+    color: #fff;
+    border-bottom: 2px solid var(--brand-dark);
+  }
+
+  td { 
+    padding: 12px 16px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+    text-align: center; 
+    color: rgba(255, 255, 255, 0.9); 
+    font-size: calc(0.85rem * var(--font-scale));
+  }
+  
+  .slide:not(.cover) td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:nth-child(even) { 
+    background: rgba(255, 255, 255, 0.02); 
+  }
+  
+  .slide:not(.cover) tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .slide:not(.cover) tr:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  td.check-highlight { 
+    color: #34d399; 
+    font-weight: 800; 
+    background: rgba(52, 211, 153, 0.1); 
+  }
+  
+  .slide:not(.cover) td.check-highlight {
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.12);
   }
   .slide-body p { margin-bottom: 20px; color: var(--text-muted); font-size: calc(var(--size-body-p) * var(--font-scale)); }
   .slide-body h3 { font-family: var(--font-title); font-size: calc(var(--size-h3) * var(--font-scale)); color: var(--text); margin: 24px 0 12px; }
@@ -1320,12 +1446,12 @@ export function buildPresentationHtml(inputPaths, opts = {}) {
   }
 
   /* Workflow */
-  .workflow-flow { display: flex; gap: 15px; margin: 25px 0; overflow-x: auto; padding-bottom: 10px; width: 100%; }
-  .wf-step { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; position: relative; }
-  .wf-icon { width: 45px; height: 45px; margin: 0 auto 10px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-  .wf-name { font-weight: 800; font-size: 1rem; margin-bottom: 5px; color: var(--text); }
-  .wf-tool { font-size: 0.8rem; color: var(--text-muted); }
-  .wf-arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-weight: 900; color: var(--text-muted); opacity: 0.5; z-index: 1; font-size: 1.2rem; }
+  .workflow-flow { display: flex; gap: 15px; margin: 12px 0; overflow-x: auto; padding-bottom: 8px; width: 100%; justify-content: center; }
+  .wf-step { flex: 0 1 auto; min-width: 130px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; text-align: center; position: relative; }
+  .wf-icon { width: 38px; height: 38px; margin: 0 auto 8px; background: var(--brand-light); color: var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; }
+  .wf-name { font-weight: 800; font-size: 0.95rem; margin-bottom: 3px; color: var(--text); }
+  .wf-tool { font-size: 0.75rem; color: var(--text-muted); }
+  .wf-arrow { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-weight: 900; color: var(--text-muted); opacity: 0.5; z-index: 1; font-size: 1.1rem; }
 
   /* Steps */
   .step-list { display: flex; flex-direction: column; gap: 15px; margin: 25px 0; width: 100%; }

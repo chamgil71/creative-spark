@@ -1178,3 +1178,29 @@ stats:
   desc: "자동 인증서\n방화벽 내장\n취약점 스캔"
   color: "#E11D48"
 :::
+
+# 부록 E. Frontmatter (문서 메타) 및 slide-config
+
+## 1. Frontmatter 설정 (문서 메타데이터)
+마크다운 문서 최상단의 YAML Frontmatter 영역에서 문서 전체의 테마, 제목, 및 표지 설정을 할 수 있습니다.
+
+| 설정 키 | 설명 | 예시 |
+| --- | --- | --- |
+| `title` | 문서 전체 제목 (표지에 렌더링) | `"Creative Spark 가이드"` |
+| `subtitle` | 문서 부제목 | `"숏코드 설명서"` |
+| `badge` | 표지 상단에 노출되는 배지 | `"v2.0"` |
+| `style` | 문서에 적용할 테마 명칭 | `"custom-blue"`, `"ai-chat"`, `"green"`, `"purple"`, `"coral"` 등 |
+| `coverBg` | 표지 전용 배경색 또는 그라데이션 | `"#2563FF"`, `"linear-gradient(135deg, #2563FF, #0F478F)"` |
+
+## 2. slide-config 숏코드
+개별 슬라이드나 섹션의 배경색(`bg`)과 글자색(`color`)을 임의로 재정의할 수 있는 특수 숏코드입니다. 이 숏코드는 화면에 렌더링되지 않으며 해당 슬라이드의 스타일만 오버라이드합니다.
+
+숏코드 입력내용
+
+```md
+\::: slide-config
+bg: "#0F172A"
+color: "#F8FAFC"
+\:::
+```
+

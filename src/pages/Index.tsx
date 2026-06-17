@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Search, Sparkles } from "lucide-react";
+import { ArrowRight, Search, Sparkles, SlidersHorizontal } from "lucide-react";
 import { categories, collections, showcase } from "@/data/guides";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -54,19 +54,27 @@ const Index = () => {
             </span>
             <span>AI 가이드 허브</span>
           </Link>
-          <nav className="hidden md:flex items-center gap-1">
-            {categories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => scrollToCategory(c.id)}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  activeCat === c.id ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </nav>
+          <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center gap-1">
+              {categories.map((c) => (
+                <button
+                  key={c.id}
+                  onClick={() => scrollToCategory(c.id)}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                    activeCat === c.id ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </nav>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/converter" className="gap-1.5">
+                <SlidersHorizontal className="h-3.5 w-3.5" />
+                가이드 변환기
+              </Link>
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -287,6 +295,16 @@ const Index = () => {
           <p>{categories.reduce((n, c) => n + c.guides.length, 0)}개의 가이드</p>
         </div>
       </footer>
+
+      {/* Floating Standalone Button (only visible on index page) */}
+      <a 
+        href="/standalone.html" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-1.5 px-5 py-3 rounded-full bg-slate-900 text-white font-bold text-sm shadow-xl hover:bg-slate-800 hover:-translate-y-0.5 hover:shadow-2xl transition-all duration-150"
+      >
+        <span>📦 스탠드얼론 버전</span>
+      </a>
     </div>
   );
 };

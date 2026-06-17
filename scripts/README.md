@@ -1,97 +1,41 @@
-# scripts/ — HTML → PPT 변환 도구
+# scripts/ — 프레젠테이션 & 가이드 빌드 스크립트
 
-HTML 가이드 파일을 PowerPoint(.pptx)로 변환하는 Node.js CLI 스크립트입니다.
+프로젝트의 마크다운(MD) 가이드를 HTML 프레젠테이션 및 PowerPoint(.pptx) 파일로 컴파일하고 빌드하기 위한 Node.js CLI 스크립트 모음입니다.
+
+> [!NOTE]
+> 기존에 사용되던 HTML ──> MD 역변환 및 실험적 HTML ──> PPTX 체인 변환기 스크립트(`html-to-md.mjs`, `html-to-pptx.mjs`, `restore-md-from-html.mjs`)들은 현재 파이프라인에서 불필요해짐에 따라 [docs/backup/](file:///c:/ai/creative-spark/docs/backup/) 디렉토리로 백업 이동되었습니다.
 
 ---
 
-## 빠른 시작
+## 주요 스크립트 목록
+
+### 1) 마크다운 ──> PPTX 변환기 (`scripts/md-to-pptx.mjs`)
+마크다운 소스(`md_src/`) 파일을 PowerPoint 슬라이드(.pptx)로 정밀 변환합니다.
 
 ```bash
-# 단일 파일 변환
-node scripts/html-to-pptx.mjs public/guides/Claude.html
-
-# 출력 경로 지정
-node scripts/html-to-pptx.mjs public/guides/Claude.html --out dist/Claude.pptx
-
-# styles.json 색상 프리셋 적용
-node scripts/html-to-pptx.mjs public/guides/notion.html --style knowledge
-
-# 모든 가이드 일괄 변환
-node scripts/html-to-pptx.mjs --all "public/guides/*.html"
-
-# 상세 로그 출력
-node scripts/html-to-pptx.mjs public/guides/Claude.html --verbose
+# md-to-pptx 실행 (package.json script)
+npm run pptx:md
 ```
 
-출력 파일은 기본적으로 `dist-pptx/` 폴더에 저장됩니다.
+### 2) 프레젠테이션 빌더 (`scripts/build-presentation.mjs`)
+마크다운 가이드를 슬라이드용 HTML 프레젠테이션 형태로 빌드합니다. 단독 화살표 세퍼레이터 파싱 및 슬라이드 전용 표 스타일을 렌더링합니다.
 
----
-
-## 옵션
-
-| 옵션 | 설명 |
-|------|------|
-| `--out <path>` | 출력 .pptx 파일 경로 |
-| `--style <key>` | `config/styles.json` 색상 프리셋 사용 |
-| `--config <path>` | 커스텀 설정 파일 경로 |
-| `--all` | 위치 인수를 glob 패턴으로 처리 |
-| `--no-cover` | 표지 슬라이드 생성 안 함 |
-| `--verbose` | 섹션/블록 파싱 상세 로그 출력 |
-
-**`--style` 가능한 값:**
-
-| 키 | 설명 | 브랜드 색상 |
-|---|---|---|
-| `ai-chat` | AI 챗봇 (초록) | #10A37F |
-| `ai-dev` | AI 개발 도구 (오렌지) | #D97757 |
-| `knowledge` | 노트·지식 관리 (퍼플) | #6366F1 |
-| `productivity` | 생산성 유틸 (블루) | #1565C0 |
-| `creative` | 크리에이티브 AI (마젠타) | #9B59B6 |
-
----
-
-## 설정 파일 (`pptx.config.json`) 주요 항목
-
-### 섹션 구분 방식 변경
-
-```jsonc
-// 기본값 — section.section / div.section 둘 다 지원
-"sectionSelectors": ["section.hero", "section.section", "div.section", "section.done-section"]
-
-// h2 태그 기준으로 나누고 싶다면
-"sectionSelectors": ["h2"]
+```bash
+npm run build:slide
 ```
 
-### 그리드 레이아웃 설정
+### 3) 독립 실행형 번들러 (`scripts/build-standalone.mjs`)
+웹 가이드 변환기를 오프라인 및 독립 단독 실행이 가능한 단일 `standalone.html` 파일로 컴파일합니다.
 
-```jsonc
-"grid": {
-  "cardMinW": 2.8,        // 카드 최소 폭 (인치)
-  "cardMaxCols": 4,       // 최대 열 수
-  "cardH": 1.6,           // 카드 고정 높이
-  "overflowBehavior": "warn"  // "allow" 또는 "warn"
-}
+```bash
+npm run build:standalone
 ```
 
-### 색상 소스 변경
+### 4) 가이드 문서 동기화기 (`scripts/sync-guides-index.mjs`)
+제작된 다양한 가이드 문서 목록을 에디터와 뷰어에 바인딩할 수 있도록 메타데이터(`guides.json`)를 동기화 생성합니다.
 
-```jsonc
-// HTML CSS 변수 자동 추출 (기본값)
-"colorSource": "html"
-
-// styles.json 프리셋 사용
-"colorSource": "styles-json",
-"styleKey": "knowledge"
-```
-
-### 새 카드 클래스 추가
-
-HTML 파일에 새로운 카드 클래스가 생기면:
-```jsonc
-"cardClasses": [
-  "model-card", "project-card", ...,
-  "my-new-card-class"   // ← 여기에 추가
-]
+```bash
+npm run sync:guides
 ```
 
 ---
@@ -100,24 +44,14 @@ HTML 파일에 새로운 카드 클래스가 생기면:
 
 ```
 scripts/
-  html-to-pptx.mjs   ← 메인 변환 스크립트
-  pptx.config.json   ← 전체 파라미터 설정 (주석 포함)
-  README.md          ← 이 파일
+  ├── build-presentation.mjs        # 슬라이드 쇼 HTML 컴파일러
+  ├── build-group-presentation.mjs  # 그룹 슬라이드 빌더
+  ├── build-standalone.mjs          # 단일 HTML standalone 패키징 도구
+  ├── build-publish.mjs             # 최종 배포용 빌더
+  ├── md-to-pptx.mjs                # 마크다운 ──> PPTX 변환기
+  ├── sync-guides-index.mjs         # 가이드 메타데이터 빌더
+  ├── vite-api-plugin.ts            # 개발서버 API 미들웨어 플러그인
+  ├── pptx-renderers/               # PPTX 상세 렌더러 컴포넌트 폴더
+  └── README.md                     # 이 파일
 ```
 
-**의존성 (package.json에 이미 포함):**
-- `cheerio` — HTML 파싱
-- `pptxgenjs` — PPT 생성
-
----
-
-## HTML 파일 구조 패턴
-
-이 스크립트는 두 가지 HTML 패턴을 자동으로 지원합니다:
-
-| | Type A | Type B |
-|---|---|---|
-| 대표 파일 | notion.html, obsidian.html | claude.html, chatgpt.html |
-| 섹션 태그 | `<section class="section">` | `<div class="section">` |
-| 내부 래퍼 | `.section-inner` 있음 | 없음 |
-| 제목 | `h2.section-title` | `.section-header h2` |

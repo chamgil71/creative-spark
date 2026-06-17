@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import GuideViewer from "./pages/GuideViewer.tsx";
 import CollectionViewer from "./pages/CollectionViewer.tsx";
+import Converter from "./pages/Converter.tsx";
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/converter" element={<Converter />} />
           <Route path="/guide/:slug" element={<GuideViewer />} />
           <Route path="/collection/:id" element={<CollectionViewer />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -93,4 +93,4 @@ for (const entry of fs.readdirSync(MD_SRC, { withFileTypes: true })) {
 }
 
 buildShowcase();
-runNode(["scripts/build-standalone.mjs"]);
+

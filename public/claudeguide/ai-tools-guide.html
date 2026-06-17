@@ -60,8 +60,8 @@
   .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.25); border-radius: 100px; padding: 6px 16px; font-size: calc(13px * var(--font-scale)); font-weight: 500; margin-bottom: 28px; }
   .hero-badge span { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
   .hero-logo { width: 90px; height: 90px; margin: 0 auto 24px; background: rgba(255,255,255,0.12); border-radius: 24px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); font-size: calc(44px * var(--font-scale)); }
-  .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
-  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.85); margin-bottom: 40px; }
+  .hero h1 { font-family: var(--font-title); font-size: calc(clamp(2rem, 5vw, 3rem) * var(--font-scale)); font-weight: 700; margin-bottom: 16px; line-height: 1.2; white-space: pre-line; }
+  .hero p { font-size: calc(1.1rem * var(--font-scale)); color: rgba(255,255,255,0.85); margin-bottom: 40px; white-space: pre-line; }
   .hero-cta { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--brand-dark); font-weight: 800; font-size: calc(16px * var(--font-scale)); padding: 13px 24px; border-radius: 100px; text-decoration: none; box-shadow: var(--shadow-lg); margin-bottom: 38px; transition: transform .2s, box-shadow .2s; }
   .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(0,0,0,0.18); }
   .hero-stats { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
@@ -329,14 +329,71 @@
   pre { background: #1a1a2e; color: #fff; padding: 20px; border-radius: 10px; overflow-x: auto; }
   code { font-family: var(--font-code); font-size: calc(0.9em * var(--font-scale)); }
   
-  /* [복구] 비교표(Table) 원본 스타일 가깝게 수정 */
-  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: calc(0.9rem * var(--font-scale)); }
-  th { background: var(--brand); color: white; padding: 12px; font-weight: 800; border: 1px solid var(--border); }
-  td { padding: 12px; border: 1px solid var(--border); text-align: center; color: var(--text-2); }
-  tr:nth-child(even) { background: #fafafa; }
+  /* Flow Arrow Separator (↓, →, ↑, ←) Styles */
+  .flow-arrow-separator {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 20px 0;
+    color: var(--brand);
+    text-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    animation: guideFlowBounce 2s infinite;
+  }
+  @keyframes guideFlowBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* 비교표(Table) 세로형 가이드 스타일 고도화 */
+  table { 
+    width: 100%; 
+    border-collapse: separate; 
+    border-spacing: 0; 
+    margin: 24px 0; 
+    font-size: calc(0.9rem * var(--font-scale)); 
+    border-radius: 8px; 
+    overflow: hidden; 
+    border: 1px solid var(--border); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  th { 
+    background: var(--brand-light); 
+    color: var(--brand-dark); 
+    padding: 13px 16px; 
+    font-weight: 800; 
+    border-bottom: 2px solid var(--border); 
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  th:last-child {
+    border-right: none;
+  }
+  td { 
+    padding: 12px 16px; 
+    border-bottom: 1px solid var(--border); 
+    border-right: 1px solid var(--border);
+    text-align: center; 
+    color: var(--text-2); 
+  }
+  td:last-child {
+    border-right: none;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:nth-child(even) { 
+    background: #fafbfc; 
+  }
+  tr:hover {
+    background: rgba(99, 102, 241, 0.015);
+  }
 
   /* ✓ 기호가 들어간 셀 자동 강조 */
-  td.check-highlight { color: var(--brand-dark); font-weight: 800; background: var(--brand-light); }
+  td.check-highlight { 
+    color: var(--brand-dark); 
+    font-weight: 800; 
+    background: var(--brand-light); 
+  }
 
   /* ── [NEW] 시리즈 목차 숏코드 컴포넌트 스타일 ── */
   .part-banner { margin-bottom: 30px; }
@@ -1228,24 +1285,24 @@ claude
 </div></div><hr>
 </div><div class="card"><h3 class="card-title">Claude 루틴 (정기 자동화)</h3><p>Claude Code의 <code>/schedule</code> 기능으로 반복 작업을 클라우드 에이전트로 등록. PC가 꺼져 있어도 자동 실행된다.</p>
 <div class="step-list">
-<div class="step-item" style="border-color: #6366F1; background-color: #6366F108;">
-<div class="step-num" style="background:#6366F1">1</div>
+<div class="step-item" style="border-color: var(--brand); background-color: color-mix(in srgb, var(--brand) 8%, transparent);">
+<div class="step-num" style="background:main">1</div>
 <div class="step-content">
-<div class="step-title" style="color: #6366F1;">/schedule 입력</div>
+<div class="step-title" style="color: var(--brand);">/schedule 입력</div>
 <p>Claude Code 터미널에서 /schedule 입력하면 루틴 등록 대화가 시작된다.</p>
 </div>
 </div>
-<div class="step-item" style="border-color: #10B981; background-color: #10B98108;">
-<div class="step-num" style="background:#10B981">2</div>
+<div class="step-item" style="border-color: var(--brand-dark); background-color: color-mix(in srgb, var(--brand-dark) 8%, transparent);">
+<div class="step-num" style="background:sub">2</div>
 <div class="step-content">
-<div class="step-title" style="color: #10B981;">작업·주기 지정</div>
+<div class="step-title" style="color: var(--brand-dark);">작업·주기 지정</div>
 <p>작업 내용(자연어로 설명)과 실행 시각(cron 표현식 또는 \&quot;매일 오전 8시\&quot;), 반복 주기를 지정한다.</p>
 </div>
 </div>
-<div class="step-item" style="border-color: #F59E0B; background-color: #F59E0B08;">
-<div class="step-num" style="background:#F59E0B">3</div>
+<div class="step-item" style="border-color: var(--brand-deep); background-color: color-mix(in srgb, var(--brand-deep) 8%, transparent);">
+<div class="step-num" style="background:deep">3</div>
 <div class="step-content">
-<div class="step-title" style="color: #F59E0B;">클라우드 등록 완료</div>
+<div class="step-title" style="color: var(--brand-deep);">클라우드 등록 완료</div>
 <p>/schedule list로 등록된 루틴 목록 확인. /schedule delete로 삭제. 등록 후에는 로컬 PC 없이 클라우드에서 자동 실행.</p>
 </div>
 </div></div><div class="summary-box" >

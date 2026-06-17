@@ -7,11 +7,7 @@
 ## 전체 흐름
 
 ```
-storage/html_src1/*.html  (원본 HTML, gitignore)
-      │
-      │  scripts/html-to-md.mjs  ← config/shortcode-map.json
-      ▼
-md_src/guides/*.md  ←──────────── 신규 가이드 직접 작성 (권장)
+md_src/guides/*.md  ←──────────── 신규 가이드 직접 작성 및 에디터 저장
       │
       ├── scripts/build-guide.mjs ──→ public/guides/*.html ──→ 웹 서비스
       │
@@ -20,25 +16,9 @@ md_src/guides/*.md  ←──────────── 신규 가이드 직
 
 ---
 
-## 1. HTML → MD (역변환)
+## 1. 마크다운 기반 신규 가이드 편집 (에디터)
 
-기존에 HTML로만 존재하는 가이드를 MD로 복원할 때 사용.
-
-```bash
-# 단일 파일
-node scripts/html-to-md.mjs storage/html_src1/CapCut.html md_src/guides/CapCut.md
-
-# 전체 일괄 변환 (bash)
-for f in storage/html_src1/*.html; do
-  name=$(basename "$f" .html)
-  node scripts/html-to-md.mjs "$f" "md_src/guides/${name}.md"
-done
-```
-
-- `config/shortcode-map.json` 기반 generic 변환 — CSS 클래스 → 숏코드 자동 매핑
-- `hero-logo`, `hero-badge`, `hero-cta`, `done-section`, `footer` 자동 추출
-- frontmatter 전체 자동 생성 (`title`, `subtitle`, `logo`, `badge`, `style`, `heroCta`, `stats`, `done`, `footer`)
-- 이모지가 타이틀에 포함된 경우 `icon` 필드로 자동 분리
+현재는 웹 브라우저 통합 에디터(`/converter.html`) 또는 로컬 에디터를 사용하여 마크다운 가이드를 직접 생성/수정하며 실시간으로 렌더링을 확인합니다. 기존 HTML에서 마크다운을 역변환하는 도구(`html-to-md.mjs`)는 [docs/backup/](file:///c:/ai/creative-spark/docs/backup/) 디렉토리로 백업 이전되었습니다.
 
 ---
 
@@ -77,7 +57,7 @@ node scripts/md-to-pptx.mjs md_src/guides/Supabase.md --verbose
 
 **설정 파일:** `config/pptdesign.config.json`, `config/styles.json`
 
-> `md_src/guides/` 폴더의 MD 파일을 직접 작성하거나 `scripts/html-to-md.mjs`로 변환하여 생성.
+> `md_src/guides/` 폴더의 MD 파일을 직접 작성하거나 에디터를 사용하여 생성.
 
 ---
 
@@ -315,33 +295,8 @@ footer:                 # 선택: 푸터 텍스트 목록
 
 ---
 
-## 6. shortcode-map.json
-
-`config/shortcode-map.json`은 HTML→MD 역변환 규칙을 정의합니다.
-
-```json
-{
-  "icon-grid": {
-    "htmlClasses": ["icon-grid", "use-case-grid", ...],
-    "itemSelector": ".icon-card, li",
-    "fields": {
-      "icon":  ".icon, .icon-card-icon",
-      "title": ".title, .icon-card-title, h3",
-      "desc":  ".desc, p"
-    }
-  }
-}
-```
-
-- `htmlClasses` — 이 숏코드로 변환할 CSS 클래스 목록
-- `itemSelector` — 아이템 요소를 찾는 CSS 선택자
-- `fields` — 각 필드(icon/title/desc/tag/meta)를 추출할 CSS 선택자 (쉼표 구분, 우선순위 순)
-
----
-
-## 7. 보완 예정 항목
+## 6. 보완 예정 항목
 
 | 항목 | 상태 | 위치 |
 |------|------|------|
-| HTML → PPTX 직접 변환 | 실험적 변환기. 정밀 레이아웃 보완 필요 | `scripts/html-to-pptx.mjs` |
 | Playwright 기반 HTML 캡처 PPTX | 현재 공식 파이프라인 밖의 보류 아이디어 | 별도 구현 없음 |

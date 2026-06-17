@@ -484,8 +484,22 @@ function renderBlock(slide, block, x, y, w, pal) {
     const totalH = headerH + rowH * (block.rows || []).length;
     const colW = w / Math.max(1, block.headers.length);
     const tableData = [
-      block.headers.map(h2 => ({ text: h2, options: { bold: true, fontSize: c.bodySize, color: pal.white, fill: { color: pal.brand } } })),
-      ...(block.rows || []).map(row => row.map(cell => ({ text: cell, options: { fontSize: c.bodySize - 1, color: pal.text2 } }))),
+      block.headers.map(h2 => ({ text: h2, options: { bold: true, fontSize: c.bodySize, color: pal.white, fill: { color: pal.brand }, align: "center", valign: "middle" } })),
+      ...(block.rows || []).map((row, rIdx) => row.map(cell => {
+        const isEven = rIdx % 2 === 1;
+        const isCheck = cell === "√" || cell === "✓" || cell === "✅";
+        return { 
+          text: cell, 
+          options: { 
+            fontSize: c.bodySize - 1, 
+            color: isCheck ? pal.brand : pal.text2, 
+            bold: isCheck,
+            fill: isEven ? { color: "FAFAFA" } : undefined,
+            align: "center",
+            valign: "middle"
+          } 
+        };
+      })),
     ];
     slide.addTable(tableData, {
       x, y, w,
@@ -584,10 +598,24 @@ function renderCover(prs, fm, pal) {
   const accent = customAccent || pal.brand;
   const textClr = customTextColor || pal.white;
   
-  // 2. 배경 설정
+  // 2. 제목 정제 및 멀티라인 높이 계산
+  const sanitizeTitle = (t) => {
+    let clean = String(t ?? "").trim();
+    if (clean.startsWith('"') && clean.endsWith('"')) {
+      clean = clean.slice(1, -1);
+    } else if (clean.startsWith("'") && clean.endsWith("'")) {
+      clean = clean.slice(1, -1);
+    }
+    return clean.trim();
+  };
+
+  const titleText = sanitizeTitle(fm.title || "Guide Title");
+  const titleLines = titleText ? titleText.split(/\r?\n/).length : 1;
+
+  // 3. 배경 설정
   slide.background = { color: bg };
   
-  // 3. 레이아웃에 따른 렌더링
+  // 4. 레이아웃에 따른 렌더링
   if (layout === "full-brand") {
     slide.background = { color: pal.brand };
     slide.addShape("rect", { x: 0, y: sh - 0.12, w: sw, h: 0.12, fill: { color: pal.white }, line: { width: 0 } });
@@ -596,8 +624,9 @@ function renderCover(prs, fm, pal) {
     if (fm.logo) {
       slide.addText(fm.logo, { x: 1.0, y: ty - 0.85, w: 1.0, h: 0.75, fontSize: dc.logoFontSize + 4, align: "left", valign: "middle" });
     }
-    slide.addText(fm.title || "", { x: 1.0, y: ty, w: sw - 2.0, h: 1.3, fontSize: dc.titleFontSize + 2, bold: true, color: pal.white, fontFace: fontTitle, valign: "top" });
-    ty += 1.35;
+    const titleH = 1.3 + (titleLines - 1) * 0.7;
+    slide.addText(titleText, { x: 1.0, y: ty, w: sw - 2.0, h: titleH, fontSize: dc.titleFontSize + 2, bold: true, color: pal.white, fontFace: fontTitle, valign: "top" });
+    ty += titleH + 0.05;
     if (fm.subtitle) {
       slide.addText(fm.subtitle, { x: 1.0, y: ty, w: sw - 2.0, h: 0.45, fontSize: dc.subtitleFontSize + 1, color: pal.brandLight, fontFace: font });
       ty += 0.55;
@@ -607,8 +636,9 @@ function renderCover(prs, fm, pal) {
     if (fm.logo) {
       slide.addText(fm.logo, { x: 1.0, y: ty - 0.85, w: 1.0, h: 0.75, fontSize: dc.logoFontSize, align: "left", valign: "middle" });
     }
-    slide.addText(fm.title || "", { x: 1.0, y: ty, w: sw - 2.0, h: 1.2, fontSize: dc.titleFontSize, bold: true, color: textClr, fontFace: fontTitle, valign: "top" });
-    ty += 1.2;
+    const titleH = 1.2 + (titleLines - 1) * 0.7;
+    slide.addText(titleText, { x: 1.0, y: ty, w: sw - 2.0, h: titleH, fontSize: dc.titleFontSize, bold: true, color: textClr, fontFace: fontTitle, valign: "top" });
+    ty += titleH;
     if (fm.subtitle) {
       slide.addText(fm.subtitle, { x: 1.0, y: ty, w: sw - 2.0, h: 0.4, fontSize: dc.subtitleFontSize, color: pal.muted, fontFace: font });
       ty += 0.5;
@@ -620,8 +650,9 @@ function renderCover(prs, fm, pal) {
     if (fm.logo) {
       slide.addText(fm.logo, { x: dc.titleX, y: ty - 0.85, w: 0.85, h: 0.75, fontSize: dc.logoFontSize, align: "left", valign: "middle" });
     }
-    slide.addText(fm.title || "", { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: 1.2, fontSize: dc.titleFontSize, bold: true, color: textClr, fontFace: fontTitle, valign: "top" });
-    ty += 1.2;
+    const titleH = 1.2 + (titleLines - 1) * 0.7;
+    slide.addText(titleText, { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: titleH, fontSize: dc.titleFontSize, bold: true, color: textClr, fontFace: fontTitle, valign: "top" });
+    ty += titleH;
     if (fm.subtitle) {
       slide.addText(fm.subtitle, { x: dc.titleX, y: ty, w: sw - dc.titleX - 0.5, h: 0.4, fontSize: dc.subtitleFontSize, color: pal.muted, fontFace: font });
       ty += 0.5;

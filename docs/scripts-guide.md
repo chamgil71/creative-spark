@@ -13,9 +13,7 @@
 |:---|:---|:---|
 | **`scripts/build-guide.mjs`** | 마크다운(.md) ──→ 가이드 HTML | 6대 표준 키 및 18종 숏코드 기반의 가이드 문서 생성 |
 | **`scripts/build-presentation.mjs`** | 마크다운(.md) ──→ 횡 슬라이드 HTML | **[신설]** PPT 슬라이드처럼 횡으로 한 장씩 넘기는 뷰어 HTML 생성 |
-| **`scripts/html-to-md.mjs`** | 가이드 HTML ──→ 마크다운(.md) | 기존 HTML 콘텐츠의 숏코드 구문 역변환 복원 |
 | **`scripts/md-to-pptx.mjs`** | 마크다운(.md) ──→ PPTX 슬라이드 | PPTXGenJS를 이용해 16:9 슬라이드 파일 자동 빌드 |
-| **`scripts/html-to-pptx.mjs`** | 가이드 HTML ──→ PPTX 슬라이드 | HTML → MD 역변환 복원 후 PPTX로 변환하는 연쇄 처리 |
 
 ### 2) 파이프라인 및 인프라 유틸리티 (Pipeline & Infrastructure Utilities)
 | 스크립트 명칭 | 역할 | 연계 기동 프로세스 |
@@ -95,14 +93,11 @@ npm run build:slide -- "md_src/**/*.md" --out public/presentation/all.html --sty
 
 커버 슬라이드(`#` 헤딩)는 TOC에서 굵게 브랜드 컬러로 구분 표시됩니다.
 
+
 ---
 
-### 3) scripts/html-to-md.mjs (HTML → MD 역변환)
-HTML 문서의 소스 코드와 컴포넌트를 파싱하여 마크다운 숏코드 규격의 텍스트로 환원합니다.
-
-```bash
-node scripts/html-to-md.mjs public/guides/Claude.html md_src/guides/Claude.md
-```
+> [!NOTE]
+> **폐기/백업 처리된 레거시 도구**: HTML을 다시 마크다운이나 PPTX로 역변환하던 구버전 체인 변환기(`html-to-md.mjs`, `html-to-pptx.mjs`, `restore-md-from-html.mjs`)들은 현재 React 기반의 통합 가이드 변환기 파이프라인에서 불필요하므로 [docs/backup/](file:///c:/ai/creative-spark/docs/backup/) 경로로 이전 격리되었습니다.
 
 ---
 
