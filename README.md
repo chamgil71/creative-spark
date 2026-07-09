@@ -85,7 +85,7 @@ creative-spark/
 │   ├── guide-creation.md       # [필독] 29종 숏코드 명세 및 가이드 작성법
 │   ├── scripts-guide.md        # 스크립트 도구 상세 레퍼런스
 │   ├── shortcode-style-guide.md # 숏코드별 CSS/PPTX 튜닝 가이드
-│   └── report/worklog.md       # 영구 누적 작업 기록 일지
+│   └── worklog.md              # 영구 누적 작업 기록 일지 (표준 위치)
 │
 ├── index.html                  # 가이드 허브 메인 진입 HTML
 ├── converter.html              # [단독] 독립형 가이드 변환기 진입 HTML
@@ -124,4 +124,4 @@ creative-spark/
 * [숏코드 명세 및 가이드 작성법](docs/guide-creation.md) — 29종 숏코드의 마크다운 표현법과 주의점.
 * [스크립트 도구 상세 레퍼런스](docs/scripts-guide.md) — 변환 엔진별 매개변수 및 횡 슬라이드 컴파일 제어법.
 * [쇼케이스 스타일 상세 가이드](docs/shortcode-style-guide.md) — HSL 테마 매핑 구조 및 PPTX 튜닝 가이드.
-* [작업 누적 기록 일지](docs/report/worklog.md) — 버전별 작업 일지 및 이력서.
+* [작업 누적 기록 일지](docs/worklog.md) — 버전별 작업 일지 및 이력서.
