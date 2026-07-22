@@ -1,3 +1,5 @@
+@AGENTS.md
+
 # CLAUDE.md — Creative Spark 프로젝트 컨텍스트
 
 > AI 어시스턴트(Claude Code 등)가 이 프로젝트에서 작업할 때 참조하는 핵심 컨텍스트 파일.
